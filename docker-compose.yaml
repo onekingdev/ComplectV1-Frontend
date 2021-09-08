@@ -6,13 +6,16 @@ services:
         build: .
         image: complect-front:1.0
         ports:
-            - 80:5000 # Preview
-            - 81:5001 # Dev
+            - 81:81 # Dev
         environment:
             HOST: 0.0.0.0
         volumes:
             - .:/home/app
             - /home/app/node_modules
         working_dir: /home/app
+<<<<<<< Updated upstream
         command: npm run serve
+=======
+        command: npm run dev
+>>>>>>> Stashed changes
         # command: tail -F anything
