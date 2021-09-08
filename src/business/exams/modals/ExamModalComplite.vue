@@ -1,0 +1,56 @@
+<template lang="pug">
+  div(:class="{'d-inline-block':inline}")
+    div(v-b-modal="modalId" :class="{'d-inline-block':inline}")
+      slot
+
+    b-modal.fade(:id="modalId" :title="completedStatus ? 'Incomplete Exam' : 'Complete Exam'")
+      .row
+        .col
+          p.paragraph Marking the exam as complete will disable any links to access your requests.
+          p.paragraph You currrently have:
+          p.paragraph
+            span.text-success {{ countCompleted }}&nbsp;
+            | Reqeusts Complited
+          p.paragraph: b Do you want to continue?
+
+      Errors(:errors="errors.title")
+
+      template(slot="modal-footer")
+        button.btn.btn-link(@click="$bvModal.hide(modalId)") Cancel
+        button.btn.btn-dark(@click="submit") Confirm
+</template>
+
+<script>
+  const rnd = () => Math.random().toFixed(10).toString().replace('.', '')
+  export default {
+    props: {
+      inline: {
+        type: Boolean,
+        default: true
+      },
+      completedStatus: {
+        type: Boolean,
+        default: true
+      },
+      countCompleted: {
+        type: String,
+        default: ''
+      },
+    },
+    data() {
+      return {
+        modalId: `modal_${rnd()}`,
+        errors: []
+      }
+    },
+    methods: {
+      submit(e) {
+        e.preventDefault();
+        this.errors = [];
+
+        this.$emit('compliteConfirmed')
+        this.$bvModal.hide(this.modalId)
+      },
+    },
+  }
+</script>

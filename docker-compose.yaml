@@ -13,9 +13,4 @@ services:
             - .:/home/app
             - /home/app/node_modules
         working_dir: /home/app
-<<<<<<< Updated upstream
-        command: npm run serve
-=======
         command: npm run dev
->>>>>>> Stashed changes
-        # command: tail -F anything

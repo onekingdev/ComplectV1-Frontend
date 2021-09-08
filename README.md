@@ -12,3 +12,4 @@
 ## To-Do
 1. Babel
 	* transform-class-properties ???
+2. Setup ESLint after transfer
