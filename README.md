@@ -6,7 +6,5 @@
 
 
 ## To-Do
-1. Eslint
-	* Setup needed
-2. Babel
+1. Babel
 	* transform-class-properties ???
