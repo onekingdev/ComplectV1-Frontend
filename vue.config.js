@@ -1,4 +1,10 @@
 module.exports = {
+	devServer: {
+		overlay: {
+			warnings: false,
+			errors: false
+		}
+	},
 	configureWebpack: {
 		devServer: {
 			public: "localhost:81",
