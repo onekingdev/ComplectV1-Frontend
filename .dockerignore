@@ -1,0 +1,6 @@
+*.log
+.git
+.cache
+Icon?
+.DS_Store
+README.MD
