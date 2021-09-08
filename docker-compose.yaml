@@ -14,5 +14,5 @@ services:
             - .:/home/app
             - /home/app/node_modules
         working_dir: /home/app
-        command: npm run serve
-        # command: tail -F anything
+        # command: npm run serve
+        command: tail -F anything
