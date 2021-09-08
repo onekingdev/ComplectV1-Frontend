@@ -1,0 +1,17 @@
+version: '3.9'
+services:
+    # Complect Frontend
+    complect-front:
+        container_name: complect-front
+        build: .
+        image: complect-front:1.0
+        ports:
+            - 80:5000 # Preview
+            - 81:5001 # Dev
+        environment:
+            HOST: 0.0.0.0
+        volumes:
+            - .:/home/app
+            - /home/app/node_modules
+        working_dir: /home/app
+        command: npm run dev

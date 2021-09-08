@@ -1,0 +1,17 @@
+# Ignore local config.
+/.env.local
+/.env
+
+# Ignore all logfiles and tempfiles.
+/log/*
+!/log/.keep
+/tmp
+.cache
+
+
+.DS_Store
+.idea
+.vscode
+.history
+coverage
+/Icon?
