@@ -3,6 +3,4 @@
 .cache
 Icon?
 .DS_Store
-Dockerfile
-docker-compose.yaml
 README.MD
