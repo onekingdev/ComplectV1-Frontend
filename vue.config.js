@@ -8,8 +8,8 @@ module.exports = {
 			// hmr: true,
 			disableHostCheck: true,
 			headers: {
-				"Access-Control-Allow-Origin": "*"
-			}
-		}
-	}
+				"Access-Control-Allow-Origin": "*",
+			},
+		},
+	},
 }

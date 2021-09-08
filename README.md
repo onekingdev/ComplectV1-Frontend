@@ -7,5 +7,6 @@
 
 ## To-Do
 1. Eslint
+	* Setup needed
 2. Babel
 	* transform-class-properties ???

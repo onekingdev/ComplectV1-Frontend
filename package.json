@@ -5,7 +5,8 @@
 	"scripts": {
 		"serve": "vue-cli-service serve",
 		"build": "vue-cli-service build",
-		"lint": "vue-cli-service lint"
+		"lint": "vue-cli-service lint --no-fix",
+		"lint:fix": "vue-cli-service lint"
 	},
 	"volta": {
 		"node": "10.18.0"
@@ -70,20 +71,6 @@
 		"vue-template-compiler": "^2.6.11",
 		"node-sass": "^4.14.1",
 		"sass-loader": "^6.0.7"
-	},
-	"eslintConfig": {
-		"root": true,
-		"env": {
-			"node": true
-		},
-		"extends": [
-			"plugin:vue/essential",
-			"eslint:recommended"
-		],
-		"parserOptions": {
-			"parser": "babel-eslint"
-		},
-		"rules": {}
 	},
 	"browserslist": [
 		"> 1%",
