@@ -15,7 +15,3 @@
 	* transform-class-properties ???
 2. Setup ESLint after transfer
 3. Fix Router
-
-
-7a7d5c4
-https://github.com/complectco/complect/commit/7a7d5c40fa773e70768682e0f09e4cf04dd03419
