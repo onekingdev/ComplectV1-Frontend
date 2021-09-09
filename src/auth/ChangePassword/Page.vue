@@ -78,8 +78,8 @@
           "user": {
             "reset_password_token": this.resetPasswordToken,
             "password": this.form.password,
-            "password_confirmation": this.form.passwordConfirm,
-          },
+            "password_confirmation": this.form.passwordConfirm
+          }
         }
 
         this.$store.dispatch('changeEmail', dataToSend)
