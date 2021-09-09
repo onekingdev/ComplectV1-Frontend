@@ -1,26 +1,21 @@
 import Vue from 'vue'
 import App from './App.vue'
-import VueRouter from 'vue-router'
 import router from './router'
+
+import store from '@/store/common'
+// import store from '@/store/business'
+// import store from '@/store/specialist'
 
 import { BootstrapVue, IconsPlugin } from 'bootstrap-vue'
 import './assets/styles/vue.scss'
-
-// CRUD
-import Get from '@/common/rest/Get'
-import Post from '@/common/rest/Post'
-import PostMultipart from '@/common/rest/PostMultipart'
-import Put from '@/common/rest/Put'
-import Delete from '@/common/rest/Delete'
-import ModelLoader from '@/common/rest/ModelLoader'
-import Errors from '@/common/Errors'
-
 import Treeselect from '@riophae/vue-treeselect'
 import '@riophae/vue-treeselect/dist/vue-treeselect.css'
+
 import DatePicker from '@/common/DatePicker'
 import Breadcrumbs from '@/common/Breadcrumbs'
 import ComboBox from '@/common/ComboBox'
 import Dropdown from '@/common/Dropdown'
+import Errors from '@/common/Errors'
 import InputDate from '@/common/InputDate'
 import InputText from '@/common/InputText'
 import InputTextarea from '@/common/InputTextarea'
@@ -31,27 +26,26 @@ import StarRating from '@/common/StarRating'
 import UserAvatar from '@/common/UserAvatar'
 import PropertiesTable from '@/common/PropertiesTable'
 import CommonHeader from '@/common/CommonHeader'
-import filters from './filters'
-
-
+import Get from '@/common/rest/Get'
+import Post from '@/common/rest/Post'
+import PostMultipart from '@/common/rest/PostMultipart'
+import Put from '@/common/rest/Put'
+import Delete from '@/common/rest/Delete'
+import ModelLoader from '@/common/rest/ModelLoader'
+import filters from '@/filters'
 import { extractToastMessage } from '@/common/Toast'
 import ToasterMixin from '@/mixins/ToasterMixin'
 import RedirectMixin from '@/mixins/RedirectMixin'
 import HistoryMixin from '@/mixins/HistoryMixin'
 import vueDebounce from 'vue-debounce'
 import VueApexCharts from 'vue-apexcharts'
+import VueRouter from 'vue-router'
 import Loading from '@/common/Loading/Loading'
 import EmptyState from '@/common/EmptyState'
-
-
-import store from '@/store/common'
 
 const data = () => ({
   isProfileMenuOpen: false
 })
-
-Vue.config.productionTip = false
-Vue.config.ignoredElements = ['ion-icon']
 
 
 Vue.use(BootstrapVue)
@@ -63,6 +57,11 @@ Vue.use(VueRouter)
 Vue.mixin(ToasterMixin)
 Vue.mixin(RedirectMixin)
 Vue.mixin(HistoryMixin)
+
+Vue.config.productionTip = false
+Vue.config.ignoredElements = ['ion-icon']
+
+Object.keys(filters).map(filter => Vue.filter(filter, filters[filter]))
 
 Vue.component('Treeselect', Treeselect)
 Vue.component('DatePicker', DatePicker)
@@ -96,13 +95,12 @@ Vue.directive('google-maps-autocomplete', {
   }
 })
 
-Object.keys(filters).map(filter => Vue.filter(filter, filters[filter]))
 
 new Vue({
   mixins: [ToasterMixin, RedirectMixin, HistoryMixin],
+  data,
   router,
   store,
-  data,
   created() {
     const toast = extractToastMessage()
     toast && this.toast('', toast)
