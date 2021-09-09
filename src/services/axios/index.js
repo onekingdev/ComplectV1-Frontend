@@ -4,8 +4,7 @@ import store  from '../../store/business'
 // import { createToast } from "../../mixins/ToasterMixin";
 
 const axios = instance.create({
-  baseURL: '/api',
-  timeout: 1000 * 10,
+  baseURL: 'https://staging.complect.com/api',
   headers: {'Accept': 'application/json'}
 })
 

@@ -9,7 +9,7 @@
 2. Start dev server: `npm run dev`
 3. Navigate to `localhost:81`
 
-## tmp solution to run with back
+## or run with local Back End
 1. Ask about `env.local` file
 2. Run: `docker-compose -f docker-compose-full.yml up`
 4. SSH to complect-app container and run:
