@@ -1,13 +1,13 @@
 <template lang="pug">
   .container-fluid.px-0
-    Topbar
+    top-bar
     main#main-content
       router-view
 </template>
 
 <script>
-  import Topbar from '@/auth/components/TopNavbar'
+  import TopBar from '@/components/Bars/TopNavBar.vue'
   export default {
-    components: { Topbar },
+    components: { TopBar },
   }
 </script>

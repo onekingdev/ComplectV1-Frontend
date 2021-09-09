@@ -3,8 +3,8 @@ import Router from 'vue-router'
 import AuthGuard from './auth-guard'
 
 // LAYOUTS
-import LayoutOnboarding from '@/layouts/Auth'
-import LayoutMain from '@/layouts/Main'
+import OnboardingLayout from '@/layouts/OnboardingLayout'
+import MainLayout from '@/layouts/MainLayout'
 
 // COMMON
 import PageNotFound from '@/common/PageNotFound'
@@ -85,9 +85,18 @@ export default new Router({
     { path: '/business/new', redirect: '/business/onboarding' },
     { path: '/specialists/new', redirect: '/specialist/onboarding' },
 
+
+    // ------------ ROUTES STRUCTURE ------------ //
+    // 1. App Layer (auth ? LayoutMain: LayoutOnboarding)
+    //    1.1 LayoutMain (business ? LayoutBusiness: LayoutSpecialist)
+    //    1.2 LayoutOnboarding
+
+
+
+
     // ONBOARDING LAYOUT
     // AUTH
-    { path: '/', component: LayoutOnboarding,
+    { path: '/', component: OnboardingLayout,
       children:  [
         { path: '/', name: 'home', component: SignIn },
         { path: '/users/sign_in', name: 'sign-in', component: SignIn },
@@ -103,7 +112,7 @@ export default new Router({
     ]},
 
     // MAIN LAYOUT
-    { path: '/', component: LayoutMain,
+    { path: '/', component: MainLayout,
       children:  [
         // BUSINESS
         { path: '/business', name: 'dashboard', component: Dashboard },

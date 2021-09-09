@@ -1,18 +1,18 @@
 <template lang="pug">
   .container-fluid.p-0
-    Topbar
+    top-bar
     .wrapper
-      Sidebar
+      side-bar
       main.main-content
        router-view
 </template>
 
 <script>
-  import Sidebar from './components/Sidebar'
-  import Topbar from './components/Topbar'
+  import SideBar from '@/components/Bars/SideBar.vue'
+  import TopBar from '@/components/Bars/TopBar.vue'
 
   export default {
-    components: { Sidebar, Topbar },
+    components: { SideBar, TopBar },
     data() {
       return {
         userType: localStorage.getItem('app.currentUser.userType') ? JSON.parse(localStorage.getItem('app.currentUser.userType')) : ''

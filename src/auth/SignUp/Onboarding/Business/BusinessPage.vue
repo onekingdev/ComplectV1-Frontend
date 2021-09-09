@@ -173,7 +173,7 @@
   import VueGoogleAutocomplete from 'vue-google-autocomplete'
   import Multiselect from 'vue-multiselect'
   // import Loading from '@/common/Loading/Loading'
-  import TopNavbar from "@/auth/components/TopNavbar";
+  import TopNavbar from "@/components/Bars/TopNavBar.vue";
   import Steps from "@/auth/components/Steps";
   import Notifications from "@/common/Notifications/Notifications";
 
