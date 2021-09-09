@@ -27,7 +27,7 @@
   import Loading from '@/common/Loading/Loading'
   import TopNavbar from "../components/TopNavbar";
 
-  // const random = Math.floor(Math.random() * 1000);
+  const random = Math.floor(Math.random() * 1000);
 
   export default {
     components: {
