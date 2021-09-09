@@ -7,3 +7,7 @@ export default {
   name: 'App',
 }
 </script>
+
+<style lang="scss">
+@import './stylesheets/vue.scss';
+</style>
