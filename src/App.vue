@@ -1,5 +1,5 @@
 <template lang="pug">
-  h1 Complect
+  router-view
 </template>
 
 <script>
@@ -7,6 +7,3 @@ export default {
   name: 'App',
 }
 </script>
-
-<style>
-</style>
