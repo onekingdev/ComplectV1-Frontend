@@ -1,5 +1,6 @@
 <template lang="pug">
-  router-view
+  #app
+    router-view
 </template>
 
 <script>
@@ -9,5 +10,5 @@ export default {
 </script>
 
 <style lang="scss">
-@import './stylesheets/vue.scss';
+  
 </style>

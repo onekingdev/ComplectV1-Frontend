@@ -3,18 +3,18 @@
 }
 
 /* ---------- IMPORTS ---------- */
-@import '../../node_modules/bootstrap/scss/bootstrap.scss';
-// @import '../../node_modules/bootstrap-vue/src/index.scss'; // @TODO include bootstrap-vue styles
+@import '~bootstrap/scss/bootstrap.scss';
+@import '~bootstrap-vue/dist/bootstrap-vue.css';
+
 // REMOVE LATER UTILITES (unneed)
 @import "_vue_utilities.scss";
 @import "_vue_theme.scss";
 @import "_type.scss";
 @import "_variables.scss";
 @import "_mixins.scss";
-// REMOVE LATER
-//@import url('https://fonts.googleapis.com/css2?family=Varela&display=swap');
-@import url('https://fonts.googleapis.com/css2?family=Public+Sans:wght@100;300;400;600;700&family=Varela&display=swap');
 
+// REMOVE LATER
+@import url('https://fonts.googleapis.com/css2?family=Public+Sans:wght@100;300;400;600;700&family=Varela&display=swap');
 
 $minWidthContent: calc(62.5rem - 17.8125rem); // 1000px-285px (width minus sidebar width)
 

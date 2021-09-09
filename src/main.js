@@ -4,8 +4,7 @@ import VueRouter from 'vue-router'
 import router from '@/router'
 
 import { BootstrapVue, IconsPlugin } from 'bootstrap-vue'
-import 'bootstrap/dist/css/bootstrap.css'
-import 'bootstrap-vue/dist/bootstrap-vue.css'
+import './assets/styles/vue.scss'
 
 // CRUD
 import Get from '@/common/rest/Get'
@@ -14,6 +13,7 @@ import PostMultipart from '@/common/rest/PostMultipart'
 import Put from '@/common/rest/Put'
 import Delete from '@/common/rest/Delete'
 import ModelLoader from '@/common/rest/ModelLoader'
+import Errors from '@/common/Errors'
 
 // import Treeselect from '@riophae/vue-treeselect'
 // import '@riophae/vue-treeselect/dist/vue-treeselect.css'
@@ -21,7 +21,6 @@ import ModelLoader from '@/common/rest/ModelLoader'
 // import Breadcrumbs from '@/common/Breadcrumbs'
 // import ComboBox from '@/common/ComboBox'
 // import Dropdown from '@/common/Dropdown'
-import Errors from '@/common/Errors'
 // import InputDate from '@/common/InputDate'
 // import InputText from '@/common/InputText'
 // import InputTextarea from '@/common/InputTextarea'
@@ -32,8 +31,6 @@ import Errors from '@/common/Errors'
 // import UserAvatar from '@/common/UserAvatar'
 // import PropertiesTable from '@/common/PropertiesTable'
 // import CommonHeader from '@/common/CommonHeader'
-
-
 
 // import filters from '@/filters'
 // import { extractToastMessage } from '@/common/Toast'
