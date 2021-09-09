@@ -6,7 +6,7 @@ module.exports = {
 				"browsers": [
 					"> 1%"
 				],
-				"uglify": true,
+				"uglify": true
 			},
 			"useBuiltIns": false,
 		}],

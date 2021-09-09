@@ -5,8 +5,9 @@
 2. Navigate to `localhost:81`
 
 ## or Run locally
-1. Start dev server: `npm run dev`
-2. Navigate to `localhost:81`
+1. Install dependencies: `npm i`
+2. Start dev server: `npm run dev`
+3. Navigate to `localhost:81`
 
 
 ## To-Do
