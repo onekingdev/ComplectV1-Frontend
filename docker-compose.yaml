@@ -14,3 +14,4 @@ services:
             - /home/app/node_modules
         working_dir: /home/app
         command: npm run dev
+        # command: tail -F anything
