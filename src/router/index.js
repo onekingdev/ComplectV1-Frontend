@@ -103,7 +103,7 @@ export default new Router({
     },
 
     // BUSINESS
-    { path: '/', component: MainLayout,
+    { path: '/', component: MainLayout, beforeEnter: AuthGuard,
       children:  [
         { path: '/business', name: 'dashboard', component: Dashboard },
         { path: '/business/projects', name: 'projects', component: Projects },
