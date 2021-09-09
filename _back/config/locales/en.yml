@@ -1,0 +1,267 @@
+en:
+  something_went_wrong: 'Something went wrong'
+
+  date:
+    formats:
+      pickadate: "%Y/%m/%d"
+      pickadate_p: "%Y-%m-%d"
+      short_ord: "%@d %b %Y"
+  activerecord:
+    attributes:
+      compliance_category:
+        however: Findings Intro
+      annual_report:
+        exam_start: Examination Start Date
+        exam_end: Examination End Date
+        review_start: Annual Review Start Date
+        review_end: Annual Review End Date
+      project:
+        starts_on: Start Date
+        ends_on: End Date
+        payment_schedule: Payment Schedule
+        hourly_payment_schedule: Payment Schedule
+        fixed_payment_schedule: Payment Schedule
+        fixed_budget: Fixed Budget
+        hourly_rate: Hourly Rate
+        estimated_days: Estimated Days
+        estimated_hours: Estimated Hours
+        only_regulators: Only Former Regulators
+        annual_salary: Annual Salary (USD)
+        fee_type: Complect Fee
+      payment_source/ach:
+        routing_number: Routing Number
+        account_number: Account Number
+        account_holder_name: Account Holder
+        account_holder_type: Account Holder Type
+        validate1: Amount 1
+        validate2: Amount 2
+        last4: Last 4 Digits
+      reminder:
+        body: Task
+        remind_at: Start date
+        end_date: End date
+      specialist:
+        first_name: First Name
+        last_name: Last Name
+        address_1: Address Line 1
+        address_2: Address Line 2
+        zipcode: Zip
+        phone: Phone Number
+        annual_revenue_goal: Annual Revenue Goal
+        risk_tolerance: Risk Tolerance
+        time_zone: Time Zone
+    errors:
+      messages:
+        blank: Required field
+        email: Invalid email address
+        url: Invalid entry
+      models:
+        user:
+          attributes:
+            email:
+              taken: 'Email is already in use'
+        business:
+          attributes:
+            logo:
+              invalid: Invalid file type
+              too_large: File size is too large (2MB max)
+        project:
+          attributes:
+            base:
+              no_payment: "We do not have a valid <a target='_blank' href='/business/settings/billing'>payment method</a> on file for you. Please add a payment method before you can post a project."
+            location_type:
+              inclusion: Please make a selection
+            estimated_days:
+              duration: Invalid entry
+            starts_on:
+              duration: Invalid entry
+              invalid: Date must occur before end date
+              past: Date must occur in the future
+            ends_on:
+              duration: Invalid entry
+              invalid: Date must occur after start date
+            hourly_payment_schedule:
+              too_little_duration: Not available for projects lasting less than 2 weeks
+            fixed_payment_schedule:
+              too_little_duration: Not available for projects lasting less than 2 weeks
+            skill_ids:
+              too_long: Limited to 10 skills max
+        job_application:
+          attributes:
+            prerequisites:
+              no_experience: You do not have enough compliance experience to apply
+              no_jurisdiction: You do not have the required jurisdiction expertise to apply
+              no_industry: You do not have the required industry expertise to apply
+              no_regulator: You do not have the required former regulator experience to apply
+              no_payment_info: Please add a verified bank account to proceed
+            starts_on:
+              past: Start date cannot be in the past
+        specialist:
+          attributes:
+            photo:
+              invalid: Invalid file type
+              too_large: File size is too large (2MB max)
+            resume:
+              invalid: Only PDF files accepted
+              too_large: File size is too large (2MB max)
+              blank: Required field
+        rating:
+          attributes:
+            review:
+              blank: Required field
+        message:
+          attributes:
+            message:
+              blank: A message is required
+        compliance_policy:
+          attributes:
+            section:
+              section_taken: This section is already taken
+        annual_report:
+          attributes:
+            review_start:
+              past: Must be after start date
+
+  project_invites:
+    message_templates:
+      invite: |
+        Dear %{specialist},
+
+        We really like your profile and think you would be a great fit for our %{project_or_job} project on Complect. Please click the link to learn more and submit a proposal!
+
+        Best,
+        %{company_name}
+      hire_again: |
+        Dear %{specialist},
+
+        It was a pleasure working with you. We'd like to hire you again for our %{project_or_job} project on Complect. Please click the link to learn more and submit a proposal!
+
+        Best,
+        %{company_name}
+
+  project_shares:
+    message_template:
+      from_specialist: |
+        Hi, %{sender_name}, thought you would be interested in this new %{project_job} project on Complect. You can create a free account on our site to learn more about the project opportunity!
+
+  forbidden: "Your request has triggered an error. Please review the request or try again."
+  
+  annual_report:
+    0: Adequacy of written code of ethics, code of conduct, and related policies and procedures
+    1: Check that any person supervised by the Company (e.g. employees, partners, officers, directors or occupying a similar status/performing similar functions) that provides investment advice on behalf of the adviser and has access to non-public information regarding the investment activities of the adviser or its clients’ holdings is subject to the Code of Ethics
+    2: Check for any instances where it is unclear whether the Code of Ethics should be applied to certain individuals (e.g. solicitors, on-site contractors, temps, interns, etc.)
+    3: Check that the code of ethics or elsewhere in the manual contains a policy regarding personal securities transactions monitoring, reporting, and preclearance requirements
+    4: Check that the code of ethics or elsewhere in the manual contains a policy regarding the giving and receiving of gifts and entertainment and preclearance requirements, as necessary
+    5: Check that the code of ethics or elsewhere in the manual contains a policy addressing outside business activities and preclearance requirements, as necessary
+    6: Check whether the Company provides any training on the policies and procedures
+    7: Documentation regarding employees’ receipt and understanding of the code of ethics, code of conduct, and/or related policies and procedures
+    8: Confirm that the Company has a process for tracking employees’ acknowledgements of receipt of the code and any amendments
+    9: Test the submission of the aforementioned documentation and, as applicable, that they were submitted within any deadlines of at least 10% of the Company’s employees
+    10: Personal securities transaction reporting by employees (e.g., initial and annual holdings reports, quarterly transaction reports, trade preclearance requests, exempt account documentation etc.)
+    11: Check that submission deadlines within the manual match relevant securities laws
+    12: Confirm that the Company has a process for tracking employees’ personal securities transactions
+    13: If larger than a one man advisory firm, confirm that the whoever is reviewing the personal securities transactions is being reviewed by a third party 
+    14: If larger than a one man advisory firm, confirm that the whoever is granting trade preclearances has someone else preclear their trades 
+    15: Test the personal securities transaction reporting, trading, and the preclearance requests of at least 10% of the Company’s employees 
+    16: Adequacy of written insider trading policies and procedures and related policies (such as value-added investors, expert networks, and virtual data rooms, etc.)
+    17: Check that the code of ethics or elsewhere in the manual contains a policy regarding insider trading 
+    18: Check that the insider trading policy addresses the use of expert networks if they are utilized by the adviser
+    19: Check that the insider trading policy addresses the use of virtual data rooms if they are utilized by the adviser
+    20: Check that the adviser maintains a list of individuals (“value-added investors”) that are either clients or investors of the adviser that have access to and may be a source for material, non-public information 
+    21: Protection of material nonpublic information
+    22: Confirm that the insider trading policy addresses controls around any potential source of material, non-public information at the Company
+    23: Check that the insider trading policy addresses what the Company will do if it receives material, non-public information 
+    24: Maintenance of restricted, watch, and/or gray lists
+    25: Confirm whether the Company maintains a restricted, watch, or “gray” list, as appropriate (e.g. Are client holdings part of a restricted list that employees are not allowed to trade within their personal securities accounts?)
+    26: Check how the lists are updated and how securities are added or removed from the list
+    27: Confirm that empl
+    28: Maintenance of a code of ethics violations log
+    29: Check that the Company maintains a violations log 
+    30: Confirm whether the violations log contains all the violations found in the testing above
+    31: Confirm whether the Company appropriately addresses violations (i.e. Are they simply logged but not followed up upon? Is recidivist behavior receiving escalating punishments?)
+    32: Political contributions and fundraising
+    33: Confirm that political contributions were made within the requisite time
+  compliance_manual_sections:
+    compliance_program: Compliance Program
+    business_continuity_planning: Business Continuity Planning
+    books_and_records: Books & Records
+    regulatory_filings_and_disclosures: Regulatory Filings & Disclosures
+    safeguarding_client_assets: Safeguarding Client Assets
+    marketing_and_use_of_solicitors: Marketing & Use of Solicitors
+    valuation_and_pricing: Valuation & Pricing
+    proxy_voting: Proxy Voting
+    trading: Trading
+    portfolio_management: Portfolio Management
+    identity_theft_prevention_cybersecurity_and_safeguarding_of_information: Identity Theft Prevention, Cybersecurity, & Safeguarding of Information
+    code_of_ethics_and_insider_trading: Code of Ethics & Insider Trading
+
+  api:
+    not_found: "Record not found"
+    business:
+      exam_request_files:
+        unable_to_delete: 'Document has not been deleted.'
+      exams:
+        auditor_not_found: 'Access has not been granted. Please check the email address.'
+      file_docs:
+        destroyed: 'Document has been deleted'
+      file_folders:
+        destroyed: 'Folder has been deleted'
+        compression_queued: 'Download has been initiated.'
+      payment_settings:
+        destroy:
+          not_found: 'Payment method not found.'
+          payment_source_deattached: 'Payment method has been deleted.'
+      projects:
+        project_has_specialist: 'Project has not been deleted. Please terminate any active contracts.'
+      seats:
+        invalid_employee: 'User has not been added. Try again.'
+        employee_not_in_team: 'User cannot be added. This email is already in use.'
+      team_members:
+        no_available_seats: 'User has not been added. Please purchase an additional seat.'
+    settings:
+      profile:
+        cannot_delete: 'Account has not been deleted. Please terminate any active contracts.'
+    specialist:
+      payment_settings:
+        destroy:
+          not_found: 'Payment method not found.'
+          payment_source_deattached: 'Payment method has been deleted.'
+      upgrade:
+        subscribe_success: 'Plan has been upgraded.'
+        no_subscription_to_cancel: 'Plan has not been cancelled. There are no active subscriptions'
+        cancelled: 'Plan has been cancelled.'
+    authentication:
+      invalid: 'Invalid email or password'
+      confirm_email: 'Please confirm email'
+      otp_sent: 'A one time passcode has been sent to your email.'
+      invalid_otp: 'Invalid 6 digit code'
+    businesses:
+      confirm_otp: 'A one time passcode has been sent to your email.'
+    direct_messages:
+      empty_message: "Message has not been sent. Please complete missing fields."
+    documents:
+      cannot_destroy: 'Document has not been deleted.'
+      not_owner: 'Document has not been deleted. You do not have the requisite permissions.'
+    email_confirmation:
+      confirmed: 'Email address has been confirmed.'
+      invalid_otp: 'Invalid 6 digit code'
+      already_confirmed: 'You have already confirmed email'
+      otp_sent: 'A one time passcode has been sent to your email.'
+    exams:
+      wrong_auditor_email: 'Access has not been granted. Please check the email address.'
+      otp_timeout: 'Timeout'
+      too_many_fails: 'Access denied. Too many failed attempts.'
+    otp_secrets:
+      otp_sent: 'A one time passcode has been sent to your email.'
+    passwords:
+      reset_email: 'Password reset email has been sent.'
+    project_ends:
+      requested: 'Contract termination request has been sent.'
+      request_failure: 'Contract termination request has not been sent. Try again.'
+      confirmed: 'Contract termination request has been approved.'
+      confirm_from_other_side: 'Contract termination must be approved by both parties'
+    project_extensions:
+      processed: 'Contract extension request has been sent.'
+      confirm_from_other_side: 'Contract extension must be approved by both parties'
+    specialists:
+      confirm_otp: 'A one time passcode has been sent to your email.'
