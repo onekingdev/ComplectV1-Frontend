@@ -1,21 +1,19 @@
 module.exports = {
-	// disabled during transfer
-	root: false, 
+	root: true, 
 	parserOptions: {
 		parser: 'babel-eslint',
 	},
+	env: {
+		browser: true,
+	},
+	extends: [
+		'plugin:vue/essential',
+		// "eslint:standard"
+	],
+	plugins: [
+		'vue',
+	],
 	rules: {}
-	// env: {
-	// 	browser: true,
-	// },
-	
-	// extends: [
-	// 	'plugin:vue/essential',
-	// 	// "eslint:standard"
-	// ],
-	// plugins: [
-	// 	'vue',
-	// ],
 	// rules: {
 	// 	'generator-star-spacing': 'off',
 	// 	'no-debugger': process.env.NODE_ENV === 'production' ? 'error' : 'off',
