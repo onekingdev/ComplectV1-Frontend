@@ -1,7 +1,7 @@
 import Vue from 'vue'
-import App from '@/App.vue'
+import App from './App.vue'
 import VueRouter from 'vue-router'
-import router from '@/router'
+import router from './router'
 
 import { BootstrapVue, IconsPlugin } from 'bootstrap-vue'
 import './assets/styles/vue.scss'
@@ -31,7 +31,7 @@ import StarRating from '@/common/StarRating'
 import UserAvatar from '@/common/UserAvatar'
 import PropertiesTable from '@/common/PropertiesTable'
 import CommonHeader from '@/common/CommonHeader'
-import filters from '@/filters'
+import filters from './filters'
 
 
 import { extractToastMessage } from '@/common/Toast'
@@ -103,5 +103,9 @@ new Vue({
   router,
   store,
   data,
+  created() {
+    const toast = extractToastMessage()
+    toast && this.toast('', toast)
+  },
   render: h => h(App),
 }).$mount('#app')
