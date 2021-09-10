@@ -102,9 +102,10 @@ export default new Router({
       ]
     },
 
-    // BUSINESS
+    // MAIN
     { path: '/', component: MainLayout,
       children:  [
+        // BUSINESS
         { path: '/business', name: 'dashboard', component: Dashboard },
         { path: '/business/projects', name: 'projects', component: Projects },
         { path: '/business/projects/:id(\\d+)', name: 'project-review', props: route => ({ projectId: +route.params.id }), component: ProjectReview },
