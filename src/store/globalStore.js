@@ -7,17 +7,9 @@ Vue.use(Vuex);
 import tasks from "./modules/_tasks-b";
 import settings from "./modules/_settings-b";
 import projects from "./modules/_projects-b";
-
-import tasks from "./modules/_tasks-s";
-import settings from "./modules/_settings-s";
-import projects from "./modules/_projects-s";
-
-// Consts to merge (used in getter)
-const URL_PROJECT_TIMESHEETS = `${URL_PROJECT_SHOW}/timesheets`;
-const URL_API_PROJECT_TIMESHEETS = `/api${URL_PROJECT_TIMESHEETS}`;
-
-const URL_PROJECT_TIMESHEET = '/specialist/my-projects/:id/timesheets'
-const URL_API_PROJECT_TIMESHEET = '/api/specialist/projects/:id/timesheets'
+// import tasks from "./modules/_tasks-s";
+// import settings from "./modules/_settings-s";
+// import projects from "./modules/_projects-s";
 // ____________________
 
 
@@ -32,8 +24,8 @@ import annual from "./modules/annual"
 import filefolders from "./modules/filefolders"
 import exams from "./modules/exams"
 import risks from "./modules/risks";
-import roles from "./modules/roles-and-permissions";
 import stripeAccounts from "./modules/stripe_accounts";
+
 
 
 
@@ -52,6 +44,12 @@ const URL_API_MY_PROJECTS = '/api/specialist/projects/my'
 
 const URL_POLICIES_SHOW = "/business/compliance_policies/:id";
 const URL_RISKS_SHOW = "/business/risks/:id";
+
+const URL_PROJECT_TIMESHEET = '/specialist/my-projects/:id/timesheets'
+const URL_PROJECT_TIMESHEETS = `${URL_PROJECT_SHOW}/timesheets`;
+const URL_API_PROJECT_TIMESHEET = '/api/specialist/projects/:id/timesheets'
+const URL_API_PROJECT_TIMESHEETS = `/api${URL_PROJECT_TIMESHEETS}`;
+
 
 const URLS = {
 	URL_PROJECT_SHOW,
