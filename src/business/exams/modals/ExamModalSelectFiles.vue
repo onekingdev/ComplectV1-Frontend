@@ -50,7 +50,7 @@
   const rnd = () => Math.random().toFixed(10).toString().replace('.', '')
 
   async function createFile(path, name){
-    let response = await fetch(path);
+    let response = await fetch(this.$store.getters.backendUrl+path);
     let data = await response.blob();
     let metadata = {
       type: 'image/jpeg'

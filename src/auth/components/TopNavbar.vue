@@ -52,7 +52,7 @@
             ? localStorage.getItem('app.currentUser.token')
             : ''
 
-          fetch('/api/users/sign_out', {
+          fetch(this.$store.getters.backendUrl + '/api/users/sign_out', {
             method: 'DELETE',
             headers: {
               'Accept': 'application/json',

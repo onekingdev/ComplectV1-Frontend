@@ -20,7 +20,7 @@
     },
     mounted() {
       //@TODO move it to dashboard or better solution
-      // fetch('/api/specialist/roles')
+      // fetch(this.$store.getters.backendUrl + '/api/specialist/roles')
       //   .then(response => response.json())
       //   .then(response => {
       //     console.log('response in topbar')

@@ -1,5 +1,5 @@
 import axios from '../../services/axios'
-
+import backendUrl from '@/services/axios/backendUrl'
 import AnnualReview from "../../models/AnnualReview";
 
 // HOOK TO NOT REWITE ALL REQUESTS
@@ -39,7 +39,7 @@ export default {
         root: true
       });
       try {
-        const response = await fetch('/api/business/annual_reports', {
+        const response = await fetch(backendUrl + '/api/business/annual_reports', {
           method: 'POST',
           headers: {
             'Authorization': `${TOKEN}`,
@@ -94,7 +94,7 @@ export default {
         root: true
       });
       try {
-        const response = await fetch('/api/business/annual_reports', {
+        const response = await fetch(backendUrl + '/api/business/annual_reports', {
           method: 'GET',
           headers: {
             'Authorization': `${TOKEN}`,
@@ -150,7 +150,7 @@ export default {
         root: true
       });
       try {
-        const response = await fetch(`/api/business/annual_reports/${payload}`, {
+        const response = await fetch(`${backendUrl}/api/business/annual_reports/${payload}`, {
           method: 'GET',
           headers: {
             'Authorization': `${TOKEN}`,
@@ -204,7 +204,7 @@ export default {
         root: true
       });
       try {
-        const response = await fetch(`/api/business/annual_reports/${payload.id}`, {
+        const response = await fetch(`${backendUrl}/api/business/annual_reports/${payload.id}`, {
           method: 'PATCH',
           headers: {
             'Authorization': `${TOKEN}`,
@@ -324,7 +324,7 @@ export default {
         root: true
       });
       try {
-        const response = await fetch(`/api/business/annual_reports/${payload.annualId}/review_categories/${payload.id}`, {
+        const response = await fetch(`${backendUrl}/api/business/annual_reports/${payload.annualId}/review_categories/${payload.id}`, {
           method: 'PATCH',
           headers: {
             'Authorization': `${TOKEN}`,
@@ -361,7 +361,7 @@ export default {
         root: true
       });
       try {
-        const response = await fetch(`/api/business/annual_reports/${payload.annualId}/review_categories`, {
+        const response = await fetch(`${backendUrl}/api/business/annual_reports/${payload.annualId}/review_categories`, {
           method: 'POST',
           headers: {
             'Authorization': `${TOKEN}`,
@@ -398,7 +398,7 @@ export default {
         root: true
       });
       try {
-        const response = await fetch(`/api/business/annual_reports/${payload.annualId}/review_categories/${payload.id}`, {
+        const response = await fetch(`${backendUrl}/api/business/annual_reports/${payload.annualId}/review_categories/${payload.id}`, {
           method: 'DELETE',
           headers: {
             'Authorization': `${TOKEN}`,

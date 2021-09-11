@@ -37,7 +37,7 @@ export default {
       this.etag = Math.random()
     },
     refetch() {
-      fetch(endpointProjectsUrl, { headers: {'Accept': 'application/json'} })
+      fetch(this.$store.getters.backendUrl+endpointProjectsUrl, { headers: {'Accept': 'application/json'} })
         .then(response => response.json())
         .then(result => this.projects = result)
     }

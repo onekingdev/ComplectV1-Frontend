@@ -107,7 +107,7 @@ export default {
           //if(business_id) headers.business_id = JSON.parse(business_id)
 
           const fromTo = jsToSql(info.start) + '/' + jsToSql(info.end)
-          fetch(`${endpointUrl}${fromTo}`, headers)
+          fetch(`${this.$store.getters.backendUrl}${endpointUrl}${fromTo}`, headers)
             .then(response => response.json())
             .then(result => successCallback(result.tasks.concat(result.projects.map(project => ({
               ...project,

@@ -205,7 +205,7 @@
           // this.toast('Error', `Couldn't submit form! ${error}`, true)
         })
 
-      // fetch('/api/users/sign_in', {
+      // fetch(this.$store.getters.backendUrl + '/api/users/sign_in', {
       //   method: 'POST',
       //   headers: {
       //     // 'Authorization': 'Bearer test',

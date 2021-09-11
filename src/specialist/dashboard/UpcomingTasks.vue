@@ -53,11 +53,11 @@ export default {
       let tasks = []
       let projects = []
 
-      fetch(overdueEndpointUrl, { headers: {'Accept': 'application/json'} })
+      fetch(this.$store.getters.backendUrl+overdueEndpointUrl, { headers: {'Accept': 'application/json'} })
         .then(response => response.json())
         .then(result => {
           tasks = result.tasks
-        }).then(fetch(`${endpointUrl}${fromTo}`, { headers: {'Accept': 'application/json'}})
+        }).then(fetch(`${this.$store.getters.backendUrl}${endpointUrl}${fromTo}`, { headers: {'Accept': 'application/json'}})
         .then(response => response.json())
         .then(result => {
           tasks = tasks.concat(result.tasks)

@@ -1,5 +1,6 @@
 import Vue from "vue";
 import Vuex from "vuex";
+import backendUrl from '@/services/axios/backendUrl'
 Vue.use(Vuex);
 
 
@@ -78,6 +79,7 @@ const URLS = {
 const store = new Vuex.Store({
 	getters: {
 		url: () => (url, id) => URLS[url].replace(":id", id),
+		backendUrl: () => backendUrl,
 	},
 
 	modules: {
