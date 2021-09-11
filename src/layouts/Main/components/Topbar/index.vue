@@ -110,7 +110,7 @@
         // this.singOut()
         //   .then(response => console.log(response))
         //   .catch(error => console.error(error))
-        fetch('/api/users/sign_out', {
+        fetch(this.$store.getters.backendUrl + '/api/users/sign_out', {
           method: 'DELETE',
           headers: {
             'Content-Type': 'application/json',

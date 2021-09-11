@@ -2,9 +2,10 @@ import instance from 'axios'
 // import Vue from 'vue';
 import store  from '../../store/business'
 // import { createToast } from "../../mixins/ToasterMixin";
+import backendUrl from '@/services/axios/backendUrl'
 
 const axios = instance.create({
-  baseURL: 'https://staging.complect.com/api',
+  baseURL: backendUrl + '/api',
   timeout: 10000,
   headers: {'Accept': 'application/json'}
 })

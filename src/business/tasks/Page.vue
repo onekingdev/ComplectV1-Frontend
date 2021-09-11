@@ -140,12 +140,12 @@
 
       //   const fromTo = DateTime.local().minus({years: 10}).toSQLDate() + '/' + DateTime.local().plus({years: 10}).toSQLDate()
       //
-      //   fetch(overdueEndpointUrl, { headers: {'Accept': 'application/json'} })
+      //   fetch(this.$store.getters.backendUrl+overdueEndpointUrl, { headers: {'Accept': 'application/json'} })
       //     .then(response => response.json())
       //     .then(result => {
       //       console.log('overdue result', result)
       //       this.tasks = result.tasks
-      //     }).then(fetch(`${endpointUrl}${fromTo}`, { headers: {'Accept': 'application/json'}})
+      //     }).then(fetch(`${this.$store.getters.backendUrl}${endpointUrl}${fromTo}`, { headers: {'Accept': 'application/json'}})
       //     .then(response => response.json())
       //     .then(result => {
       //       console.log('reminders result', result)
@@ -161,7 +161,7 @@
       //   const { taskId, oid } = splitReminderOccurenceId(task.id)
       //   const oidParam = oid !== null ? `&oid=${oid}` : ''
       //   var target_state = (!(!!task.done_at)).toString()
-      //   fetch(`/api/business/reminders/${taskId}?done=${target_state}${oidParam}`, {
+      //   fetch(`${this.$store.getters.backendUrl}/api/business/reminders/${taskId}?done=${target_state}${oidParam}`, {
       //     method: 'POST',
       //     headers: {'Accept': 'application/json', 'Content-Type': 'application/json'}
       //   }).then(response => this.$emit('saved'))
@@ -171,7 +171,7 @@
       //   console.log('createTask: ', i)
       // },
       // deleteTask(id){
-      //   fetch(`${endpointUrl}${id}`, { method: 'DELETE', headers: {'Accept': 'application/json'} })
+      //   fetch(`${this.$store.getters.backendUrl}${endpointUrl}${id}`, { method: 'DELETE', headers: {'Accept': 'application/json'} })
       //     .then(response => response.json())
       //     .then(response => {
       //       console.log('result', response)

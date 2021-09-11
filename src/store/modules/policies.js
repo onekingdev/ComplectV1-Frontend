@@ -1,6 +1,7 @@
 import axios from '@/services/axios'
 // import store from '@/store/commonModules/shared'
 import * as jwt from '@/services/business'
+import backendUrl from '@/services/axios/backendUrl'
 
 const mapAuthProviders = {
   jwt: {
@@ -73,7 +74,7 @@ export default {
       commit("setLoading", true);
 
       try {
-        const data = await fetch('/api/business/compliance_policies', {
+        const data = await fetch(backendUrl + '/api/business/compliance_policies', {
           method: 'POST',
           headers: {
             'Authorization': `${TOKEN}`,
@@ -117,7 +118,7 @@ export default {
       commit("setLoading", true);
 
       try {
-        const data = await fetch('/api/business/compliance_policies/' + payload.id, {
+        const data = await fetch(backendUrl + '/api/business/compliance_policies/' + payload.id, {
           method: 'PUT',
           headers: {
             'Authorization': `${TOKEN}`,
@@ -166,7 +167,7 @@ export default {
         const src_endpoint = '/api/business/compliance_policies/'
         const endpointUrl = (payload.policyId == null) ? `${src_endpoint}download` : `${src_endpoint}${payload.policyId}/download`
 
-        const data = await fetch(endpointUrl, {
+        const data = await fetch(backendUrl+endpointUrl, {
           method: 'GET',
           headers: {
             'Authorization': `${TOKEN}`,
@@ -189,7 +190,7 @@ export default {
                 return
               }
               retry = retry + 1
-              const result = await fetch(endpointUrlPolicy, {
+              const result = await fetch(backendUrl+endpointUrlPolicy, {
                 method: 'GET',
                 headers: {
                   'Authorization': `${TOKEN}`,
@@ -227,7 +228,7 @@ export default {
 
       try {
         const endpointUrl = '/api/business/compliance_policies/'
-        const data = await fetch(`${endpointUrl}${payload.policyId}/publish`, {
+        const data = await fetch(`${backendUrl}${endpointUrl}${payload.policyId}/publish`, {
           method: 'GET',
           headers: {
             'Authorization': `${TOKEN}`,
@@ -263,7 +264,7 @@ export default {
 
       try {
         const endpointUrl = '/api/business/compliance_policies'
-        const data = await fetch(`${endpointUrl}`, {
+        const data = await fetch(`${backendUrl}${endpointUrl}`, {
           headers: {
             'Authorization': `${TOKEN}`,
             'Accept': 'application/json',
@@ -302,7 +303,7 @@ export default {
 
       try {
         const endpointUrl = '/api/business/compliance_policies/'
-        const data = await fetch(`${endpointUrl}${payload.policyId}`, {
+        const data = await fetch(`${backendUrl}${endpointUrl}${payload.policyId}`, {
           headers: {
           'Authorization': `${TOKEN}`,
           'Accept': 'application/json',
@@ -331,7 +332,7 @@ export default {
       commit("setLoading", true);
 
       try {
-        const data = fetch('/api/business/compliance_policies/' + payload.id, {
+        const data = fetch(backendUrl + '/api/business/compliance_policies/' + payload.id, {
           method: 'PATCH',
           headers: {
             'Authorization': `${TOKEN}`,
@@ -368,7 +369,7 @@ export default {
       // console.log(policy1, policy2)
       //
       // const data = await Promise.all([
-      //   fetch('/api/business/compliance_policies/' + policy1.id, {
+      //   fetch(backendUrl + '/api/business/compliance_policies/' + policy1.id, {
       //     method: 'PATCH',
       //     headers: {
       //       'Authorization': `${TOKEN}`,
@@ -378,7 +379,7 @@ export default {
       //         position: policy1.position,
       //     }),
       //   }),
-      //   fetch('/api/business/compliance_policies/' + policy2.id, {
+      //   fetch(backendUrl + '/api/business/compliance_policies/' + policy2.id, {
       //     method: 'PATCH',
       //     headers: {
       //       'Authorization': `${TOKEN}`,
@@ -417,7 +418,7 @@ export default {
 
       try {
         const endpointUrl = '/api/business/compliance_policies/'
-        const data = await fetch(`${endpointUrl}${payload.policyId}`, {
+        const data = await fetch(`${backendUrl}${endpointUrl}${payload.policyId}`, {
           method: 'DELETE',
           headers: {
           'Authorization': `${TOKEN}`,
@@ -449,7 +450,7 @@ export default {
 
       try {
         const endpointUrl = '/api/business/compliance_policies/'
-        const data = await fetch(`${endpointUrl}${payload.policyId}`, {
+        const data = await fetch(`${backendUrl}${endpointUrl}${payload.policyId}`, {
           method: 'PATCH',
           headers: {
             'Authorization': `${TOKEN}`,
@@ -485,7 +486,7 @@ export default {
       commit("setLoading", true);
 
       try {
-        const data = await fetch('/api/business/compliance_policy_configuration', {
+        const data = await fetch(backendUrl + '/api/business/compliance_policy_configuration', {
           method: 'GET',
           headers: {
             'Authorization': `${TOKEN}`,
@@ -516,7 +517,7 @@ export default {
     //   commit("setLoading", true);
     //
     //   try {
-    //     const data = await fetch('/api/business/compliance_policy_configuration', {
+    //     const data = await fetch(backendUrl + '/api/business/compliance_policy_configuration', {
     //       method: 'PATCH',
     //       headers: {
     //         'Authorization': `${TOKEN}`,

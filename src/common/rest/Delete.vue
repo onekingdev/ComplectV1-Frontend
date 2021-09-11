@@ -17,7 +17,7 @@ export default {
   },
   methods: {
     submit() {
-      fetch(this.url, {
+      fetch(this.$store.getters.backendUrl+this.url, {
         method: 'DELETE',
         headers: {'Accept': 'application/json', ...this.headers},
       }).then(response => {

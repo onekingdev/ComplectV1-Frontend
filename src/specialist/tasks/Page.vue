@@ -114,7 +114,7 @@ export default {
     //   const { taskId, oid } = splitReminderOccurenceId(task.id)
     //   const oidParam = oid !== null ? `&oid=${oid}` : ''
     //   var target_state = (!(!!task.done_at)).toString()
-    //   fetch(`/api/business/reminders/${taskId}?done=${target_state}${oidParam}`, {
+    //   fetch(`${this.$store.getters.backendUrl}/api/business/reminders/${taskId}?done=${target_state}${oidParam}`, {
     //     method: 'POST',
     //     headers: {'Accept': 'application/json', 'Content-Type': 'application/json'}
     //   }).then(response => this.$emit('saved'))
@@ -124,7 +124,7 @@ export default {
     //   console.log('createTask: ', i)
     // },
     // deleteTask(id){
-    //   fetch(`${endpointUrl}${id}`, { method: 'DELETE', headers: {'Accept': 'application/json'} })
+    //   fetch(`${this.$store.getters.backendUrl}${endpointUrl}${id}`, { method: 'DELETE', headers: {'Accept': 'application/json'} })
     //     .then(response => response.json())
     //     .then(response => {
     //       console.log('result', response)
