@@ -1,4 +1,4 @@
-import * as jwt from '@/services/business/tasks'
+import * as jwt from '@/services/common/tasks'
 
 const mapAuthProviders = {
   jwt: {
@@ -15,7 +15,7 @@ const mapAuthProviders = {
   },
 }
 
-import { Task, TaskOverdue, TaskMessage } from "../../models/Task";
+import { Task } from "../../models/Task";
 
 export default {
   state: {
@@ -118,33 +118,33 @@ export default {
             commit("clearError", null, { root: true });
             commit("setLoading", false, { root: true });
             if (success) {
-              const data = success.data.tasks
-              // const tasks = []
-              // for (const taskItem of data) {
-              //   tasks.push(new Task(
-              //     taskItem.body,
-              //     taskItem.created_at,
-              //     taskItem.description,
-              //     taskItem.done_at,
-              //     taskItem.done_occurencies,
-              //     taskItem.end_by,
-              //     taskItem.end_date,
-              //     taskItem.id,
-              //     taskItem.linkable_id,
-              //     taskItem.linkable_type,
-              //     taskItem.note,
-              //     taskItem.on_type,
-              //     taskItem.remind_at,
-              //     taskItem.remindable_id,
-              //     taskItem.remindable_type,
-              //     taskItem.repeat_every,
-              //     taskItem.repeat_on,
-              //     taskItem.repeats,
-              //     taskItem.skip_occurencies,
-              //     taskItem.updated_at,
-              //   ))
-              // }
-              commit('SET_TASKS', data)
+              const data = success.data
+              const tasks = []
+              for (const taskItem of data.tasks) {
+                tasks.push(new Task(
+                  taskItem.body,
+                  taskItem.created_at,
+                  taskItem.description,
+                  taskItem.done_at,
+                  taskItem.done_occurencies,
+                  taskItem.end_by,
+                  taskItem.end_date,
+                  taskItem.id,
+                  taskItem.linkable_id,
+                  taskItem.linkable_type,
+                  taskItem.note,
+                  taskItem.on_type,
+                  taskItem.remind_at,
+                  taskItem.remindable_id,
+                  taskItem.remindable_type,
+                  taskItem.repeat_every,
+                  taskItem.repeat_on,
+                  taskItem.repeats,
+                  taskItem.skip_occurencies,
+                  taskItem.updated_at,
+                ))
+              }
+              commit('SET_TASKS', tasks)
               return data
             }
             if (!success) {
@@ -198,7 +198,7 @@ export default {
                 ))
               }
               commit('SET_TASKS', tasks)
-              return data
+              return data.data
             }
             if (!success) {
               console.error('Not success', success)
@@ -285,7 +285,6 @@ export default {
         const updateTask = mapAuthProviders[rootState.shared.settings.authProvider].updateTask
         updateTask(payload)
           .then((success) => {
-            console.log('success123', success)
             commit("clearError", null, {
               root: true
             });
@@ -429,7 +428,6 @@ export default {
             }
           })
           .catch(error => {
-            console.error('catch error', error)
             throw error
           })
 
@@ -573,18 +571,6 @@ export default {
 
             if (success) {
               const data = success.data
-              // const messages = []
-              // for (const taskMessage of data) {
-              //   console.log('taskMessage', taskMessage)
-              //   messages.push(new TaskMessage(
-              //     taskMessage.created_at,
-              //     taskMessage.file_data,
-              //     taskMessage.id,
-              //     taskMessage.message,
-              //     taskMessage.recipient,
-              //     taskMessage.sender,
-              //   ))
-              // }
               commit('GET_CURRENT_TASK_MESSAGES', data)
               return data
             }
@@ -619,14 +605,6 @@ export default {
             if (success) {
               const data = success.data
               commit('UPDATE_CURRENT_TASK_MESSAGES', data)
-              // commit('UPDATE_CURRENT_TASK_MESSAGES', new TaskMessage(
-              //   data.created_at,
-              //   data.file_data,
-              //   data.id,
-              //   data.message,
-              //   data.recipient,
-              //   data.sender,
-              // ))
               return data
             }
             if (!success) {

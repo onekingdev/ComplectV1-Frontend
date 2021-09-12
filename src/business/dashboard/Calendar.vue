@@ -98,16 +98,11 @@ export default {
         aspectRatio: 1.09,
         plugins: [dayGridPlugin, interactionPlugin],
         events: (info, successCallback, errorCallback) => {
-          const headers = {
-            'Accept': 'application/json',
-            'Content-Type': 'application/json',
-            'Authorization': localStorage.getItem('app.currentUser.token') ? JSON.parse(localStorage.getItem('app.currentUser.token')) : '',
-          }
           //const business_id = window.localStorage["app.business_id"]
           //if(business_id) headers.business_id = JSON.parse(business_id)
 
           const fromTo = jsToSql(info.start) + '/' + jsToSql(info.end)
-          fetch(`${this.$store.getters.backendUrl}${endpointUrl}${fromTo}`, headers)
+          fetch(`${this.$store.getters.backendUrl}${endpointUrl}${fromTo}`, this.$store.getters.authHeaders)
             .then(response => response.json())
             .then(result => successCallback(result.tasks.concat(result.projects.map(project => ({
               ...project,

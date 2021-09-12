@@ -69,7 +69,7 @@ export async function updateTaskStatus(payload) {
       if (response) {
         return response
       }
-      return response
+      return false
     })
     .catch(err => err)
 }

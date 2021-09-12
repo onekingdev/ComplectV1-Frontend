@@ -5,9 +5,7 @@ Vue.use(Vuex);
 
 
 // Imports to merge
-import tasks from "./modules/_tasks-b";
 import settings from "./modules/_settings-b";
-// import tasks from "./modules/_tasks-s";
 // import settings from "./modules/_settings-s";
 // ____________________
 
@@ -25,6 +23,7 @@ import exams from "./modules/exams"
 import risks from "./modules/risks";
 import stripeAccounts from "./modules/stripe_accounts";
 import projects from "./modules/projects";
+import tasks from "./modules/tasks";
 
 
 
@@ -79,6 +78,7 @@ const store = new Vuex.Store({
 	getters: {
 		url: () => (url, id) => URLS[url].replace(":id", id),
 		backendUrl: () => backendUrl,
+		authHeaders: state => ({ headers: { 'Authorization': state.auth.accessToken }})
 	},
 
 	modules: {

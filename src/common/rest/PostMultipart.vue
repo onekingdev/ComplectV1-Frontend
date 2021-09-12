@@ -32,7 +32,8 @@ export default {
 
       fetch(this.$store.getters.backendUrl+this.action, {
         method: 'POST',
-        body: formData
+        body: formData,
+        headers: this.$store.getters.authHeaders,
       }).then(response => {
         if (response.status === 422) {
           response.json().then(errors => {
