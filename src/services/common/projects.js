@@ -1,11 +1,8 @@
 import axios from '../../services/axios'
-import store from '../../store/business'
 
-const END_POINT = '/specialist/projects/my'
-
-export async function getProjects() {
+export async function getProjects(endpointUrl) {
   return axios
-    .get(`${END_POINT}`)
+    .get(endpointUrl)
     .then(response => {
       if (response) {
         return response
@@ -16,8 +13,8 @@ export async function getProjects() {
 }
 
 
-export async function createProject(payload) {
-  return await axios.post(`${END_POINT}`, payload)
+export async function createProject(endpointUrl, payload) {
+  return await axios.post(endpointUrl, payload)
     .then(response => {
       if (response) {
         return response

@@ -7,10 +7,8 @@ Vue.use(Vuex);
 // Imports to merge
 import tasks from "./modules/_tasks-b";
 import settings from "./modules/_settings-b";
-import projects from "./modules/_projects-b";
 // import tasks from "./modules/_tasks-s";
 // import settings from "./modules/_settings-s";
-// import projects from "./modules/_projects-s";
 // ____________________
 
 
@@ -26,6 +24,7 @@ import filefolders from "./modules/filefolders"
 import exams from "./modules/exams"
 import risks from "./modules/risks";
 import stripeAccounts from "./modules/stripe_accounts";
+import projects from "./modules/projects";
 
 
 
