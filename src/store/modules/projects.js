@@ -1,4 +1,4 @@
-import * as jwt from '@/services/business/projects'
+import * as jwt from '@/services/common/projects'
 
 const mapAuthProviders = {
   jwt: {

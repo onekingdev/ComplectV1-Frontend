@@ -1,5 +1,5 @@
 // import store from '@/store/commonModules/shared'
-import store from '@/store/business'
+import store from '@/store/globalStore'
 
 const plans = ['free', 'business', 'team']
 const roles = ['basic', 'trusted', 'admin']
