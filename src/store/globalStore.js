@@ -4,14 +4,6 @@ import backendUrl from '@/services/axios/backendUrl'
 Vue.use(Vuex);
 
 
-// Imports to merge
-import settings from "./modules/_settings-b";
-// import settings from "./modules/_settings-s";
-// ____________________
-
-
-
-
 import shared from "./modules/shared";
 import auth from "./modules/auth";
 import roles from "./modules/roles-and-permissions";
@@ -24,8 +16,7 @@ import risks from "./modules/risks";
 import stripeAccounts from "./modules/stripe_accounts";
 import projects from "./modules/projects";
 import tasks from "./modules/tasks";
-
-
+import settings from "./modules/settings";
 
 
 const URL_PROJECT_SHOW = "/business/projects/:id";
