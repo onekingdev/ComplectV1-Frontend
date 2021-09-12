@@ -263,7 +263,7 @@ export default {
       var src_id_params = oid !== null ? `&src_id=${this.taskId}` : ''
       fetch(`${this.$store.getters.backendUrl}/api/reminders/${taskId}?done=${target_state}${oidParam}${src_id_params}`, {
         method: 'POST',
-        headers: {'Accept': 'application/json', 'Content-Type': 'application/json'}
+        headers: { ...this.$store.getters.authHeaders.headers, 'Content-Type': 'application/json' },
       }).then(response => {
         this.$emit('saved')
         this.toast('Task saved')
@@ -276,7 +276,7 @@ export default {
       const occurenceParams = saveOccurence ? `?oid=${this.occurenceId}&src_id=${this.taskId}` : ''
       fetch(this.$store.getters.backendUrl + '/api/reminders' + toId + occurenceParams, {
         method: 'POST',
-        headers: {'Accept': 'application/json', 'Content-Type': 'application/json'},
+        headers: { ...this.$store.getters.authHeaders.headers, 'Content-Type': 'application/json' },
         body: JSON.stringify(this.task)
       }).then(response => {
         if (response.status === 422) {

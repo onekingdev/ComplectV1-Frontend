@@ -3,10 +3,6 @@ import App from './App.vue'
 import router from './router'
 
 import store from '@/store/globalStore'
-// import store from '@/store/common'
-// import store from '@/store/business'
-// import store from '@/store/specialist'
-
 
 import { BootstrapVue, IconsPlugin } from 'bootstrap-vue'
 import './assets/styles/vue.scss'

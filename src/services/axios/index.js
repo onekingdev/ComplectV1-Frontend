@@ -1,6 +1,6 @@
 import instance from 'axios'
 // import Vue from 'vue';
-import store  from '../../store/business'
+import store from '@/store/globalStore'
 // import { createToast } from "../../mixins/ToasterMixin";
 import backendUrl from '@/services/axios/backendUrl'
 

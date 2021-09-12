@@ -4,18 +4,6 @@ import backendUrl from '@/services/axios/backendUrl'
 Vue.use(Vuex);
 
 
-// Imports to merge
-import tasks from "./modules/_tasks-b";
-import settings from "./modules/_settings-b";
-import projects from "./modules/_projects-b";
-// import tasks from "./modules/_tasks-s";
-// import settings from "./modules/_settings-s";
-// import projects from "./modules/_projects-s";
-// ____________________
-
-
-
-
 import shared from "./modules/shared";
 import auth from "./modules/auth";
 import roles from "./modules/roles-and-permissions";
@@ -26,8 +14,9 @@ import filefolders from "./modules/filefolders"
 import exams from "./modules/exams"
 import risks from "./modules/risks";
 import stripeAccounts from "./modules/stripe_accounts";
-
-
+import projects from "./modules/projects";
+import tasks from "./modules/tasks";
+import settings from "./modules/settings";
 
 
 const URL_PROJECT_SHOW = "/business/projects/:id";
@@ -80,6 +69,7 @@ const store = new Vuex.Store({
 	getters: {
 		url: () => (url, id) => URLS[url].replace(":id", id),
 		backendUrl: () => backendUrl,
+		authHeaders: state => ({ headers: { 'Authorization': state.auth.accessToken }})
 	},
 
 	modules: {

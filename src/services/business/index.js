@@ -1,5 +1,5 @@
 import axios from '../../services/axios'
-import store from '../../store/business'
+import store from '@/store/globalStore'
 
 export async function createPolicy(newPolicy) {
   return axios
