@@ -5,6 +5,7 @@
 
 <script>
 import Vue from 'vue'
+import backendUrl from '@/services/axios/backendUrl'
 
 export default {
   props: {
@@ -23,7 +24,7 @@ export default {
       headers: {
         'Accept': 'application/json',
         'Content-Type': 'application/json',
-        'Authorization': localStorage.getItem('app.currentUser.token') ? JSON.parse(localStorage.getItem('app.currentUser.token')) : '',
+        'Authorization': this.$store.state.auth.accessToken
       }
     }
   },
@@ -41,7 +42,7 @@ export default {
 
       Object.keys(this.$attrs)
             .filter(prop => !!this.$attrs[prop])
-            .map(prop => fetch(this.$attrs[prop], { headers: this.headers })
+            .map(prop => fetch(backendUrl + this.$attrs[prop], { headers: this.headers })
             .then(response => response.json())
             .then(result => Vue.set(this.slotProps, prop, this.callback(result))))
     }
