@@ -3,12 +3,12 @@ import App from './App.vue'
 import router from './router'
 
 import store from '@/store/globalStore'
-import '@/assets/styles/vue.scss'
+
 
 import { BootstrapVue, IconsPlugin } from 'bootstrap-vue'
+import '@/assets/styles/vue.scss'
 import Treeselect from '@riophae/vue-treeselect'
 import '@riophae/vue-treeselect/dist/vue-treeselect.css'
-
 import DatePicker from '@/common/DatePicker'
 import Breadcrumbs from '@/common/Breadcrumbs'
 import ComboBox from '@/common/ComboBox'
