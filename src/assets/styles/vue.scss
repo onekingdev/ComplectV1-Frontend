@@ -6,15 +6,14 @@
 @import '~bootstrap/scss/bootstrap.scss';
 @import '~bootstrap-vue/dist/bootstrap-vue.css';
 
-
-// REMOVE LATER UTILITES (unneed)
+// // REMOVE LATER UTILITES (unneed)
 @import "_vue_utilities.scss";
 @import "_vue_theme.scss";
 @import "_type.scss";
 @import "_variables.scss";
 @import "_mixins.scss";
 
-// REMOVE LATER
+// // REMOVE LATER
 @import url('https://fonts.googleapis.com/css2?family=Public+Sans:wght@100;300;400;600;700&family=Varela&display=swap');
 
 
@@ -28,38 +27,6 @@ $minWidthContent: calc(62.5rem - 17.8125rem); // 1000px-285px (width minus sideb
   //min-height: calc(100vh);
   width: 100%;
   -webkit-font-smoothing: antialiased;
-}
-
-#app {
-
-}
-
-body {
-  //font-family: Avenir Next W02,Helvetica,Arial,sans-serif;
-  //font-weight: 400;
-  //font-size: 14px;
-  //color: #33475b;
-  //line-height: 24px;
-
-  //min-width: 1440px;
-  //min-width: calc(17.8125rem + 50rem); //calc(285px + 800px);
-
-  // MEDIA FOR ALL SITE
-  //@include media-breakpoint-down(xl) {
-  //  background-color: lightblue;
-  //}
-  //@include media-breakpoint-down(lg) {
-  //  background-color: yellow;
-  //}
-  //@include media-breakpoint-down(md) {
-  //  background-color: blue;
-  //}
-  //@include media-breakpoint-down(sm) {
-  //  background-color: red;
-  //}
-  //@include media-breakpoint-down(xs) {
-  //  background-color: green;
-  //}
 }
 
 body, html {
