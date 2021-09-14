@@ -1,4 +1,4 @@
-import * as jwt from '@/services/business/projects'
+import * as jwt from '@/services/common/projects'
 
 const mapAuthProviders = {
   jwt: {
@@ -31,7 +31,8 @@ export default {
       commit("setLoading", true, { root: true });
       try {
         const getProjects = mapAuthProviders[rootState.shared.settings.authProvider].getProjects
-        const data = getProjects()
+        const endpointUrl = rootState.shared.shared.userType === 'specialist' ? '/specialist/projects/my' : '/local_projects'
+        const data = getProjects(endpointUrl)
           .then((success) => {
             commit("clearError", null, { root: true });
             commit("setLoading", false, { root: true });
@@ -83,7 +84,8 @@ export default {
       });
       try {
         const createProject = mapAuthProviders[rootState.shared.settings.authProvider].createProject
-        const data = createProject(payload)
+        const endpointUrl = rootState.shared.shared.userType === 'specialist' ? '/specialist/projects/my' : '/local_projects'
+        const data = createProject(endpointUrl, payload)
           .then((success) => {
             commit("clearError", null, {
               root: true

@@ -1,74 +1,75 @@
-import Vue from 'vue'
-import Router from 'vue-router'
+import Vue from "vue"
+import VueRouter from 'vue-router'
 import AuthGuard from './auth-guard'
+Vue.use(VueRouter)
 
 // LAYOUTS
-import LayoutOnboarding from '@/layouts/Auth'
-import LayoutMain from '@/layouts/Main'
+const AuthLayout = () => import('@/layouts/Auth')
+const MainLayout = () => import('@/layouts/Main')
 
 // COMMON
-import PageNotFound from '@/common/PageNotFound'
-import AccessDenied from '@/common/AccessDenied'
-import PaymentRequired from '@/common/PaymentRequired'
+const PageNotFound = () => import ('@/common/PageNotFound')
+const AccessDenied = () => import ('@/common/AccessDenied')
+const PaymentRequired = () => import ('@/common/PaymentRequired')
 
 // AUTH
-import SignIn from '@/auth/SingIn/Page'
-import SignUp from '@/auth/SignUp/Page'
-import SignUpEmployee from '@/auth/SignUp/Employee/Page'
-import ResetPassword from '@/auth/ResetPassword/Page'
-import ChangePassword from '@/auth/ChangePassword/Page'
-import Verification from '@/auth/components/OtpConfirm'
-import BusinessOnboarding from '@/auth/SignUp/Onboarding/Business/BusinessPage'
-import SpecialistOnboarding from '@/auth/SignUp/Onboarding/Specialist/SpecialistPage'
+const SignIn = () => import ('@/auth/SingIn/Page')
+const SignUp = () => import ('@/auth/SignUp/Page')
+const SignUpEmployee = () => import ('@/auth/SignUp/Employee/Page')
+const ResetPassword = () => import ('@/auth/ResetPassword/Page')
+const ChangePassword = () => import ('@/auth/ChangePassword/Page')
+const Verification = () => import ('@/auth/components/OtpConfirm')
+const BusinessOnboarding = () => import ('@/auth/SignUp/Onboarding/Business/BusinessPage')
+const SpecialistOnboarding = () => import ('@/auth/SignUp/Onboarding/Specialist/SpecialistPage')
 
 // BUSINESS
-import Dashboard from '@/business/dashboard/Page'
-import Projects from '@/business/projects/Page'
-import ProjectReview from '@/business/projects/ShowPage'
-import PostProjectPage from '@/business/projects/PostProjectPage'
-import ShowPostPage from '@/business/projects/ShowPostPage'
-import ProjectTimesheetsShowPage from '@/business/projects/TimesheetsShowPage'
-import Tasks from '@/business/tasks/Page'
-import Policies from '@/business/policies/Page'
-import PoliciesEntire from '@/business/policies/PoliciesEntire'
-import PolicyCurrent from '@/business/policies/Details/PolicyCreate'
-import PolicyCurrentNoSections from '@/business/policies/Details/PolicyDetailsWithoutSections'
-import AnnualReviews from '@/business/annual/Page'
-import AnnualReviewsCurrentGeneral from '@/business/annual/PageCurrentGeneral'
-import AnnualReviewsCurrentReviewCategory from '@/business/annual/PageCurrentReviewCategory'
-import Risks from '@/business/riskregister/Page'
-import RiskDetail from '@/business/riskregister/RiskDetail'
-import ReportsRisks from '@/business/reportsrisks/Page'
-import ReportsOrganizations from '@/business/organizations/Page.vue'
-import ReportsFinancials from '@/business/financials/Page.vue'
-import FileFolders from '@/business/filefolders/Page'
-import Exams from '@/business/exams/Page'
-import ExamCurrentReview from '@/business/exams/PageCurrentReviewExam'
-import Profile from '@/business/profile/Page'
-import Settings from '@/business/settings/Page'
-import SettingsNotifications from '@/business/notifications/Page'
-import SpecialistsMarketplace from '@/business/marketplace/Page'
-import PageAuditorPortalExternalAccess from '@/business/exams/PageAuditorPortalExternalAccess'
-import PageAuditorPortalInternalAccess from '@/business/exams/PageAuditorPortalInternalAccess'
+const Dashboard = () => import ('@/business/dashboard/Page')
+const Projects = () => import ('@/business/projects/Page')
+const ProjectReview = () => import ('@/business/projects/ShowPage')
+const PostProjectPage = () => import ('@/business/projects/PostProjectPage')
+const ShowPostPage = () => import ('@/business/projects/ShowPostPage')
+const ProjectTimesheetsShowPage = () => import ('@/business/projects/TimesheetsShowPage')
+const Tasks = () => import ('@/business/tasks/Page')
+const Policies = () => import ('@/business/policies/Page')
+const PoliciesEntire = () => import ('@/business/policies/PoliciesEntire')
+const PolicyCurrentNoSections = () => import ('@/business/policies/Details/PolicyDetailsWithoutSections')
+const AnnualReviews = () => import ('@/business/annual/Page')
+const AnnualReviewsCurrentGeneral = () => import ('@/business/annual/PageCurrentGeneral')
+const AnnualReviewsCurrentReviewCategory = () => import ('@/business/annual/PageCurrentReviewCategory')
+const Risks = () => import ('@/business/riskregister/Page')
+const RiskDetail = () => import ('@/business/riskregister/RiskDetail')
+const ReportsRisks = () => import ('@/business/reportsrisks/Page')
+const ReportsOrganizations = () => import ('@/business/organizations/Page.vue')
+const ReportsFinancials = () => import ('@/business/financials/Page.vue')
+const FileFolders = () => import ('@/business/filefolders/Page')
+const Exams = () => import ('@/business/exams/Page')
+const ExamCurrentReview = () => import ('@/business/exams/PageCurrentReviewExam')
+const Profile = () => import ('@/business/profile/Page')
+const Settings = () => import ('@/business/settings/Page')
+const SettingsNotifications = () => import ('@/business/notifications/Page')
+const SpecialistsMarketplace = () => import ('@/business/marketplace/Page')
+const PageAuditorPortalExternalAccess = () => import ('@/business/exams/PageAuditorPortalExternalAccess')
+const PageAuditorPortalInternalAccess = () => import ('@/business/exams/PageAuditorPortalInternalAccess')
+// const PolicyCurrent = () => import ('@/business/policies/Details/PolicyCreate')
 
 // SPECIALISTS
-import DashboardS from '@/specialist/dashboard/Page'
-import ProjectsS from '@/specialist/projects/MyProjectsPage'
-import ProjectReviewS from '@/specialist/projects/MyProjectShowPage'
-import CreateProposalPage from '@/specialist/projects/CreateProposalPage'
-import ProjectTimesheetsPage from '@/specialist/projects/ProjectTimesheetsPage'
-import SettingsS from '@/specialist/settings/Page'
-import SettingsNotificationsS from '@/specialist/notifications/Page'
-import ProjectsMarketplaceS from '@/specialist/projects/IndexPage'
-import ProfileS from '@/specialist/profile/Page'
-import SpecialistTasksPage from '@/specialist/tasks/Page'
-
-Vue.use(Router)
+const DashboardS = () => import ('@/specialist/dashboard/Page')
+const ProjectsS = () => import ('@/specialist/projects/MyProjectsPage')
+const ProjectReviewS = () => import ('@/specialist/projects/MyProjectShowPage')
+const CreateProposalPage = () => import ('@/specialist/projects/CreateProposalPage')
+const ProjectTimesheetsPage = () => import ('@/specialist/projects/ProjectTimesheetsPage')
+const SettingsS = () => import ('@/specialist/settings/Page')
+const SettingsNotificationsS = () => import ('@/specialist/notifications/Page')
+const ProjectsMarketplaceS = () => import ('@/specialist/projects/IndexPage')
+const ProfileS = () => import ('@/specialist/profile/Page')
+const SpecialistTasksPage = () => import ('@/specialist/tasks/Page')
 
 const paramsToInts = paramNames =>
   route => Object.fromEntries(paramNames.map(paramName => [paramName, +route.params[paramName]]))
 
-export default new Router({
+
+
+const router = new VueRouter({
   routes: [
     //NOT FOUND
     { path: "*", component: PageNotFound },
@@ -85,9 +86,8 @@ export default new Router({
     { path: '/business/new', redirect: '/business/onboarding' },
     { path: '/specialists/new', redirect: '/specialist/onboarding' },
 
-    // ONBOARDING LAYOUT
     // AUTH
-    { path: '/', component: LayoutOnboarding,
+    { path: '/', component: AuthLayout,
       children:  [
         { path: '/', name: 'home', component: SignIn },
         { path: '/users/sign_in', name: 'sign-in', component: SignIn },
@@ -100,12 +100,13 @@ export default new Router({
         { path: '/businesses/new', name: 'business-onboarding-new', component: BusinessOnboarding, props: true },
         { path: '/specialist/onboarding', name: 'specialist-onboarding', component: SpecialistOnboarding, props: true },
         { path: '/specialist/new', name: 'specialist-onboarding-new', component: SpecialistOnboarding, props: true },
-    ]},
+      ]
+    },
 
-    // MAIN LAYOUT
-    { path: '/', component: LayoutMain,
+    // MAIN
+    { path: '/', component: MainLayout,
+      // BUSINESS
       children:  [
-        // BUSINESS
         { path: '/business', name: 'dashboard', component: Dashboard },
         { path: '/business/projects', name: 'projects', component: Projects },
         { path: '/business/projects/:id(\\d+)', name: 'project-review', props: route => ({ projectId: +route.params.id }), component: ProjectReview },
@@ -145,7 +146,7 @@ export default new Router({
         { path: '/specialistmarketplace', name: 'specialists-marketplace', component: SpecialistsMarketplace },
         { path: '/exams/:examUuid(.{36})', component: PageAuditorPortalExternalAccess, props: true },
         { path: '/business/exam_management/:examId(\\d+)/portal', component: PageAuditorPortalInternalAccess, props: paramsToInts(['examId']) },
-
+        
         // SPECIALISTS
         { path: '/specialist', name: 'dashboard-specialist', component: DashboardS },
         { path: '/specialist/reminders', name: 'tasks-specialist', component: SpecialistTasksPage },
@@ -172,3 +173,12 @@ export default new Router({
   ],
   mode: 'history'
 })
+
+// router.beforeEach((to, from, next) => {
+//   let auth = false
+//   if(to.name !== 'sign-in' && !auth) next({ name: 'sign-in' })
+//   else next()
+// })
+
+
+export default router

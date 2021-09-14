@@ -30,9 +30,10 @@ export default {
       const formData = new FormData()
       Object.keys(this.model).map(property => formData.append(property, this.model[property]))
 
-      fetch(this.action, {
+      fetch(this.$store.getters.backendUrl+this.action, {
         method: 'POST',
-        body: formData
+        body: formData,
+        headers: this.$store.getters.authHeaders,
       }).then(response => {
         if (response.status === 422) {
           response.json().then(errors => {

@@ -6,7 +6,7 @@ module.exports = {
 				"browsers": [
 					"> 1%"
 				],
-				"uglify": true,
+				"uglify": true
 			},
 			"useBuiltIns": false,
 		}],
@@ -15,7 +15,7 @@ module.exports = {
 	"plugins": [
 		"@babel/syntax-dynamic-import",
 		"@babel/plugin-proposal-object-rest-spread",
-		// ["transform-class-properties", { "spec": true }],
+		["transform-class-properties", { "spec": true }],
 		["@babel/plugin-transform-runtime", { "regenerator": true }],
 	],
 }

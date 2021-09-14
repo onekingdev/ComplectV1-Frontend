@@ -54,7 +54,7 @@
           window.location.href = `${window.location.origin}/business/risks/`
         }
 
-        // fetch('/api/business/risks/' + this.riskId, {
+        // fetch(this.$store.getters.backendUrl + '/api/business/risks/' + this.riskId, {
         //   method: 'DELETE',
         //   headers: {'Accept': 'application/json', 'Content-Type': 'application/json'},
         //   // body: JSON.stringify(this.risk)

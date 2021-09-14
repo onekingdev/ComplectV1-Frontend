@@ -145,7 +145,7 @@
         const business_id = window.localStorage["app.business_id"]
         if(business_id) headers.business_id = JSON.parse(business_id)
 
-        fetch(endpointUrl + this.filterQuery, headers)
+        fetch(this.$store.getters.backendUrl + endpointUrl + this.filterQuery, headers)
           .then(response => response.json())
           .then(result => this.projects = result.map(parse))
       },

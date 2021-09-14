@@ -1,8 +1,7 @@
 <template lang="pug">
   .topbar
     .logo
-      a.logo__link(href="/")
-        // img.logo__img(src='@/assets/logo_wordmark.svg')
+      router-link.logo__link(:to='`/${userType}`')
         img.logo__img.logo__img_small(src='@/assets/primary.svg' width="24" height="24")
     b-navbar.p-0(toggleable='lg')
       b-navbar-toggle.justify-content-center(target='nav-collapse')
@@ -110,7 +109,7 @@
         // this.singOut()
         //   .then(response => console.log(response))
         //   .catch(error => console.error(error))
-        fetch('/api/users/sign_out', {
+        fetch(this.$store.getters.backendUrl + '/api/users/sign_out', {
           method: 'DELETE',
           headers: {
             'Content-Type': 'application/json',

@@ -49,7 +49,7 @@ export default {
       //const business_id = window.localStorage["app.business_id"]
       //if(business_id) headers.business_id = JSON.parse(business_id)
 
-      fetch(endpointProjectsUrl, headers)
+      fetch(this.$store.getters.backendUrl + endpointProjectsUrl, headers)
         .then(response => response.json())
         .then(result => this.projects = result)
     },

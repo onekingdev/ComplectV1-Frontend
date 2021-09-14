@@ -7,6 +7,7 @@
 
 <script>
   import Topbar from '@/auth/components/TopNavbar'
+
   export default {
     components: { Topbar },
   }

@@ -155,7 +155,7 @@ import EtaggerMixin from '@/mixins/EtaggerMixin'
 const uploadFile = async function(url, file) {
   const formData  = new FormData()
   formData.append('file', file)
-  return await fetch(url, {
+  return await fetch(this.$store.getters.backendUrl+url, {
     method: 'POST',
     body: formData
   })

@@ -26,14 +26,15 @@ export default {
   methods: {
     submit() {
       this.$emit('errors', [])
-      fetch(this.action, {
+      fetch(this.$store.getters.backendUrl+this.action, {
         method: this.method,
         headers: {
           'Accept': 'application/json',
           'Content-Type': 'application/json',
           'business_id': window.localStorage["app.business_id"],
-          'Authorization': localStorage.getItem('app.currentUser.token') ? JSON.parse(localStorage.getItem('app.currentUser.token')) : '',
-          ...this.headers},
+          ...this.$store.getters.authHeaders,
+          ...this.headers
+        },
         body: JSON.stringify(this.model)
       }).then(response => {
         if (response.status === 422) {

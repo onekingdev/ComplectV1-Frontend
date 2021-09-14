@@ -30,3 +30,18 @@ coverage
 *.sw?
 
 
+
+
+# Back
+# Ignore bundler config.
+/_back/.bundle
+
+# Ignore local Postgres files, but keep folder
+/_back/postgres/*
+/_back!/postgres/.keep
+
+# Ignore locally uploaded files
+/_back/public/uploads
+/_back/public/assets
+/_back/public/packs
+/_back/public/packs-test

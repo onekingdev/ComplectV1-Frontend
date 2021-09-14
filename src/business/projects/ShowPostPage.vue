@@ -102,7 +102,7 @@ export default {
   },
   methods: {
     accepted(id, role) {
-      fetch(`/api/business/specialist_roles/${id}`, {
+      fetch(`${this.$store.getters.backendUrl}/api/business/specialist_roles/${id}`, {
         method: 'PATCH',
         headers: { 'Authorization': `${TOKEN}`,  'Accept': 'application/json',  'Content-Type': 'application/json' },
         body: JSON.stringify({ "specialist": { "role": `${role}` } })

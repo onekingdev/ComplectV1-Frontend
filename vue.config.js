@@ -1,5 +1,13 @@
 module.exports = {
 	configureWebpack: {
+		module: {
+			rules: [
+				{
+					test: /\.s[ac]ss$/i,
+					use: ["sass-loader"]
+				}
+			]
+		},
 		devServer: {
 			public: "localhost:81",
 			host: "0.0.0.0",

@@ -214,7 +214,7 @@ export default {
       return specialists.map(({ id, first_name, last_name }) => ({ id: id, label: `${first_name} ${last_name}`}))
     },
     accepted(id, role) {
-      fetch(`/api/business/specialist_roles/${id}`, {
+      fetch(`${this.$store.getters.backendUrl}/api/business/specialist_roles/${id}`, {
         method: 'PATCH',
         headers: { 'Authorization': `${TOKEN}`,  'Accept': 'application/json',  'Content-Type': 'application/json' },
         body: JSON.stringify({ "specialist": { "role": `${role}` } })

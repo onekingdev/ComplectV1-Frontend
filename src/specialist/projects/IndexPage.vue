@@ -133,14 +133,14 @@ export default {
   },
   methods: {
     refetch() {
-      fetch(endpointUrl + this.filterQuery, { headers: {'Accept': 'application/json'}})
+      fetch(this.$store.getters.backendUrl+endpointUrl + this.filterQuery, { headers: {'Accept': 'application/json'}})
         .then(response => response.json())
         .then(result => this.projects = result.map(parse))
     },
     openDetails(id) {
       this.openId = id
       history.pushState({}, '', `${frontendUrl}/${id}`)
-      fetch(endpointUrl + '/' + this.openId, { headers: {'Accept': 'application/json'}})
+      fetch(this.$store.getters.backendUrl+endpointUrl + '/' + this.openId, { headers: {'Accept': 'application/json'}})
         .then(response => response.json())
         .then(result => {
           this.project = result

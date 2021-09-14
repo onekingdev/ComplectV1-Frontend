@@ -109,7 +109,7 @@ export default {
         plugins: [dayGridPlugin, interactionPlugin],
         events: (info, successCallback, errorCallback) => {
           const fromTo = jsToSql(info.start) + '/' + jsToSql(info.end)
-          fetch(`${endpointUrl}${fromTo}`, { headers: {'Accept': 'application/json'}})
+          fetch(`${this.$store.getters.backendUrl}${endpointUrl}${fromTo}`, this.$store.getters.authHeaders)
             .then(response => response.json())
             .then(result => successCallback(result.tasks.concat(result.projects.map(project => ({
               ...project,

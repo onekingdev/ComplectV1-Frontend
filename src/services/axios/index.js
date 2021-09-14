@@ -1,11 +1,12 @@
 import instance from 'axios'
 // import Vue from 'vue';
-import store  from '../../store/business'
+import store from '@/store/globalStore'
 // import { createToast } from "../../mixins/ToasterMixin";
+import backendUrl from '@/services/axios/backendUrl'
 
 const axios = instance.create({
-  baseURL: '/api',
-  timeout: 1000 * 10,
+  baseURL: backendUrl + '/api',
+  timeout: 10000,
   headers: {'Accept': 'application/json'}
 })
 

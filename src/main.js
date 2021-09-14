@@ -1,9 +1,12 @@
 import Vue from 'vue'
-import App from '@/App.vue'
-import VueRouter from 'vue-router'
-import router from '@/router'
+import App from './App.vue'
+import router from './router'
+
+import store from '@/store/globalStore'
+
 
 import { BootstrapVue, IconsPlugin } from 'bootstrap-vue'
+import '@/assets/styles/vue.scss'
 import Treeselect from '@riophae/vue-treeselect'
 import '@riophae/vue-treeselect/dist/vue-treeselect.css'
 import DatePicker from '@/common/DatePicker'
@@ -34,20 +37,13 @@ import RedirectMixin from '@/mixins/RedirectMixin'
 import HistoryMixin from '@/mixins/HistoryMixin'
 import vueDebounce from 'vue-debounce'
 import VueApexCharts from 'vue-apexcharts'
+import VueRouter from 'vue-router'
 import Loading from '@/common/Loading/Loading'
 import EmptyState from '@/common/EmptyState'
-
-// import store from '@/store/business'
-// import MainLayoyt from '@/layouts/Main'
-import store from '@/store/common'
-import AuthLayout from '@/layouts/Auth'
 
 const data = () => ({
   isProfileMenuOpen: false
 })
-
-Vue.config.productionTip = false
-Vue.config.ignoredElements = ['ion-icon']
 
 
 Vue.use(BootstrapVue)
@@ -59,6 +55,11 @@ Vue.use(VueRouter)
 Vue.mixin(ToasterMixin)
 Vue.mixin(RedirectMixin)
 Vue.mixin(HistoryMixin)
+
+Vue.config.productionTip = false
+Vue.config.ignoredElements = ['ion-icon']
+
+Object.keys(filters).map(filter => Vue.filter(filter, filters[filter]))
 
 Vue.component('Treeselect', Treeselect)
 Vue.component('DatePicker', DatePicker)
@@ -92,15 +93,15 @@ Vue.directive('google-maps-autocomplete', {
   }
 })
 
-Object.keys(filters).map(filter => Vue.filter(filter, filters[filter]))
 
 new Vue({
   mixins: [ToasterMixin, RedirectMixin, HistoryMixin],
+  data,
   router,
   store,
-  data,
-  components: {
-    AuthLayout,
+  created() {
+    const toast = extractToastMessage()
+    toast && this.toast('', toast)
   },
   render: h => h(App),
 }).$mount('#app')

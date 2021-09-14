@@ -1,5 +1,4 @@
 import axios from '../../services/axios'
-import store from '../../store/business'
 
 const END_POINT = '/business/exams'
 
