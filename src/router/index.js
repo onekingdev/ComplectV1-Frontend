@@ -1,4 +1,3 @@
-import Vue from 'vue'
 import Router from 'vue-router'
 import AuthGuard from './auth-guard'
 
@@ -63,12 +62,12 @@ const ProjectsMarketplaceS = () => import ('@/specialist/projects/IndexPage')
 const ProfileS = () => import ('@/specialist/profile/Page')
 const SpecialistTasksPage = () => import ('@/specialist/tasks/Page')
 
-Vue.use(Router)
-
 const paramsToInts = paramNames =>
   route => Object.fromEntries(paramNames.map(paramName => [paramName, +route.params[paramName]]))
 
-export default new Router({
+
+
+const router = new Router({
   routes: [
     //NOT FOUND
     { path: "*", component: PageNotFound },
@@ -104,8 +103,8 @@ export default new Router({
 
     // MAIN
     { path: '/', component: MainLayout,
+      // BUSINESS
       children:  [
-        // BUSINESS
         { path: '/business', name: 'dashboard', component: Dashboard },
         { path: '/business/projects', name: 'projects', component: Projects },
         { path: '/business/projects/:id(\\d+)', name: 'project-review', props: route => ({ projectId: +route.params.id }), component: ProjectReview },
@@ -145,7 +144,7 @@ export default new Router({
         { path: '/specialistmarketplace', name: 'specialists-marketplace', component: SpecialistsMarketplace },
         { path: '/exams/:examUuid(.{36})', component: PageAuditorPortalExternalAccess, props: true },
         { path: '/business/exam_management/:examId(\\d+)/portal', component: PageAuditorPortalInternalAccess, props: paramsToInts(['examId']) },
-
+        
         // SPECIALISTS
         { path: '/specialist', name: 'dashboard-specialist', component: DashboardS },
         { path: '/specialist/reminders', name: 'tasks-specialist', component: SpecialistTasksPage },
@@ -172,3 +171,11 @@ export default new Router({
   ],
   mode: 'history'
 })
+
+// router.beforeEach((to, from, next) => {
+//   let auth = false
+//   if(to.name !== 'sign-in' && !auth) next({ name: 'sign-in' })
+//   else next()
+// })
+
+export default router
