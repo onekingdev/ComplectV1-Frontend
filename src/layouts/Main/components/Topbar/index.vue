@@ -1,8 +1,7 @@
 <template lang="pug">
   .topbar
     .logo
-      a.logo__link(href="/")
-        // img.logo__img(src='@/assets/logo_wordmark.svg')
+      router-link.logo__link(:to='`/${userType}`')
         img.logo__img.logo__img_small(src='@/assets/primary.svg' width="24" height="24")
     b-navbar.p-0(toggleable='lg')
       b-navbar-toggle.justify-content-center(target='nav-collapse')
