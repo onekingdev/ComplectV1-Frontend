@@ -1,6 +1,7 @@
 import Vue from "vue"
 import VueRouter from 'vue-router'
-import AuthGuard from './auth-guard'
+// import AuthGuard from './auth-guard'
+import { AuthGuard, BusinessGuard, SpecialistGuard } from './auth-guard'
 Vue.use(VueRouter)
 
 // LAYOUTS
@@ -88,61 +89,48 @@ const router = new VueRouter({
     { path: '/business/new', redirect: '/business/onboarding' },
     { path: '/specialists/new', redirect: '/specialist/onboarding' },
 
-    // AUTH
-    { path: '/', component: AuthLayout,
-      children:  [
-        { path: '/', name: 'home', component: SignIn },
-        { path: '/users/sign_in', name: 'sign-in', component: SignIn },
-        { path: '/users/sign_up', name: 'sign-up', component: SignUp },
-        { path: '/employee/new', name: 'sign-up-employee', props: true, component: SignUpEmployee },
-        { path: '/users/password/new', name: 'password-new', component: ResetPassword },
-        { path: '/users/password/edit', name: 'password-change', component: ChangePassword },
-        { path: '/verification', name: 'verification', component: Verification, props: true },
-        { path: '/business/onboarding', name: 'business-onboarding', component: BusinessOnboarding, props: true },
-        { path: '/businesses/new', name: 'business-onboarding-new', component: BusinessOnboarding, props: true },
-        { path: '/specialist/onboarding', name: 'specialist-onboarding', component: SpecialistOnboarding, props: true },
-        { path: '/specialist/new', name: 'specialist-onboarding-new', component: SpecialistOnboarding, props: true },
-      ]
-    },
+    
 
     // MAIN
     {
       path: '/',
       component: MainLayout,
+      beforeEnter: AuthGuard,
       children: [
         // BUSINESS
         {
-          path: '/business',
+          path: 'business/',
           component: BusinessLayout,
+          beforeEnter: BusinessGuard,
           children: [
             { path: '/', name: 'dashboard', component: Dashboard },
-            { path: '/projects', name: 'projects', component: Projects },
-            { path: '/projects/:id(\\d+)', name: 'project-review', props: route => ({ projectId: +route.params.id }), component: ProjectReview },
-            { path: '/projects/:id(\\d+)/timesheets', name: 'project-timesheets', props: route => ({ projectId: +route.params.id }), component: ProjectTimesheetsShowPage },
-            { path: '/projects/new', name: 'project-post', component: PostProjectPage },
-            { path: '/projects/new/:id(\\d+)', name: 'project-post-from-local', props: route => ({ localProjectId: +route.params.id }), component: PostProjectPage },
-            { path: '/project_posts/:id(\\d+)', name: 'project-post-view', props: route => ({ projectId: +route.params.id }), component: ShowPostPage },
-            { path: '/project_posts/:id(\\d+)/edit', name: 'project-post-edit', props: route => ({ projectId: +route.params.id }), component: PostProjectPage },
-            { path: '/reminders', name: 'tasks', component: Tasks },
-            { path: '/compliance_policies', name: 'policies', component: Policies, beforeEnter: AuthGuard },
-            { path: '/compliance_policies/entire', name: 'policies-entire', props: true, component: PoliciesEntire, beforeEnter: AuthGuard },
-            { path: '/compliance_policies/:policyId(\\d+)', name: 'policy-current', props: route => ({ policyId: +route.params.policyId, toggleVueEditor: route.params.toggleVueEditor }), component: PolicyCurrentNoSections, beforeEnter: AuthGuard },
-            { path: '/annual_reviews', name: 'annual-reviews', component: AnnualReviews, beforeEnter: AuthGuard },
-            { path: '/annual_reviews/:annualId(\\d+)', name: 'annual-reviews-general', props: route => ({ annualId: +route.params.annualId }), component: AnnualReviewsCurrentGeneral, beforeEnter: AuthGuard },
-            { path: '/annual_reviews/:annualId(\\d+)/:revcatId(\\d+)', name: 'annual-reviews-review-category', props: route => ({ annualId: +route.params.annualId, revcatId: +route.params.revcatId }), component: AnnualReviewsCurrentReviewCategory, beforeEnter: AuthGuard },
-            { path: '/risks', name: 'risks', component: Risks, beforeEnter: AuthGuard },
-            { path: '/risks/:riskId(\\d+)', name: 'risk-review', props: route => ({ riskId: +route.params.riskId }), component: RiskDetail, beforeEnter: AuthGuard },
-            { path: '/file_folders', name: 'file-folders', component: FileFolders, beforeEnter: AuthGuard },
-            { path: '/exam_management', name: 'exam-management', component: Exams, beforeEnter: AuthGuard },
-            { path: '/exam_management/:examId(\\d+)', name: 'exam-management-current-review', props: route => ({ examId: +route.params.examId }), component: ExamCurrentReview, beforeEnter: AuthGuard },
-            { path: '/reports/risks', name: 'reports-risks', component: ReportsRisks, beforeEnter: AuthGuard },
-            { path: '/reports/organizations', name: 'reports-organizations', component: ReportsOrganizations, beforeEnter: AuthGuard },
-            { path: '/reports/financials', name: 'reports-financials', component: ReportsFinancials, beforeEnter: AuthGuard },
-            { path: '/profile', name: 'profile', component: Profile},
-            { path: '/exam_management/:examId(\\d+)/portal', component: PageAuditorPortalInternalAccess, props: paramsToInts(['examId']) },
-            { path: '/specialistmarketplace', name: 'specialists-marketplace', component: SpecialistsMarketplace },
-            { path: '/exams/:examUuid(.{36})', component: PageAuditorPortalExternalAccess, props: true },
-            { path: '/settings', name: 'settings', component: Settings,
+            { path: 'projects/', name: 'projects', component: Projects },
+            { path: 'projects/:id(\\d+)', name: 'project-review', props: route => ({ projectId: +route.params.id }), component: ProjectReview },
+            { path: 'projects/:id(\\d+)/timesheets', name: 'project-timesheets', props: route => ({ projectId: +route.params.id }), component: ProjectTimesheetsShowPage },
+            { path: 'projects/new/', name: 'project-post', component: PostProjectPage },
+            { path: 'projects/new/:id(\\d+)', name: 'project-post-from-local', props: route => ({ localProjectId: +route.params.id }), component: PostProjectPage },
+            { path: 'project_posts/:id(\\d+)', name: 'project-post-view', props: route => ({ projectId: +route.params.id }), component: ShowPostPage },
+            { path: 'project_posts/:id(\\d+)/edit', name: 'project-post-edit', props: route => ({ projectId: +route.params.id }), component: PostProjectPage },
+            { path: 'reminders', name: 'tasks', component: Tasks },
+            { path: 'compliance_policies', name: 'policies', component: Policies, beforeEnter: AuthGuard },
+            { path: 'compliance_policies/entire', name: 'policies-entire', props: true, component: PoliciesEntire, beforeEnter: AuthGuard },
+            { path: 'compliance_policies/:policyId(\\d+)', name: 'policy-current', props: route => ({ policyId: +route.params.policyId, toggleVueEditor: route.params.toggleVueEditor }), component: PolicyCurrentNoSections, beforeEnter: AuthGuard },
+            { path: 'annual_reviews', name: 'annual-reviews', component: AnnualReviews, beforeEnter: AuthGuard },
+            { path: 'annual_reviews/:annualId(\\d+)', name: 'annual-reviews-general', props: route => ({ annualId: +route.params.annualId }), component: AnnualReviewsCurrentGeneral, beforeEnter: AuthGuard },
+            { path: 'annual_reviews/:annualId(\\d+)/:revcatId(\\d+)', name: 'annual-reviews-review-category', props: route => ({ annualId: +route.params.annualId, revcatId: +route.params.revcatId }), component: AnnualReviewsCurrentReviewCategory, beforeEnter: AuthGuard },
+            { path: 'risks', name: 'risks', component: Risks, beforeEnter: AuthGuard },
+            { path: 'risks/:riskId(\\d+)', name: 'risk-review', props: route => ({ riskId: +route.params.riskId }), component: RiskDetail, beforeEnter: AuthGuard },
+            { path: 'file_folders', name: 'file-folders', component: FileFolders, beforeEnter: AuthGuard },
+            { path: 'exam_management', name: 'exam-management', component: Exams, beforeEnter: AuthGuard },
+            { path: 'exam_management/:examId(\\d+)', name: 'exam-management-current-review', props: route => ({ examId: +route.params.examId }), component: ExamCurrentReview, beforeEnter: AuthGuard },
+            { path: 'reports/risks', name: 'reports-risks', component: ReportsRisks, beforeEnter: AuthGuard },
+            { path: 'reports/organizations', name: 'reports-organizations', component: ReportsOrganizations, beforeEnter: AuthGuard },
+            { path: 'reports/financials', name: 'reports-financials', component: ReportsFinancials, beforeEnter: AuthGuard },
+            { path: 'profile', name: 'profile', component: Profile},
+            { path: 'exam_management/:examId(\\d+)/portal', component: PageAuditorPortalInternalAccess, props: paramsToInts(['examId']) },
+            { path: 'specialistmarketplace', name: 'specialists-marketplace', component: SpecialistsMarketplace },
+            { path: 'exams/:examUuid(.{36})', component: PageAuditorPortalExternalAccess, props: true },
+            { path: 'settings/', name: 'settings', component: Settings,
               children:  [
                 { path: '/general', name: 'settings-general', component: Settings, },
                 { path: '/users', name: 'settings-users', component: Settings, },
@@ -160,6 +148,7 @@ const router = new VueRouter({
         {
           path: 'specialist/',
           component: SpecialistLayout,
+          beforeEnter: SpecialistGuard,
           children: [
             { path: '/', name: 'dashboard-specialist', component: DashboardS },
             { path: 'reminders/', name: 'tasks-specialist', component: SpecialistTasksPage },
@@ -184,16 +173,25 @@ const router = new VueRouter({
           ]
         }
       ]
-    }
+    },
+
+    // AUTH
+    { path: '/', component: AuthLayout,
+      children:  [
+        { path: '/users/sign_in', name: 'sign-in', component: SignIn },
+        { path: '/users/sign_up', name: 'sign-up', component: SignUp },
+        { path: '/employee/new', name: 'sign-up-employee', props: true, component: SignUpEmployee },
+        { path: '/users/password/new', name: 'password-new', component: ResetPassword },
+        { path: '/users/password/edit', name: 'password-change', component: ChangePassword },
+        { path: '/verification', name: 'verification', component: Verification, props: true },
+        { path: '/business/onboarding', name: 'business-onboarding', component: BusinessOnboarding, props: true },
+        { path: '/businesses/new', name: 'business-onboarding-new', component: BusinessOnboarding, props: true },
+        { path: '/specialist/onboarding', name: 'specialist-onboarding', component: SpecialistOnboarding, props: true },
+        { path: '/specialist/new', name: 'specialist-onboarding-new', component: SpecialistOnboarding, props: true },
+      ]
+    },
   ],
   mode: 'history'
-})
-
-router.beforeEach((to, from, next) => {
-  let auth = true
-  if(to.name !== 'sign-in' && !auth) next({ name: 'sign-in' })
-  else if(to.name === "business" && auth) next( {name: 'dasboard'})
-  else next()
 })
 
 
