@@ -6,6 +6,8 @@ Vue.use(VueRouter)
 // LAYOUTS
 const AuthLayout = () => import('@/layouts/Auth')
 const MainLayout = () => import('@/layouts/Main')
+const BusinessLayout = () => import('@/business/BusinessLayout')
+const SpecialistLayout = () => import('@/specialist/SpecialistLayout')
 
 // COMMON
 const PageNotFound = () => import ('@/common/PageNotFound')
@@ -104,81 +106,95 @@ const router = new VueRouter({
     },
 
     // MAIN
-    { path: '/', component: MainLayout,
-      // BUSINESS
-      children:  [
-        { path: '/business', name: 'dashboard', component: Dashboard },
-        { path: '/business/projects', name: 'projects', component: Projects },
-        { path: '/business/projects/:id(\\d+)', name: 'project-review', props: route => ({ projectId: +route.params.id }), component: ProjectReview },
-        { path: '/business/projects/:id(\\d+)/timesheets', name: 'project-timesheets', props: route => ({ projectId: +route.params.id }), component: ProjectTimesheetsShowPage },
-        { path: '/business/projects/new', name: 'project-post', component: PostProjectPage },
-        { path: '/business/projects/new/:id(\\d+)', name: 'project-post-from-local', props: route => ({ localProjectId: +route.params.id }), component: PostProjectPage },
-        { path: '/business/project_posts/:id(\\d+)', name: 'project-post-view', props: route => ({ projectId: +route.params.id }), component: ShowPostPage },
-        { path: '/business/project_posts/:id(\\d+)/edit', name: 'project-post-edit', props: route => ({ projectId: +route.params.id }), component: PostProjectPage },
-        { path: '/business/reminders', name: 'tasks', component: Tasks },
-        { path: '/business/compliance_policies', name: 'policies', component: Policies, beforeEnter: AuthGuard },
-        { path: '/business/compliance_policies/entire', name: 'policies-entire', props: true, component: PoliciesEntire, beforeEnter: AuthGuard },
-        { path: '/business/compliance_policies/:policyId(\\d+)', name: 'policy-current', props: route => ({ policyId: +route.params.policyId, toggleVueEditor: route.params.toggleVueEditor }), component: PolicyCurrentNoSections, beforeEnter: AuthGuard },
-        { path: '/business/annual_reviews', name: 'annual-reviews', component: AnnualReviews, beforeEnter: AuthGuard },
-        { path: '/business/annual_reviews/:annualId(\\d+)', name: 'annual-reviews-general', props: route => ({ annualId: +route.params.annualId }), component: AnnualReviewsCurrentGeneral, beforeEnter: AuthGuard },
-        { path: '/business/annual_reviews/:annualId(\\d+)/:revcatId(\\d+)', name: 'annual-reviews-review-category', props: route => ({ annualId: +route.params.annualId, revcatId: +route.params.revcatId }), component: AnnualReviewsCurrentReviewCategory, beforeEnter: AuthGuard },
-        { path: '/business/risks', name: 'risks', component: Risks, beforeEnter: AuthGuard },
-        { path: '/business/risks/:riskId(\\d+)', name: 'risk-review', props: route => ({ riskId: +route.params.riskId }), component: RiskDetail, beforeEnter: AuthGuard },
-        { path: '/business/file_folders', name: 'file-folders', component: FileFolders, beforeEnter: AuthGuard },
-        { path: '/business/exam_management', name: 'exam-management', component: Exams, beforeEnter: AuthGuard },
-        { path: '/business/exam_management/:examId(\\d+)', name: 'exam-management-current-review', props: route => ({ examId: +route.params.examId }), component: ExamCurrentReview, beforeEnter: AuthGuard },
-        { path: '/business/reports/risks', name: 'reports-risks', component: ReportsRisks, beforeEnter: AuthGuard },
-        { path: '/business/reports/organizations', name: 'reports-organizations', component: ReportsOrganizations, beforeEnter: AuthGuard },
-        { path: '/business/reports/financials', name: 'reports-financials', component: ReportsFinancials, beforeEnter: AuthGuard },
-        { path: '/business/profile', name: 'profile', component: Profile},
-        { path: '/business/settings', name: 'settings', component: Settings,
-          children:  [
-            { path: '/business/settings/general', name: 'settings-general', component: Settings, },
-            { path: '/business/settings/users', name: 'settings-users', component: Settings, },
-            { path: '/business/settings/roles', name: 'settings-roles', component: Settings, },
-            { path: '/business/settings/security', name: 'settings-security', component: Settings, },
-            { path: '/business/settings/subscriptions', name: 'settings-subscriptions', component: Settings, },
-            { path: '/business/settings/billings', name: 'settings-billings', component: Settings, },
-            { path: '/business/settings/notifications', name: 'settings-notifications', component: Settings, }
-          ],
+    {
+      path: '/',
+      component: MainLayout,
+      children: [
+        // BUSINESS
+        {
+          path: '/business',
+          component: BusinessLayout,
+          children: [
+            { path: '/', name: 'dashboard', component: Dashboard },
+            { path: '/projects', name: 'projects', component: Projects },
+            { path: '/projects/:id(\\d+)', name: 'project-review', props: route => ({ projectId: +route.params.id }), component: ProjectReview },
+            { path: '/projects/:id(\\d+)/timesheets', name: 'project-timesheets', props: route => ({ projectId: +route.params.id }), component: ProjectTimesheetsShowPage },
+            { path: '/projects/new', name: 'project-post', component: PostProjectPage },
+            { path: '/projects/new/:id(\\d+)', name: 'project-post-from-local', props: route => ({ localProjectId: +route.params.id }), component: PostProjectPage },
+            { path: '/project_posts/:id(\\d+)', name: 'project-post-view', props: route => ({ projectId: +route.params.id }), component: ShowPostPage },
+            { path: '/project_posts/:id(\\d+)/edit', name: 'project-post-edit', props: route => ({ projectId: +route.params.id }), component: PostProjectPage },
+            { path: '/reminders', name: 'tasks', component: Tasks },
+            { path: '/compliance_policies', name: 'policies', component: Policies, beforeEnter: AuthGuard },
+            { path: '/compliance_policies/entire', name: 'policies-entire', props: true, component: PoliciesEntire, beforeEnter: AuthGuard },
+            { path: '/compliance_policies/:policyId(\\d+)', name: 'policy-current', props: route => ({ policyId: +route.params.policyId, toggleVueEditor: route.params.toggleVueEditor }), component: PolicyCurrentNoSections, beforeEnter: AuthGuard },
+            { path: '/annual_reviews', name: 'annual-reviews', component: AnnualReviews, beforeEnter: AuthGuard },
+            { path: '/annual_reviews/:annualId(\\d+)', name: 'annual-reviews-general', props: route => ({ annualId: +route.params.annualId }), component: AnnualReviewsCurrentGeneral, beforeEnter: AuthGuard },
+            { path: '/annual_reviews/:annualId(\\d+)/:revcatId(\\d+)', name: 'annual-reviews-review-category', props: route => ({ annualId: +route.params.annualId, revcatId: +route.params.revcatId }), component: AnnualReviewsCurrentReviewCategory, beforeEnter: AuthGuard },
+            { path: '/risks', name: 'risks', component: Risks, beforeEnter: AuthGuard },
+            { path: '/risks/:riskId(\\d+)', name: 'risk-review', props: route => ({ riskId: +route.params.riskId }), component: RiskDetail, beforeEnter: AuthGuard },
+            { path: '/file_folders', name: 'file-folders', component: FileFolders, beforeEnter: AuthGuard },
+            { path: '/exam_management', name: 'exam-management', component: Exams, beforeEnter: AuthGuard },
+            { path: '/exam_management/:examId(\\d+)', name: 'exam-management-current-review', props: route => ({ examId: +route.params.examId }), component: ExamCurrentReview, beforeEnter: AuthGuard },
+            { path: '/reports/risks', name: 'reports-risks', component: ReportsRisks, beforeEnter: AuthGuard },
+            { path: '/reports/organizations', name: 'reports-organizations', component: ReportsOrganizations, beforeEnter: AuthGuard },
+            { path: '/reports/financials', name: 'reports-financials', component: ReportsFinancials, beforeEnter: AuthGuard },
+            { path: '/profile', name: 'profile', component: Profile},
+            { path: '/exam_management/:examId(\\d+)/portal', component: PageAuditorPortalInternalAccess, props: paramsToInts(['examId']) },
+            { path: '/specialistmarketplace', name: 'specialists-marketplace', component: SpecialistsMarketplace },
+            { path: '/exams/:examUuid(.{36})', component: PageAuditorPortalExternalAccess, props: true },
+            { path: '/settings', name: 'settings', component: Settings,
+              children:  [
+                { path: '/general', name: 'settings-general', component: Settings, },
+                { path: '/users', name: 'settings-users', component: Settings, },
+                { path: '/roles', name: 'settings-roles', component: Settings, },
+                { path: '/security', name: 'settings-security', component: Settings, },
+                { path: '/subscriptions', name: 'settings-subscriptions', component: Settings, },
+                { path: '/billings', name: 'settings-billings', component: Settings, },
+                { path: '/notifications', name: 'settings-notifications', component: Settings, },
+                { path: '/notification-center', name: 'settings-notification-center', component: SettingsNotifications },
+              ],
+            },
+          ]
         },
-        { path: '/business/settings/notification-center', name: 'settings-notification-center', component: SettingsNotifications },
-        { path: '/specialistmarketplace', name: 'specialists-marketplace', component: SpecialistsMarketplace },
-        { path: '/exams/:examUuid(.{36})', component: PageAuditorPortalExternalAccess, props: true },
-        { path: '/business/exam_management/:examId(\\d+)/portal', component: PageAuditorPortalInternalAccess, props: paramsToInts(['examId']) },
-        
         // SPECIALISTS
-        { path: '/specialist', name: 'dashboard-specialist', component: DashboardS },
-        { path: '/specialist/reminders', name: 'tasks-specialist', component: SpecialistTasksPage },
-        { path: '/specialist/my-projects', name: 'projects-specialist', component: ProjectsS },
-        { path: '/specialist/my-projects/:id(\\d+)', name: 'project-review-specialist', props: paramsToInts(['id']), component: ProjectReviewS },
-        { path: '/specialist/settings', name: 'settings-specialist', component: SettingsS,
-          children:  [
-            { path: '/specialist/settings/general', name: 'settings-general-specialist', component: SettingsS, },
-            { path: '/specialist/settings/roles', name: 'settings-roles-specialist', component: SettingsS, },
-            { path: '/specialist/settings/security', name: 'settings-security-specialist', component: SettingsS, },
-            { path: '/specialist/settings/subscriptions', name: 'settings-subscriptions-specialist', component: SettingsS, },
-            { path: '/specialist/settings/billings', name: 'settings-billings-specialist', component: SettingsS, },
-            { path: '/specialist/settings/notifications', name: 'settings-notifications-specialist', component: SettingsS, }
-          ],
-        },
-        { path: '/specialist/settings/notification-center', name: 'settings-notification-center-specialist', component: SettingsNotificationsS },
-        { path: '/job_board', name: 'projects-marketpalce-specialist', component: ProjectsMarketplaceS },
-        { path: '/job_board/:initialOpenId(\\d+)', name: 'projects-marketpalce-specialist-view', props: paramsToInts(['initialOpenId']), component: ProjectsMarketplaceS },
-        { path: '/job_board/:projectId(\\d+)/applications/new', name: 'projects-marketplace-create-proposal', props: paramsToInts(['projectId']), component: CreateProposalPage, beforeEnter: AuthGuard },
-        { path: '/specialist/my-projects/:id(\\d+)/timesheets', name: 'my-project-timesheet-page', props: paramsToInts(['id']), component: ProjectTimesheetsPage },
-        { path: '/specialist/profile', name: 'profile-specialist', component: ProfileS },
+        {
+          path: 'specialist/',
+          component: SpecialistLayout,
+          children: [
+            { path: '/', name: 'dashboard-specialist', component: DashboardS },
+            { path: 'reminders/', name: 'tasks-specialist', component: SpecialistTasksPage },
+            { path: 'my-projects/', name: 'projects-specialist', component: ProjectsS },
+            { path: 'my-projects/:id(\\d+)', name: 'project-review-specialist', props: paramsToInts(['id']), component: ProjectReviewS },
+            { path: 'my-projects/:id(\\d+)/timesheets', name: 'my-project-timesheet-page', props: paramsToInts(['id']), component: ProjectTimesheetsPage },
+            { path: 'profile/', name: 'profile-specialist', component: ProfileS },
+            { path: 'settings/', name: 'settings-specialist', component: SettingsS,
+              children:  [
+                { path: 'settings/general/', name: 'settings-general-specialist', component: SettingsS, },
+                { path: 'settings/roles/', name: 'settings-roles-specialist', component: SettingsS, },
+                { path: 'settings/security/', name: 'settings-security-specialist', component: SettingsS, },
+                { path: 'settings/subscriptions/', name: 'settings-subscriptions-specialist', component: SettingsS, },
+                { path: 'settings/billings/', name: 'settings-billings-specialist', component: SettingsS, },
+                { path: 'settings/notifications/', name: 'settings-notifications-specialist', component: SettingsS, }
+              ],
+            },
+            { path: 'settings/notification-center/', name: 'settings-notification-center-specialist', component: SettingsNotificationsS },
+            { path: '/job_board', name: 'projects-marketpalce-specialist', component: ProjectsMarketplaceS },
+            { path: '/job_board/:initialOpenId(\\d+)', name: 'projects-marketpalce-specialist-view', props: paramsToInts(['initialOpenId']), component: ProjectsMarketplaceS },
+            { path: '/job_board/:projectId(\\d+)/applications/new', name: 'projects-marketplace-create-proposal', props: paramsToInts(['projectId']), component: CreateProposalPage, beforeEnter: AuthGuard },
+          ]
+        }
       ]
     }
   ],
   mode: 'history'
 })
 
-// router.beforeEach((to, from, next) => {
-//   let auth = false
-//   if(to.name !== 'sign-in' && !auth) next({ name: 'sign-in' })
-//   else next()
-// })
+router.beforeEach((to, from, next) => {
+  let auth = true
+  if(to.name !== 'sign-in' && !auth) next({ name: 'sign-in' })
+  else if(to.name === "business" && auth) next( {name: 'dasboard'})
+  else next()
+})
 
 
 export default router
