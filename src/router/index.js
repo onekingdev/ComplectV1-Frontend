@@ -1,5 +1,7 @@
-import Router from 'vue-router'
+import Vue from "vue"
+import VueRouter from 'vue-router'
 import AuthGuard from './auth-guard'
+Vue.use(VueRouter)
 
 // LAYOUTS
 const AuthLayout = () => import('@/layouts/Auth')
@@ -67,7 +69,7 @@ const paramsToInts = paramNames =>
 
 
 
-const router = new Router({
+const router = new VueRouter({
   routes: [
     //NOT FOUND
     { path: "*", component: PageNotFound },
@@ -177,5 +179,6 @@ const router = new Router({
 //   if(to.name !== 'sign-in' && !auth) next({ name: 'sign-in' })
 //   else next()
 // })
+
 
 export default router
