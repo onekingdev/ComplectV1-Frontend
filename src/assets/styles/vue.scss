@@ -3,15 +3,11 @@
 }
 
 /* ---------- IMPORTS ---------- */
-@import '../../../node_modules/bootstrap/scss/bootstrap.scss';
-// @import '~bootstrap/scss/bootstrap.scss';
-// @import '~bootstrap-vue/dist/bootstrap-vue.css';
-
-// @import 'node_modules/bootstrap/scss/bootstrap.scss';
-@import 'node_modules/bootstrap-vue/src/index.scss';
+@import '~bootstrap/scss/bootstrap.scss';
+@import '~bootstrap-vue/src/index.scss';
 
 
-// // REMOVE LATER UTILITES (unneed)
+// REMOVE LATER UTILITES (unneed)
 @import "_vue_utilities.scss";
 @import "_vue_theme.scss";
 @import "_type.scss";
