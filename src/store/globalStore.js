@@ -13,6 +13,7 @@ import annual from "./modules/annual"
 import filefolders from "./modules/filefolders"
 import exams from "./modules/exams"
 import risks from "./modules/risks";
+import bankAccounts from "./modules/bank_accounts";
 import stripeAccounts from "./modules/stripe_accounts";
 import projects from "./modules/projects";
 import tasks from "./modules/tasks";
@@ -119,6 +120,10 @@ const store = new Vuex.Store({
 		stripe_accounts: {
 			namespaced: true,
 			...stripeAccounts
+		},
+		bank_accounts: {
+			namespaced: true,
+			...bankAccounts
 		}
 	},
 });

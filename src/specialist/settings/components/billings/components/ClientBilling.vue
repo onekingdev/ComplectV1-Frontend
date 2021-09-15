@@ -12,7 +12,18 @@
                   p.mb-0 Add how you would like to receive your funds by clicking "Add Method"
             .col
               .d-flex.justify-content-end.align-items-center.h-100
-                b-button(type='button' variant='dark' @click="$emit('openComponent', 'SelectBilling')") Add Methhod
+                b-button(
+                  type="button"
+                  variant="dark"
+                  v-if="!stripeAccount.id"
+                  @click="$emit('openComponent', 'SelectBilling')"
+                ) Add Methhod
+
+                b-button(
+                  type="button"
+                  :disabled="true"
+                  v-if="stripeAccount.id"
+                ) Edit Methhod
     .card.mb-2(v-for="billing in clientBilling" :key="billing.id")
       .card-body
         .row
@@ -33,9 +44,8 @@
 <script>
   export default {
     name: "billingMethod",
-    components: {
-
-    },
+    props: ["stripeAccount"],
+    components: {},
     data() {
       return {
         clientBilling: [
@@ -56,9 +66,6 @@
   }
 </script>
 
-<style scoped>
-
-</style>
 <style>
   ion-icon.billing {
     font-size: 2rem;
