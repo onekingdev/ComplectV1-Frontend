@@ -65,11 +65,10 @@
 </template>
 
 <script>
-import Tiptap from '@/common/Tiptap'
+  import Tiptap from '@/common/Tiptap'
   import Loading from '@/common/Loading/Loading'
   import nestedDraggable from "../infra/nestedMain";
   import rawdisplayer from "../infra/raw-displayer";
-  import { VueEditor } from "vue2-editor";
   import SubsectionPolicy from "./PolicySubsection";
   import HistoryPolicy from "./PolicyHistory";
   import PolicyRisks from "../Risks/PolicyRisks";
@@ -92,7 +91,6 @@ import Tiptap from '@/common/Tiptap'
       Loading,
       nestedDraggable,
       rawdisplayer,
-      VueEditor,
       SubsectionPolicy,
       HistoryPolicy,
       PolicyRisks,

@@ -134,7 +134,6 @@
 
 <script>
   import {mapGetters, mapActions} from "vuex"
-  // import { VueEditor } from "vue2-editor"
   import Loading from '@/common/Loading/Loading'
   import ExamRequestModalCreate from "./modals/ExamRequestModalCreate";
   import ExamModalEdit from "./modals/ExamModalEdit";
@@ -164,17 +163,10 @@
       ExamRequestModalEdit,
       ExamRequestModalCreate,
       ExamModalEdit,
-      ExamModalDelete,
-      // VueEditor,
+      ExamModalDelete
     },
     data() {
       return {
-        // customToolbar: [
-        //   ["bold", "italic", "underline"],
-        //   ["blockquote"],
-        //   [{ list: "bullet" }],
-        //   ["link"]
-        // ],
         filterOption: 'all',
       }
     },
