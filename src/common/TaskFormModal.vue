@@ -250,7 +250,7 @@ export default {
       const occurenceParams = deleteOccurence ? `?oid=${this.occurenceId}` : ''
       fetch(this.$store.getters.backendUrl + '/api/reminders/' + this.taskId + occurenceParams, {
         method: 'DELETE',
-        headers: {'Accept': 'application/json', 'Content-Type': 'application/json'}
+        ...this.$store.getters.authHeaders
       }).then(response => {
         this.$emit('saved')
         this.$router.push('/business')
