@@ -87,6 +87,7 @@ export default {
               data.zipcode
             ))
             localStorage.setItem('app.currentUser', JSON.stringify(data));
+            localStorage.setItem('app.currentUser.userType', JSON.stringify('business'));
           }
           if(response.data.specialist) {
             const data = response.data.specialist
@@ -102,6 +103,7 @@ export default {
               data.username
             ))
             localStorage.setItem('app.currentUser', JSON.stringify(data));
+            localStorage.setItem('app.currentUser.userType', JSON.stringify('specialist'));
           }
         }
         return response.data

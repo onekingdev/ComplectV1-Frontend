@@ -20,20 +20,6 @@
 <script>
     export default {
       props: ['userInfo'],
-      created(){
-        const token = localStorage.getItem('app.currentUser.token');
-        if (token) {
-          this.$store.commit('UPDATE_TOKEN', token)
-          this.$store.commit('UPDATE_LOGIN_STATUS', true)
-        }
-        if (!token) {
-          this.$store.commit('UPDATE_TOKEN', '')
-          this.$store.commit('UPDATE_LOGIN_STATUS', false)
-          localStorage.removeItem('app.currentUser');
-          localStorage.removeItem('app.currentUser.token');
-          localStorage.removeItem('app.currentUser.userType');
-        }
-      },
       data() {
         return {
           isProfileMenuOpen: false,
