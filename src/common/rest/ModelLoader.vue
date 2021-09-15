@@ -37,7 +37,7 @@ export default {
       if (this.url) {
         fetch(this.$store.getters.backendUrl+this.url, {
           method: 'GET',
-          headers: {'Accept': 'application/json', 'Content-Type': 'application/json'}
+          ...this.$store.getters.authHeaders
         }).then(response => response.json())
           .then(result => {
             this.$emit('loaded', onlyKnownProperties(this.callback(result), this.default()))
