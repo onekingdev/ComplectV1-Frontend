@@ -65,7 +65,7 @@
 </template>
 
 <script>
-  import Tiptap from '@/common/Tiptap'
+import Tiptap from '@/common/Tiptap'
   import Loading from '@/common/Loading/Loading'
   import nestedDraggable from "../infra/nestedMain";
   import rawdisplayer from "../infra/raw-displayer";
@@ -346,6 +346,7 @@
       policiesListNested () {
         const policies = this.$store.getters.policiesListNested.filter(item => item.status !== 'archived')
         if (this.currentUserAdmin || this.currentUserTrusted) return policies.filter(item => item.status === 'published')
+
         return policies
       },
     },
@@ -359,3 +360,7 @@
     // }
   };
 </script>
+
+<style>
+  @import "../styles.css";
+</style>

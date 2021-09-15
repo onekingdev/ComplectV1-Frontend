@@ -137,6 +137,6 @@
   };
 </script>
 
-<style module>
+<style>
   @import "./styles.css";
 </style>
