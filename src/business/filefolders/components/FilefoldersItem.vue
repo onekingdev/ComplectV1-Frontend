@@ -32,7 +32,7 @@
           //- b-dropdown-item(v-if="item.locked" :disabled="item.locked" v-b-tooltip.hover.left="'Cant be moved!'") Move to
           FoldersModalMoveTo(@movedConfirmed="moveToFileFolder", :item="item", :inline="false")
             b-dropdown-item Move to
-         FilefoldersModalDelete(@deleteConfirmed="deleteFileFolderItem(item.id, itemType)" :inline="false")
+          FilefoldersModalDelete(@deleteConfirmed="deleteFileFolderItem(item.id, itemType)" :inline="false")
             b-dropdown-item.delete Delete
 
 </template>
