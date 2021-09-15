@@ -76,7 +76,7 @@
           this.errors['name'] = ['Name must be more than 3 characters']
         }
         if (startAt && endAt && (startAt > endAt)) {
-          this.errors['ends_on'] = ['Date must occur before start date']
+          this.errors['ends_on'] = ['Date must occur after start date']
         }
       },
       async submit(e) {
