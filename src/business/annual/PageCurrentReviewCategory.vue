@@ -49,7 +49,7 @@
                             template(#button-content)
                               | Actions
                               b-icon.ml-2(icon="chevron-down")
-                            b-dropdown-item(@click="addTopicItem(i)") Add Item
+                            b-dropdown-item(@click="addTopicItem(i)") New Item
                             TaskFormModal(@saved="createTask(i)" :inline="false")
                               b-dropdown-item New Task
                             b-dropdown-item(@click="deleteTopic(i)").delete Delete
@@ -73,7 +73,9 @@
                             label.form-label Finding
                           template(v-for="(finding, findingIndex) in topicItem.findings")
                             .col-md-10.offset-md-1(:key="`${currentTopic.name}-${i}-${topicItemIndex}-${findingIndex}`")
-                              textarea.form-control.m-b-1(v-model="currentCategory.review_topics[i].items[topicItemIndex].findings[findingIndex]" type="text")
+                              textarea.finding-area.form-control.m-b-1(v-model="currentCategory.review_topics[i].items[topicItemIndex].findings[findingIndex]" type="text")
+                              button.btn.btn__close.float-right(@click="removeFinding(i, topicItemIndex, findingIndex)")
+                                b-icon(icon="x" font-scale="1")
                 .reviews__card--internal.borderless.p-t-20
                   .d-flex.justify-content-between.align-items-center
                     button.btn.btn-default(@click="addTopic")
@@ -196,6 +198,16 @@ export default {
     addFindings(i, itemIndex) {
       this.currentCategory.review_topics[i].items[itemIndex].findings.push("")
     },
+    removeFinding(topicIndex, itemIndex, findingIndex) {
+      const finding = this.currentCategory.review_topics[topicIndex].items[itemIndex].findings[findingIndex]
+      
+      if (finding && finding.id) {
+        finding['_destroy'] = true
+        this.$set(this.currentCategory.review_topics[topicIndex].items[itemIndex].findings, findingIndex, finding)
+      } else {
+        this.currentCategory.review_topics[topicIndex].items[itemIndex].findings.splice(findingIndex, 1)
+      }
+    },
     deleteTopicItem(i, itemIndex) {
       this.currentCategory.review_topics[i].items.splice(itemIndex, 1);
     },
@@ -244,6 +256,11 @@ export default {
 }
 </script>
 <style scoped>
+.finding-area {
+    width: calc(100% - 30px);
+    float: left;
+}
+
 @media only screen and (min-width: 1200px) {
   .new-item-text {
     padding-left: 30px !important;
