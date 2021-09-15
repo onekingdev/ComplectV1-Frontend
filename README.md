@@ -1,5 +1,8 @@
 # Complect - Frontend
 
+## Latest Staging Build: (#7a7d5c4)[https://github.com/complectco/complect/commit/7a7d5c40fa773e70768682e0f09e4cf04dd03419]
+
+
 ## Run in Docker Container
 1. Start dev server: `docker-compose up`
 2. Navigate to `localhost:81`
