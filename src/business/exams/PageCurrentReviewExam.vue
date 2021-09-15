@@ -73,7 +73,7 @@
                                     b-icon(icon="three-dots")
                                   ExamRequestModalEdit(:examId="currentExam.id" :request="currentRequst" :inline="false")
                                     b-dropdown-item Edit
-                                  b-dropdown-item(v-if="plan !=='team'" @click="shareRequest(currentRequst.id, !currentRequst.shared)") {{ currentRequst.shared ? 'Unshare' : 'Share' }}
+                                  b-dropdown-item(v-if="plan !=='team'" @click="shareRequestAction(currentRequst.id, !currentRequst.shared)") {{ currentRequst.shared ? 'Unshare' : 'Share' }}
                                   ExamModalDelete(@deleteConfirmed="deleteExamRequest(currentRequst.id)" :inline="false")
                                     b-dropdown-item.delete Delete
                         .row.m-b-1
@@ -168,6 +168,7 @@
     data() {
       return {
         filterOption: 'all',
+        shareRequestData: null,
       }
     },
     computed: {
@@ -247,7 +248,13 @@
 
         try {
           await this.updateExam(data)
-            .then(response => this.toast('Success', "Exam has been saved."))
+            .then(response => {
+              if (this.shareRequestData) {
+                this.shareRequest()
+              } else {
+                this.toast('Success', "Exam has been saved.")
+              }
+            })
             .catch(error => this.toast('Error', error.message, true))
         } catch (error) {
           this.toast('Error', error.message, true)
@@ -285,38 +292,33 @@
           this.toast('Error', error.message, true)
         }
       },
-      async shareRequest(id, status) {
+      async shareRequest() {
+        if (!this.shareRequestData) return
         const data = {
           id: this.currentExam.id,
           request: {
-            id,
-            shared: status,
+            id: this.shareRequestData.id,
+            shared: this.shareRequestData.status,
           }
         }
         try {
           await this.updateCurrentExamRequest(data)
-            .then(response => this.toast('Success', "Request has been saved."))
+            .then(response => {
+              this.shareRequestData = null
+              this.toast('Success', "Request has been saved.")
+            })
             .catch(error => this.toast('Error', error.message, true))
         } catch (error) {
           this.toast('Error', error.message, true)
         }
       },
-      // addTopic() {
-      //   const examCategory = this.currentExam
-      //   if (!examCategory.exam_topics) {
-      //     this.currentExam.exam_topics = [
-      //       {
-      //         items: [],
-      //         name: "New topic"
-      //       }
-      //     ]
-      //     return
-      //   }
-      //   this.currentExam.exam_topics.push({
-      //     items: [],
-      //     name: "New topic"
-      //   })
-      // },
+      shareRequestAction(id, status) {
+        this.shareRequestData = {
+          id: id,
+          status: status,
+        }
+        this.saveExam()
+      },
       addTextEntry(i) {
         if (!this.currentExam.exam_requests[i].text_items) this.currentExam.exam_requests[i].text_items = []
         this.currentExam.exam_requests[i].text_items.push({
@@ -326,15 +328,6 @@
       removeTextEntry(i, itemIndex) {
         this.currentExam.exam_requests[i].text_items.splice(itemIndex, 1);
       },
-      // addFindings(i, itemIndex) {
-      //   this.currentExam.exam_topics[i].items[itemIndex].findings.push("")
-      // },
-      // deleteTopicItem(i, itemIndex) {
-      //   this.currentExam.exam_topics[i].items.splice(itemIndex, 1);
-      // },
-      // deleteTopic(i) {
-      //   this.currentExam.exam_topics.splice(i, 1);
-      // },
       async deleteExamRequest(id) {
         try {
           await this.deleteCurrentExamRequest({id: this.examId, requestId: id})
@@ -354,14 +347,6 @@
       exit() {
         window.location.href = `${window.location.origin}/business/exam_management/`
       },
-      // deleteexam(examId){
-      //   this.$store.dispatch('annual/deleteexam', { id: examId })
-      //     .then(response => {
-      //       this.toast('Success', `Internal review has been deleted.`)
-      //       window.location.href = `${window.location.origin}/business/annual_exams`
-      //     })
-      //     .catch(error => this.toast('Error', `Action has not been completed. Please try again.`))
-      // },
       async removeFile(requestId, fileID) {
 
         const data = {
