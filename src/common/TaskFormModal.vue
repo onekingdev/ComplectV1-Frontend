@@ -295,7 +295,7 @@ export default {
       if (this.taskId) {
         fetch(`${this.$store.getters.backendUrl}/api/reminders/${this.taskId}`, {
           method: 'GET',
-          headers: {'Accept': 'application/json', 'Content-Type': 'application/json'}
+          ...this.$store.getters.authHeaders
         }).then(response => response.json())
           .then(result => Object.assign(this.task, result))
       } else {
