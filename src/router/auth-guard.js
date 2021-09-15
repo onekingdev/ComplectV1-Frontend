@@ -9,7 +9,6 @@ const roles = ['basic', 'trusted', 'admin']
 
 const AccessGuard = (to, from, next) => {
   const userAuth = !!store.state.auth.loggedIn
-  console.log({ userAuth })
   if (!userAuth) next({ name: 'sign-in'})
   else next()
   // else if (store.getters['roles/currentPlan'] === 'free') next(`/access-denied`)
