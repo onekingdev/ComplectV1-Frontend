@@ -51,7 +51,7 @@
 										b-form-datepicker(
 											v-model="review.review_start",
 											:date-format-options="{ year: 'numeric', month: '2-digit', day: '2-digit' }",
-											locale="en"
+											locale="en-US"
 										)
 										Errors(:errors="errors.review_start")
 									.col-6
@@ -59,7 +59,7 @@
 											b-form-datepicker(
 												v-model="review.review_end",
 												:date-format-options="{ year: 'numeric', month: '2-digit', day: '2-digit' }",
-												locale="en"
+												locale="en-US"
 											)
 										Errors(:errors="errors.review_end")
 							.reviews__card--internal
