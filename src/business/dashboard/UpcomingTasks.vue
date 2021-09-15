@@ -48,11 +48,6 @@ export default {
   },
   methods: {
     refetch() {
-      const headers = {
-        'Accept': 'application/json',
-        'Content-Type': 'application/json',
-        'Authorization': localStorage.getItem('app.currentUser.token') ? JSON.parse(localStorage.getItem('app.currentUser.token')) : '',
-      }
       //const business_id = window.localStorage["app.business_id"]
       //if(business_id) headers.business_id = JSON.parse(business_id)
 
@@ -61,11 +56,11 @@ export default {
       let tasks = []
       let projects = []
 
-      fetch(this.$store.getters.backendUrl+overdueEndpointUrl, headers)
+      fetch(this.$store.getters.backendUrl+overdueEndpointUrl, this.$store.getters.authHeaders)
         .then(response => response.json())
         .then(result => {
           tasks = result.tasks
-        }).then(fetch(`${this.$store.getters.backendUrl}${endpointUrl}${fromTo}`, headers)
+        }).then(fetch(`${this.$store.getters.backendUrl}${endpointUrl}${fromTo}`, this.$store.getters.authHeaders)
           .then(response => response.json())
           .then(result => {
             tasks = tasks.concat(result.tasks)
