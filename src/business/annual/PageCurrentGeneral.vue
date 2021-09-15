@@ -58,7 +58,7 @@
                         b Material Business Changes
                       p List any changes to your business processes, key vendors, and/or key employees during the Review Period
                     .col-12
-                      VueEditor(v-model="review.material_business_changes" :editor-toolbar="customToolbar")
+                      Tiptap(v-model="review.material_business_changes")
                       .invalid-feedback.d-block(v-if="errors.material_business_changes") {{ errors.material_business_changes }}
                 .reviews__card--internal
                   .row
@@ -138,7 +138,7 @@
 
 <script>
 import { mapGetters, mapActions } from "vuex"
-import { VueEditor } from "vue2-editor"
+import Tiptap from '@/common/Tiptap'
 import ReviewsList from "./components/ReviewsList"
 import AnnualModalComplite from './modals/AnnualModalComplite'
 import AnnualModalEdit from './modals/AnnualModalEdit'
@@ -153,7 +153,7 @@ export default {
   props: ['annualId'],
   components: {
     ReviewsList,
-    VueEditor,
+    Tiptap,
     AnnualModalComplite,
     AnnualModalEdit,
     AnnualModalDelete,
@@ -163,12 +163,6 @@ export default {
   },
   data () {
     return {
-      customToolbar: [
-        ["bold", "italic", "underline"],
-        ["blockquote"],
-        [{ list: "bullet" }],
-        ["link"]
-      ],
       errors: {}
     }
   },
