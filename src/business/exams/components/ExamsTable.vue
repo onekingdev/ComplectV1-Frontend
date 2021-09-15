@@ -2,7 +2,10 @@
   div
     Loading
     table.table(v-if="!loading")
-      thead(v-if="exams && exams.length")
+      thead
+        tr
+          th(@click="sortSelect('name', 'string')" width="40%")
+            .d-inline
         tr
           th(@click="sortSelect('name', 'string')" width="40%")
             .d-inline
@@ -33,6 +36,7 @@
 <script>
   import Loading from '@/common/Loading/Loading'
   import ExamItem from "./ExamItem"
+  import EmptyState from '@/common/EmptyState'
 
   export default {
     props: {
@@ -42,6 +46,7 @@
       }
     },
     components: {
+      EmptyState,
       Loading,
       ExamItem,
     },
