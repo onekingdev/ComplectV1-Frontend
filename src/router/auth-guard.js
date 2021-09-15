@@ -6,14 +6,14 @@ const userType = localStorage.getItem('app.currentUser.userType') ? JSON.parse(l
 const plans = ['free', 'business', 'team']
 const roles = ['basic', 'trusted', 'admin']
 
-const AuthGuard = (to, from, next) => {
+const AccessGuard = (to, from, next) => {
   if(!store.getters['roles/currentPlan']) next({ name: 'sign-in'})
   else if (store.getters['roles/currentPlan'] === 'free') next(`/access-denied`)
   else next()
 }
 
 const BusinessGuard = (to, from, next) => {
-  if (userType !== 'business') next(`/access-denied`)
+  if (userType !== 'businesses') next(`/access-denied`)
   else next()
 }
 
@@ -22,4 +22,4 @@ const SpecialistGuard = (to, from, next) => {
   else next()
 }
 
-export { AuthGuard, BusinessGuard, SpecialistGuard}
+export { AccessGuard, BusinessGuard, SpecialistGuard}

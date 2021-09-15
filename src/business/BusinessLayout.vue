@@ -1,5 +1,3 @@
 <template lang="pug">
-  section
-    h1 Business Layout
-    router-view
+  router-view
 </template>

@@ -1,5 +1,3 @@
 <template lang="pug">
-  section
-    small Specialist Layout
-    router-view
+  router-view
 </template>

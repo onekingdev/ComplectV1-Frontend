@@ -1,7 +1,7 @@
 import Vue from "vue"
 import VueRouter from 'vue-router'
-// import AuthGuard from './auth-guard'
-import { AuthGuard, BusinessGuard, SpecialistGuard } from './auth-guard'
+// import AccessGuard from './auth-guard'
+import { AccessGuard, BusinessGuard, SpecialistGuard } from './auth-guard'
 Vue.use(VueRouter)
 
 // LAYOUTS
@@ -95,7 +95,7 @@ const router = new VueRouter({
     {
       path: '/',
       component: MainLayout,
-      beforeEnter: AuthGuard,
+      beforeEnter: AccessGuard,
       children: [
         // BUSINESS
         {
@@ -112,20 +112,20 @@ const router = new VueRouter({
             { path: 'project_posts/:id(\\d+)', name: 'project-post-view', props: route => ({ projectId: +route.params.id }), component: ShowPostPage },
             { path: 'project_posts/:id(\\d+)/edit', name: 'project-post-edit', props: route => ({ projectId: +route.params.id }), component: PostProjectPage },
             { path: 'reminders', name: 'tasks', component: Tasks },
-            { path: 'compliance_policies', name: 'policies', component: Policies, beforeEnter: AuthGuard },
-            { path: 'compliance_policies/entire', name: 'policies-entire', props: true, component: PoliciesEntire, beforeEnter: AuthGuard },
-            { path: 'compliance_policies/:policyId(\\d+)', name: 'policy-current', props: route => ({ policyId: +route.params.policyId, toggleVueEditor: route.params.toggleVueEditor }), component: PolicyCurrentNoSections, beforeEnter: AuthGuard },
-            { path: 'annual_reviews', name: 'annual-reviews', component: AnnualReviews, beforeEnter: AuthGuard },
-            { path: 'annual_reviews/:annualId(\\d+)', name: 'annual-reviews-general', props: route => ({ annualId: +route.params.annualId }), component: AnnualReviewsCurrentGeneral, beforeEnter: AuthGuard },
-            { path: 'annual_reviews/:annualId(\\d+)/:revcatId(\\d+)', name: 'annual-reviews-review-category', props: route => ({ annualId: +route.params.annualId, revcatId: +route.params.revcatId }), component: AnnualReviewsCurrentReviewCategory, beforeEnter: AuthGuard },
-            { path: 'risks', name: 'risks', component: Risks, beforeEnter: AuthGuard },
-            { path: 'risks/:riskId(\\d+)', name: 'risk-review', props: route => ({ riskId: +route.params.riskId }), component: RiskDetail, beforeEnter: AuthGuard },
-            { path: 'file_folders', name: 'file-folders', component: FileFolders, beforeEnter: AuthGuard },
-            { path: 'exam_management', name: 'exam-management', component: Exams, beforeEnter: AuthGuard },
-            { path: 'exam_management/:examId(\\d+)', name: 'exam-management-current-review', props: route => ({ examId: +route.params.examId }), component: ExamCurrentReview, beforeEnter: AuthGuard },
-            { path: 'reports/risks', name: 'reports-risks', component: ReportsRisks, beforeEnter: AuthGuard },
-            { path: 'reports/organizations', name: 'reports-organizations', component: ReportsOrganizations, beforeEnter: AuthGuard },
-            { path: 'reports/financials', name: 'reports-financials', component: ReportsFinancials, beforeEnter: AuthGuard },
+            { path: 'compliance_policies', name: 'policies', component: Policies, beforeEnter: AccessGuard },
+            { path: 'compliance_policies/entire', name: 'policies-entire', props: true, component: PoliciesEntire, beforeEnter: AccessGuard },
+            { path: 'compliance_policies/:policyId(\\d+)', name: 'policy-current', props: route => ({ policyId: +route.params.policyId, toggleVueEditor: route.params.toggleVueEditor }), component: PolicyCurrentNoSections, beforeEnter: AccessGuard },
+            { path: 'annual_reviews', name: 'annual-reviews', component: AnnualReviews, beforeEnter: AccessGuard },
+            { path: 'annual_reviews/:annualId(\\d+)', name: 'annual-reviews-general', props: route => ({ annualId: +route.params.annualId }), component: AnnualReviewsCurrentGeneral, beforeEnter: AccessGuard },
+            { path: 'annual_reviews/:annualId(\\d+)/:revcatId(\\d+)', name: 'annual-reviews-review-category', props: route => ({ annualId: +route.params.annualId, revcatId: +route.params.revcatId }), component: AnnualReviewsCurrentReviewCategory, beforeEnter: AccessGuard },
+            { path: 'risks', name: 'risks', component: Risks, beforeEnter: AccessGuard },
+            { path: 'risks/:riskId(\\d+)', name: 'risk-review', props: route => ({ riskId: +route.params.riskId }), component: RiskDetail, beforeEnter: AccessGuard },
+            { path: 'file_folders', name: 'file-folders', component: FileFolders, beforeEnter: AccessGuard },
+            { path: 'exam_management', name: 'exam-management', component: Exams, beforeEnter: AccessGuard },
+            { path: 'exam_management/:examId(\\d+)', name: 'exam-management-current-review', props: route => ({ examId: +route.params.examId }), component: ExamCurrentReview, beforeEnter: AccessGuard },
+            { path: 'reports/risks', name: 'reports-risks', component: ReportsRisks, beforeEnter: AccessGuard },
+            { path: 'reports/organizations', name: 'reports-organizations', component: ReportsOrganizations, beforeEnter: AccessGuard },
+            { path: 'reports/financials', name: 'reports-financials', component: ReportsFinancials, beforeEnter: AccessGuard },
             { path: 'profile', name: 'profile', component: Profile},
             { path: 'exam_management/:examId(\\d+)/portal', component: PageAuditorPortalInternalAccess, props: paramsToInts(['examId']) },
             { path: 'specialistmarketplace', name: 'specialists-marketplace', component: SpecialistsMarketplace },
@@ -169,7 +169,7 @@ const router = new VueRouter({
             { path: 'settings/notification-center/', name: 'settings-notification-center-specialist', component: SettingsNotificationsS },
             { path: '/job_board', name: 'projects-marketpalce-specialist', component: ProjectsMarketplaceS },
             { path: '/job_board/:initialOpenId(\\d+)', name: 'projects-marketpalce-specialist-view', props: paramsToInts(['initialOpenId']), component: ProjectsMarketplaceS },
-            { path: '/job_board/:projectId(\\d+)/applications/new', name: 'projects-marketplace-create-proposal', props: paramsToInts(['projectId']), component: CreateProposalPage, beforeEnter: AuthGuard },
+            { path: '/job_board/:projectId(\\d+)/applications/new', name: 'projects-marketplace-create-proposal', props: paramsToInts(['projectId']), component: CreateProposalPage, beforeEnter: AccessGuard },
           ]
         }
       ]
@@ -178,6 +178,7 @@ const router = new VueRouter({
     // AUTH
     { path: '/', component: AuthLayout,
       children:  [
+        { path: '/', name: 'home', component: SignIn },
         { path: '/users/sign_in', name: 'sign-in', component: SignIn },
         { path: '/users/sign_up', name: 'sign-up', component: SignUp },
         { path: '/employee/new', name: 'sign-up-employee', props: true, component: SignUpEmployee },
