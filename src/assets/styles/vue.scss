@@ -2739,6 +2739,7 @@ table.table {
     &-body {
       font-size: 16px;
       font-weight: 500;
+      padding: 2px 7px;
     }
 
     &-label {
@@ -2746,10 +2747,10 @@ table.table {
     }
 
     &-name {
-      padding: .5rem;
+      padding: 2px 7px;
       font-size: 18px;
       font-weight: 500;
-      border-radius: 5px;
+      // border-radius: 5px;
     }
   }
 
@@ -2875,10 +2876,7 @@ table.table {
 }
 
 .review__category-add {
-
   .btn.btn-default {
-    color: #797B7E;
-
     .b-icon.bi {
       font-size: 100%;
       padding-bottom: 1px;

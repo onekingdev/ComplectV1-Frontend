@@ -65,11 +65,10 @@
 </template>
 
 <script>
-import Tiptap from '@/common/Tiptap'
+  import Tiptap from '@/common/Tiptap'
   import Loading from '@/common/Loading/Loading'
   import nestedDraggable from "../infra/nestedMain";
   import rawdisplayer from "../infra/raw-displayer";
-  import { VueEditor } from "vue2-editor";
   import SubsectionPolicy from "./PolicySubsection";
   import HistoryPolicy from "./PolicyHistory";
   import PolicyRisks from "../Risks/PolicyRisks";
@@ -92,7 +91,6 @@ import Tiptap from '@/common/Tiptap'
       Loading,
       nestedDraggable,
       rawdisplayer,
-      VueEditor,
       SubsectionPolicy,
       HistoryPolicy,
       PolicyRisks,
@@ -114,6 +112,7 @@ import Tiptap from '@/common/Tiptap'
         sections: [],
         count: 0,
         isDowloading: false,
+        isPublishing: false,
       }
     },
     methods: {
@@ -149,20 +148,23 @@ import Tiptap from '@/common/Tiptap'
             this.toast('Error', err.message, true)
           });
       },
-      publishPolicy () {
+      publishPolicyRequest() {
+        this.isPublishing = false
         this.$store
           .dispatch("publishPolicy", { policyId: this.policyId })
           .then(response => {
-            //console.log(response)
             this.toast('Success', 'Policy has been published.')
             setTimeout(() => {
-              //window.location.href = `${window.location.origin}/business/compliance_policies/${response.id}`
               this.$router.push(`/business/compliance_policies/${response.id}`)
             }, 2000)
           })
           .catch((err) => {
             this.toast('Error', err.message, true)
           });
+      },
+      publishPolicy () {
+        this.isPublishing = true
+        this.saveDraft()
       },
       updatePolicy() {
         const dataToSend = {
@@ -178,6 +180,10 @@ import Tiptap from '@/common/Tiptap'
           .dispatch("updatePolicy", dataToSend)
           .then((response) => {
             if (response.id) {
+              if (this.isPublishing) {
+                this.publishPolicyRequest()
+                return
+              }
               this.toast('Success', 'Policy has been updated.')
             } else {
               this.toast('Error', 'Policy has not been updated. Please try again.')
@@ -327,12 +333,20 @@ import Tiptap from '@/common/Tiptap'
       currentUserBasic() {
         return (window.localStorage["app.currentUser.role"] == "basic")
       },
+      currentUserAdmin() {
+        return (window.localStorage["app.currentUser.role"] == "admin")
+      },
+      currentUserTrusted() {
+        return (window.localStorage["app.currentUser.role"] == "trusted")
+      },
       policyById() {
         const id = this.policyId
         return this.$store.getters.policyById(id)
       },
       policiesListNested () {
-        return this.$store.getters.policiesListNested
+        const policies = this.$store.getters.policiesListNested.filter(item => item.status !== 'archived')
+        if (this.currentUserAdmin || this.currentUserTrusted) return policies.filter(item => item.status === 'published')
+        return policies
       },
     },
     mounted() {

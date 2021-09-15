@@ -2,9 +2,7 @@
   .page.review
     .page-header.bg-white
       div
-        h2.page-header__breadcrumbs Internal Review&nbsp;
-          span.separator /&nbsp;
-          b {{ review ? review.year : '' }} {{ review ? review.name : '' }}
+        h2.page-header__breadcrumbs Internal Review
         h2.page-header__title: b {{ review ? review.year : '' }} {{ review ? review.name : '' }}
       .page-header__actions
         div
@@ -38,23 +36,24 @@
                   .d-flex.justify-content-between.align-items-center
                     h3
                       | {{ currentCategory.name }}
-                    AnnualModalDeleteCategory.ml-auto(@deleteConfirmed="deleteCategory(currentCategory.id)", :inline="false")
+                    CommonDeleteModal.ml-auto(title="Delete Category" content="This will remove the category from this internal review and all of its associated content." @deleteConfirmed="deleteCategory(currentCategory.id)", :inline="false")
                       b-button.btn.btn-default(variant="light") Delete
                 .reviews__topiclist(v-if="currentCategory.review_topics")
                   template(v-for="(currentTopic, i) in currentCategory.review_topics")
                     .reviews__card--internal(:key="`${currentCategory.name}-${i}`")
                       .row.m-b-2
-                        .col-md-8
-                          input.reviews__input.reviews__topic-name(v-model="currentTopic.name" placeholder="New Topic")
-                        .col-md-4.text-right
+                        .col-md-9.col-lg-9.col-xl-10
+                          textarea-autosize.reviews__input.reviews__topic-name(v-model="currentTopic.name" :min-height="30" placeholder="New Topic")
+                        .col-md-3.col-lg-3.col-xl-2.text-right.reviews__card--actions
                           b-dropdown(size="xs" variant="light" class="m-0 p-0" right)
                             template(#button-content)
                               | Actions
                               b-icon.ml-2(icon="chevron-down")
-                            b-dropdown-item(@click="addTopicItem(i)") Add Item
+                            b-dropdown-item(@click="addTopicItem(i)") New Item
                             TaskFormModal(@saved="createTask(i)" :inline="false")
                               b-dropdown-item New Task
-                            b-dropdown-item(@click="deleteTopic(i)").delete Delete
+                            CommonDeleteModal.ml-auto(title="Delete Topic" content="This will remove the topic from this internal review and all of its associated content." @deleteConfirmed="deleteTopic(i)", :inline="false")
+                              b-dropdown-item.delete Delete
                       template(v-for="(topicItem, topicItemIndex) in currentTopic.items")
                         .row.mb-2(:key="`${currentCategory.name}-${i}-${topicItemIndex}`")
                           .col-md-2.col-lg-2.col-xl-1
@@ -63,19 +62,22 @@
                                 b-icon(icon="check2")
                               .reviews__checkbox-item.reviews__checkbox-item--false(@click="topicItem.checked = false" :class="{ 'checked': !topicItem.checked }")
                                 b-icon(icon="x")
-                          .col-md-8.col-lg-8.col-xl-10.new-item-text
-                            textarea.reviews__input.reviews__topic-body(v-model="topicItem.body" placeholder="New Item")
-                          .col-md-2.col-lg-2.col-xl-1.text-right
+                          .col-md-7.col-lg-7.col-xl-9.new-item-text
+                            textarea-autosize.reviews__input.reviews__topic-body(v-model="topicItem.body" placeholder="New Item")
+                          .col-md-3.col-lg-3.col-xl-2.text-right.reviews__card--dropdown
                             b-dropdown(size="xs" variant="light" class="m-0 p-0" right)
                               template(#button-content)
                                 b-icon(icon="three-dots")
                               b-dropdown-item(@click="addFindings(i, topicItemIndex)") Log Finding
-                              b-dropdown-item.delete(@click="deleteTopicItem(i, topicItemIndex)") Delete
+                              CommonDeleteModal.ml-auto(title="Delete Item" content="This will remove the item from this internal review and all of its associated content." @deleteConfirmed="deleteTopicItem(i, topicItemIndex)", :inline="false")
+                                b-dropdown-item.delete Delete
                           .col-md-11.offset-md-1(v-if="topicItem.findings.length")
                             label.form-label Finding
                           template(v-for="(finding, findingIndex) in topicItem.findings")
                             .col-md-10.offset-md-1(:key="`${currentTopic.name}-${i}-${topicItemIndex}-${findingIndex}`")
-                              textarea.form-control.m-b-1(v-model="currentCategory.review_topics[i].items[topicItemIndex].findings[findingIndex]" type="text")
+                              textarea.finding-area.form-control.m-b-1(v-model="currentCategory.review_topics[i].items[topicItemIndex].findings[findingIndex]" type="text")
+                              button.btn.btn__close.float-right(@click="removeFinding(i, topicItemIndex, findingIndex)")
+                                b-icon(icon="x" font-scale="1")
                 .reviews__card--internal.borderless.p-t-20
                   .d-flex.justify-content-between.align-items-center
                     button.btn.btn-default(@click="addTopic")
@@ -96,12 +98,11 @@
 
 <script>
 import { mapGetters, mapActions } from "vuex"
-import { VueEditor } from "vue2-editor"
 import ReviewsList from "./components/ReviewsList";
 import AnnualModalComplite from './modals/AnnualModalComplite'
 import AnnualModalEdit from './modals/AnnualModalEdit'
 import AnnualModalDelete from './modals/AnnualModalDelete'
-import AnnualModalDeleteCategory from './modals/AnnualModalDeleteCategory'
+import CommonDeleteModal from '@/common/Modals/CommonDeleteModal'
 import TaskFormModal from '@/common/TaskFormModal'
 import PageTasks from './PageTasks'
 import PageDocuments from './PageDocuments'
@@ -111,11 +112,10 @@ export default {
   props: ['annualId', 'revcatId'],
   components: {
     ReviewsList,
-    VueEditor,
     AnnualModalComplite,
     AnnualModalEdit,
     AnnualModalDelete,
-    AnnualModalDeleteCategory,
+    CommonDeleteModal,
     TaskFormModal,
     PageTasks,
     PageDocuments,
@@ -152,7 +152,7 @@ export default {
       }
       try {
         await this.updateReviewCategory(data)
-        this.toast('Success', "Saved changes to annual review.")
+        this.toast('Success', "Internal review has been saved.")
         await this.getCurrentReviewReview(this.annualId)
       } catch (error) {
         this.toast('Error', error.message, true)
@@ -199,6 +199,16 @@ export default {
     },
     addFindings(i, itemIndex) {
       this.currentCategory.review_topics[i].items[itemIndex].findings.push("")
+    },
+    removeFinding(topicIndex, itemIndex, findingIndex) {
+      const finding = this.currentCategory.review_topics[topicIndex].items[itemIndex].findings[findingIndex]
+      
+      if (finding && finding.id) {
+        finding['_destroy'] = true
+        this.$set(this.currentCategory.review_topics[topicIndex].items[itemIndex].findings, findingIndex, finding)
+      } else {
+        this.currentCategory.review_topics[topicIndex].items[itemIndex].findings.splice(findingIndex, 1)
+      }
     },
     deleteTopicItem(i, itemIndex) {
       this.currentCategory.review_topics[i].items.splice(itemIndex, 1);
@@ -248,6 +258,11 @@ export default {
 }
 </script>
 <style scoped>
+.finding-area {
+    width: calc(100% - 30px);
+    float: left;
+}
+
 @media only screen and (min-width: 1200px) {
   .new-item-text {
     padding-left: 30px !important;
@@ -261,6 +276,9 @@ export default {
 }
 
 @media only screen and (max-width: 767px) {
+  .reviews__card--actions, .reviews__card--dropdown {
+      margin-top: 10px;
+  }
   .new-item-text textarea {
     margin-top: 10px;
   }

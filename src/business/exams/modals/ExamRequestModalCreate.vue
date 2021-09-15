@@ -8,13 +8,12 @@
         .col-12.m-b-2
           label.form-label Requested Item
           input.form-control(v-model="requst.name" type="text" ref="input" @keyup="onChange")
-          Errors(:errors="errors.name")
+          Errors(:errors="errors")
       .row.m-b-2
         .col-12
           label.form-label Details
           textarea.form-control(v-model="requst.details" rows="4")
           small(class="form-text text-muted") Optional
-          Errors(:errors="errors.details")
 
       template(slot="modal-footer")
         button.btn.btn-link(@click="$bvModal.hide(modalId)") Cancel
@@ -63,8 +62,8 @@
       async submit(e) {
         e.preventDefault();
 
-        if (!this.requst.name || !this.requst.details) {
-          this.toast('Error', `Please check all fields!`, true)
+        if (!this.requst.name) {
+          this.errors.push('Required field')
           return
         }
 
@@ -83,14 +82,14 @@
         } catch (error) {
           this.toast('Error', error.message, true)
         }
-      },
+      }
     },
     computed: {
       datepickerOptions() {
         return {
           min: today
         }
-      },
-    },
+      }
+    }
   }
 </script>

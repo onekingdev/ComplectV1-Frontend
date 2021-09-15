@@ -53,7 +53,9 @@ export default {
     },
     UPDATE_REQUEST_CURRENT_EXAM(state, payload) {
       const index = state.currentExam.exam_requests.findIndex(record => record.id === payload.id);
-      state.currentExam.exam_requests.splice(index, 1, payload)
+      const examRequest = payload
+      examRequest['text_items'] = payload.text_items ? payload.text_items.map(text => ({ text })) : [],
+      state.currentExam.exam_requests.splice(index, 1, examRequest)
     },
     DELETE_REQUEST_CURRENT_EXAM(state, payload) {
       const index = state.currentExam.exam_requests.findIndex(record => record.id === payload.id);
@@ -543,7 +545,7 @@ export default {
             });
             if (success) {
               const data = success.data
-              commit('ADD_AUDITOR_CURRENT_EXAM', data)
+              if (!data.errors) commit('ADD_AUDITOR_CURRENT_EXAM', data)
               return data
             }
             if (!success) {
