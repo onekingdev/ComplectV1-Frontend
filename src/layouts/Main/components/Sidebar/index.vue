@@ -97,9 +97,6 @@
         toggleClosedMenu: false
       }
     },
-    created() {
-      this.$store.commit('changeUserType', this.userType)
-    },
     methods: {
       openLink (value) {
         if(window.innerWidth < 576) {
@@ -194,14 +191,11 @@
         leftSidebar: 'leftSidebar',
         role: 'roles/currentRole',
         plan: 'roles/currentPlan',
+        userType: 'userType',
       }),
       // leftSidebar () {
       //   return this.$store.getters.leftSidebar
       // },
-      userType() {
-        const splittedUrl = window.location.pathname.split('/') // ["", "business", "reminders"]
-        return splittedUrl[1] === 'business' ? 'business' : 'specialist'
-      },
       menuLinksOverview() {
         return this.userType === 'business' ? this.menuLinksOverviewBusiness : this.menuLinksOverviewSpecialist
       },
