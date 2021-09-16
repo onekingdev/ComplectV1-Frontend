@@ -194,12 +194,11 @@
         userType: 'userType',
         appModule: 'appModule',
       }),
-      // leftSidebar () {
-      //   return this.$store.getters.leftSidebar
-      // },
+      
       menuLinksOverview() {
         return this.appModule === 'business' ? this.menuLinksOverviewBusiness : this.menuLinksOverviewSpecialist
       },
+
       menuLinksOverviewBusiness() {
         return [{
           to: '/business',
@@ -213,6 +212,7 @@
           label: 'Projects'
         }]
       },
+
       menuLinksOverviewSpecialist() {
         return [{
           to: '/specialist',
@@ -226,10 +226,12 @@
           label: 'Projects'
         }]
       },
+
       menuLinksProgramManagement() {
         const menu = this.appModule === 'business' ? this.menuLinksProgramManagementBusiness : this.menuLinksProgramManagementSpecialist
         return this.role ? menu.filter(item => item.access.indexOf( this.role ) !== -1) : menu
       },
+
       menuLinksProgramManagementBusiness() {
         return [{
           to: '/business/compliance_policies',
@@ -246,6 +248,7 @@
           access: ['basic', 'trusted', 'admin']
         }]
       },
+
       menuLinksProgramManagementSpecialist() {
         return [{
           to: '/specialist/compliance_policies',
@@ -259,10 +262,12 @@
           label: 'Risk Register'
         }]
       },
+
       menuLinksFiles() {
         const menu = this.appModule === 'business' ? this.menuLinksFilesBusiness : this.menuLinksFilesSpecialist
         return this.role ? menu.filter(item => item.access.indexOf( this.role ) !== -1) : menu
       },
+
       menuLinksFilesBusiness() {
         return [{
           to: '/business/file_folders',
@@ -275,13 +280,16 @@
           access: ['trusted', 'admin']
         }]
       },
+
       menuLinksFilesSpecialist() {
         return []
       },
+
       menuLinksReports() {
         const menu = this.appModule === 'business' ? this.menuLinksReportsBusiness : this.menuLinksReportsSpecialist
         return this.role ? menu.filter(item => item.access.indexOf( this.role ) !== -1) : menu
       },
+
       menuLinksReportsBusiness() {
         return [{
           to: '/business/reports/organizations',
@@ -298,13 +306,15 @@
           access: ['admin']
         }]
       },
+
       menuLinksReportsSpecialist() {
         return []
-      },
+      }
     },
     mounted() {
       this.checkRouteAndChangeSidebar()
     },
+    
     watch: {
       '$route' () {
         this.checkRouteAndChangeSidebar()

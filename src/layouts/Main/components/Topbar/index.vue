@@ -1,6 +1,6 @@
 <template lang="pug">
   .topbar
-    .logo
+    .logo(@click="openLink('default')")
       router-link.logo__link(:to='`/${appModule}`')
         img.logo__img.logo__img_small(src='@/assets/primary.svg' width="24" height="24")
     b-navbar.p-0(toggleable='lg')
@@ -40,23 +40,38 @@
         li(@click="openLink('documents')")
           router-link.dropdown-item(:to='`/${appModule}/profile`' active-class="active") Profile
         b-dropdown-item(@click="signOut") Sign Out
-      //a.btn.btn-topbar.btn-topbar_help.d-none(href="#")
-      //  b-icon.mr-2( icon="question-circle-fill" aria-label="Help")
-      //  | Help
 </template>
 
 <script>
-  import { mapActions, mapGetters } from "vuex"
+  import { mapGetters } from "vuex"
   import UserAvatar from '@/common/UserAvatar'
-
-  const plans = ['basic', 'business', 'team']
-  const roles = ['basic', 'trusted', 'admin']
 
   export default {
     name: "index",
-    components: {
-      UserAvatar
+    components: { UserAvatar },
+    data() {
+      return {
+        visible: true,
+        account: {
+          first_name: '',
+          last_name: ''
+        }
+      }
     },
+
+    computed: {
+      ...mapGetters({
+        appModule: 'appModule',
+        roles: 'roles/roles',
+        role: 'roles/currentRole',
+      }),
+
+      // It's current active roles (employee attached to Business account and has Roles
+      activeContracts () {
+        return this.roles
+      }
+    },
+
     created(){
       window.addEventListener("resize", this.screenWidthChangeHandler);
       if (window.innerWidth < 1000) this.visible = false
@@ -66,49 +81,20 @@
         first_name: user.contact_first_name ? `${user.contact_first_name}` : `${user.first_name}`,
         last_name: user.contact_last_name ? `${user.contact_last_name}` : `${user.last_name}`,
       }
-      // this.$store.commit('UPDATE_USER', user)
-      const token = localStorage.getItem('app.currentUser.token');
-      // if (token) {
-      //   this.$store.commit('auth/UPDATE_TOKEN', token)
-      //   this.$store.commit('auth/UPDATE_LOGIN_STATUS', true)
-      // }
-
-      // const splittedUrl = window.location.pathname.split('/') // ["", "business", "reminders"]
-      // this.userType = splittedUrl[1]
     },
+
     destroyed() {
       window.removeEventListener("resize", this.screenWidthChangeHandler);
     },
-    data() {
-      return {
-        visible: true,
-        account: {
-          first_name: '',
-          last_name: ''
-        },
-        // userType: '',
-        // businessMenu: {
-        //   link: `/${this.userType}`,
-        //   title: ''
-        // },
-        // specialistMenu: {
-        //   link: '',
-        //   title: ''
-        // }
-      }
-    },
+    
     methods: {
+      
       screenWidthChangeHandler(e) {
         if (window.innerWidth <= 991.98) this.visible = false
         if (window.innerWidth > 991.98) this.visible = true
       },
-      // ...mapActions({
-      //   signOut: 'auth/signOut',
-      // }),
+
       signOut() {
-        // this.singOut()
-        //   .then(response => console.log(response))
-        //   .catch(error => console.error(error))
         fetch(this.$store.getters.backendUrl + '/api/users/sign_out', {
           method: 'DELETE',
           headers: {
@@ -122,15 +108,8 @@
             window.location.href = `${window.location.origin}`
           })
           .catch(error => console.error(error))
-
-        // this.$store.dispatch('signOut')
-        //   .then(response => {
-        //     console.log(response)
-        //     window.location.href = `${window.location.origin}`
-        //     // router.push('home')
-        //   })
-        //   .catch(error => console.error(error))
       },
+
       openLink (value) {
         if(value === 'reports') {
           this.$store.commit('changeSidebar', 'reports')
@@ -139,9 +118,8 @@
         if(value === 'documents') this.$store.commit('changeSidebar', 'documents')
         if(value !== 'documents') this.$store.commit('changeSidebar', 'default')
       },
-      /**
-       * When we logged in as Employee, we can opend dashboard as employee for Business account and see some features based on roles
-       */
+      
+      //When we logged in as Employee, we can opend dashboard as employee for Business account and see some features based on roles
       openSelectedBusiness (business) {
         if (business) {
           localStorage.setItem('app.business_id', business.business_id)
@@ -155,48 +133,11 @@
         }
       }
     },
-    computed: {
-      ...mapGetters({
-        // currentUser: 'auth/getUser',
-        loggedIn: 'loggedIn',
-        userType: 'userType',
-        roles: 'roles/roles',
-        role: 'roles/currentRole',
-        plan: 'roles/currentPlan',
-        appModule: 'appModule'
-      }),
-      // loggedIn() {
-      //   return this.$store.getters.loggedIn;
-      // },
-      // specialist() {
-      //   return {
-      //     first_name: this.currentUser.contact_first_name ? `${this.currentUser.contact_first_name}` : `${this.currentUser.first_name}`,
-      //     last_name: this.currentUser.contact_last_name ? `${this.currentUser.contact_last_name}` : `${this.currentUser.last_name}`,
-      //   }
-      // }
-      // userType () {
-      //   return this.$store.getters.userType
-      // },
-
-      /**
-       * It's current active roles (employee attached to Business account and has Roles
-       */
-      activeContracts () {
-        return this.roles
-      }
-    },
+    
     watch: {
       '$route' () {
-        if(window.innerWidth < 992) {
-          this.visible = false
-        }
-        // document.getElementById('nav-collapse').classList.remove('show')
-        // $('#nav-collapse').collapse('hide')
+        if(window.innerWidth < 992) this.visible = false
       }
     }
   }
 </script>
-
-<style scoped>
-
-</style>

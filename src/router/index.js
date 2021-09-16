@@ -105,7 +105,7 @@ const router = new VueRouter({
           component: BusinessLayout,
           beforeEnter: BusinessGuard,
           children: [
-            { path: '/', name: 'dashboard', component: Dashboard },
+            { path: '', name: 'dashboard', component: Dashboard },
             { path: 'projects', name: 'projects', component: Projects },
             { path: 'projects/:id(\\d+)', name: 'project-review', props: route => ({ projectId: +route.params.id }), component: ProjectReview },
             { path: 'projects/:id(\\d+)/timesheets', name: 'project-timesheets', props: route => ({ projectId: +route.params.id }), component: ProjectTimesheetsShowPage },
@@ -152,7 +152,7 @@ const router = new VueRouter({
           component: SpecialistLayout,
           beforeEnter: SpecialistGuard,
           children: [
-            { path: '/', name: 'dashboard-specialist', component: DashboardS },
+            { path: '', name: 'dashboard-specialist', component: DashboardS },
             { path: 'reminders', name: 'tasks-specialist', component: SpecialistTasksPage },
             { path: 'my-projects', name: 'projects-specialist', component: ProjectsS },
             { path: 'my-projects/:id(\\d+)', name: 'project-review-specialist', props: paramsToInts(['id']), component: ProjectReviewS },
