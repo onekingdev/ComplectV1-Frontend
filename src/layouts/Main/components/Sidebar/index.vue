@@ -318,11 +318,10 @@
     watch: {
       '$route' () {
         this.checkRouteAndChangeSidebar()
+      },
+      leftSidebar: function(value) {
+        this.checkRouteAndChangeSidebar()
       }
     }
   }
 </script>
-
-<style scoped>
-
-</style>
