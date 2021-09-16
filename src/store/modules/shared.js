@@ -68,5 +68,10 @@ export default {
     overlay (state) {
       return state.overlay
     },
+    appModule (state) {
+      const userType = state.userType
+      if(!userType) return ''
+      return userType === 'businesses' || 'business' ? 'business' : 'specialist'
+    }
   }
 }

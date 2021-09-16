@@ -2,7 +2,7 @@ import Vue from "vue"
 import VueRouter from 'vue-router'
 // import AccessGuard from './auth-guard'
 import { AccessGuard, BusinessGuard, SpecialistGuard } from './auth-guard'
-Vue.use(VueRouter)
+
 
 // LAYOUTS
 const AuthLayout = () => import('@/layouts/Auth')
@@ -67,6 +67,8 @@ const ProjectsMarketplaceS = () => import ('@/specialist/projects/IndexPage')
 const ProfileS = () => import ('@/specialist/profile/Page')
 const SpecialistTasksPage = () => import ('@/specialist/tasks/Page')
 
+Vue.use(VueRouter)
+
 const paramsToInts = paramNames =>
   route => Object.fromEntries(paramNames.map(paramName => [paramName, +route.params[paramName]]))
 
@@ -104,10 +106,10 @@ const router = new VueRouter({
           beforeEnter: BusinessGuard,
           children: [
             { path: '/', name: 'dashboard', component: Dashboard },
-            { path: 'projects/', name: 'projects', component: Projects },
+            { path: 'projects', name: 'projects', component: Projects },
             { path: 'projects/:id(\\d+)', name: 'project-review', props: route => ({ projectId: +route.params.id }), component: ProjectReview },
             { path: 'projects/:id(\\d+)/timesheets', name: 'project-timesheets', props: route => ({ projectId: +route.params.id }), component: ProjectTimesheetsShowPage },
-            { path: 'projects/new/', name: 'project-post', component: PostProjectPage },
+            { path: 'projects/new', name: 'project-post', component: PostProjectPage },
             { path: 'projects/new/:id(\\d+)', name: 'project-post-from-local', props: route => ({ localProjectId: +route.params.id }), component: PostProjectPage },
             { path: 'project_posts/:id(\\d+)', name: 'project-post-view', props: route => ({ projectId: +route.params.id }), component: ShowPostPage },
             { path: 'project_posts/:id(\\d+)/edit', name: 'project-post-edit', props: route => ({ projectId: +route.params.id }), component: PostProjectPage },
@@ -132,14 +134,14 @@ const router = new VueRouter({
             { path: 'exams/:examUuid(.{36})', component: PageAuditorPortalExternalAccess, props: true },
             { path: 'settings/', name: 'settings', component: Settings,
               children:  [
-                { path: '/general', name: 'settings-general', component: Settings, },
-                { path: '/users', name: 'settings-users', component: Settings, },
-                { path: '/roles', name: 'settings-roles', component: Settings, },
-                { path: '/security', name: 'settings-security', component: Settings, },
-                { path: '/subscriptions', name: 'settings-subscriptions', component: Settings, },
-                { path: '/billings', name: 'settings-billings', component: Settings, },
-                { path: '/notifications', name: 'settings-notifications', component: Settings, },
-                { path: '/notification-center', name: 'settings-notification-center', component: SettingsNotifications },
+                { path: 'general', name: 'settings-general', component: Settings, },
+                { path: 'users', name: 'settings-users', component: Settings, },
+                { path: 'roles', name: 'settings-roles', component: Settings, },
+                { path: 'security', name: 'settings-security', component: Settings, },
+                { path: 'subscriptions', name: 'settings-subscriptions', component: Settings, },
+                { path: 'billings', name: 'settings-billings', component: Settings, },
+                { path: 'notifications', name: 'settings-notifications', component: Settings, },
+                { path: 'notification-center', name: 'settings-notification-center', component: SettingsNotifications },
               ],
             },
           ]
@@ -151,25 +153,25 @@ const router = new VueRouter({
           beforeEnter: SpecialistGuard,
           children: [
             { path: '/', name: 'dashboard-specialist', component: DashboardS },
-            { path: 'reminders/', name: 'tasks-specialist', component: SpecialistTasksPage },
-            { path: 'my-projects/', name: 'projects-specialist', component: ProjectsS },
+            { path: 'reminders', name: 'tasks-specialist', component: SpecialistTasksPage },
+            { path: 'my-projects', name: 'projects-specialist', component: ProjectsS },
             { path: 'my-projects/:id(\\d+)', name: 'project-review-specialist', props: paramsToInts(['id']), component: ProjectReviewS },
             { path: 'my-projects/:id(\\d+)/timesheets', name: 'my-project-timesheet-page', props: paramsToInts(['id']), component: ProjectTimesheetsPage },
-            { path: 'profile/', name: 'profile-specialist', component: ProfileS },
+            { path: 'profile', name: 'profile-specialist', component: ProfileS },
             { path: 'settings/', name: 'settings-specialist', component: SettingsS,
               children:  [
-                { path: 'settings/general/', name: 'settings-general-specialist', component: SettingsS, },
-                { path: 'settings/roles/', name: 'settings-roles-specialist', component: SettingsS, },
-                { path: 'settings/security/', name: 'settings-security-specialist', component: SettingsS, },
-                { path: 'settings/subscriptions/', name: 'settings-subscriptions-specialist', component: SettingsS, },
-                { path: 'settings/billings/', name: 'settings-billings-specialist', component: SettingsS, },
-                { path: 'settings/notifications/', name: 'settings-notifications-specialist', component: SettingsS, }
+                { path: 'general', name: 'settings-general-specialist', component: SettingsS, },
+                { path: 'roles', name: 'settings-roles-specialist', component: SettingsS, },
+                { path: 'security', name: 'settings-security-specialist', component: SettingsS, },
+                { path: 'subscriptions', name: 'settings-subscriptions-specialist', component: SettingsS, },
+                { path: 'billings', name: 'settings-billings-specialist', component: SettingsS, },
+                { path: 'notifications', name: 'settings-notifications-specialist', component: SettingsS, }
               ],
             },
-            { path: 'settings/notification-center/', name: 'settings-notification-center-specialist', component: SettingsNotificationsS },
-            { path: '/job_board', name: 'projects-marketpalce-specialist', component: ProjectsMarketplaceS },
-            { path: '/job_board/:initialOpenId(\\d+)', name: 'projects-marketpalce-specialist-view', props: paramsToInts(['initialOpenId']), component: ProjectsMarketplaceS },
-            { path: '/job_board/:projectId(\\d+)/applications/new', name: 'projects-marketplace-create-proposal', props: paramsToInts(['projectId']), component: CreateProposalPage, beforeEnter: AccessGuard },
+            { path: 'settings/notification-center', name: 'settings-notification-center-specialist', component: SettingsNotificationsS },
+            { path: 'job_board', name: 'projects-marketpalce-specialist', component: ProjectsMarketplaceS },
+            { path: 'job_board/:initialOpenId(\\d+)', name: 'projects-marketpalce-specialist-view', props: paramsToInts(['initialOpenId']), component: ProjectsMarketplaceS },
+            { path: 'job_board/:projectId(\\d+)/applications/new', name: 'projects-marketplace-create-proposal', props: paramsToInts(['projectId']), component: CreateProposalPage, beforeEnter: AccessGuard },
           ]
         }
       ]

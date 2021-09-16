@@ -192,12 +192,13 @@
         role: 'roles/currentRole',
         plan: 'roles/currentPlan',
         userType: 'userType',
+        appModule: 'appModule',
       }),
       // leftSidebar () {
       //   return this.$store.getters.leftSidebar
       // },
       menuLinksOverview() {
-        return this.userType === 'business' ? this.menuLinksOverviewBusiness : this.menuLinksOverviewSpecialist
+        return this.appModule === 'business' ? this.menuLinksOverviewBusiness : this.menuLinksOverviewSpecialist
       },
       menuLinksOverviewBusiness() {
         return [{
@@ -226,7 +227,7 @@
         }]
       },
       menuLinksProgramManagement() {
-        const menu = this.userType === 'business' ? this.menuLinksProgramManagementBusiness : this.menuLinksProgramManagementSpecialist
+        const menu = this.appModule === 'business' ? this.menuLinksProgramManagementBusiness : this.menuLinksProgramManagementSpecialist
         return this.role ? menu.filter(item => item.access.indexOf( this.role ) !== -1) : menu
       },
       menuLinksProgramManagementBusiness() {
@@ -259,7 +260,7 @@
         }]
       },
       menuLinksFiles() {
-        const menu = this.userType === 'business' ? this.menuLinksFilesBusiness : this.menuLinksFilesSpecialist
+        const menu = this.appModule === 'business' ? this.menuLinksFilesBusiness : this.menuLinksFilesSpecialist
         return this.role ? menu.filter(item => item.access.indexOf( this.role ) !== -1) : menu
       },
       menuLinksFilesBusiness() {
@@ -278,7 +279,7 @@
         return []
       },
       menuLinksReports() {
-        const menu = this.userType === 'business' ? this.menuLinksReportsBusiness : this.menuLinksReportsSpecialist
+        const menu = this.appModule === 'business' ? this.menuLinksReportsBusiness : this.menuLinksReportsSpecialist
         return this.role ? menu.filter(item => item.access.indexOf( this.role ) !== -1) : menu
       },
       menuLinksReportsBusiness() {
