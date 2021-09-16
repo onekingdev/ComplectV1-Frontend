@@ -1,8 +1,8 @@
 import axios from "../../services/axios"
 
-const END_POINT = "/specialist/billings";
+const END_POINT = "/specialist/bank_accounts";
 
-export async function getStripeAccount() {
+export async function getBankAccount() {
   return axios
     .get(`${END_POINT}`)
     .then(response => {
@@ -14,7 +14,7 @@ export async function getStripeAccount() {
     .catch(err => err)
 }
 
-export async function createStripeAccount(payload) {
+export async function createBankAccount(payload) {
   return await axios.post(`${END_POINT}`, payload)
     .then(response => {
       if (response) {
@@ -25,7 +25,7 @@ export async function createStripeAccount(payload) {
     .catch(err => err)
 }
 
-export async function updateStripeAccount(payload) {
+export async function updateBankAccount(payload) {
   return await axios.put(`${END_POINT}/${payload.id}`, payload)
     .then(response => {
       if (response) {
