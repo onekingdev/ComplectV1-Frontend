@@ -13,7 +13,7 @@ pnpm-debug.log*
 .cache
 
 node_modules
-# /dist
+/dist
 .history
 coverage
 /Icon?
