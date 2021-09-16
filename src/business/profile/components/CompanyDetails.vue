@@ -3,20 +3,21 @@
     Loading
     b-form(@submit='onSubmit' @reset='onReset' v-if='!loading && show')
       b-form-group#input-group-1
-        h4.mb-3 Company Details
+        h4.mb-3.semibold-text Company Details
         .row
           .col
             .d-flex
               .preview.preview_sm
                 b-img(v-if="url" left :src="url" alt="Preview image")
               .d-block
-                b-form-file.mb-2(v-model="form.logo" :state="Boolean(form.logo)" ref="inputFile" accept="image/*" @change="onFileChange" plain)
-                a.link(href='#' @click.prevent='onRemove') Remove
+                input.mb-2(ref="inputFile" type="file" accept="image/*" plain hidden @change="onFileChange")
+                b-button.m-r-1(variant="secondary" @click="selectFile") Upload
+                a.d-block.link.mt-2(href='#' @click.prevent='onRemove') Remove
         .row
           .col-sm-6.pr-sm-2
             b-form-group#inputB-group-1(label='Company Name' label-for='inputB-1' label-class="label required")
               b-form-input#inputB-1(v-model='form.business.business_name' type='text' placeholder='Company Name' required :class="{'is-invalid': errors.business_name }")
-              .invalid-feedback.d-block(v-if="errors.business_name") {{ errors.business_name[0] }}
+              .invalid-feedback.d-block(v-if="errors.address_1") {{ errors.address_1[0] }}
           .col-sm-6.pl-sm-2
             b-form-group(label='CRD number' label-class="label")
               b-form-input(v-model="form.business.crd_number" type='text' placeholder="Enter your CRD number" :class="{'is-invalid': errors.crd_number }")
@@ -38,18 +39,18 @@
               )
                 multiselect#selectB-4(
                 v-model="form.business.industries"
-                :options="industryOptions"
+                :options="staticCollection.industries"
                 :multiple="true"
                 :show-labels="false"
                 track-by="name",
                 label="name",
                 placeholder="Select Industry",
-                @input="onChange",
+                @input="onChangeIndustries",
                 required)
                 .invalid-feedback.d-block(v-if="errors.industries") {{ errors.industries[0] }}
                 // label.typo__label.form__label(v-if="errors.industries") {{ errors.industries[0] }}
           .col-sm-6.pl-sm-2
-            b-form-group#inputB-group-5(label='Sub-Industry' label-for='selectB-5' label-class="label required")
+            b-form-group#inputB-group-5(label='Sub-Industry' label-for='selectB-5' label-class="label")
               div(
               :class="{ 'invalid': errors.subIndustry }"
               )
@@ -67,18 +68,18 @@
           .col-sm-6.pr-sm-2
             b-form-group#inputB-group-6(label='Jurisdiction' label-for='selectB-6' label-class="label required")
               div(
-              :class="{ 'invalid': errors.jurisdiction }"
+              :class="{ 'invalid': errors.jurisdictions }"
               )
                 multiselect#selectB-6(
                 v-model="form.business.jurisdictions"
-                :options="jurisdictionOptions"
+                :options="staticCollection.jurisdictions"
                 :multiple="true"
                 :show-labels="false"
                 track-by="name",
                 label="name",
                 placeholder="Select Jurisdiction",
                 required)
-                .invalid-feedback.d-block(v-if="errors.jurisdiction") {{ errors.jurisdiction[0] }}
+                .invalid-feedback.d-block(v-if="errors.jurisdictions") {{ errors.jurisdictions[0] }}
           .col-sm-6.pl-sm-2
             b-form-group#inputB-group-7(label='Time Zone' label-for='selectB-7' label-class="label required")
               div(
@@ -86,7 +87,7 @@
               )
                 multiselect#selectB-7(
                 v-model="form.business.time_zone"
-                :options="timeZoneOptions"
+                :options="staticCollection.timezones"
                 :multiple="false"
                 :show-labels="false"
                 track-by="name",
@@ -107,7 +108,6 @@
         .row
           .col-xl-9.pr-xl-2
             b-form-group#inputB-group-9(label='Business Address' label-for='inputB-9' label-class="label required")
-              // b-form-input#inputB-9(v-model='form.business.address_1' placeholder='Business Address' required :class="{'is-invalid': errors.address_1 }" v-debounce:1000ms="onAdressChange")
               vue-google-autocomplete#map(ref="address" classname='form-control' :class="{'is-invalid': errors.address_1 }" v-model='form.business.address_1' placeholder='Business Address'  :fields="['address_components', 'adr_address', 'geometry', 'formatted_address', 'name']" v-on:placechanged='getAddressData')
               .invalid-feedback.d-block(v-if="errors.address_1") {{ errors.address_1[0] }}
           .col-xl-3.pl-xl-2
@@ -126,19 +126,19 @@
               )
                 multiselect#selectB-13(
                 v-model="form.business.state"
-                :options="stateOptions"
+                :options="staticCollection.states"
                 :show-labels="false"
                 placeholder="Select state",
                 @input="onChangeState",
                 required)
                 .invalid-feedback.d-block(v-if="errors.state") {{ errors.state[0] }}
-          .col-xl-4.pl-xl-2
+          .col-xl-4.pl-xl-2.mb-3
             b-form-group#inputB-group-11(label='Zip' label-for='inputB-11' label-class="label required")
               b-form-input#inputB-11(v-model='form.business.zipcode' placeholder='Zip' required :class="{'is-invalid': errors.zipcode }")
               .invalid-feedback.d-block(v-if="errors.zipcode") {{ errors.zipcode[0] }}
-        b-form-group.text-right
+        b-form-group.text-right.mb-0
           b-button.btn.btn-link.mr-2(type='reset') Cancel
-          b-button.btn(type='submit' variant='primary') Save
+          b-button.btn(type='submit' variant='dark') Save
 </template>
 
 <script>
@@ -148,6 +148,7 @@
 
   const initialForm = () => ({
     business: {
+      logo: null,
       crd_number: '',
       contact_phone: '',
       business_name: '',
@@ -166,6 +167,19 @@
     }
   })
 
+  const DATA_FIELDS = [
+    'business_name',
+    'crd_number',
+    'aum',
+    'client_account_cnt',
+    'city',
+    'state',
+    'zipcode',
+    'address_1',
+    'website',
+    'logo'
+  ]
+
   export default {
     name: "CompanyDetails",
     components: {
@@ -176,56 +190,130 @@
     data() {
       return {
         form: initialForm(),
-        industryOptions: [],
         subIndustryOptions: [],
-        jurisdictionOptions: [],
-        stateOptions: [],
-        timeZoneOptions: [],
-
         show: true,
         errors: {},
         url: null,
-        inputFile: null
       }
     },
+    created() {
+      if (this.user) {
+        const user = this.user
+        this.form.business = Object.assign({}, this.form.business, { ...user })
+        this.form.business.sub_industries = []
+        this.onChangeIndustries(this.user.industries)
+        if (user.logo) {
+          this.url = process.env.NODE_ENV === 'development' ? `${this.$store.getters.backendUrl}/${user.logo}` : user.logo
+        }
+        this.form.business.time_zone = {
+          name: user.time_zone,
+          value: user.time_zone
+        }
+      }
+    },
+    mounted() {
+      this.$store.dispatch('getStaticCollection')
+        .then(response => {
+          this.onChangeIndustries(this.user.industries)
+
+          const results = this.user.sub_industries
+          if(results) {
+            for (const [key, value] of Object.entries(this.staticCollection.sub_industries_business)) {
+              for (const i of results) {
+                if (i === value) {
+                  this.form.business.sub_industries.push({
+                    name: value,
+                    value: key
+                  })
+                }
+              }
+            }
+          }
+        })
+        .catch(error => console.error(error))
+    },
     methods: {
+      selectFile() {
+        let fileInputElement = this.$refs.inputFile
+        fileInputElement.click()
+        this.form.business.logo = this.$refs.inputFile.files[0]
+      },
+      onChangeIndustries (industries) {
+        if(industries) {
+          delete this.errors.industries
+          this.subIndustryOptions = []
+          const results = industries.map(industry => industry.id)
+
+          if(this.staticCollection.sub_industries_business) {
+            for (const [key, value] of Object.entries(this.staticCollection.sub_industries_business)) {
+              for (const i of results) {
+                if (i === +key.split('_')[0]) {
+                  this.subIndustryOptions.push({
+                    value: key,
+                    name: value
+                  })
+                }
+              }
+            }
+          }
+        }
+      },
       onFileChange(e) {
         // Show preview
-        const file = e.target.files[0];
-        this.url = URL.createObjectURL(file);
+        const file = e.target.files[0]
+        this.url = URL.createObjectURL(file)
 
-        this.form.logo = this.$refs.inputFile.files[0];
+        this.form.business.logo = this.$refs.inputFile.files[0]
+      },
+      validate() {
+        this.errors = {}
+        const stringField = ['address_1', 'zipcode', 'city', 'state', 'time_zone']
+        const arrayField = ['industries', 'jurisdictions']
+        for(let i = 0 ;i < stringField.length; i++) {
+          if(!this.form.business[stringField[i]]) this.$set(this.errors, stringField[i], ['Required field'])
+        }
+
+        for(let i = 0; i < arrayField.length; i++) {
+          if(this.form.business[arrayField[i]].length < 1) this.$set(this.errors, arrayField[i], ['Required field'])
+        }
+      },
+      applyData(formData, field, data) {
+        if (data.length) {
+          data.forEach((item) => formData.append(field, item))
+        } else {
+          formData.append(field, data)
+        }
+      },
+      prepareData() {
+        let dataToSend = new FormData()
+        const business = this.form.business
+        DATA_FIELDS.forEach(field => {
+          dataToSend.append(`business[${field}]`, business[field])
+        })
+        dataToSend.append('business[time_zone]', business.time_zone.value)
+        this.applyData(dataToSend, 'business[industry_ids][]', business.industries.map(record => record.id))
+        this.applyData(dataToSend, 'business[sub_industry_ids][]', business.sub_industries.map(record => record.value))
+        this.applyData(dataToSend, 'business[jurisdiction_ids][]', business.jurisdictions.map(record => record.id))
+        return dataToSend
       },
       onSubmit(event) {
         event.preventDefault()
-
-        const params = {
-          // 'logo': this.form.logo,
-          'address': this.form.address,
-          'phone': this.form.phone,
-          'email': this.form.email,
-          'disclosure': this.form.disclosure,
-          'body': this.form.body,
-        }
-        // Add logo if it exist
-        if (this.form.logo) params.logo = this.form.logo
-
-        let formData = new FormData()
-
-        Object.entries(params).forEach(
-          ([key, value]) => formData.append(key, value)
-        )
-        // console.log('formData', formData)
-
-        this.$store.dispatch('...', formData)
-          .then(response => this.toast('Success', `Config successfully saved!`) )
-          .catch(error => this.toast('Error', `Something wrong! ${error}`) )
+        this.validate()
+        if (Object.keys(this.errors).length > 0) return
+        const dataToSend = this.prepareData()
+        const payload = { business: dataToSend }
+        this.$store.dispatch('updateAccountInfoWithFile', payload)
+          .then(response => {
+            if (response.errors) {
+              this.toast('Error', 'Information has not been updated. Please try again.', true)
+            } else {
+              this.toast('Success', 'Information has been updated.')
+            }
+          }).catch(error => console.error(error) )
       },
       onReset(event) {
         event.preventDefault()
-        // Reset our form values
-        this.form = initialForm();
-        // Trick to reset/clear native browser form validation state
+        this.form = initialForm()
         this.show = false
         this.$nextTick(() => {
           this.show = true
@@ -233,15 +321,18 @@
       },
       onRemove() {
         this.url = null,
-          this.form.logo = null
+        this.form.business.logo = null
       },
       onChangeState(){
         delete this.errors.state
       },
+      onAdressChange() {
+        const address = this.form.business.address_1
+        this.$store.dispatch('getGeo', address)
+          .then(response => console.info(response))
+          .catch(error => console.error(error))
+      },
       getAddressData (addressData, placeResultData, id) {
-        // console.log('addressData', addressData)
-        // console.log('placeResultData', placeResultData)
-        // console.log('id', id)
         const input = document.getElementById(id)
         const { administrative_area_level_1, locality, postal_code } = addressData
 
@@ -272,13 +363,16 @@
       },
     },
     computed: {
+      user() {
+        return this.$store.getters.getUser
+      },
+      staticCollection() {
+        return this.$store.getters.staticCollection
+      },
       loading() {
-        return this.$store.getters.loading;
+        return this.$store.getters.loading
       },
     },
   }
 </script>
-
-<style scoped>
-
-</style>
+<style src="vue-multiselect/dist/vue-multiselect.min.css"></style>

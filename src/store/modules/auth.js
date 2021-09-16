@@ -336,7 +336,9 @@ export default {
             'Content-Type': 'multipart/form-data'
           }
         };
-        const response = await axios.patch(`/specialist`, payload, config)
+        const endPointUserType = payload.business ? 'business' : 'specialist'
+        const data = payload.business ? payload.business : payload
+        const response = await axios.patch(`${endPointUserType}`, data, config)
         if(response.data) {
           const data = response.data
           if (payload.business) commit('UPDATE_USER', new AccountInfoBusiness(
