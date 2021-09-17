@@ -3,26 +3,26 @@
     div(v-b-modal="modalId" :class="{'d-inline-block':inline}")
       slot
 
-    b-modal.fade(:id="modalId" title="Add Experience")
+    b-modal.fade(:id="modalId" title="New Experience")
       .row
         .col-12.m-b-20
           label.form-label Title
-          input.form-control(v-model="form.name" type="text" placeholder="Enter title/role at company" ref="input" @keyup="onChange")
-          .invalid-feedback.d-block(v-if="errors.name") {{ errors.name[0] }}
+          input.form-control(v-model="form.job_title" type="text" placeholder="Title/Role at company" ref="input" @keyup="onChange")
+          .invalid-feedback.d-block(v-if="errors.job_title") {{ errors.job_title[0] }}
       .row
         .col-12.m-b-20
           label.form-label Employer
-          input.form-control(v-model="form.employer" type="text" placeholder="Enter company name" ref="input" @keyup="onChange")
-          .invalid-feedback.d-block(v-if="errors.employer") {{ errors.employer[0] }}
+          input.form-control(v-model="form.company" type="text" placeholder="Company Name" ref="input" @keyup="onChange")
+          .invalid-feedback.d-block(v-if="errors.company") {{ errors.company[0] }}
       .row.m-b-20
         .col-6
           label.form-label Start Date
-          DatePicker(v-model="form.starts_on" :options="datepickerOptions")
-          .invalid-feedback.d-block(v-if="errors.starts_on") {{ errors.starts_on[0] }}
+          b-form-datepicker(v-model="form.start_date" :date-format-options="{ year: 'numeric', month: '2-digit', day: '2-digit' }" locale="en-US")
+          .invalid-feedback.d-block(v-if="errors.start_date") {{ errors.start_date[0] }}
         .col-6
-          label.form-label Due Date
-          DatePicker(v-model="form.ends_on" :options="datepickerOptions")
-          .invalid-feedback.d-block(v-if="errors.ends_on") {{ errors.ends_on[0] }}
+          label.form-label End Date
+          b-form-datepicker(v-model="form.end_date" :date-format-options="{ year: 'numeric', month: '2-digit', day: '2-digit' }" locale="en-US")
+          .invalid-feedback.d-block(v-if="errors.end_date") {{ errors.end_date[0] }}
       .row.m-b-20
         .col
           label.form-label Description
@@ -38,7 +38,7 @@
 
       template(slot="modal-footer")
         button.btn.link(@click="$bvModal.hide(modalId)") Cancel
-        button.btn.btn-dark(@click="submit") Save
+        button.btn.btn-dark(@click="submit") {{ this.form.id ? 'Save' : 'Add' }}
 </template>
 
 <script>
@@ -49,16 +49,20 @@
         type: Boolean,
         default: true
       },
+      workExperience: {
+        type: Object,
+        required: false
+      }
     },
     data() {
       return {
         modalId: `modal_${rnd()}`,
-        errors: [],
+        errors: {},
         form: {
-          name: '',
-          employer: '',
-          starts_on: '',
-          ends_on: '',
+          job_title: '',
+          company: '',
+          start_date: '',
+          end_date: '',
           description: '',
         }
       }
@@ -70,20 +74,32 @@
           this.submit(e)
         }
       },
+      validate() {
+        this.errors = {}
+        const requiredFields = ['job_title', 'company', 'start_date', 'end_date']
+        for(let i = 0; i < requiredFields.length; i++) {
+          const field = requiredFields[i]
+          if (!this.form[field]) this.$set(this.errors, field, ['Required field'])
+        }
+       
+        if (this.form.start_date && this.form.end_date) {
+          if (this.form.start_date > this.form.end_date) {
+            this.$set(this.errors, 'end_date', ['Date must occur after start date'])
+          }
+        }
+      },
       submit(e) {
         e.preventDefault();
-        this.errors = [];
-
-        this.$emit('compliteConfirmed')
+        this.validate()
+        if (Object.keys(this.errors).length > 0) return 
+        this.$emit('compliteConfirmed', this.form)
         this.$bvModal.hide(this.modalId)
       },
     },
-    computed: {
-      datepickerOptions() {
-        return {
-          min: new Date
-        }
-      },
+    created() {
+      if (this.workExperience) {
+        this.form = {...this.workExperience}
+      }
     },
   }
 </script>

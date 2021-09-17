@@ -18,6 +18,7 @@ import stripeAccounts from "./modules/stripe_accounts";
 import projects from "./modules/projects";
 import tasks from "./modules/tasks";
 import settings from "./modules/settings";
+import work_experiences from "./modules/work_experiences";
 
 
 const URL_PROJECT_SHOW = "/business/projects/:id";
@@ -85,6 +86,7 @@ const store = new Vuex.Store({
 		// },
 		auth,
 		shared,
+		work_experiences,
 		annual: {
 			namespaced: true,
 			...annual,
