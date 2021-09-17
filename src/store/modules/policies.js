@@ -2,6 +2,7 @@ import axios from '@/services/axios'
 // import store from '@/store/commonModules/shared'
 import * as jwt from '@/services/business'
 import backendUrl from '@/services/axios/backendUrl'
+const TOKEN = localStorage.getItem('app.currentUser.token') ? JSON.parse(localStorage.getItem('app.currentUser.token')) : ''
 
 const mapAuthProviders = {
   jwt: {
@@ -199,7 +200,7 @@ export default {
                   const pdf = data.file || data.pdf
                   if (pdf) {
                     clearInterval(getPdfUrl)
-                    window.open(pdf, '_self')
+                    window.open(backendUrl+pdf, '_self')
                   }
                   return pdf
                 }).catch(err => console.log(err))

@@ -157,7 +157,7 @@ import Tiptap from '@/common/Tiptap'
           .then(response => {
             this.toast('Success', 'Policy has been published.')
             setTimeout(() => {
-              this.$router.push(`/business/compliance_policies/${response.id}`)
+              this.$router.push(`${this.$store.getters.backendUrl}/business/compliance_policies/${response.id}`)
             }, 2000)
           })
           .catch((err) => {
