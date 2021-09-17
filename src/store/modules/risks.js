@@ -52,13 +52,17 @@ export default {
   },
   actions: {
     // RISKS
-    async getRisks ({commit}) {
+    async getRisks ({commit, rootGetters}) {
       commit("clearError");
       commit("setLoading", true);
 
       try {
         const endpointUrl = '/api/business/risks'
-        const data = await fetch(`${backendUrl}${endpointUrl}`, { headers: {'Accept': 'application/json', 'business_id': window.localStorage["app.business_id"]}})
+        const data = await fetch(`${backendUrl}${endpointUrl}`, { headers: {
+          'Accept': 'application/json',
+          'business_id': window.localStorage["app.business_id"],
+          ...rootGetters.authHeaders.headers
+        }})
           .then(response => {
             return response.json()
           })
