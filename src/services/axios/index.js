@@ -11,11 +11,10 @@ const axios = instance.create({
 })
 
 axios.interceptors.request.use((request) => {
-  // const accessToken = store.get('accessToken')
-  const accessToken = store.getters['accessToken']
+  const accessToken = store.getters['accessToken'] || window.localStorage.getItem('app.currentUser.token'),
+    removeQuotes = str => str.indexOf('"') === 0 ? JSON.parse(str) : str
   if (accessToken) {
-      request.headers.Authorization = `${accessToken}`
-      // request.headers.AccessToken = accessToken
+    request.headers.Authorization = removeQuotes(accessToken)
   }
   const businessId = window.localStorage.getItem('app.business_id')
   if (businessId && (typeof businessId !== "undefined")) {
@@ -23,13 +22,6 @@ axios.interceptors.request.use((request) => {
       request.headers.business_id = JSON.parse(businessId)
     }
   }
-
-  const jwtToken = window.localStorage.getItem('app.currentUser.token')
-  if (jwtToken) {
-      request.headers['Authorization'] = `${JSON.parse(jwtToken)}`
-      // request.headers['X-Auth-Token'] = jwtToken
-  }
-
   return request
 })
 
