@@ -19,7 +19,7 @@ export default {
     submit() {
       fetch(this.$store.getters.backendUrl+this.url, {
         method: 'DELETE',
-        headers: {'Accept': 'application/json', ...this.headers, ...this.$store.getters.authHeaders },
+        headers: {'Accept': 'application/json', ...this.headers, ...this.$store.getters.authHeaders.headers },
       }).then(response => {
         if (response.status === 422) {
           response.json().then(errors => {
