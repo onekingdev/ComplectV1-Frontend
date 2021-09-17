@@ -34,6 +34,9 @@
       }
     },
     computed: {
+      userType() {
+        return this.$store.getters.userType
+      },
       thisMonthText() {
         const date = DateTime.fromJSDate(new Date())
         return date.toFormat('MMM yyyy')
@@ -42,6 +45,8 @@
         return this.$store.getters.loading;
       },
       payments() {
+        console.log(this.userType)
+        if (this.userType === 'specialists') return this.$store.getters.specialistPayments
         return this.$store.getters.businessPayments
       }
     },

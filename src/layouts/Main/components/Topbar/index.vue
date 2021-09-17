@@ -14,7 +14,7 @@
           li.nav-item.topbar-menu__item(v-if="appModule === 'business'" @click="openLink('documents')")
             router-link.topbar-menu__link(:to='`/${appModule}/file_folders`' active-class="active") Documents
           li.nav-item.topbar-menu__item(v-if="role !=='basic'" @click="openLink('reports')")
-            router-link.topbar-menu__link(:to='`/${appModule}/reports/organizations`' active-class="active") Reports
+            router-link.topbar-menu__link(:to='reportLink' active-class="active") Reports
           li.nav-item.topbar-menu__item.d-none
             a.topbar-menu__link(aria-current='page' href='#') Community
           li.nav-item.topbar-menu__item.d-sm-none(v-if="appModule !== 'specialist' && role !=='basic'" @click="openLink('default')")
@@ -71,6 +71,10 @@
       currentUser() {
         return this.$store.getters.getUser
       },
+      reportLink() {
+        if (this.appModule === 'business') return `/${this.appModule}/reports/organizations`
+        return '/specialist/reports/financials'
+      }
     },
 
     created(){

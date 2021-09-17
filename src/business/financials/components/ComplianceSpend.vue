@@ -4,12 +4,12 @@
     .card.financial-card.h-100.m-b-20
       .card-title.financial-card__title.p-20
         h2.card-title__name Compliance Spend
-      .card-body.white-card-body.financial-card__body
+      .card-body.white-card-body.financial-card__body(v-if="payments")
         .chart
           .d-flex.justify-content-end.mb-3
             p.financial-card__info.mb-0
               b YTD:&nbsp;
-              span.financial-card__sum $24,560
+              span.financial-card__sum ${{ payments.processed_ytd }}
           ComplianceSpendChart
 </template>
 
@@ -22,18 +22,13 @@
       ComplianceSpendChart,
       Loading,
     },
-    data() {
-      return {
-
-      }
-    },
-    methods: {
-
-    },
     computed: {
       loading() {
         return this.$store.getters.loading;
       },
+      payments() {
+        return this.$store.getters.businessPayments
+      }
     },
   }
 </script>

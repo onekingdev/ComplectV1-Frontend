@@ -68,7 +68,7 @@
         },
         series: [{
           name: '',
-          data: [this.annualBudget.processed_ytd, this.annualBudget.annual_budget]
+          data: [this.annualBudget.current, this.annualBudget.goal]
         }],
       }
     },
@@ -76,7 +76,7 @@
       annualBudget: function(newVal, oldVal) {
         this.series = [{
           name: '',
-          data: [newVal.processed_ytd, newVal.annual_budget]
+          data: [newVal.current, newVal.goal]
         }]
       }
     }

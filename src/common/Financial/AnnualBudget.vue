@@ -11,13 +11,13 @@
             b-dropdown-form(style="width: 240px;")
               b-form-input.mb-2#dropdown-form-annual-budget(v-model="newAnnualBudget" type="number" size='sm' placeholder='Annual Budget value')
               Errors(:errors="errors.annualBudget")
-              b-button(variant='primary' size='sm' @click='saveBudget') Save
+              b-button(variant='primary' size='sm' @click='update') Save
       .card-body.white-card-body.financial-card__body(v-if="annualBudget")
         .chart
           .d-flex.justify-content-end.mb-3
             p.financial-card__info.mb-0
               b Left:&nbsp;
-              span.financial-card__sum ${{ this.annualBudget.processed_ytd }}
+              span.financial-card__sum ${{ this.annualBudget.current }}
           AnnualBudgetChart(:annualBudget="annualBudget")
 </template>
 
@@ -32,37 +32,49 @@
     },
     data() {
       return {
-        annualBudget: null,
+        annualBudget: {
+          current: 0,
+          goal: 0
+        },
         newAnnualBudget: '',
         errors: {}
       }
     },
     created() {
-      this.getAnnualPayment()
+      this.getData()
     },
     methods: {
-      async getAnnualPayment() {
-        const res = await this.$store.dispatch('getAnnualBudget')
-        if (res) this.annualBudget = res
-      },
-      async saveBudget() {
+      validate() {
         this.errors = {}
         if (this.newAnnualBudget > this.annualBudget.processed_ytd) {
           this.errors['annualBudget'] = ['Value must less than charges paid YTD value']
-          return
         }
-        const data = {
-          annual_budget: this.newAnnualBudget
+      },
+      async getData() {
+        const endPoint = this.isSpecialist ? 'getRevenue' : 'getAnnualBudget'
+        const res = await this.$store.dispatch(endPoint)
+        if (res) {
+          this.annualBudget = {current: res.processed_ytd, goal: this.isSpecialist ? res.annual_revenue_goal : res.annual_budget}
         }
-        const res = await this.$store.dispatch('updateAnnualBudget', data)
+      },
+      async update() {
+        if (Object.keys(this.errors).length > 0) return
+        const endPoint = this.isSpecialist ? 'updateRevenue' : 'updateAnnualBudget'
+        const res = await this.$store.dispatch(endPoint, this.newAnnualBudget)
         if (res) {
           this.$refs.dropdown.hide(true)
           this.newAnnualBudget = ''
-          this.annualBudget = res
+          this.annualBudget = {current: res.processed_ytd, goal: this.isSpecialist ? res.annual_revenue_goal : res.annual_budget}
         }
       }
     },
     computed: {
+      isSpecialist() {
+        return this.userType === 'specialists'
+      },
+      userType() {
+        return this.$store.getters.userType
+      },
       loading() {
         return this.$store.getters.loading;
       },

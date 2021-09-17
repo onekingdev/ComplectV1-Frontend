@@ -8,21 +8,16 @@
         ComplianceSpend
       .col-xl-5.col-12.m-b-20
         AnnualBudget
-    .row
-      .col
-        PaymentDetails
 
 </template>
 
 <script>
   import ComplianceSpend from "./components/ComplianceSpend";
-  import AnnualBudget from "./components/AnnualBudget";
-  import Payments from "./components/Payments";
-  import PaymentDetails from "./components/PaymentDetails";
+  import AnnualBudget from "@/common/Financial/AnnualBudget";
+  import Payments from "@/common/Financial/Payments";
 
   export default {
     components: {
-      PaymentDetails,
       Payments,
       ComplianceSpend,
       AnnualBudget,
@@ -32,8 +27,15 @@
 
       }
     },
+    created() {
+      this.$store.dispatch('getPaymentInfor', {type: 'business'})
+      this.getPaymentInfor()
+    },
     methods: {
-
+      async getPaymentInfor() {
+        const result = await this.$store.dispatch('getAllPaymentProcess')
+        console.log(result)
+      }
     },
     computed: {
 
