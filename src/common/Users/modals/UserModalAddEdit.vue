@@ -4,7 +4,7 @@
       slot
 
     b-modal.fade(:id="modalId" :title="user ? 'Edit User' : 'New User'" @shown="getData")
-      .row(v-if="!userLimit")
+      .row(v-if="!userLimit && !user")
         .col-12.m-b-1
           Notifications(:notify="notify")
             button.btn.btn-default(@click='editPlan') Edit
@@ -127,17 +127,18 @@
               if (response.errors) {
                 for (const [key, value] of Object.entries(response.errors)) {
                   this.errors = Object.assign({}, this.errors, { [key]: value })
-                  if (response.errors.seat) this.toast('Error', `${response.errors.seat}`, true)
+                  if (response.errors.seat) this.toast('Error', 'User has not been created. Please purchase additional seats.', true)
                 }
               }
 
               if (!response.errors) {
-                this.toast('Success', `User successfully ${!this.user ? 'added' : 'edited'}`)
-                this.$emit('saved')
+                this.toast('Success', `User has been ${!this.user ? 'created' : 'updated'}`)
+                this.$emit('saved');
+                this.form = initialForm();
                 this.$bvModal.hide(this.modalId)
               }
             })
-            .catch(error => this.toast('Error', `${error}`, true))
+            .catch(error => this.toast('Error', `User has not been ${!this.user ? 'created' : 'updated'}. Please try again.`, true))
 
         } catch (error) {
           this.toast('Error', error.message, true)
