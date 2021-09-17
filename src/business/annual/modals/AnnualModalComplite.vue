@@ -3,7 +3,7 @@
     div(v-b-modal="modalId" :class="{'d-inline-block':inline}")
       slot
 
-    b-modal.fade(:id="modalId" :title="'Complete Section'")
+    b-modal.fade(:id="modalId" :title="'Complete Category'")
       .row
         .col-md-1.text-center.px-0
           b-icon.mt-1.ml-3(icon="check-circle-fill" width="25" height="25" variant="success")
