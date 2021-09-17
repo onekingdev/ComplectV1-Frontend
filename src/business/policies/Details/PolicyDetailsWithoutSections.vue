@@ -15,19 +15,21 @@
                 b-icon(icon='list')
               b-badge.mr-3(:variant="statusVariant(policy.status)") {{ policy.status }}
               h3.policy__main-title.m-y-0 {{ policy.title }}
-            .d-flex.justify-content-end.align-items-center(v-if="!policy.archived")
-              a.link.btn.mr-3(@click="saveDraft") Save Draft
-              span.dowloading(v-if="isDowloading")
-                .lds-ring.lds-ring-small
-                  div
-                  div
-                  div
-                  div
-              button.btn.btn-default.mr-3(v-if="!isDowloading && policy.status != 'draft' && policy.status != 'archived'" @click="download") Download
-              PoliciesModalPublish(@publishConfirmed="publishPolicy")
-                button.btn.btn-dark.mr-3 Publish
+            .d-flex.justify-content-end.align-items-center
+              template(v-if="!policy.archived")
+                a.link.btn.mr-3(@click="saveDraft") Save Draft
+                span.dowloading(v-if="isDowloading")
+                  .lds-ring.lds-ring-small
+                    div
+                    div
+                    div
+                    div
+                button.btn.btn-default.mr-3(v-if="!isDowloading && policy.status != 'draft' && policy.status != 'archived'" @click="download") Download
+                PoliciesModalPublish(@publishConfirmed="publishPolicy")
+                  button.btn.btn-dark.mr-3 Publish
               button.btn.btn__close(@click="closeAndExit")
                 b-icon(icon='x')
+          
           b-tabs.policy-tabs(content-class="mt-0")
             template(#tabs-end)
               b-dropdown.actions(text='Actions', variant="default", right)
