@@ -44,13 +44,11 @@
 
                     template(v-if="currentExam.exam_requests" v-for="(currentRequst, i) in currentExamRequestsFiltered")
                       .reviews__card--internal.exams__card--internal(:key="`${currentExam.name}-${i}`" :class="{ 'completed': currentRequst.complete }")
-                        .row.m-b-1
+                        .row.m-b-1.align-items-center
                           .col-md-1
-                            .reviews__checkbox.d-flex.justify-content-between
-                              .reviews__checkbox-item.reviews__checkbox-item--true(@click="markCompleteReqeust(currentRequst.id, true, currentExam.complete)" :class="{ 'checked': currentRequst.complete, 'disabled': currentExam.complete }")
+                            .reviews__checkbox.d-flex.justify-content-between.m-t-0
+                              .reviews__checkbox-item.reviews__checkbox-item--true.m-t-0(@click="markCompleteReqeust(currentRequst.id, true, currentExam.complete)" :class="{ 'checked': currentRequst.complete, 'disabled': currentExam.complete }")
                                 b-icon(icon="check2")
-                              .reviews__checkbox-item.reviews__checkbox-item--false(@click="markCompleteReqeust(currentRequst.id, false, currentExam.complete)" :class="{ 'checked': !currentRequst.complete, 'disabled': currentExam.complete }")
-                                b-icon(icon="x")
                           .col-md-11
                             .d-flex.justify-content-between.align-items-center
                               .d-flex.align-items-center
@@ -67,7 +65,7 @@
                                   ExamModalSelectFiles(:currentExamId="currentExam.id"  :request="currentRequst" :inline="false")
                                     b-dropdown-item Select Existing
                                 TaskFormModal(@saved="createTask(currentRequst.id)" :inline="false")
-                                  button.btn.btn-default.m-x-1 New Task
+                                  button.btn.btn-primary.btn-dark.m-x-1 New Task
                                 b-dropdown(size="sm" variant="none" class="m-0 p-0" right)
                                   template(#button-content)
                                     b-icon(icon="three-dots")
@@ -76,7 +74,7 @@
                                   b-dropdown-item(v-if="plan !=='team'" @click="shareRequestAction(currentRequst.id, !currentRequst.shared)") {{ currentRequst.shared ? 'Unshare' : 'Share' }}
                                   ExamRequestModalDelete(@deleteConfirmed="deleteExamRequest(currentRequst.id)" :inline="false")
                                     b-dropdown-item.delete Delete
-                        .row.m-b-1
+                        .row.m-b-1.m-x-15
                           .col-md-11.offset-md-1
                             p.paragraph-16 {{ currentRequst.details }}
                         .row.m-b-1
@@ -288,8 +286,8 @@
         }
         try {
           await this.updateCurrentExamRequest(data)
-            .then(response => this.toast('Success', "Request has been saved."))
-            .catch(error => this.toast('Error', error.message, true))
+            .then(response => this.toast('Success', "Request has been marked as complete."))
+            .catch(error => this.toast('Error', 'Request has not been marked as complete. Please try again.', true))
         } catch (error) {
           this.toast('Error', error.message, true)
         }
@@ -389,7 +387,9 @@
 
 <style scoped>
   @import "./styles.css";
-
+  .reviews__checkbox {
+    margin: 0;
+  }
   .min-w-225 {
     min-width: 225px;
   }
