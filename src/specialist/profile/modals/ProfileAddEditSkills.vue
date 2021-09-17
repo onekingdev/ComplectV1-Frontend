@@ -6,7 +6,7 @@
     b-modal.fade(:id="modalId" title="Edit Skills")
       .row
         .col
-          b-form-group(label='Skills' class="onboarding-group m-b-30" label-for='selectS-8' label-class="label required")
+          b-form-group(label='Skills' class="onboarding-group m-b-30" label-for='selectS-8' label-class="label")
             div(
             :class="{ 'invalid': errors.skills }"
             )
@@ -52,15 +52,13 @@
     data() {
       return {
         modalId: `modal_${rnd()}`,
-        errors: []
+        errors: {}
       }
     },
     methods: {
       submit(e) {
         e.preventDefault();
-        this.errors = [];
-
-        this.$emit('compliteConfirmed')
+        this.$emit('updateSkill', this.form.skills)
         this.$bvModal.hide(this.modalId)
       },
       addSkillsTag (newTag) {

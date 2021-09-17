@@ -154,7 +154,8 @@
           routeName === "settings-notifications-specialist" ||
           routeName === "annual-reviews-general" ||
           routeName === "annual-reviews-review-category" ||
-          routeName === "exam-management-current-review"
+          routeName === "exam-management-current-review" ||
+          routeName === "profile-specialist"
         ) {
           this.$store.commit('changeSidebar', 'builder')
           // document.querySelector('.sidebar-menu').style.display = "none"
