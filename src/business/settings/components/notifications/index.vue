@@ -3,7 +3,7 @@
     .row
       .col
         .card.settings__card
-          .card-title.px-3.px-xl-5.py-xl-4.mb-0
+          .card-title.px-3.px-xl-5.mb-0
             h3.mb-0 Notifications
           .card-body.white-card-body.px-3.px-xl-5
             .settings___card--internal.p-y-1
@@ -161,9 +161,9 @@
     transition: background-color 0.15s ease-in-out, border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
   }
 
-  .regular-checkbox:active, .regular-checkbox:checked:active {
-    /*box-shadow: 0 1px 2px rgba(0,0,0,0.05), inset 0 1px 3px rgba(0,0,0,0.1);*/
-  }
+  /* .regular-checkbox:active, .regular-checkbox:checked:active {
+    box-shadow: 0 1px 2px rgba(0,0,0,0.05), inset 0 1px 3px rgba(0,0,0,0.1);
+  } */
 
   .regular-checkbox:checked {
     position: relative;

@@ -3,7 +3,8 @@
     .row
       .col
         .card.settings__card
-          .card-title.p-x-40
+          //- .card-title.p-x-40
+          .card-title.px-3.px-xl-5.mb-0
             h2.card-title__name Users
           .card-body.white-card-body.card-body_full-height.p-x-40
             b-tabs(content-class='mt-3')

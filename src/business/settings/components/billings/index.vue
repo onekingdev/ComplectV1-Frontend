@@ -2,7 +2,7 @@
   .row
     .col
       .card.settings__card
-        .card-title.px-3.px-xl-5.py-xl-4.mb-0
+        .card-title.px-3.px-xl-5.mb-0
           h3.mb-0 Billing
         .card-body.white-card-body.px-3.px-xl-5
           //.settings___card--internal.p-y-1
