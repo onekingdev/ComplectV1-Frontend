@@ -2621,7 +2621,6 @@ table.table {
       height: 20px;
       content: '';
       transform: translateY(-50%);
-      //background: url("./complete.svg") center no-repeat;
     }
 
     .toast-header,
@@ -2655,12 +2654,10 @@ table.table {
   }
 
   &.b-toast-success {
-
     .toast {
       border-left: solid 5px $green;
-
       &::before {
-        background: asset_url("complete.svg") center no-repeat;
+        background: url("../complete.svg") center no-repeat;
         background-color: $green;
         border-radius: 50%;
       }
@@ -2668,12 +2665,10 @@ table.table {
   }
 
   &.b-toast-danger {
-
     .toast {
       border-left: solid 5px $red;
-
       &::before {
-        background: asset_url("error_20.svg") center no-repeat;
+        background: url("../error_20.svg") center no-repeat;
         background-color: $red;
         border-radius: 50%;
       }
