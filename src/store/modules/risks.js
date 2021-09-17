@@ -23,7 +23,12 @@
 //       this.updated_at = updated_at
 //   }
 // }
-import backendUrl from '@/services/axios/backendUrl'
+import axios from '../../services/axios'
+
+const headersBusinessId = () => ({ headers: {
+  'Accept': 'application/json',
+  'business_id': window.localStorage["app.business_id"],
+}})
 
 export default {
   state: {
@@ -57,27 +62,11 @@ export default {
       commit("setLoading", true);
 
       try {
-        const endpointUrl = '/api/business/risks'
-        const data = await fetch(`${backendUrl}${endpointUrl}`, { headers: {
-          'Accept': 'application/json',
-          'business_id': window.localStorage["app.business_id"],
-          ...rootGetters.authHeaders.headers
-        }})
-          .then(response => {
-            return response.json()
-          })
-          .then(response => {
-            commit('updatetRisksList', response)
-            return response
-          })
-          .catch(error => {
-            console.error(error)
-            throw error
-          })
-          .finally(() => commit("setLoading", false))
-
-        return data;
-
+        const endpointUrl = '/business/risks'
+        const data = (await axios.get(endpointUrl, headersBusinessId())).data
+        commit('updatetRisksList', data)
+        commit("setLoading", false)
+        return data
       } catch (error) {
         commit("setError", error.message);
         commit("setLoading", false);
@@ -89,32 +78,19 @@ export default {
       commit("setLoading", true);
 
       try {
-        const endpointUrl = '/api/business/risks'
-        const data = await fetch(`${backendUrl}${endpointUrl}`, {
-          method: 'POST',
-          headers: {
-            // 'Authorization': 'Bearer test',
-            'Accept': 'application/json',
-            'Content-Type': 'application/json'},
-          body: JSON.stringify(payload)
-        }).then(response => {
-          if (!response.ok)
-            throw new Error(`Could't publish Risk (${response.status})`);
-          return response.json()
-        }).then(response => {
-          commit("addRisk", {...response});
-          return response
-        }).catch (error => {
-          console.error(error)
-          throw error;
-        }).finally(() => commit("setLoading", false))
-
-        return data;
-
+        const endpointUrl = '/business/risks'
+        const data = await axios.post(endpointUrl, payload, headersBusinessId())
+        commit("addRisk", {...data});
+        commit("setLoading", false)
+        return data
       } catch (error) {
-        commit("setError", error.message);
+        const firstAttr = Object.keys(error.data)[0],
+          errorText = (firstAttr && error.data[firstAttr].length)
+            ? `Error: ${firstAttr} - ${error.data[firstAttr][0]}`
+            : `Could\'t publish Risk ${error.message}`
+        commit("setError", errorText);
         commit("setLoading", false);
-        throw error;
+        throw new Error(errorText);
       }
     },
     async updateRisk({ commit, getters }, payload) {
@@ -122,37 +98,20 @@ export default {
       commit("setLoading", true);
 
       try {
-        const endpointUrl = '/api/business/risks'
-        const data = await fetch(`${backendUrl}${endpointUrl}/${payload.id}`, {
-          method: 'PUT',
-          headers: {
-            // 'Authorization': 'Bearer test',
-            'Accept': 'application/json',
-            'Content-Type': 'application/json'},
-          body: JSON.stringify(payload)
-        })
-          .then(response => {
-          if (!response.ok)
-            throw new Error(`Could't update Risk (${response.status})`);
-          return response.json()
-        })
-          .then(response => {
-          commit("updateRisk", {...response});
-          commit("updateCurrentRisk", response);
-          return response
-        })
-          .catch (error => {
-          console.error(error)
-          throw error;
-        })
-          .finally(() => commit("setLoading", false))
-
-        return data;
-
+        const endpointUrl = '/business/risks'
+        const data = await axios.put(`${endpointUrl}/${payload.id}`, payload, headersBusinessId())
+        commit("updateRisk", {...data});
+        commit("updateCurrentRisk", data);
+        commit("setLoading", false)
+        return data
       } catch (error) {
-        commit("setError", error.message);
+        const firstAttr = Object.keys(error.data)[0],
+          errorText = (firstAttr && error.data[firstAttr].length)
+            ? `Error: ${firstAttr} - ${error.data[firstAttr][0]}`
+            : `Could\'t update Risk ${error.message}`
+        commit("setError", errorText);
         commit("setLoading", false);
-        throw error;
+        throw new Error(errorText);
       }
     },
     async deleteRisk({ commit, getters }, payload) {
@@ -160,31 +119,15 @@ export default {
       commit("setLoading", true);
 
       try {
-        const endpointUrl = '/api/business/risks'
-        const data = await fetch(`${backendUrl}${endpointUrl}/${payload.id}`, {
-          method: 'DELETE',
-          headers: {
-            // 'Authorization': 'Bearer test',
-            'Accept': 'application/json',
-            'Content-Type': 'application/json'},
-        }).then(response => {
-          if (!response.ok)
-            throw new Error(`Could't update Risk (${response.status})`);
-          return response.json()
-        }).then(response => {
-          commit("deleteRisk", {...response});
-          return response
-        }).catch (error => {
-          console.error(error)
-          throw error;
-        }).finally(() => commit("setLoading", false))
-
-        return data;
-
+        const endpointUrl = '/business/risks'
+        const data = await axios.delete(`${endpointUrl}/${payload.id}`, headersBusinessId())
+        commit("deleteRisk", {...data});
+        commit("setLoading", false)
+        return data
       } catch (error) {
         commit("setError", error.message);
         commit("setLoading", false);
-        throw error;
+        throw new Error(`Could't delete Risk`)
       }
     },
     async getRiskById ({commit, getters}, payload) {
@@ -192,21 +135,11 @@ export default {
       commit("setLoading", true);
 
       try {
-        const endpointUrl = '/api/business/risks/'
-        const data = await fetch(`${backendUrl}${endpointUrl}${payload.riskId}`, { headers: {'Accept': 'application/json', 'business_id': window.localStorage["app.business_id"]}})
-          .then(response => response.json())
-          .then(response => {
-            commit('updateCurrentRisk', response)
-            return response
-          })
-          .catch(error => {
-            console.error(error)
-            throw error
-          })
-          .finally(() => commit("setLoading", false))
-
-        return data;
-
+        const endpointUrl = '/business/risks/'
+        const data = await axios.get(`${endpointUrl}${payload.riskId}`, headersBusinessId())
+        commit('updateCurrentRisk', data)
+        commit("setLoading", false)
+        return data
       } catch (error) {
         commit("setError", error.message);
         commit("setLoading", false);
