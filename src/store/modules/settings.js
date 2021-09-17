@@ -835,6 +835,7 @@ export default {
               }
             })
             .catch(error => error)
+        return data;
       } catch (error) {
         console.error('catch error', error);
         commit("setError", error.message, { root: true });

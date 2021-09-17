@@ -43,8 +43,7 @@
                 UsersTable(v-if="!loading" :users="filteredUsersDisabled" :disabled="true")
                 Loading
                 EmptyState(v-if="!loading &&  !filteredUsersDisabled.length")
-              //b-tab(title='Activity' disabled)
-              //  p I'm a disabled tab!
+
 </template>
 
 <script>
