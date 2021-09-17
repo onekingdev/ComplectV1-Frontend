@@ -74,7 +74,7 @@
                                   ExamRequestModalEdit(:examId="currentExam.id" :request="currentRequst" :inline="false")
                                     b-dropdown-item Edit
                                   b-dropdown-item(v-if="plan !=='team'" @click="shareRequestAction(currentRequst.id, !currentRequst.shared)") {{ currentRequst.shared ? 'Unshare' : 'Share' }}
-                                  ExamModalDelete(@deleteConfirmed="deleteExamRequest(currentRequst.id)" :inline="false")
+                                  ExamRequestModalDelete(@deleteConfirmed="deleteExamRequest(currentRequst.id)" :inline="false")
                                     b-dropdown-item.delete Delete
                         .row.m-b-1
                           .col-md-11.offset-md-1
@@ -138,6 +138,7 @@
   import ExamRequestModalCreate from "./modals/ExamRequestModalCreate";
   import ExamModalEdit from "./modals/ExamModalEdit";
   import ExamModalDelete from "./modals/ExamModalDelete";
+  import ExamRequestModalDelete from "./modals/ExamRequestModalDelete";
   import ExamRequestModalEdit from "./modals/ExamRequestModalEdit";
   import TaskFormModal from "@/common/TaskFormModal";
   import ExamModalComplite from "./modals/ExamModalComplite";
@@ -163,7 +164,8 @@
       ExamRequestModalEdit,
       ExamRequestModalCreate,
       ExamModalEdit,
-      ExamModalDelete
+      ExamModalDelete,
+      ExamRequestModalDelete
     },
     data() {
       return {
