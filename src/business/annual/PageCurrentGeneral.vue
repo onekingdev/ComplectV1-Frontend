@@ -357,7 +357,7 @@ export default {
 						}
 
 						if (!response.errors) {
-							this.toast("Success", "Internal review has been saved.");
+							this.toast("Success", "Category has been updated.");
 							exit &&
 								setTimeout(
 									() => this.$router.push(`/business/annual_reviews`),
@@ -366,7 +366,7 @@ export default {
 						} else {
 							this.toast(
 								"Success",
-								"Internal review has not been saved. Please try again."
+								"Category has not been updated. Please try again."
 							);
 						}
 					})

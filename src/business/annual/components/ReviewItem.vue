@@ -3,11 +3,6 @@
     td
       router-link.link(:to='`/business/annual_reviews/${item.id}`') {{ item.name }}
     td
-      //.reviews-table__progress.d-flex
-      //  .reviews-table__progress-numbers
-      //    | {{ item.progress }}/{{ item.review_categories.length }}
-      //  .reviews-table__progress-bar.d-flex
-      //    .reviews-table__progress-bar__item(:style="`width: ${progressWidth}%`")
       .reviews-table__progress.d-flex.align-items-center
         .reviews-table__progress-numbers.mr-2(:class="progressWidth === 100 ? 'text-success' : 'text-dark'") {{ item.progress }}/{{ item.review_categories.length }}
         b-progress.w-100(:value="progressWidth" :max="100" show-progress variant="success")
@@ -15,16 +10,11 @@
     td.text-right {{ item.updated_at | asDate }}
     td.text-right {{ item.created_at | asDate }}
     td.text-right {{ item.review_end | asDate }}
-    //td.text-right
-    //  a.link(:href="item.pdf_url")
-    //    b-icon.mr-2(icon='box-arrow-down')
-    //    | Download
     td.text-right
       .actions
         b-dropdown(size="sm" variant="none" class="m-0 p-0" right)
           template(#button-content)
             b-icon(icon="three-dots")
-          //b-dropdown-item(:href="`/business/annual_reviews/${item.id}`") Edit
           router-link.dropdown-item(:to='`/business/annual_reviews/${item.id}`') Edit
           b-dropdown-item(@click="duplicateReview(item.id)") Duplicate
           AnnualModalDelete(@deleteConfirmed="deleteReview(item.id)", :inline="false")
