@@ -36,7 +36,7 @@
                   .row
                     .col-md-9.col-lg-9.col-xl-10
                       h3
-                        textarea-autosize.editable-category-name(:class="{notvalid:errors[0]}" v-model="currentCategory.name" :min-height="30")
+                        input.editable-category-name(v-model="currentCategory.name" placeholder="Enter category name")
                       Errors(:errors="errors")
                     .col-md-3.col-lg-3.col-xl-2.text-right.reviews__card--actions
                       CommonDeleteModal.ml-auto(title="Delete Category" content="This will remove the category from this internal review and all of its associated content." @deleteConfirmed="deleteCategory(currentCategory.id)", :inline="false")
@@ -277,9 +277,6 @@ export default {
 .editable-category-name {
   border: none;
   width: 100%;
-}
-.editable-category-name.notvalid {
-  border: red 1px solid
 }
 
 @media only screen and (min-width: 1200px) {
