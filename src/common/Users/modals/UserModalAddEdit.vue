@@ -3,8 +3,8 @@
     div(v-b-modal="modalId" :class="{'d-inline-block':inline}")
       slot
 
-    b-modal.fade(:id="modalId" :title="user ? 'Edit User' : 'Add User'" @shown="getData")
-      .row(v-if="!userLimit")
+    b-modal.fade(:id="modalId" :title="user ? 'Edit User' : 'New User'" @shown="getData")
+      .row(v-if="!userLimit && !user")
         .col-12.m-b-1
           Notifications(:notify="notify")
             button.btn.btn-default(@click='editPlan') Edit
@@ -20,13 +20,13 @@
       .row
         .col-12.m-b-1
           label.form-label.required Email
-          input.form-control(v-model="form.email" type="text" placeholder="Enter email" ref="input")
+          input.form-control(v-model="form.email" type="text" placeholder="Email" ref="input")
           Errors(:errors="errors.email")
       .row
         .col-12.m-b-1
           label.form-label Role
             RoleTypesModalInfo
-              b-icon.tooltip__icon(icon="dash-circle-fill" v-b-tooltip.hover title="Role Information")
+              b-icon.tooltip__icon(icon="info-circle-fill" v-b-tooltip.hover title="Role Information")
           ComboBox(v-model="form.role" :options="roleOptions" placeholder="Select a role")
           Errors(:errors="errors.role")
       .row
@@ -41,7 +41,7 @@
 
       template(slot="modal-footer")
         button.btn.btn-link(@click="$bvModal.hide(modalId)") Cancel
-        button.btn.btn-dark(@click="submit") {{ user ? 'Save' : 'Add'  }}
+        button.btn.btn-dark(@click="submit") {{ user ? 'Save' : 'Create'  }}
 </template>
 
 <script>
@@ -127,17 +127,18 @@
               if (response.errors) {
                 for (const [key, value] of Object.entries(response.errors)) {
                   this.errors = Object.assign({}, this.errors, { [key]: value })
-                  if (response.errors.seat) this.toast('Error', `${response.errors.seat}`, true)
+                  if (response.errors.seat) this.toast('Error', 'User has not been created. Please purchase additional seats.', true)
                 }
               }
 
               if (!response.errors) {
-                this.toast('Success', `User successfully ${!this.user ? 'added' : 'edited'}`)
-                this.$emit('saved')
+                this.toast('Success', `User has been ${!this.user ? 'created' : 'updated'}`)
+                this.$emit('saved');
+                this.form = initialForm();
                 this.$bvModal.hide(this.modalId)
               }
             })
-            .catch(error => this.toast('Error', `${error}`, true))
+            .catch(error => this.toast('Error', `User has not been ${!this.user ? 'created' : 'updated'}. Please try again.`, true))
 
         } catch (error) {
           this.toast('Error', error.message, true)
