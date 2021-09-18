@@ -108,7 +108,7 @@
                                       b-dropdown(size="sm" variant="none" class="m-0 p-0" right)
                                         template(#button-content)
                                           b-icon(icon="three-dots")
-                                        b-dropdown-item.delete(@click="removeFile(currentRequst.id, file.id)") Delete file
+                                        b-dropdown-item.delete(@click="removeFile(currentRequst.id, file.id)") Delete
                   .d-flex.justify-content-between
                     ExamRequestModalCreate(v-if="!currentExam.complete" :examId="currentExam.id")
                       b-button.m-b-2.ml-4(variant='default')
