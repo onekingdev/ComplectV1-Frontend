@@ -142,6 +142,9 @@ export default {
     filterStatuses: () => FILTER_STATUSES,
     filteredStatus() {
       return FILTER_STATUSES[this.filterStatus]
+    },
+    loading() {
+      return this.$store.getters.loading;
     }
   }
 }

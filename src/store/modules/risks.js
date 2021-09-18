@@ -79,10 +79,10 @@ export default {
 
       try {
         const endpointUrl = '/business/risks'
-        const data = await axios.post(endpointUrl, payload, headersBusinessId())
-        commit("addRisk", {...data});
+        const res = await axios.post(endpointUrl, payload, headersBusinessId())
+        commit("addRisk", {...res.data});
         commit("setLoading", false)
-        return data
+        return res.data
       } catch (error) {
         const firstAttr = Object.keys(error.data)[0],
           errorText = (firstAttr && error.data[firstAttr].length)
@@ -99,11 +99,11 @@ export default {
 
       try {
         const endpointUrl = '/business/risks'
-        const data = await axios.put(`${endpointUrl}/${payload.id}`, payload, headersBusinessId())
-        commit("updateRisk", {...data});
-        commit("updateCurrentRisk", data);
+        const res = await axios.put(`${endpointUrl}/${payload.id}`, payload, headersBusinessId())
+        commit("updateRisk", {...res.data});
+        commit("updateCurrentRisk", res.data);
         commit("setLoading", false)
-        return data
+        return res.data
       } catch (error) {
         const firstAttr = Object.keys(error.data)[0],
           errorText = (firstAttr && error.data[firstAttr].length)
