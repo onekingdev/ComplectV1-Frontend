@@ -9,7 +9,7 @@
     .card-body.white-card-body.card-body_full-height.p-x-40
       .d-flex.align-items-center.mb-2
         h4.font-16.mb-2.cursor-pointer(@click="backToRoot") All Documents
-          span.separator(v-if="currentFolderName") &nbsp/&nbsp;
+          span.separator(v-if="currentFolderName") &nbsp;/&nbsp;
           span(v-if="currentFolderName") {{ currentFolderName }}
       .d-flex.mb-2
         input(ref="inputFile" type="file" hidden @change="uploadFile")
