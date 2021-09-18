@@ -132,8 +132,6 @@
           const response = await this.createReview(this.annual_review)
           if (response.errors) {
             this.toast('Error', `${response.status}`, true)
-            Object.keys(response.errors)
-              .map(prop => response.errors[prop].map(err => this.toast(`Error`, `${prop}: ${err}`)))
             return
           }
 
