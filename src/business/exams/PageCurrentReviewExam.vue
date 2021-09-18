@@ -113,7 +113,7 @@
                     ExamRequestModalCreate(v-if="!currentExam.complete" :examId="currentExam.id")
                       b-button.m-b-2.ml-4(variant='default')
                         b-icon.mr-2(icon='plus-circle-fill')
-                        | Add Request
+                        | New Request
                     div(v-else)
                     .white-card-body.pb-4.pr-4
                       .d-flex.justify-content-end
