@@ -84,10 +84,6 @@ const router = new VueRouter({
     { path: "/payment-required", component: PaymentRequired },
 
     // REDIRECTS
-    // { path: '/business', redirect: '/business/dashboard' },
-    // { path: '/business/dashboard', redirect: '/business/dashboard' },
-    // { path: '/specialist', redirect: '/specialist/dashboard' },
-    // { path: '/specialist/dashboard', redirect: '/specialist/dashboard' },
     { path: '/business/new', redirect: '/business/onboarding' },
     { path: '/specialists/new', redirect: '/specialist/onboarding' },
 
