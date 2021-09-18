@@ -136,7 +136,7 @@ export default {
 
       try {
         const endpointUrl = '/business/risks/'
-        const data = await axios.get(`${endpointUrl}${payload.riskId}`, headersBusinessId())
+        const data = (await axios.get(`${endpointUrl}${payload.riskId}`, headersBusinessId())).data
         commit('updateCurrentRisk', data)
         commit("setLoading", false)
         return data
