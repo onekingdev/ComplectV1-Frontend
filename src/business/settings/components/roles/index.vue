@@ -20,26 +20,16 @@
   import { mapGetters, mapActions } from "vuex"
   import Loading from '@/common/Loading/Loading'
   import RolesTable from "./components/RolesTable";
-  // import SearchItem from "./components/SearchItem";
 
   export default {
     components: {
-      // SearchItem,
       Loading,
       RolesTable,
-    },
-    data() {
-      return {
-        // searchInput: '',
-      };
     },
     methods: {
       ...mapActions({
         getEmployeesSpecialists: 'settings/getEmployeesSpecialists',
       }),
-      // searching (value) {
-      //   this.searchInput = value
-      // },
     },
     computed: {
       ...mapGetters({
@@ -50,10 +40,9 @@
     async mounted() {
       try {
         await this.getEmployeesSpecialists()
-        // if(!result) console.error('getEmployeesSpecialists', result)
       } catch (error) {
         console.error(error)
       }
-    },
+    }
   };
 </script>

@@ -108,7 +108,7 @@ export default {
       }
     },
     SET_EMPLOYEES_SPECIALISTS(state, payload) {
-      state.employees = payload
+      state.employeesSpecialists = payload
     },
   },
   actions: {
@@ -737,17 +737,6 @@ export default {
             commit("setLoading", false, { root: true });
             if (success) {
               const data = success.data
-              // const settings = []
-              // for (const settingItem of data) {
-              //   settings.push(new SettingsGeneral(
-              //     settingItem.apartment,
-              //     settingItem.city,
-              //     settingItem.contact_phone,
-              //     settingItem.country,
-              //     settingItem.state,
-              //     settingItem.time_zone
-              //   ))
-              // }
               commit('UPDATE_EMPLOYEES', data)
               return success.data
             }
@@ -878,7 +867,7 @@ export default {
               //   ))
               // }
               commit('SET_EMPLOYEES_SPECIALISTS', data)
-              return success.data
+              // return data
             }
             if (!success) {
               console.error('Not success', success)
