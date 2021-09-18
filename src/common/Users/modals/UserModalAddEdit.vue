@@ -97,7 +97,6 @@
           scale: 2,
           animation: ""
         },
-        // show: true
       }
     },
     methods: {
@@ -131,9 +130,11 @@
                 }
               }
 
+              
+
               if (!response.errors) {
                 this.toast('Success', `User has been ${!this.user ? 'created' : 'updated'}`)
-                this.$emit('saved');
+                this.$emit('saved', !this.user ? 'created' : 'updated');
                 this.form = initialForm();
                 this.$bvModal.hide(this.modalId)
               }

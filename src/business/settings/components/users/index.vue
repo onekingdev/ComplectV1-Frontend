@@ -10,7 +10,7 @@
             b-tabs(content-class='mt-3')
               b-tab(active)
                 template(#title)
-                  | Directory&nbsp;
+                  | Directory&nbsp; {{userLimit}}
                   span ({{ filteredUsersActive.length }})
                 .div
                   .row.my-3
@@ -92,8 +92,12 @@
       searching (value) {
         this.searchInput = value
       },
-      userAdded () {
-
+      userAdded (payload) {
+        if (payload === 'created') this.userLimit = this.userLimit - 1
+      },
+      userRemoved (payload) {
+        console.log(payload)
+        if (payload === 'created') this.userLimit = this.userLimit + 1
       },
       showModal() {
         this.$refs.editPlanModal.click()
