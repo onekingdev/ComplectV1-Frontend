@@ -5,25 +5,26 @@
 
     b-modal.fade(:id="modalId" title="Edit Exam" @shown="getData")
       .row
-        .col-12
+        .col-12.m-b-2
           label.form-label Name
           input.form-control(v-model="exam_management.name" type="text" placeholder="Enter the name of your exam" ref="input" @keyup="onChange")
+          Errors(:errors="errors.name")
       .row.m-t-1
         .col-6
           label.form-label Start Date
           DatePicker(v-model="exam_management.starts_on" :options="datepickerOptions")
+          Errors(:errors="errors.starts_on")
         .col-6
           label.form-label Due Date
           DatePicker(v-model="exam_management.ends_on" :options="datepickerOptions")
+          Errors(:errors="errors.ends_on")
 
       template(slot="modal-footer")
         button.btn.btn-link(@click="$bvModal.hide(modalId)") Cancel
-        button.btn.btn-dark(@click="submit") Save
+        button.btn.btn-dark(@click.prevent="submit") Save
 </template>
 
 <script>
-  import { DateTime } from 'luxon'
-  import EtaggerMixin from '@/mixins/EtaggerMixin'
   const rnd = () => Math.random().toFixed(10).toString().replace('.', '')
 
   const initialExam = () => ({
@@ -34,7 +35,6 @@
   })
 
   export default {
-    mixins: [EtaggerMixin()],
     props: {
       inline: {
         type: Boolean,
@@ -49,7 +49,7 @@
       return {
         modalId: `modal_${rnd()}`,
         exam_management: initialExam(),
-        errors: []
+        errors: {}
       }
     },
     methods: {
@@ -73,7 +73,6 @@
               this.toast('Success', `Exam Management successfully updated!`)
               this.$emit('saved')
               this.$bvModal.hide(this.modalId)
-              this.newEtag()
             })
             .catch(error => {
               console.error(error)
