@@ -19,7 +19,7 @@
       .d-block
         Loading
         FilefoldersTable(v-if="!loading && filefolders.files && filefolders.folders" :filefolders="filefolders")
-        EmptyState(v-if="!loading && filefolders.files.length < 1 && filefolders.folders.length < 1")
+        EmptyState(v-if="!loading && !existFileOrFolder")
 
 </template>
 
@@ -215,12 +215,10 @@
         currentFolderId: 'filefolders/currentFolder',
         currentFolderName: 'filefolders/currentFolderName'
       }),
-      // pageFolderName() {
-      //   if (!this.currentFolderId) return ''
-      //   return this.filefolders.folders.find(folder => {
-      //     if (folder.id === this.currentFolderId) return folder.name
-      //   })
-      // }
+      existFileOrFolder() {
+        if (!this.filefolders) return false
+        return this.filefolders.files && this.filefolders.folders && (this.filefolders.files.length > 0 || this.filefolders.folders.length > 0)
+      }
     },
     async mounted () {
       try {

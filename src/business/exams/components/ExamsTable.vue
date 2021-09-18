@@ -6,9 +6,6 @@
         tr
           th(@click="sortSelect('name', 'string')" width="40%")
             .d-inline
-        tr
-          th(@click="sortSelect('name', 'string')" width="40%")
-            .d-inline
               | Name
               b-icon.ml-2(icon='chevron-expand')
           th
