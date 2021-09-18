@@ -36,6 +36,28 @@ export async function resetEmailSettings(payload) {
     .catch(err => err)
 }
 
+export async function verifyChangeEmail(payload) {
+  return await axios.post(`${END_POINT}/verify_change_email`, payload)
+    .then(response => {
+      if (response) {
+        return response
+      }
+      return false
+    })
+    .catch(err => err)
+}
+
+export async function updateLoginEmail(payload) {
+  return await axios.post(`${END_POINT}/update_login_email`, payload)
+    .then(response => {
+      if (response) {
+        return response
+      }
+      return false
+    })
+    .catch(err => err)
+}
+
 export async function updatePasswordSettings(payload) {
   return await axios.patch(`${END_POINT}/password`, payload)
     .then(response => {

@@ -2,6 +2,7 @@ import axios from '@/services/axios'
 // import store from '@/store/commonModules/shared'
 import * as jwt from '@/services/business'
 import backendUrl from '@/services/axios/backendUrl'
+const TOKEN = localStorage.getItem('app.currentUser.token') ? JSON.parse(localStorage.getItem('app.currentUser.token')) : ''
 
 const mapAuthProviders = {
   jwt: {
@@ -15,9 +16,6 @@ const mapAuthProviders = {
 }
 
 import Policy from "../../models/Policy";
-
-// HOOK TO NOT REWITE ALL REQUESTS
-const TOKEN = localStorage.getItem('app.currentUser.token') ? JSON.parse(localStorage.getItem('app.currentUser.token')) : ''
 
 export default {
   state: {
@@ -69,7 +67,7 @@ export default {
     //     commit("setLoading", false);
     //   })
     // },
-    async createPolicy({ commit, getters }, payload) {
+    async createPolicy({ commit, rootGetters }, payload) {
       commit("clearError");
       commit("setLoading", true);
 
@@ -77,7 +75,7 @@ export default {
         const data = await fetch(backendUrl + '/api/business/compliance_policies', {
           method: 'POST',
           headers: {
-            'Authorization': `${TOKEN}`,
+            ...rootGetters.authHeaders.headers,
             'Accept': 'application/json',
             'Content-Type': 'application/json',
             'business_id': window.localStorage["app.business_id"]},
@@ -113,7 +111,7 @@ export default {
         throw error;
       }
     },
-    async updatePolicy({ commit, getters }, payload) {
+    async updatePolicy({ commit, rootGetters }, payload) {
       commit("clearError");
       commit("setLoading", true);
 
@@ -121,7 +119,7 @@ export default {
         const data = await fetch(backendUrl + '/api/business/compliance_policies/' + payload.id, {
           method: 'PUT',
           headers: {
-            'Authorization': `${TOKEN}`,
+            ...rootGetters.authHeaders.headers,
             'Accept': 'application/json',
             'Content-Type': 'application/json',
             'business_id': window.localStorage["app.business_id"]},
@@ -159,7 +157,7 @@ export default {
         throw error;
       }
     },
-    async downloadPolicy({ commit, getters }, payload) {
+    async downloadPolicy({ commit, rootGetters }, payload) {
       commit("clearError");
       commit("setLoading", true);
 
@@ -170,7 +168,7 @@ export default {
         const data = await fetch(backendUrl+endpointUrl, {
           method: 'GET',
           headers: {
-            'Authorization': `${TOKEN}`,
+            ...rootGetters.authHeaders.headers,
             'Accept': 'application/json',
             'Content-Type': 'application/json',
             'business_id': window.localStorage["app.business_id"]},
@@ -202,7 +200,7 @@ export default {
                   const pdf = data.file || data.pdf
                   if (pdf) {
                     clearInterval(getPdfUrl)
-                    window.open(pdf, '_self')
+                    window.open(backendUrl+pdf, '_self')
                   }
                   return pdf
                 }).catch(err => console.log(err))
@@ -222,7 +220,7 @@ export default {
         throw error;
       }
     },
-    async publishPolicy({ commit, getters }, payload) {
+    async publishPolicy({ commit, rootGetters }, payload) {
       commit("clearError");
       commit("setLoading", true);
 
@@ -231,7 +229,7 @@ export default {
         const data = await fetch(`${backendUrl}${endpointUrl}${payload.policyId}/publish`, {
           method: 'GET',
           headers: {
-            'Authorization': `${TOKEN}`,
+            ...rootGetters.authHeaders.headers,
             'Accept': 'application/json',
             'Content-Type': 'application/json',
             'business_id': window.localStorage["app.business_id"]},
@@ -258,7 +256,7 @@ export default {
         throw error;
       }
     },
-    async getPolicies ({commit, getters}, payload) {
+    async getPolicies ({commit, rootGetters}, payload) {
       commit("clearError");
       commit("setLoading", true);
 
@@ -266,7 +264,7 @@ export default {
         const endpointUrl = '/api/business/compliance_policies'
         const data = await fetch(`${backendUrl}${endpointUrl}`, {
           headers: {
-            'Authorization': `${TOKEN}`,
+            ...rootGetters.authHeaders.headers,
             'Accept': 'application/json',
             'business_id': window.localStorage["app.business_id"]
           }})
@@ -297,7 +295,7 @@ export default {
         ...payload
       })
     },
-    async getPolicyById ({commit, getters}, payload) {
+    async getPolicyById ({commit, rootGetters}, payload) {
       commit("clearError");
       commit("setLoading", true);
 
@@ -305,9 +303,9 @@ export default {
         const endpointUrl = '/api/business/compliance_policies/'
         const data = await fetch(`${backendUrl}${endpointUrl}${payload.policyId}`, {
           headers: {
-          'Authorization': `${TOKEN}`,
-          'Accept': 'application/json',
-          'business_id': window.localStorage["app.business_id"]
+            ...rootGetters.authHeaders.headers,
+            'Accept': 'application/json',
+            'business_id': window.localStorage["app.business_id"]
           }})
           .then(response => response.json())
           .then(response => {
@@ -327,7 +325,7 @@ export default {
         throw error;
       }
     },
-    async movePolicy({ commit, getters }, payload) {
+    async movePolicy({ commit, rootGetters }, payload) {
       commit("clearError");
       commit("setLoading", true);
 
@@ -335,7 +333,7 @@ export default {
         const data = fetch(backendUrl + '/api/business/compliance_policies/' + payload.id, {
           method: 'PATCH',
           headers: {
-            'Authorization': `${TOKEN}`,
+            ...rootGetters.authHeaders.headers,
             'Accept': 'application/json',
             'Content-Type': 'application/json',
             'business_id': window.localStorage["app.business_id"]},
@@ -372,7 +370,7 @@ export default {
       //   fetch(backendUrl + '/api/business/compliance_policies/' + policy1.id, {
       //     method: 'PATCH',
       //     headers: {
-      //       'Authorization': `${TOKEN}`,
+      //       ...rootGetters.authHeaders.headers,
       //       'Accept': 'application/json',
       //       'Content-Type': 'application/json'},
       //     body: JSON.stringify({
@@ -382,7 +380,7 @@ export default {
       //   fetch(backendUrl + '/api/business/compliance_policies/' + policy2.id, {
       //     method: 'PATCH',
       //     headers: {
-      //       'Authorization': `${TOKEN}`,
+      //       ...rootGetters.authHeaders.headers,
       //       'Accept': 'application/json',
       //       'Content-Type': 'application/json'
       //     },
@@ -413,15 +411,14 @@ export default {
       // console.log(data);
     },
 
-    async updatePolicyPositions({ commit, getters }, payload) {
+    async updatePolicyPositions({ commit, rootGetters }, payload) {
       commit("clearError")
       try {
-        // const data = fetch('/api/business/compliance_policies/update_position', {
         const endpointUrl = '/api/business/compliance_policies/update_position'
         const data = await fetch(`${backendUrl}${endpointUrl}`, {
           method: 'POST',
           headers: {
-            'Authorization': `${TOKEN}`,
+            ...rootGetters.authHeaders.headers,
             'Accept': 'application/json',
             'Content-Type': 'application/json',
             'business_id': window.localStorage["app.business_id"]},
@@ -447,7 +444,7 @@ export default {
       }
     },
 
-    async deletePolicyById ({commit, getters}, payload) {
+    async deletePolicyById ({commit, rootGetters}, payload) {
       commit("clearError");
       commit("setLoading", true);
 
@@ -456,10 +453,10 @@ export default {
         const data = await fetch(`${backendUrl}${endpointUrl}${payload.policyId}`, {
           method: 'DELETE',
           headers: {
-          'Authorization': `${TOKEN}`,
-          'Accept': 'application/json',
-          'business_id': window.localStorage["app.business_id"]
-        }})
+            ...rootGetters.authHeaders.headers,
+            'Accept': 'application/json',
+            'business_id': window.localStorage["app.business_id"]
+          }})
           .then(response => response.json())
           .then(response => {
             commit('deletePolicy', {id: response.id})
@@ -479,7 +476,7 @@ export default {
         throw error;
       }
     },
-    async archivePolicyById ({commit, getters}, payload) {
+    async archivePolicyById ({commit, rootGetters}, payload) {
       commit("clearError");
       commit("setLoading", true);
 
@@ -488,7 +485,7 @@ export default {
         const data = await fetch(`${backendUrl}${endpointUrl}${payload.policyId}`, {
           method: 'PATCH',
           headers: {
-            'Authorization': `${TOKEN}`,
+            ...rootGetters.authHeaders.headers,
             'Accept': 'application/json',
             'Content-Type': 'application/json',
             'business_id': window.localStorage["app.business_id"]},
@@ -516,7 +513,7 @@ export default {
       }
     },
     // CONFIG PAGE (SETUP)
-    async getPolicyConfig({ commit, getters }, payload) {
+    async getPolicyConfig({ commit, rootGetters }, payload) {
       commit("clearError");
       commit("setLoading", true);
 
@@ -524,7 +521,7 @@ export default {
         const data = await fetch(backendUrl + '/api/business/compliance_policy_configuration', {
           method: 'GET',
           headers: {
-            'Authorization': `${TOKEN}`,
+            ...rootGetters.authHeaders.headers,
             'Accept': 'application/json',
             'Content-Type': 'application/json',
             'business_id': window.localStorage["app.business_id"]}
@@ -546,7 +543,7 @@ export default {
         throw error;
       }
     },
-    // async postPolicyConfig({ commit, getters }, payload) {
+    // async postPolicyConfig({ commit, rootGetters }, payload) {
     //   console.log('payload', payload)
     //   commit("clearError");
     //   commit("setLoading", true);
@@ -555,7 +552,7 @@ export default {
     //     const data = await fetch(backendUrl + '/api/business/compliance_policy_configuration', {
     //       method: 'PATCH',
     //       headers: {
-    //         'Authorization': `${TOKEN}`,
+    //         ...rootGetters.authHeaders.headers,
     //         'Accept': 'application/json',
     //       //   'Content-Type': 'image/png'},
     //       // body: payload
@@ -595,19 +592,6 @@ export default {
         //     'Content-Type': 'multipart/form-data'
         //   }
         // };
-        // const response = await axios.patch(`/business/compliance_policy_configuration`, payload, config)
-        // return response.data
-
-        // const response =  await mapAuthProviders.jwt.updatePolicySetup(payload)
-        // console.log(store)
-        // console.log(store.settings)
-        // console.log('state', state)
-        // console.log('rootState', rootState)
-        // console.log(rootState.shared)
-        // console.log(rootState.shared.settings)
-        // console.log(rootState.shared.settings.authProvider)
-        // console.log(rootState.settings)
-        // console.log(rootState.settings.authProvider)
         const updatePolicySetup = mapAuthProviders[rootState.shared.settings.authProvider].updatePolicySetup
         updatePolicySetup(payload)
           .then((success) => {

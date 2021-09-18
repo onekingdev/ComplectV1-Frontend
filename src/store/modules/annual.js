@@ -2,10 +2,6 @@ import axios from '../../services/axios'
 import backendUrl from '@/services/axios/backendUrl'
 import AnnualReview from "../../models/AnnualReview";
 
-// HOOK TO NOT REWITE ALL REQUESTS
-const TOKEN = localStorage.getItem('app.currentUser.token') ? JSON.parse(localStorage.getItem('app.currentUser.token')) : ''
-
-
 export default {
   state: {
     reviews: [],
@@ -31,7 +27,7 @@ export default {
     },
   },
   actions: {
-    async createReview({ commit }, payload) {
+    async createReview({ commit, rootGetters }, payload) {
       commit("clearError", null, {
         root: true
       });
@@ -42,7 +38,7 @@ export default {
         const response = await fetch(backendUrl + '/api/business/annual_reports', {
           method: 'POST',
           headers: {
-            'Authorization': `${TOKEN}`,
+            ...rootGetters.authHeaders.headers,
             'Accept': 'application/json',
             'Content-Type': 'application/json',
             'business_id': window.localStorage["app.business_id"]
@@ -86,7 +82,7 @@ export default {
         })
       }
     },
-    async getReviews({ commit }) {
+    async getReviews({ commit, rootGetters }) {
       commit("clearError", null, {
         root: true
       });
@@ -97,7 +93,7 @@ export default {
         const response = await fetch(backendUrl + '/api/business/annual_reports', {
           method: 'GET',
           headers: {
-            'Authorization': `${TOKEN}`,
+            ...rootGetters.authHeaders.headers,
             'Accept': 'application/json',
             'Content-Type': 'application/json',
             'business_id': window.localStorage["app.business_id"]
@@ -143,7 +139,7 @@ export default {
         })
       }
     },
-    async getCurrentReview({ commit }, payload) {
+    async getCurrentReview({ commit, rootGetters }, payload) {
       commit("clearError", null, {
         root: true
       });
@@ -154,7 +150,7 @@ export default {
         const response = await fetch(`${backendUrl}/api/business/annual_reports/${payload}`, {
           method: 'GET',
           headers: {
-            'Authorization': `${TOKEN}`,
+            ...rootGetters.authHeaders.headers,
             'Accept': 'application/json',
             'Content-Type': 'application/json',
             'business_id': window.localStorage["app.business_id"]
@@ -197,7 +193,7 @@ export default {
         })
       }
     },
-    async updateReview({ commit }, payload) {
+    async updateReview({ commit, rootGetters }, payload) {
       commit("clearError", null, {
         root: true
       });
@@ -208,7 +204,7 @@ export default {
         const response = await fetch(`${backendUrl}/api/business/annual_reports/${payload.id}`, {
           method: 'PATCH',
           headers: {
-            'Authorization': `${TOKEN}`,
+            ...rootGetters.authHeaders.headers,
             'Accept': 'application/json',
             'Content-Type': 'application/json',
             'business_id': window.localStorage["app.business_id"]
@@ -317,7 +313,7 @@ export default {
         })
       }
     },
-    async updateReviewCategory({ commit }, payload) {
+    async updateReviewCategory({ commit, rootGetters }, payload) {
       commit("clearError", null, {
         root: true
       });
@@ -328,7 +324,7 @@ export default {
         const response = await fetch(`${backendUrl}/api/business/annual_reports/${payload.annualId}/review_categories/${payload.id}`, {
           method: 'PATCH',
           headers: {
-            'Authorization': `${TOKEN}`,
+            ...rootGetters.authHeaders.headers,
             'Accept': 'application/json',
             'Content-Type': 'application/json',
             'business_id': window.localStorage["app.business_id"]
@@ -354,7 +350,7 @@ export default {
         })
       }
     },
-    async createReviewCategory({ commit }, payload) {
+    async createReviewCategory({ commit, rootGetters }, payload) {
       commit("clearError", null, {
         root: true
       });
@@ -365,7 +361,7 @@ export default {
         const response = await fetch(`${backendUrl}/api/business/annual_reports/${payload.annualId}/review_categories`, {
           method: 'POST',
           headers: {
-            'Authorization': `${TOKEN}`,
+            ...rootGetters.authHeaders.headers,
             'Accept': 'application/json',
             'Content-Type': 'application/json',
             'business_id': window.localStorage["app.business_id"]
@@ -391,7 +387,7 @@ export default {
         })
       }
     },
-    async deleteReviewCategory({ commit }, payload) {
+    async deleteReviewCategory({ commit, rootGetters }, payload) {
       commit("clearError", null, {
         root: true
       });
@@ -402,7 +398,7 @@ export default {
         const response = await fetch(`${backendUrl}/api/business/annual_reports/${payload.annualId}/review_categories/${payload.id}`, {
           method: 'DELETE',
           headers: {
-            'Authorization': `${TOKEN}`,
+            ...rootGetters.authHeaders.headers,
             'Accept': 'application/json',
             'Content-Type': 'application/json',
             'business_id': window.localStorage["app.business_id"]

@@ -7,6 +7,8 @@ const mapAuthProviders = {
     updateGeneralSettings: jwt.updateGeneralSettings,
     resetEmailSettings: jwt.resetEmailSettings,
     updatePasswordSettings: jwt.updatePasswordSettings,
+    verifyChangeEmail: jwt.verifyChangeEmail,
+    updateLoginEmail: jwt.updateLoginEmail,
     deleteAccount: jwt.deleteAccount,
     getNotificationsSettings: jwt.getNotificationsSettings,
     updateNotificationsSettings: jwt.updateNotificationsSettings,
@@ -206,6 +208,82 @@ export default {
       try {
         const resetEmailSettings = mapAuthProviders[rootState.shared.settings.authProvider].resetEmailSettings
         const data = resetEmailSettings(payload)
+          .then((success) => {
+            commit("clearError", null, {
+              root: true
+            });
+            commit("setLoading", false, {
+              root: true
+            });
+            if (success) {
+              const data = success.data
+              return data
+            }
+            if (!success) {
+              commit("setError", success.message, { root: true });
+              console.error('Not success', success)
+            }
+          })
+          .catch(error => error)
+        return data
+      } catch (error) {
+        commit("setError", error.message, {
+          root: true
+        });
+        commit("setLoading", false, {
+          root: true
+        });
+        throw error;
+      }
+    },
+    async verifyChangeEmail({state, commit, rootState}, payload) {
+      commit("clearError", null, {
+        root: true
+      });
+      commit("setLoading", true, {
+        root: true
+      });
+      try {
+        const verifyChangeEmail = mapAuthProviders[rootState.shared.settings.authProvider].verifyChangeEmail
+        const data = verifyChangeEmail(payload)
+          .then((success) => {
+            commit("clearError", null, {
+              root: true
+            });
+            commit("setLoading", false, {
+              root: true
+            });
+            if (success) {
+              const data = success.data
+              return data
+            }
+            if (!success) {
+              commit("setError", success.message, { root: true });
+              console.error('Not success', success)
+            }
+          })
+          .catch(error => error)
+        return data
+      } catch (error) {
+        commit("setError", error.message, {
+          root: true
+        });
+        commit("setLoading", false, {
+          root: true
+        });
+        throw error;
+      }
+    },
+    async updateLoginEmail({state, commit, rootState}, payload) {
+      commit("clearError", null, {
+        root: true
+      });
+      commit("setLoading", true, {
+        root: true
+      });
+      try {
+        const updateLoginEmail = mapAuthProviders[rootState.shared.settings.authProvider].updateLoginEmail
+        const data = updateLoginEmail(payload)
           .then((success) => {
             commit("clearError", null, {
               root: true
