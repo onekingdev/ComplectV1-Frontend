@@ -5,17 +5,10 @@
         .card-title.px-3.px-xl-5.mb-0
           h3.mb-0 Billing
         .card-body.white-card-body.px-3.px-xl-5
-          //.settings___card--internal.p-y-1
-          //  .row.m-b-20
-          //    .col
-          //      h4.mb-0 Client Billing
-          //  .row
-          //    .col
-          //      ClientBilling(@openComponent="openComponent")
           .settings___card--internal.p-y-1
             .row.m-b-20(v-if='!loading')
               .col
-                h4.mb-0 Payment Method
+                h4.semibold-text Payment Method
               .col.text-right
                 BillingMethodModalAdd(@selected="addMethod")
                   b-button.btn.mr-2.font-weight-bold(type='button' variant='default') Add Method
@@ -29,7 +22,7 @@
           .settings___card--internal.p-y-1(v-if='!loading')
             .row.m-b-10
               .col
-                h4.mb-0 Invoices
+                h4.semibold-text Invoices
               .col.text-right.d-none
                 Download.d-none(:pdfUrl="pdfUrl" right)
             .row
