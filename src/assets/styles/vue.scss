@@ -2786,12 +2786,12 @@ table.table {
         opacity: 1;
       }
 
-      &:hover, &:active {
-        &:not(.disabled) {
-          color: #2e304f;
-          border-color: #dee2e6;
-        }
-      }
+      // &:hover, &:active {
+      //   &:not(.disabled) {
+      //     color: #2e304f;
+      //     border-color: #dee2e6;
+      //   }
+      // }
 
       &:not(:last-child) {
         margin-right: .5rem;
