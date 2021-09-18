@@ -9,8 +9,10 @@
           a.btn.btn-link Share Link
         ExamModalComplite.mr-3(v-if="currentExam && !currentExam.complete" @compliteConfirmed="markCompleteExam", :completedStatus="currentExam.complete", :countCompleted="countCompleted" :inline="false")
           button.btn.btn-default Mark as Complete
-        button.btn.btn-default(v-else-if="currentExam" @click="markCompleteExam") Mark as Incomplete
-        button.btn.btn-dark.mr-3(v-if="currentExam && !currentExam.complete" @click="saveAndExit") Save and Exit
+        .mr-3(v-else-if="currentExam")
+          button.btn.btn-default(@click="markCompleteExam") Mark as Incomplete
+        .mr-3(v-if="currentExam && !currentExam.complete")
+          button.btn.btn-dark.mr-3(@click="saveAndExit") Save and Exit
         button.btn.btn__close(@click="exit")
           b-icon(icon="x")
 
