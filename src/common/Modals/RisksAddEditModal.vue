@@ -56,7 +56,10 @@ export default {
   mixins: [EtaggerMixin()],
   props: {
     id: String,
-    risks: Array,
+    risks: {
+      type: Array,
+      default: () => []
+    },
     riskId: Number,
     remindAt: String,
     inline: {
