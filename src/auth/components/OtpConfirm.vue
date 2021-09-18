@@ -28,6 +28,7 @@
 </template>
 
 <script>
+  import { mapActions } from 'vuex'
   export default {
     props: ['form', 'userid', 'userType', 'emailVerified', 'inviteToken'],
     data() {
@@ -50,11 +51,29 @@
       if (!this.form) this.$router.back()
     },
     methods: {
+      ...mapActions({
+        updateLoginEmail: 'settings/updateLoginEmail'
+      }),
+      async updateEmail() {
+        const res = await this.updateLoginEmail({otp_secret: this.form2.code, new_email: this.form.newEmail})
+        if (res.status === 'ok') {
+          this.toast('Success', 'Email has been updated.')
+          setTimeout(() => {
+            this.$router.push({name: 'settings-security'})
+          }, 2000)
+        } else {
+          this.toast('Error', 'Email has not been updated. Please try again.', true)
+        }
+      },
       onSubmit(event) {
         event.preventDefault()
         this.error = ''
         this.errors = []
 
+        if (this.form.isUpdateLoginEmail) {
+          this.updateEmail()
+          return
+        }
         // if(this.form2.code.length !== 6) {
         //   this.error = 'Code length incorrect'
         //   return
