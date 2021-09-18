@@ -21,13 +21,11 @@
 
       template(slot="modal-footer")
         button.btn.btn-link(@click="$bvModal.hide(modalId)") Cancel
-        button.btn.btn-dark(@click="submit") Create
+        button.btn.btn-dark(@click.prevent="submit") Create
 </template>
 
 <script>
   const rnd = () => Math.random().toFixed(10).toString().replace('.', '')
-  var today = new Date();
-  var year = today.getFullYear();
 
   export default {
     props: {
@@ -40,9 +38,9 @@
       return {
         modalId: `modal_${rnd()}`,
         exam_management: {
-          name: '',
-          starts_on: '',
-          ends_on: ''
+          name: null,
+          starts_on: null,
+          ends_on: null
         },
         errors: {}
       }
@@ -50,49 +48,29 @@
     methods: {
       resetForm() {
         this.exam_management = {
-          name: '',
-          starts_on: '',
-          ends_on: ''
+          name: null,
+          starts_on: null,
+          ends_on: null
         }
+        this.errors = {}
       },
       onChange(e){
         if (e.keyCode === 13) {
           // ENTER KEY CODE
-          this.submit(e)
+          this.submit()
         }
       },
-      validate() {
-        this.errors = {}
-        const name = this.exam_management.name
-        const startAt = this.exam_management.starts_on
-        const endAt = this.exam_management.ends_on
-        const requiredFields = ['name', 'starts_on', 'ends_on']
-        
-        for(let i = 0; i <= requiredFields.length - 1; i++) {
-          if (!this.exam_management[requiredFields[i]]) this.errors[requiredFields[i]] = ['Required field']
-        }
-
-        if (name && name.length <= 3) {
-          this.errors['name'] = ['Name must be more than 3 characters']
-        }
-        if (startAt && endAt && (startAt > endAt)) {
-          this.errors['ends_on'] = ['Date must occur after start date']
-        }
-      },
-      async submit(e) {
-        e.preventDefault()
-        this.validate()
-        if (Object.keys(this.errors).length > 0) return
-
+      async submit() {
         try {
-          await this.$store.dispatch('exams/createExam', this.exam_management)
-            .then(response => {
-              this.toast('Success', `Exam has been created.`)
-              // this.$emit('saved')
-              this.$bvModal.hide(this.modalId)
-              this.resetForm()
-            })
-            .catch(error => this.toast('Error', `Exam has not been created.`, true) )
+          const result = await this.$store.dispatch('exams/createExam', this.exam_management)
+          if (result.status === 422) {
+            this.errors = result.data
+          } else if (result.status === 201) {
+            this.toast('Success', `Exam has been created.`)
+            this.$store.dispatch('exams/getExams')
+            this.$bvModal.hide(this.modalId)
+            this.resetForm()
+          }
         } catch (error) {
           this.toast('Error', error.message, true)
         }
