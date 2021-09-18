@@ -10,7 +10,7 @@
       b-dropdown.actions(size="sm" variant="none" class="m-0 p-0" right)
         template(#button-content)
           b-icon(icon="three-dots")
-        ExamsModalEdit(v-if="!item.complete" :exam="item" :inline="false")
+        ExamModalEdit(v-if="!item.complete" :exam="item" :inline="false" @saved="getExams")
           b-dropdown-item Edit
         ExamsModalDelete(@deleteConfirmed="deleteRecord(item.id)" :inline="false")
           b-dropdown-item.delete Delete
@@ -18,15 +18,14 @@
 
 <script>
   import { mapActions } from "vuex"
-  import { DateTime } from 'luxon'
-  import ExamsModalEdit from '../modals/ExamModalEdit'
+  import ExamModalEdit from '../modals/ExamModalEdit'
   import ExamsModalDelete from '../modals/ExamModalDelete'
 
   export default {
     name: "ReviewItem",
     props: ['item'],
     components: {
-      ExamsModalEdit,
+      ExamModalEdit,
       ExamsModalDelete
     },
     computed: {
@@ -39,6 +38,7 @@
       ...mapActions({
         updateExam: 'exams/updateExam',
         deleteExam: 'exams/deleteExam',
+        getExams: 'exams/getExams',
       }),
       deleteRecord(id){
         this.deleteExam({ id: id})
@@ -48,7 +48,3 @@
     }
   }
 </script>
-
-<style scoped>
-
-</style>

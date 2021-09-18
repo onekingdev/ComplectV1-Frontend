@@ -72,8 +72,6 @@
           const response = await this.createFolder(this.file_folder)
           if (response.errors) {
             this.toast('Error', `Folder has not been created. Please try again.`, true)
-            Object.keys(response.errors)
-              .map(prop => response.errors[prop].map(err => this.toast(`Error`, `${prop}: ${err}`)))
             return
           }
           if (!response.errors) {

@@ -110,8 +110,6 @@
           const response = await this.$store.dispatch('filefolders/updateFolder', { id: this.item.id, data })
           if (response.errors) {
             this.toast('Error', `Folder has not been saved. Please Try again. ${response.status}`, true)
-            Object.keys(response.errors)
-              .map(prop => response.errors[prop].map(err => this.toast(`Error`, `${prop}: ${err}`)))
             return
           }
           if (!response.errors) {

@@ -177,32 +177,6 @@
         this.step2 = false
         this.step3 = true
         return
-
-        const data = {
-          email: this.form.email,
-          otp: this.form2.code
-        }
-
-        this.$store.dispatch('clearError', data)
-          .then((response) => {
-
-            if (response.errors) {
-              const properties = Object.keys(response.errors);
-              for (const type of Object.keys(response.errors)) {
-                this.errors = response.errors[type]
-                this.toast('Error', `Form has errors! Please recheck fields! ${error}`, true)
-                // Object.keys(response.errors[type]).map(prop => response.errors[prop].map(err => this.toast(`Error`, `${prop}: ${err}`)))
-              }
-              return
-            }
-
-            if (!response.errors) {
-              // open step 3
-              this.step2 = false
-              this.step3 = true
-            }
-          })
-          .catch((error) => this.toast('Error', `Couldn't submit form! ${error}`, true))
       },
       onCodeChange(e){
         this.errors = []

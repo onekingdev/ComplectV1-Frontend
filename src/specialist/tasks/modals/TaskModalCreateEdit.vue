@@ -330,12 +330,6 @@ export default {
 
         await this.$store.dispatch("reminders/updateTask", data)
           .then(response => {
-            // if (response.errors) {
-            //   this.toast('Error', `Task has not been updated. Please try again.`)
-            //   Object.keys(response.errors)
-            //     .map(prop => response.errors[prop].map(err => this.toast(`Error`, `Task has not been updated. Please try again.`)))
-            //   return
-            // }
             this.toast('Success', 'Task has been updated.')
             this.$emit('saved')
             this.$bvModal.hide(this.modalId)

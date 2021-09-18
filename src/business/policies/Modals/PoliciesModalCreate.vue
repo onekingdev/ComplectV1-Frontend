@@ -66,8 +66,6 @@
             if (response.errors) {
               this.toast('Error', `${response.status}`, true)
               this.errors.push({ title: `${response.errors.title}`});
-              Object.keys(response.errors)
-                .map(prop => response.errors[prop].map(err => this.toast(`Error`, `${prop}: ${err}`)))
             }
             if(!response.errors) {
               this.toast('Success', `Policy has been created.`)
