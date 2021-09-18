@@ -10,7 +10,7 @@
       b-dropdown.actions(size="sm" variant="none" class="m-0 p-0" right)
         template(#button-content)
           b-icon(icon="three-dots")
-        ExamModalEdit(v-if="!item.complete" :exam="item" :inline="false")
+        ExamModalEdit(v-if="!item.complete" :exam="item" :inline="false" @saved="getExams")
           b-dropdown-item Edit
         ExamsModalDelete(@deleteConfirmed="deleteRecord(item.id)" :inline="false")
           b-dropdown-item.delete Delete
@@ -38,6 +38,7 @@
       ...mapActions({
         updateExam: 'exams/updateExam',
         deleteExam: 'exams/deleteExam',
+        getExams: 'exams/getExams',
       }),
       deleteRecord(id){
         this.deleteExam({ id: id})

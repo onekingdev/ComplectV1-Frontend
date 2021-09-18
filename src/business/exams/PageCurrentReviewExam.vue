@@ -22,7 +22,7 @@
           template(#button-content)
             | Actions
             b-icon.ml-2(icon="chevron-down" font-scale="1")
-          ExamModalEdit(:exam="currentExam" :inline="false")
+          ExamModalEdit(:exam="currentExam" :inline="false" @saved="examSaved")
             b-dropdown-item Edit
           ExamModalDelete(@deleteConfirmed="deleteExam(currentExam.id)" :inline="false")
             b-dropdown-item.delete Delete
@@ -216,6 +216,9 @@
       }
     },
     methods: {
+      examSaved() {
+        this.getCurrentExam(this.examId)
+      },
       ...mapActions({
         updateExam: 'exams/updateExam',
         getCurrentExam: 'exams/getExamById',
