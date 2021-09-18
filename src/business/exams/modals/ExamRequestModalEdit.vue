@@ -78,14 +78,14 @@
             request: this.requestData
           })
             .then(response => {
-              this.toast('Success', `Exam request has been added.`)
+              this.toast('Success', 'Request has been updated.')
               this.$emit('saved')
               this.$bvModal.hide(this.modalId)
               this.resetForm()
             })
-            .catch(error => this.toast('Error', error.message, true))
+            .catch(error => this.toast('Error', 'Request has not been updated. Please try again.', true))
         } catch (error) {
-          this.toast('Error', error.message, true)
+          this.toast('Error', 'Request has not been updated. Please try again.', true)
         }
       },
 
