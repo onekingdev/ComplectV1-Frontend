@@ -41,6 +41,7 @@ export default {
     paymentMethods: [],
     employees: [],
     employeesSpecialists: [],
+    availableSeats: {},
     staticCollection: {
       GOOGLE_PLACES_API_KEY: '',
       PLAID_PUBLIC_KEY: '',
@@ -109,6 +110,9 @@ export default {
     },
     SET_EMPLOYEES_SPECIALISTS(state, payload) {
       state.employees = payload
+    },
+    SET_AVAILABLE_SEATS(state, payload) {
+      state.availableSeats = payload
     },
   },
   actions: {
@@ -905,6 +909,7 @@ export default {
               commit("setLoading", false, { root: true });
               if (success) {
                 const data = success.data
+                commit('SET_AVAILABLE_SEATS', data)
                 return data
               }
               if (!success) {
@@ -966,6 +971,7 @@ export default {
     paymentMethods: state => state.paymentMethods,
     employees: state => state.employees,
     employeesSpecialists: state => state.employeesSpecialists,
+    availableSeats: state => state.availableSeats,
     staticCollection(state) {
       return state.staticCollection
     },

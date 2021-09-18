@@ -3,14 +3,13 @@
     .row
       .col
         .card.settings__card
-          //- .card-title.p-x-40
           .card-title.px-3.px-xl-5.mb-0
             h2.card-title__name Users
           .card-body.white-card-body.card-body_full-height.p-x-40
             b-tabs(content-class='mt-3')
               b-tab(active)
                 template(#title)
-                  | Directory&nbsp; {{userLimit}}
+                  | Directory&nbsp;
                   span ({{ filteredUsersActive.length }})
                 .div
                   .row.my-3
@@ -19,7 +18,7 @@
                     .col-lg-4
                       .d-flex.justify-content-end
                         button.btn.btn-default.mr-2.d-none Download
-                        UserModalAddEdit(:userLimit="userLimit" @saved="userAdded" @editPlan="showModal")
+                        UserModalAddEdit(@editPlan="showModal")
                           button.btn.btn-dark Add User
                         PlanModalEdit(:plan="plan")
                           button.d-none(ref="editPlanModal") Add User
@@ -40,7 +39,7 @@
                         button.btn.btn-default.mr-2 Export
                         UserModalAddEdit
                           button.btn.btn-dark Add User
-                UsersTable(v-if="!loading" :users="filteredUsersDisabled" :disabled="true")
+                UsersTable(v-if="!loading" :users="filteredUsersDisabled" :disabled="true" )
                 Loading
                 EmptyState(v-if="!loading &&  !filteredUsersDisabled.length")
 
@@ -65,7 +64,6 @@
     data() {
       return {
         searchInput: '',
-        userLimit: null,
         plan: {
           id: 1,
           name: 'Team Plan',
@@ -91,13 +89,6 @@
       }),
       searching (value) {
         this.searchInput = value
-      },
-      userAdded (payload) {
-        if (payload === 'created') this.userLimit = this.userLimit - 1
-      },
-      userRemoved (payload) {
-        console.log(payload)
-        if (payload === 'created') this.userLimit = this.userLimit + 1
       },
       showModal() {
         this.$refs.editPlanModal.click()
@@ -125,8 +116,7 @@
     async mounted() {
       try {
         await this.getEmployees()
-        const result = await this.getSeatCount()
-        if(result) this.userLimit = result.count
+        await this.getSeatCount()
       } catch (error) {
         console.error(error)
       }
