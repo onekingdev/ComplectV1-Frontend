@@ -9,7 +9,7 @@
             .settings___card--internal.p-y-1
               .row
                 .col-md-12
-                  h4 Change Email
+                  h4.semibold-text Change Email
               .row
                 .col-md-8.col-lg-6
                   b-form(@submit='onSubmitEmail' v-if='show1')
@@ -20,7 +20,7 @@
                       Errors(:errors="errors.email")
                   b-form(@submit='onSubmitResetPassword' @reset="onResetPassword" v-if='show2')
                     b-form-group.p-t-1
-                      h4 Reset Password
+                      h4.semibold-text Reset Password
                     b-form-group#input-group-2(label='Old Password' label-for='input-2'  label-class="settings__card--label required" )
                       b-form-input#input-2(v-model.trim='form2.current_password' type='password' placeholder='Old Password' :class="{'is-invalid': errors.current_password }")
                       Errors(:errors="errors.current_password")
@@ -37,7 +37,7 @@
             .settings___card--internal.p-y-1
               .row
                 .col-md-12
-                  h4 Delete Account
+                  h4.semibold-text Delete Account
               .row
                 .col-md-6
                   p By deleting your account, you will purge all account information&nbsp;
