@@ -8,7 +8,7 @@
               button.btn.btn-dark.mb-3.mr-3 New Policy
             .table
               nested-draggable(v-model='policiesComputed', :policiesList="policiesListNested" :shortTable="true")
-        .col.col-lg-9.px-0(v-if="policy")
+        .col.px-0(v-if="policy" :class="[leftMenu ? 'col-lg-9' : 'col-lg-12']")
           .policy-topbar
             .d-flex.align-items-center
               button.btn.btn__menu.mr-3(@click="leftMenu = !leftMenu")
@@ -354,12 +354,7 @@ import Tiptap from '@/common/Tiptap'
     },
     mounted() {
       this.updateList()
-    },
-    // filters: {
-    //   strippedContent: function(string) {
-    //     return string.replace(/<\/?[^>]+>/ig, " ");
-    //   }
-    // }
+    }
   };
 </script>
 
