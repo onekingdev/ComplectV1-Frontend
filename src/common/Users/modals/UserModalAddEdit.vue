@@ -4,7 +4,7 @@
       slot
 
     b-modal.fade(:id="modalId" :title="user ? 'Edit User' : 'New User'" @shown="getData")
-      .row(v-if="!userLimit && !user")
+      .row(v-if="!availableSeats.count && !user")
         .col-12.m-b-1
           Notifications(:notify="notify")
             button.btn.btn-default(@click='editPlan') Edit
@@ -45,6 +45,7 @@
 </template>
 
 <script>
+  import { mapGetters } from "vuex"
   import RoleTypesModalInfo from "@/common/Users/modals/RoleTypesModalInfo";
   import Notifications from "@/common/Notifications/Notifications";
 
@@ -97,7 +98,6 @@
           scale: 2,
           animation: ""
         },
-        // show: true
       }
     },
     methods: {
@@ -131,9 +131,12 @@
                 }
               }
 
+              
+
               if (!response.errors) {
                 this.toast('Success', `User has been ${!this.user ? 'created' : 'updated'}`)
-                this.$emit('saved');
+                this.$store.dispatch('settings/getAvailableSeatsCount')
+                this.$emit('saved', !this.user ? 'created' : 'updated');
                 this.form = initialForm();
                 this.$bvModal.hide(this.modalId)
               }
@@ -150,6 +153,9 @@
       },
     },
     computed: {
+      ...mapGetters({
+        availableSeats: 'settings/availableSeats'
+      }),
       roleOptions() {
         return ['', 'basic', 'trusted', 'admin'].map(toOption)
       }
