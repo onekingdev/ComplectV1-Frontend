@@ -164,6 +164,8 @@
 </script>
 
 <style scoped>
+  @import "./styles.css";
+
   .custom-badge {
     display: inline-flex !important;
   }

@@ -155,7 +155,8 @@
           routeName === "annual-reviews-general" ||
           routeName === "annual-reviews-review-category" ||
           routeName === "exam-management-current-review" ||
-          routeName === "profile-specialist"
+          routeName === "profile-specialist" ||
+          routeName === 'risk-review'
         ) {
           this.$store.commit('changeSidebar', 'builder')
           // document.querySelector('.sidebar-menu').style.display = "none"
@@ -182,7 +183,7 @@
           || routeName === "settings-notification-center"
         ) this.$store.commit('changeSidebar', 'documents')
 
-        if (routeName === 'policies' || routeName === 'annual-reviews') this.$store.commit('changeSidebar', 'default')
+        if (routeName === 'dashboard' || routeName === 'policies' || routeName === 'annual-reviews') this.$store.commit('changeSidebar', 'default')
         // if(routeName !== "file-folders") this.$store.commit('changeSidebar', 'default')
 
       }
