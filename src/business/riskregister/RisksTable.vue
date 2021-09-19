@@ -12,7 +12,7 @@
     .row
       .col-12
         Loading
-        table.table
+        table.table(v-if="!loading && filteredRisksComputed")
           thead
             tr
               th(style="width: 100%;") Name

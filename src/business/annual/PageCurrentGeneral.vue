@@ -56,11 +56,11 @@
 										Errors(:errors="errors.review_start")
 									.col-6
 										label.form-label End Date
-											b-form-datepicker(
-												v-model="review.review_end",
-												:date-format-options="{ year: 'numeric', month: '2-digit', day: '2-digit' }",
-												locale="en-US"
-											)
+										b-form-datepicker(
+											v-model="review.review_end",
+											:date-format-options="{ year: 'numeric', month: '2-digit', day: '2-digit' }",
+											locale="en-US"
+										)
 										Errors(:errors="errors.review_end")
 							.reviews__card--internal
 								.row
