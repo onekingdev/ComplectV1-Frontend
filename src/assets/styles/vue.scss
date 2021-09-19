@@ -112,23 +112,9 @@ input, button, select, optgroup, textarea {
 }
 
 .main-content {
-  //display: none;
-  //padding: 2.5rem; //40px;
   background-color: $gray-background;
   width: 100%;
   min-height: calc(100vh - 5rem);
-  //max-width: 1140px;
-  //min-width: calc(1000px - 285px);
-  //min-width: 1440px;
-  //min-width: 1000px;
-  //min-width: 900px;
-  //min-width: 100%;
-  //max-width: 100%;
-  //min-width: $minWidthContent;
-
-  //overflow: auto;
-  overflow-x: auto;
-  //border: solid 1px red;
 }
 
 
