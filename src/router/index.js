@@ -46,7 +46,7 @@ const ReportsOrganizations = () => import ('@/business/organizations/Page.vue')
 const ReportsFinancials = () => import ('@/business/financials/Page.vue')
 const FileFolders = () => import ('@/business/filefolders/Page')
 const Exams = () => import ('@/business/exams/Page')
-const ExamCurrentReview = () => import ('@/business/exams/PageCurrentReviewExam')
+const PageCurrentReviewExam = () => import ('@/business/exams/PageCurrentReviewExam')
 const Profile = () => import ('@/business/profile/Page')
 const Settings = () => import ('@/business/settings/Page')
 const SettingsNotifications = () => import ('@/business/notifications/Page')
@@ -84,10 +84,6 @@ const router = new VueRouter({
     { path: "/payment-required", component: PaymentRequired },
 
     // REDIRECTS
-    // { path: '/business', redirect: '/business/dashboard' },
-    // { path: '/business/dashboard', redirect: '/business/dashboard' },
-    // { path: '/specialist', redirect: '/specialist/dashboard' },
-    // { path: '/specialist/dashboard', redirect: '/specialist/dashboard' },
     { path: '/business/new', redirect: '/business/onboarding' },
     { path: '/specialists/new', redirect: '/specialist/onboarding' },
 
@@ -124,14 +120,13 @@ const router = new VueRouter({
             { path: 'risks/:riskId(\\d+)', name: 'risk-review', props: route => ({ riskId: +route.params.riskId }), component: RiskDetail, beforeEnter: AccessGuard },
             { path: 'file_folders', name: 'file-folders', component: FileFolders, beforeEnter: AccessGuard },
             { path: 'exam_management', name: 'exam-management', component: Exams, beforeEnter: AccessGuard },
-            { path: 'exam_management/:examId(\\d+)', name: 'exam-management-current-review', props: route => ({ examId: +route.params.examId }), component: ExamCurrentReview, beforeEnter: AccessGuard },
+            { path: 'exam_management/:examId(\\d+)', name: 'exam-management-current-review', props: route => ({ examId: +route.params.examId }), component: PageCurrentReviewExam, beforeEnter: AccessGuard },
             { path: 'reports/risks', name: 'reports-risks', component: ReportsRisks, beforeEnter: AccessGuard },
             { path: 'reports/organizations', name: 'reports-organizations', component: ReportsOrganizations, beforeEnter: AccessGuard },
             { path: 'reports/financials', name: 'reports-financials', component: ReportsFinancials, beforeEnter: AccessGuard },
             { path: 'profile', name: 'profile', component: Profile},
             { path: 'exam_management/:examId(\\d+)/portal', component: PageAuditorPortalInternalAccess, props: paramsToInts(['examId']) },
             { path: 'specialistmarketplace', name: 'specialists-marketplace', component: SpecialistsMarketplace },
-            { path: 'exams/:examUuid(.{36})', component: PageAuditorPortalExternalAccess, props: true },
             { path: 'settings/', name: 'settings', component: Settings,
               children:  [
                 { path: 'general', name: 'settings-general', component: Settings, },
@@ -193,6 +188,7 @@ const router = new VueRouter({
         { path: '/specialist/new', name: 'specialist-onboarding-new', component: SpecialistOnboarding, props: true },
       ]
     },
+    { path: '/exams/:examUuid(.{36})', component: PageAuditorPortalExternalAccess, props: true },
   ],
   mode: 'history'
 })

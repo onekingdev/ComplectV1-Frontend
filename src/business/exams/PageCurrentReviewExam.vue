@@ -9,8 +9,10 @@
           a.btn.btn-link Share Link
         ExamModalComplite.mr-3(v-if="currentExam && !currentExam.complete" @compliteConfirmed="markCompleteExam", :completedStatus="currentExam.complete", :countCompleted="countCompleted" :inline="false")
           button.btn.btn-default Mark as Complete
-        button.btn.btn-default(v-else-if="currentExam" @click="markCompleteExam") Mark as Incomplete
-        button.btn.btn-dark.mr-3(v-if="currentExam && !currentExam.complete" @click="saveAndExit") Save and Exit
+        .mr-3(v-else-if="currentExam")
+          button.btn.btn-default(@click="markCompleteExam") Mark as Incomplete
+        .mr-3(v-if="currentExam && !currentExam.complete")
+          button.btn.btn-dark.mr-3(@click="saveAndExit") Save and Exit
         button.btn.btn__close(@click="exit")
           b-icon(icon="x")
 
@@ -20,7 +22,7 @@
           template(#button-content)
             | Actions
             b-icon.ml-2(icon="chevron-down" font-scale="1")
-          ExamModalEdit(:exam="currentExam" :inline="false")
+          ExamModalEdit(:exam="currentExam" :inline="false" @saved="examSaved")
             b-dropdown-item Edit
           ExamModalDelete(@deleteConfirmed="deleteExam(currentExam.id)" :inline="false")
             b-dropdown-item.delete Delete
@@ -44,13 +46,11 @@
 
                     template(v-if="currentExam.exam_requests" v-for="(currentRequst, i) in currentExamRequestsFiltered")
                       .reviews__card--internal.exams__card--internal(:key="`${currentExam.name}-${i}`" :class="{ 'completed': currentRequst.complete }")
-                        .row.m-b-1
+                        .row.m-b-1.align-items-center
                           .col-md-1
-                            .reviews__checkbox.d-flex.justify-content-between
-                              .reviews__checkbox-item.reviews__checkbox-item--true(@click="markCompleteReqeust(currentRequst.id, true, currentExam.complete)" :class="{ 'checked': currentRequst.complete, 'disabled': currentExam.complete }")
+                            .reviews__checkbox.d-flex.justify-content-between.m-t-0
+                              .reviews__checkbox-item.reviews__checkbox-item--true.m-t-0(@click="markCompleteReqeust(currentRequst.id, true, currentExam.complete)" :class="{ 'checked': currentRequst.complete, 'disabled': currentExam.complete }")
                                 b-icon(icon="check2")
-                              .reviews__checkbox-item.reviews__checkbox-item--false(@click="markCompleteReqeust(currentRequst.id, false, currentExam.complete)" :class="{ 'checked': !currentRequst.complete, 'disabled': currentExam.complete }")
-                                b-icon(icon="x")
                           .col-md-11
                             .d-flex.justify-content-between.align-items-center
                               .d-flex.align-items-center
@@ -67,16 +67,16 @@
                                   ExamModalSelectFiles(:currentExamId="currentExam.id"  :request="currentRequst" :inline="false")
                                     b-dropdown-item Select Existing
                                 TaskFormModal(@saved="createTask(currentRequst.id)" :inline="false")
-                                  button.btn.btn-default.m-x-1 New Task
+                                  button.btn.btn-primary.btn-dark.m-x-1 New Task
                                 b-dropdown(size="sm" variant="none" class="m-0 p-0" right)
                                   template(#button-content)
                                     b-icon(icon="three-dots")
                                   ExamRequestModalEdit(:examId="currentExam.id" :request="currentRequst" :inline="false")
                                     b-dropdown-item Edit
                                   b-dropdown-item(v-if="plan !=='team'" @click="shareRequestAction(currentRequst.id, !currentRequst.shared)") {{ currentRequst.shared ? 'Unshare' : 'Share' }}
-                                  ExamModalDelete(@deleteConfirmed="deleteExamRequest(currentRequst.id)" :inline="false")
+                                  ExamRequestModalDelete(@deleteConfirmed="deleteExamRequest(currentRequst.id)" :inline="false")
                                     b-dropdown-item.delete Delete
-                        .row.m-b-1
+                        .row.m-b-1.m-x-15
                           .col-md-11.offset-md-1
                             p.paragraph-16 {{ currentRequst.details }}
                         .row.m-b-1
@@ -108,12 +108,12 @@
                                       b-dropdown(size="sm" variant="none" class="m-0 p-0" right)
                                         template(#button-content)
                                           b-icon(icon="three-dots")
-                                        b-dropdown-item.delete(@click="removeFile(currentRequst.id, file.id)") Delete file
+                                        b-dropdown-item.delete(@click="removeFile(currentRequst.id, file.id)") Delete
                   .d-flex.justify-content-between
                     ExamRequestModalCreate(v-if="!currentExam.complete" :examId="currentExam.id")
                       b-button.m-b-2.ml-4(variant='default')
                         b-icon.mr-2(icon='plus-circle-fill')
-                        | Add Request
+                        | New Request
                     div(v-else)
                     .white-card-body.pb-4.pr-4
                       .d-flex.justify-content-end
@@ -138,6 +138,7 @@
   import ExamRequestModalCreate from "./modals/ExamRequestModalCreate";
   import ExamModalEdit from "./modals/ExamModalEdit";
   import ExamModalDelete from "./modals/ExamModalDelete";
+  import ExamRequestModalDelete from "./modals/ExamRequestModalDelete";
   import ExamRequestModalEdit from "./modals/ExamRequestModalEdit";
   import TaskFormModal from "@/common/TaskFormModal";
   import ExamModalComplite from "./modals/ExamModalComplite";
@@ -163,7 +164,8 @@
       ExamRequestModalEdit,
       ExamRequestModalCreate,
       ExamModalEdit,
-      ExamModalDelete
+      ExamModalDelete,
+      ExamRequestModalDelete
     },
     data() {
       return {
@@ -214,6 +216,9 @@
       }
     },
     methods: {
+      examSaved() {
+        this.getCurrentExam(this.examId)
+      },
       ...mapActions({
         updateExam: 'exams/updateExam',
         getCurrentExam: 'exams/getExamById',
@@ -286,8 +291,8 @@
         }
         try {
           await this.updateCurrentExamRequest(data)
-            .then(response => this.toast('Success', "Request has been saved."))
-            .catch(error => this.toast('Error', error.message, true))
+            .then(response => this.toast('Success', "Request has been marked as complete."))
+            .catch(error => this.toast('Error', 'Request has not been marked as complete. Please try again.', true))
         } catch (error) {
           this.toast('Error', error.message, true)
         }
@@ -387,7 +392,9 @@
 
 <style scoped>
   @import "./styles.css";
-
+  .reviews__checkbox {
+    margin: 0;
+  }
   .min-w-225 {
     min-width: 225px;
   }

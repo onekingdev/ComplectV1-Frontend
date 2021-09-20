@@ -57,9 +57,6 @@
       UserModalArchive,
       UserAvatar,
     },
-    computed: {
-
-    },
     methods: {
       editReason(value){
         const dataToSend = {
@@ -99,6 +96,7 @@
             }
             if (!response.errors) {
               this.toast('Success', `Updated.`)
+              this.$store.dispatch('settings/getAvailableSeatsCount')
             }
           })
           .catch(error => this.toast('Error', `Something wrong! ${error.message}`, true))
@@ -113,6 +111,7 @@
             }
             if (!response.errors) {
               this.toast('Success', `The user has been deleted.`)
+              this.$store.dispatch('settings/getAvailableSeatsCount')
             }
           })
           .catch(error => this.toast('Error', `Something wrong! ${error.message}`, true))

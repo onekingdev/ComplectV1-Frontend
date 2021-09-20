@@ -9,7 +9,7 @@
     .card-body.white-card-body.card-body_full-height.p-x-40
       .d-flex.align-items-center.mb-2
         h4.font-16.mb-2.cursor-pointer(@click="backToRoot") All Documents
-          span.separator(v-if="currentFolderName") &nbsp/&nbsp;
+          span.separator(v-if="currentFolderName") &nbsp;/&nbsp;
           span(v-if="currentFolderName") {{ currentFolderName }}
       .d-flex.mb-2
         input(ref="inputFile" type="file" hidden @change="uploadFile")
@@ -19,7 +19,7 @@
       .d-block
         Loading
         FilefoldersTable(v-if="!loading && filefolders.files && filefolders.folders" :filefolders="filefolders")
-        EmptyState(v-if="!loading && filefolders.files.length < 1 && filefolders.folders.length < 1")
+        EmptyState(v-if="!loading && !existFileOrFolder")
 
 </template>
 
@@ -215,12 +215,10 @@
         currentFolderId: 'filefolders/currentFolder',
         currentFolderName: 'filefolders/currentFolderName'
       }),
-      // pageFolderName() {
-      //   if (!this.currentFolderId) return ''
-      //   return this.filefolders.folders.find(folder => {
-      //     if (folder.id === this.currentFolderId) return folder.name
-      //   })
-      // }
+      existFileOrFolder() {
+        if (!this.filefolders) return false
+        return this.filefolders.files && this.filefolders.folders && (this.filefolders.files.length > 0 || this.filefolders.folders.length > 0)
+      }
     },
     async mounted () {
       try {

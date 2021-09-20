@@ -9,26 +9,26 @@
             .settings___card--internal.p-y-1
               .row
                 .col-md-12
-                  h4 Change Email
+                  h4.semibold-text Change Email
               .row
                 .col-md-8.col-lg-6
                   b-form(@submit='onSubmitEmail' v-if='show1')
                     b-form-group#input-group-1(label='Email' label-for='input-1' label-class="settings__card--label required")
                       .d-flex
-                        b-form-input#input-1(v-model='form1.email' type='email' placeholder='Email' :class="{'is-invalid': errors.email }")
+                        b-form-input#input-1(v-model.trim='form1.email' type='email' placeholder='Email' :class="{'is-invalid': errors.email }")
                         b-button.ml-2(type='submit' variant="dark") Save
                       Errors(:errors="errors.email")
                   b-form(@submit='onSubmitResetPassword' @reset="onResetPassword" v-if='show2')
                     b-form-group.p-t-1
-                      h4 Reset Password
+                      h4.semibold-text Reset Password
                     b-form-group#input-group-2(label='Old Password' label-for='input-2'  label-class="settings__card--label required" )
-                      b-form-input#input-2(v-model='form2.current_password' type='password' placeholder='Old Password' :class="{'is-invalid': errors.current_password }")
+                      b-form-input#input-2(v-model.trim='form2.current_password' type='password' placeholder='Old Password' :class="{'is-invalid': errors.current_password }")
                       Errors(:errors="errors.current_password")
                     b-form-group#input-group-3(label='New Password' label-for='input-3' description="Minimum 6 character" label-class="settings__card--label required" )
-                      b-form-input#input-3(v-model='form2.password' type='password' placeholder='New Password' :class="{'is-invalid': errors.password }")
+                      b-form-input#input-3(v-model.trim='form2.password' type='password' placeholder='New Password' :class="{'is-invalid': errors.password }")
                       Errors(:errors="errors.password")
                     b-form-group#input-group-4(label='Confirm Password' label-for='input-4' label-class="settings__card--label required")
-                      b-form-input#input-4(v-model='form2.password_confirmation' type='password' placeholder='Confirm Password' :class="{'is-invalid': errors.password_confirmation }")
+                      b-form-input#input-4(v-model.trim='form2.password_confirmation' type='password' placeholder='Confirm Password' :class="{'is-invalid': errors.password_confirmation }")
                       Errors(:errors="errors.password_confirmation")
                     b-form-group.d-flex.justify-content-end.m-t-20
                       b-button.btn.btn-link.mr-2(type='reset') Cancel
@@ -37,7 +37,7 @@
             .settings___card--internal.p-y-1
               .row
                 .col-md-12
-                  h4 Delete Account
+                  h4.semibold-text Delete Account
               .row
                 .col-md-6
                   p By deleting your account, you will purge all account information&nbsp;
@@ -82,32 +82,37 @@
         resetEmail: 'settings/resetEmailSettings',
         updatePassword: 'settings/updatePasswordSettings',
         deleteAccount: 'settings/deleteAccount',
+        verifyChangeEmail: 'settings/verifyChangeEmail'
       }),
       async onSubmitEmail(event) {
         event.preventDefault()
-        for (let value in this.errors) delete this.errors[value];
-
-        // const data = {
-        //   "email": this.form1.email,
-        // }
+        this.errors = {}
+        if (!this.form1.email) {
+          this.errors['email'] = ['Required field']
+          return
+        }
         const data = {
           "user": {
-            email: this.form1.email,
-          },
+            email: this.form1.email
+          }
         }
 
         try {
-          const response = await this.resetEmail(data)
+          const response = await this.verifyChangeEmail(data)
           if (response) {
             if (response.errors) {
               for (const [key, value] of Object.entries(response.errors)) {
                 this.errors = Object.assign(this.errors, { [key]: value })
-                this.toast('Error', `${key} ${value}`, true)
               }
               if (response.errors.not_found) this.errors = Object.assign(this.errors, { email: [response.errors.not_found] })
             }
             if (!response.errors) {
-              this.toast('Success', `${response.message}`)
+              const form = {
+                email: response.email,
+                isUpdateLoginEmail: true,
+                newEmail: this.form1.email
+              }
+              this.$router.push({ name: 'verification', params: { form: form } })
             }
             if (!response) console.error(response)
 
@@ -123,7 +128,18 @@
       },
       async onSubmitResetPassword(event) {
         event.preventDefault()
-        for (let value in this.errors) delete this.errors[value];
+        this.errors = {}
+        const requiredFields = ['current_password', 'password', 'password_confirmation']
+        for(let i = 0; i < requiredFields.length; i++) {
+          const field = requiredFields[i]
+          if (!this.form2[field]) this.$set(this.errors, field, ['Required field'])
+        }
+
+        if (this.form2.password.length < 6) this.$set(this.errors, 'password', ['New password is too short (minimum is 6 characters)'])
+
+        if (this.form2.password !== this.form2.password_confirmation) this.$set(this.errors, 'password_confirmation', ['Confirm password does not match '])
+
+        if (Object.keys(this.errors).length > 0) return
 
         const data = {
           "user": {
@@ -137,11 +153,11 @@
             if (response.errors) {
               for (const [key, value] of Object.entries(response.errors)) {
                 this.errors = Object.assign(this.errors, { [key]: value })
-                this.toast('Error', `${key} ${value}`, true)
+                this.toast('Error', 'Password has not been updated. Please try again.', true)
               }
             }
             if (!response.errors) {
-              this.toast('Success', `${response.message}`)
+              this.toast('Success', 'Password has been updated.')
             }
           }
           if (!response) console.error(response)

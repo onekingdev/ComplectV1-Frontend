@@ -2,7 +2,7 @@
   .page
     div(v-if="loading")
       Loading
-    .page-header(v-if="!loading")
+    .page-header(v-if="!loading && riskComputed && riskComputed.id")
       .page-header__title
         h2
           | {{ pageTitle }}
@@ -18,9 +18,9 @@
           template(#button-content)
             | Actions
             ion-icon.ml-2(name="chevron-down-outline" size="small")
-          RiskModalDelete(@deleteConfirmed="deleteRisk", :riskId="riskComputed.id", :inline="false")
+          RiskModalDelete(@deleteConfirmed="deleteRisk" :risk-id="riskComputed.id" :inline="false")
             b-dropdown-item.delete Delete risk
-    .card-body.white-card-body.card-body_full-height(v-if="!loading")
+    .card-body.white-card-body.card-body_full-height(v-if="!loading && riskComputed && riskComputed.id")
       div.mb-3
         b-card-group(deck)
           b-card(header-tag='header' header-class='d-flex')
@@ -46,10 +46,10 @@
             template(#header)
               h3.mb-0.font-weight-bold Controls
               RiskContols.ml-auto(:riskId="riskComputed.id" :inline="false")
-                button.btn.btn-secondary {{ !riskComputed.compliance_policies && !riskComputed.compliance_policies.length ? 'Add' : 'Edit' }} Control
+                button.btn.btn-secondary {{ !riskComputed.compliance_policies.length ? 'Add' : 'Edit' }} Control
             b-card-text
-              PoliciesTable(:riskPolicies="riskComputed.compliance_policies", @deleteControl="updateRisk")
-            b-card-text(v-if="!riskComputed.compliance_policies && !riskComputed.compliance_policies.length")
+              PoliciesTable(:riskPolicies="riskComputed.compliance_policies" @deleteControl="updateRisk")
+            b-card-text(v-if="!riskComputed.compliance_policies.length")
               div.no-results.text-center
                 b-icon(icon="files" scale="5" variant="dark")
                 p.no-results__title: b No results found
@@ -164,6 +164,8 @@
 </script>
 
 <style scoped>
+  @import "./styles.css";
+
   .custom-badge {
     display: inline-flex !important;
   }

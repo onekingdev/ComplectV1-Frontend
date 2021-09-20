@@ -8,26 +8,28 @@
               button.btn.btn-dark.mb-3.mr-3 New Policy
             .table
               nested-draggable(v-model='policiesComputed', :policiesList="policiesListNested" :shortTable="true")
-        .col.col-lg-9.px-0(v-if="policy")
+        .col.px-0(v-if="policy" :class="[leftMenu ? 'col-lg-9' : 'col-lg-12']")
           .policy-topbar
             .d-flex.align-items-center
               button.btn.btn__menu.mr-3(@click="leftMenu = !leftMenu")
                 b-icon(icon='list')
               b-badge.mr-3(:variant="statusVariant(policy.status)") {{ policy.status }}
               h3.policy__main-title.m-y-0 {{ policy.title }}
-            .d-flex.justify-content-end.align-items-center(v-if="!policy.archived")
-              a.link.btn.mr-3(@click="saveDraft") Save Draft
-              span.dowloading(v-if="isDowloading")
-                .lds-ring.lds-ring-small
-                  div
-                  div
-                  div
-                  div
-              button.btn.btn-default.mr-3(v-if="!isDowloading && policy.status != 'draft' && policy.status != 'archived'" @click="download") Download
-              PoliciesModalPublish(@publishConfirmed="publishPolicy")
-                button.btn.btn-dark.mr-3 Publish
+            .d-flex.justify-content-end.align-items-center
+              template(v-if="!policy.archived")
+                a.link.btn.mr-3(@click="saveDraft") Save Draft
+                span.dowloading(v-if="isDowloading")
+                  .lds-ring.lds-ring-small
+                    div
+                    div
+                    div
+                    div
+                button.btn.btn-default.mr-3(v-if="!isDowloading && policy.status != 'draft' && policy.status != 'archived'" @click="download") Download
+                PoliciesModalPublish(@publishConfirmed="publishPolicy")
+                  button.btn.btn-dark.mr-3 Publish
               button.btn.btn__close(@click="closeAndExit")
                 b-icon(icon='x')
+          
           b-tabs.policy-tabs(content-class="mt-0")
             template(#tabs-end)
               b-dropdown.actions(text='Actions', variant="default", right)
@@ -155,7 +157,7 @@ import Tiptap from '@/common/Tiptap'
           .then(response => {
             this.toast('Success', 'Policy has been published.')
             setTimeout(() => {
-              this.$router.push(`/business/compliance_policies/${response.id}`)
+              this.$router.push(`${this.$store.getters.backendUrl}/business/compliance_policies/${response.id}`)
             }, 2000)
           })
           .catch((err) => {
@@ -352,12 +354,7 @@ import Tiptap from '@/common/Tiptap'
     },
     mounted() {
       this.updateList()
-    },
-    // filters: {
-    //   strippedContent: function(string) {
-    //     return string.replace(/<\/?[^>]+>/ig, " ");
-    //   }
-    // }
+    }
   };
 </script>
 

@@ -31,19 +31,16 @@
           nested-draggable(v-if="policiesComputed && policiesComputed.length !== 0" v-model='policiesComputed', :policiesList="policies")
         Loading
         EmptyState(v-if="!loading && !policies.length")
-    //rawdisplayer(:value='policiesComputed' title='List')
 </template>
 
 <script>
   import Loading from '@/common/Loading/Loading'
   import nestedDraggable from "./infra/nestedMain"
-  import rawdisplayer from "./infra/raw-displayer"
   export default {
     props: ['policies'],
     components: {
       Loading,
       nestedDraggable,
-      rawdisplayer,
     },
     data() {
       return {

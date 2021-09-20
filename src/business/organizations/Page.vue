@@ -77,14 +77,11 @@ export default {
   methods: {
     ...mapActions({
       getEmployees: 'settings/getEmployees',
-      // getSeatCount: 'settings/getAvailableSeatsCount'
     })
   },
   async mounted() {
     try {
       await this.getEmployees()
-      // const result = await this.getSeatCount()
-      // if(result) this.userLimit = result.count
     } catch (error) {
       console.error(error)
     }

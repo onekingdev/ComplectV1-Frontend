@@ -7,6 +7,8 @@ const mapAuthProviders = {
     updateGeneralSettings: jwt.updateGeneralSettings,
     resetEmailSettings: jwt.resetEmailSettings,
     updatePasswordSettings: jwt.updatePasswordSettings,
+    verifyChangeEmail: jwt.verifyChangeEmail,
+    updateLoginEmail: jwt.updateLoginEmail,
     deleteAccount: jwt.deleteAccount,
     getNotificationsSettings: jwt.getNotificationsSettings,
     updateNotificationsSettings: jwt.updateNotificationsSettings,
@@ -39,6 +41,7 @@ export default {
     paymentMethods: [],
     employees: [],
     employeesSpecialists: [],
+    availableSeats: {},
     staticCollection: {
       GOOGLE_PLACES_API_KEY: '',
       PLAID_PUBLIC_KEY: '',
@@ -106,7 +109,10 @@ export default {
       }
     },
     SET_EMPLOYEES_SPECIALISTS(state, payload) {
-      state.employees = payload
+      state.employeesSpecialists = payload
+    },
+    SET_AVAILABLE_SEATS(state, payload) {
+      state.availableSeats = payload
     },
   },
   actions: {
@@ -206,6 +212,82 @@ export default {
       try {
         const resetEmailSettings = mapAuthProviders[rootState.shared.settings.authProvider].resetEmailSettings
         const data = resetEmailSettings(payload)
+          .then((success) => {
+            commit("clearError", null, {
+              root: true
+            });
+            commit("setLoading", false, {
+              root: true
+            });
+            if (success) {
+              const data = success.data
+              return data
+            }
+            if (!success) {
+              commit("setError", success.message, { root: true });
+              console.error('Not success', success)
+            }
+          })
+          .catch(error => error)
+        return data
+      } catch (error) {
+        commit("setError", error.message, {
+          root: true
+        });
+        commit("setLoading", false, {
+          root: true
+        });
+        throw error;
+      }
+    },
+    async verifyChangeEmail({state, commit, rootState}, payload) {
+      commit("clearError", null, {
+        root: true
+      });
+      commit("setLoading", true, {
+        root: true
+      });
+      try {
+        const verifyChangeEmail = mapAuthProviders[rootState.shared.settings.authProvider].verifyChangeEmail
+        const data = verifyChangeEmail(payload)
+          .then((success) => {
+            commit("clearError", null, {
+              root: true
+            });
+            commit("setLoading", false, {
+              root: true
+            });
+            if (success) {
+              const data = success.data
+              return data
+            }
+            if (!success) {
+              commit("setError", success.message, { root: true });
+              console.error('Not success', success)
+            }
+          })
+          .catch(error => error)
+        return data
+      } catch (error) {
+        commit("setError", error.message, {
+          root: true
+        });
+        commit("setLoading", false, {
+          root: true
+        });
+        throw error;
+      }
+    },
+    async updateLoginEmail({state, commit, rootState}, payload) {
+      commit("clearError", null, {
+        root: true
+      });
+      commit("setLoading", true, {
+        root: true
+      });
+      try {
+        const updateLoginEmail = mapAuthProviders[rootState.shared.settings.authProvider].updateLoginEmail
+        const data = updateLoginEmail(payload)
           .then((success) => {
             commit("clearError", null, {
               root: true
@@ -659,17 +741,6 @@ export default {
             commit("setLoading", false, { root: true });
             if (success) {
               const data = success.data
-              // const settings = []
-              // for (const settingItem of data) {
-              //   settings.push(new SettingsGeneral(
-              //     settingItem.apartment,
-              //     settingItem.city,
-              //     settingItem.contact_phone,
-              //     settingItem.country,
-              //     settingItem.state,
-              //     settingItem.time_zone
-              //   ))
-              // }
               commit('UPDATE_EMPLOYEES', data)
               return success.data
             }
@@ -800,7 +871,7 @@ export default {
               //   ))
               // }
               commit('SET_EMPLOYEES_SPECIALISTS', data)
-              return success.data
+              // return data
             }
             if (!success) {
               console.error('Not success', success)
@@ -827,6 +898,7 @@ export default {
               commit("setLoading", false, { root: true });
               if (success) {
                 const data = success.data
+                commit('SET_AVAILABLE_SEATS', data)
                 return data
               }
               if (!success) {
@@ -835,6 +907,7 @@ export default {
               }
             })
             .catch(error => error)
+        return data;
       } catch (error) {
         console.error('catch error', error);
         commit("setError", error.message, { root: true });
@@ -887,6 +960,7 @@ export default {
     paymentMethods: state => state.paymentMethods,
     employees: state => state.employees,
     employeesSpecialists: state => state.employeesSpecialists,
+    availableSeats: state => state.availableSeats,
     staticCollection(state) {
       return state.staticCollection
     },

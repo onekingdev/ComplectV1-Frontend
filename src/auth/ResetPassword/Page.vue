@@ -67,8 +67,6 @@
                 }
 
                 this.errors = response.errors[type]
-                // this.toast('Error', `Form has errors! Please recheck fields! ${error}`)
-                // Object.keys(response.errors[type]).map(prop => response.errors[prop].map(err => this.toast(`Error`, `${prop}: ${err}`)))
               }
             }
             if (!response.errors) {

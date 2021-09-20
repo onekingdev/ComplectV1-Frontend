@@ -3,7 +3,7 @@
     h3.policy-details__title Risks
     .policy-actions
       //button.btn.btn.btn-default.mr-3 Download
-      PolicyRisksModal(:risks="risksComputed" :policyId="policyId" :showRiskOption="true" @saved="savedConfirmed")
+      RisksAddEditModal(:risks="risksComputed" :policyId="policyId" :showRiskOption="true" @saved="savedConfirmed")
         button.btn.btn-dark(v-if="!currentUserBasic && !policy.archived") New Risk
     .policy-details__body
       table.table
@@ -37,7 +37,7 @@
                     b-icon(icon="three-dots")
                   b-dropdown-item-button(@click="editRisk(risk.id)") Edit
                   b-dropdown-item-button.delete(@click="deleteRisk(risk.id)") Delete
-      PolicyRisksModal(id="editRiskModal" v-bind="nowEditingRisk" :risks="risksComputed" :policyId="policyId" :inline="false" :showRiskOption="true" @saved="updateRisk")
+      RisksAddEditModal(id="editRiskModal" v-bind="nowEditingRisk" :risks="risksComputed" :policyId="policyId" :inline="false" :showRiskOption="true" @saved="updateRisk")
       Loading
       EmptyState(v-if="!loading && policyById.risks && !policyById.risks.length")
 </template>
@@ -46,7 +46,7 @@
   // @TODO REVIEW STRUCTURE AND REBUILD
 
   import Loading from '@/common/Loading/Loading'
-  import PolicyRisksModal from '@/common/Modals/RisksAddEditModal'
+  import RisksAddEditModal from '@/common/Modals/RisksAddEditModal'
   import EtaggerMixin from '@/mixins/EtaggerMixin'
   import { DateTime } from 'luxon'
 
@@ -68,7 +68,7 @@
     },
     components: {
       Loading,
-      PolicyRisksModal
+      RisksAddEditModal
     },
     data() {
       return {

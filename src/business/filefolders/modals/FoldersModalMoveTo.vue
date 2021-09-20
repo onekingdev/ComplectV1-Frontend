@@ -115,8 +115,6 @@
           const response = await this.$store.dispatch('filefolders/updateFolder', { id: this.item.id, data, action: 'move' })
           if (response.errors) {
             this.toast('Error', `Folder has not been moved. Please try again. ${response.status}`, true)
-            Object.keys(response.errors)
-              .map(prop => response.errors[prop].map(err => this.toast(`Error`, `${prop}: ${err}`)))
             return
           }
           this.toast('Success', `Folder has been moved.`)

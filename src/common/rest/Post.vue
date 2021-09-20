@@ -32,7 +32,7 @@ export default {
           'Accept': 'application/json',
           'Content-Type': 'application/json',
           'business_id': window.localStorage["app.business_id"],
-          ...this.$store.getters.authHeaders,
+          ...this.$store.getters.authHeaders.headers,
           ...this.headers
         },
         body: JSON.stringify(this.model)

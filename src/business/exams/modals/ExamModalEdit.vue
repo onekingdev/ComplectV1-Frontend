@@ -3,38 +3,39 @@
     div(v-b-modal="modalId" :class="{'d-inline-block':inline}")
       slot
 
-    b-modal.fade(:id="modalId" title="Edit Exam" @shown="getData")
+    ModelLoader(:url="apiUrl" @loaded="load" :default="initialExam"): b-modal.fade(:id="modalId" title="Edit Exam")
       .row
-        .col-12
+        .col-12.m-b-2
           label.form-label Name
           input.form-control(v-model="exam_management.name" type="text" placeholder="Enter the name of your exam" ref="input" @keyup="onChange")
+          Errors(:errors="errors.name")
       .row.m-t-1
         .col-6
           label.form-label Start Date
           DatePicker(v-model="exam_management.starts_on" :options="datepickerOptions")
+          Errors(:errors="errors.starts_on")
         .col-6
           label.form-label Due Date
           DatePicker(v-model="exam_management.ends_on" :options="datepickerOptions")
+          Errors(:errors="errors.ends_on")
 
       template(slot="modal-footer")
         button.btn.btn-link(@click="$bvModal.hide(modalId)") Cancel
-        button.btn.btn-dark(@click="submit") Save
+        Post(method="PATCH" ref="SubmitButton" :action="apiUrl" :model="exam_management" @errors="errors = $event" @saved="saved")
+          button.btn.btn-dark Save
 </template>
 
 <script>
-  import { DateTime } from 'luxon'
-  import EtaggerMixin from '@/mixins/EtaggerMixin'
   const rnd = () => Math.random().toFixed(10).toString().replace('.', '')
 
   const initialExam = () => ({
-    id: '',
-    name: '',
-    starts_on: '',
-    ends_on: ''
+    id: null,
+    name: null,
+    starts_on: null,
+    ends_on: null
   })
 
   export default {
-    mixins: [EtaggerMixin()],
     props: {
       inline: {
         type: Boolean,
@@ -49,43 +50,25 @@
       return {
         modalId: `modal_${rnd()}`,
         exam_management: initialExam(),
-        errors: []
+        errors: {}
       }
     },
     methods: {
+      initialExam,
+      saved() {
+        this.$emit('saved')
+        this.toast('Success', `Exam has been saved.`)
+        this.$bvModal.hide(this.modalId)
+      },
       onChange(e){
         if (e.keyCode === 13) {
           // ENTER KEY CODE
-          this.submit(e)
+          this.$refs.SubmitButton.$el.click()
         }
       },
-      async submit(e) {
-        e.preventDefault();
-
-        if (!this.exam_management.name || !this.exam_management.starts_on || !this.exam_management.ends_on) {
-          this.toast('Error', `Please check all fields!`, true)
-          return
-        }
-
-        try {
-          await this.$store.dispatch('exams/updateExam', this.exam_management)
-            .then(response => {
-              this.toast('Success', `Exam Management successfully updated!`)
-              this.$emit('saved')
-              this.$bvModal.hide(this.modalId)
-              this.newEtag()
-            })
-            .catch(error => {
-              console.error(error)
-              throw error
-            })
-        } catch (error) {
-          this.toast('Error', error.message, true)
-        }
+      load(payload) {
+        Object.assign(this.exam_management, payload)
       },
-      getData() {
-        this.exam_management = Object.assign({}, this.exam_management, this.exam)
-      }
     },
     computed: {
       datepickerOptions() {
@@ -93,9 +76,9 @@
           min: new Date
         }
       },
-    },
-    mounted() {
-
+      apiUrl() {
+        return `/api/business/exams/${this.exam.id}`
+      }
     },
   }
 </script>

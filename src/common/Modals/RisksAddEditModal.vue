@@ -56,7 +56,10 @@ export default {
   mixins: [EtaggerMixin()],
   props: {
     id: String,
-    risks: Array,
+    risks: {
+      type: Array,
+      default: () => []
+    },
     riskId: Number,
     remindAt: String,
     inline: {
@@ -121,24 +124,16 @@ export default {
       this.$store
         .dispatch(method, {...this.risk})
         .then(response => {
-          if (response.errors) {
-            const text = method === 'createRisk' ? 'Risk has not been created. Please try again.' : 'Risk has not been updated. Please try again.'
-            this.toast('Error', text)
+          if (method == 'createRisk') {
+            this.toast('Success', 'Risk has been created.')
           } else {
-            if (method == 'createRisk') {
-              this.toast('Success', 'Risk has been created.')
-            } else {
-              this.toast('Success', 'Risk has been updated.')
-            }
-            this.$emit('saved', response)
-            this.$bvModal.hide(this.modalId)
-            this.newEtag()
+            this.toast('Success', 'Risk has been updated.')
           }
+          this.$emit('saved', response)
+          this.$bvModal.hide(this.modalId)
+          this.newEtag()
         })
-        .catch(error => {
-          console.error(error)
-          this.toast('Error', `Risk has not been created. Please try again. ${error}`, true)
-        })
+        .catch(error => this.toast('Error', error.message, true))
     },
     onChange(event){
       // CATCH RISK NEW OR FROM CREATED

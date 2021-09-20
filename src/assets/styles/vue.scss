@@ -112,23 +112,9 @@ input, button, select, optgroup, textarea {
 }
 
 .main-content {
-  //display: none;
-  //padding: 2.5rem; //40px;
   background-color: $gray-background;
   width: 100%;
   min-height: calc(100vh - 5rem);
-  //max-width: 1140px;
-  //min-width: calc(1000px - 285px);
-  //min-width: 1440px;
-  //min-width: 1000px;
-  //min-width: 900px;
-  //min-width: 100%;
-  //max-width: 100%;
-  //min-width: $minWidthContent;
-
-  //overflow: auto;
-  overflow-x: auto;
-  //border: solid 1px red;
 }
 
 
@@ -2621,7 +2607,6 @@ table.table {
       height: 20px;
       content: '';
       transform: translateY(-50%);
-      //background: url("./complete.svg") center no-repeat;
     }
 
     .toast-header,
@@ -2655,12 +2640,10 @@ table.table {
   }
 
   &.b-toast-success {
-
     .toast {
       border-left: solid 5px $green;
-
       &::before {
-        background: asset_url("complete.svg") center no-repeat;
+        background: url("../complete.svg") center no-repeat;
         background-color: $green;
         border-radius: 50%;
       }
@@ -2668,12 +2651,10 @@ table.table {
   }
 
   &.b-toast-danger {
-
     .toast {
       border-left: solid 5px $red;
-
       &::before {
-        background: asset_url("error_20.svg") center no-repeat;
+        background: url("../error_20.svg") center no-repeat;
         background-color: $red;
         border-radius: 50%;
       }
@@ -2791,13 +2772,12 @@ table.table {
         opacity: 1;
       }
 
-      &:hover, &:active {
-        &:not(.disabled) {
-          color: #2e304f;
-          background-color: #dee2e6;
-          border-color: #dee2e6;
-        }
-      }
+      // &:hover, &:active {
+      //   &:not(.disabled) {
+      //     color: #2e304f;
+      //     border-color: #dee2e6;
+      //   }
+      // }
 
       &:not(:last-child) {
         margin-right: .5rem;

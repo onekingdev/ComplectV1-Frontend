@@ -65,13 +65,13 @@ const URLS = {
 	URL_API_PROJECT_TIMESHEET,
 }
 
-
+const removeQuotes = str => str.indexOf('"') === 0 ? JSON.parse(str) : str
 
 const store = new Vuex.Store({
 	getters: {
 		url: () => (url, id) => URLS[url].replace(":id", id),
 		backendUrl: () => backendUrl,
-		authHeaders: state => ({ headers: { 'Authorization': state.auth.accessToken }})
+		authHeaders: state => ({ headers: { 'Authorization': removeQuotes(state.auth.accessToken) }})
 	},
 
 	modules: {

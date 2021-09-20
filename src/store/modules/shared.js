@@ -71,7 +71,7 @@ export default {
     appModule (state) {
       const userType = state.userType
       if(!userType) return ''
-      return userType === 'businesses' || 'business' ? 'business' : 'specialist'
+      return (userType === 'businesses') || (userType === 'business') ? 'business' : 'specialist'
     }
   }
 }

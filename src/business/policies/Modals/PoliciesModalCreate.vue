@@ -4,7 +4,6 @@
       slot
 
     b-modal.fade(:id="modalId" title="New policy")
-      b-alert.m-b-20(v-if="error" variant="danger" show) {{ error }}
 
       label.form-label Policy Name
       input.form-control(v-model="policy.name" ref="input" type="text" @keyup.enter="submit" @input="clearErrors")
@@ -37,7 +36,6 @@
           sections: [],
         },
         errors: [],
-        error: ''
       }
     },
     methods: {
@@ -45,7 +43,6 @@
         this.$refs.input.focus();
       },
       clearErrors() {
-        this.error = ''
         this.errors = [];
       },
       submit(e) {
@@ -53,13 +50,11 @@
         this.clearErrors()
 
         if (!this.policy.name) {
-          // this.errors.push('Name is required');
-          this.error = 'Name is required'
+          this.errors.push('Required field');
           return;
         }
         if (this.policy.name.length <= 3) {
-          // this.errors.push('Name is very short, must be more 3 characters.');
-          this.error = 'Name must be more 3 characters'
+          this.errors.push('Name must be more 3 characters')
           return;
         }
 
@@ -71,8 +66,6 @@
             if (response.errors) {
               this.toast('Error', `${response.status}`, true)
               this.errors.push({ title: `${response.errors.title}`});
-              Object.keys(response.errors)
-                .map(prop => response.errors[prop].map(err => this.toast(`Error`, `${prop}: ${err}`)))
             }
             if(!response.errors) {
               this.toast('Success', `Policy has been created.`)
