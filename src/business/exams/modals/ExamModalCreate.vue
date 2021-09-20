@@ -9,14 +9,14 @@
           label.form-label Name
           input.form-control(v-model.trim="exam_management.name" type="text" ref="input" @keyup="onChange")
           Errors(:errors="errors.name")
-      .row.m-b-2
+      .row.m-t-1
         .col-6
           label.form-label Start Date
-          b-form-datepicker(v-model="exam_management.starts_on" :date-format-options="{ year: 'numeric', month: '2-digit', day: '2-digit' }" locale="en")
+          DatePicker(v-model="exam_management.starts_on")
           Errors(:errors="errors.starts_on")
         .col-6
           label.form-label End Date
-          b-form-datepicker(v-model="exam_management.ends_on" :date-format-options="{ year: 'numeric', month: '2-digit', day: '2-digit' }" locale="en")
+          DatePicker(v-model="exam_management.ends_on")
           Errors(:errors="errors.ends_on")
 
       template(slot="modal-footer")
@@ -53,6 +53,7 @@
           ends_on: null
         }
         this.errors = {}
+        
       },
       onChange(e){
         if (e.keyCode === 13) {
@@ -60,7 +61,30 @@
           this.submit()
         }
       },
+      validates() {
+        const fields = ['name', 'starts_on', 'ends_on']
+        fields.forEach(field => {
+          const errors = []
+          if (!this.exam_management[field]) {
+            errors.push('Required field')
+          }
+
+          if (field === 'ends_on' && this.exam_management.starts_on && this.exam_management.ends_on) {
+            if (this.exam_management.starts_on > this.exam_management.ends_on) errors.push('Date must occur after start date')
+          }
+          
+          if (errors.length > 0) {
+            this.$set(this.errors, field, errors)
+          } else {
+            if (this.errors[field]) delete this.errors[field]
+          }
+        })
+      },
       async submit() {
+        this.validates()
+        if (Object.keys(this.errors).length > 0) {
+          return
+        }
         try {
           const result = await this.$store.dispatch('exams/createExam', this.exam_management)
           if (result.status === 422) {
