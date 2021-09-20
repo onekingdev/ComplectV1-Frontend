@@ -120,7 +120,7 @@ export default {
 
       try {
         const endpointUrl = '/business/risks'
-        const data = await axios.delete(`${endpointUrl}/${payload.id}`, headersBusinessId())
+        const data = (await axios.delete(`${endpointUrl}/${payload.id}`, headersBusinessId())).data
         commit("deleteRisk", {...data});
         commit("setLoading", false)
         return data
