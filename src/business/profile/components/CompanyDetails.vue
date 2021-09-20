@@ -97,7 +97,7 @@
                 .invalid-feedback.d-block(v-if="errors.time_zone") {{ errors.time_zone[0] }}
         .row
           .col-sm-6.pr-sm-2
-            b-form-group#inputB-group-8(label='Phone Number' label-for='inputB-8' label-class="label")
+            b-form-group#inputB-group-8(label='Phone Number' label-for='inputB-8' label-class="label" description="Optional")
               b-form-input#inputB-8(v-model='form.business.contact_phone' type='text' placeholder='Phone Number' required :class="{'is-invalid': errors.contact_phone }")
               .invalid-feedback.d-block(v-if="errors.contact_phone") {{ errors.contact_phone[0] }}
           .col-sm-6.pl-sm-2
