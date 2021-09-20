@@ -10,8 +10,13 @@
         a.link(:href="itemType === 'file' ? item.file_addr : '#'" :target="itemType === 'file' ? '_blank' : '_self'" @click="openFolder($event, item.id, item.file_addr, item.name)")
           ion-icon.m-r-1(:name="itemType === 'folder' ? 'folder-outline' : 'document-outline'" size="small")
           | {{ item.name }}
-        span.m-l-1(v-if="disabled")
-          b-icon.m-r-1(icon="arrow-counterclockwise" animation="spin-reverse-pulse" font-scale="1")
+        span.m-l-1.zipping-process
+          .lds-ring.lds-ring-small
+            div
+            div
+            div
+            div
+          //- b-icon.m-r-1(icon="arrow-counterclockwise" animation="spin-reverse-pulse" font-scale="1")
           | Zipping...
     td.align-middle.text-right {{ item.owner }}
     td.align-middle.text-right
@@ -197,5 +202,8 @@ export default {
 <style scoped>
   ion-icon {
     color: #565759;
+  }
+  .zipping-process .lds-ring.lds-ring-small {
+    margin-right: 0.5rem
   }
 </style>
