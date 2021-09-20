@@ -121,10 +121,10 @@
                     button.btn.btn-primary.save-comment-btn Send
 
       template(v-if="!taskId" slot="modal-footer")
-        .d-flex.justify-content-between(style="width: 100%")
+        .d-flex.justify-content-between
           div
             button.btn.btn-link.m-r-1(@click="$bvModal.hide(modalId)") Cancel
-            button.btn.btn-dark(@click="submit()") Save
+            button.btn.btn-dark(@click="submit()") Create
 
       template(v-if="task.done_at && taskId" slot="modal-footer")
         span.mr-2
@@ -141,7 +141,7 @@
           TaskDeleteConfirmModal(:inline="false" @deleteConfirmed="deleteTask(task)")
             b-dropdown-item Delete Series
         button.btn.btn-default(@click="toggleDone(task)") Mark as Complete
-        button.btn.btn-dark(v-if="!taskId" @click="submit()") Create
+        button.btn.btn-dark(v-if="!taskId" @click="submit()") Save
         button.btn.btn-dark(v-else-if="null === occurenceId" @click="submit(true)") Save
         b-dropdown.font-weight-bold(v-else variant="dark" text="Save")
           b-dropdown-item(@click="submit(true)") Save Occurence
@@ -282,11 +282,11 @@ export default {
           response.json().then(errors => this.errors = errors.errors)
         } else if (response.status === 201 || response.status === 200) {
           this.$emit('saved')
-          this.toast('Success', 'The task has been saved')
+          this.toast('Success', this.taskId ? 'Task has been updated.' : 'Task has been created.')
           this.$bvModal.hide(this.modalId)
           this.resetTask()
         } else {
-          this.toast('Error', 'Couldn\'t submit form')
+          this.toast('Error', this.taskId ? 'Task has not been updated. Please try again.' : 'Task has not been created. Please try again.')
         }
       })
     },
