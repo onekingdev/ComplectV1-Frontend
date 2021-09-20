@@ -215,11 +215,11 @@ input[type=number] {
   }
 }
 
-@media (max-width: 800px) {
+/* @media (max-width: 800px) {
   .registration-onboarding {
     margin-right: 0;
   }
-}
+} */
 
 .registration-onboarding__title {
   margin-bottom: 0;
