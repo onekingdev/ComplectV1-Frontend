@@ -54,7 +54,8 @@
                         b-icon.three-dots(icon="three-dots")
                       RisksAddEditModal(:risks="risksComputed" :riskId="risk.id" :inline="false")
                         b-dropdown-item-button Edit
-                      b-dropdown-item-button.delete(@click="deleteRisk(risk.id)") Delete
+                      RiskModalDelete(@deleteConfirmed="deleteRisk(risk.id)" :risk-id="risk.id" :inline="false")
+                        b-dropdown-item.delete Delete
               template(v-if="risk.compliance_policies")
                 tr(v-for="policy in risk.compliance_policies" :key="`risk-${risk.id}-${policy.id}`" class="d-none" :class="`risk-${risk.id}`")
                   td
@@ -80,6 +81,7 @@
 <script>
   import Loading from '@/common/Loading/Loading'
   import RisksAddEditModal from '@/common/Modals/RisksAddEditModal'
+  import RiskModalDelete from "./Modals/RiskModalDelete"
   import EtaggerMixin from '@/mixins/EtaggerMixin'
   import { DateTime } from 'luxon'
 
@@ -90,7 +92,8 @@
     },
     components: {
       Loading,
-      RisksAddEditModal
+      RisksAddEditModal,
+      RiskModalDelete
     },
     data() {
       return {
@@ -119,7 +122,7 @@
           })
       },
       getRisks(risks) {
-        console.log('risks', risks)
+        // console.log('risks', risks)
         return risks
       },
       badgeVariant(num) {
@@ -144,10 +147,10 @@
         this.$store
           .dispatch('deleteRisk', { id: riskId })
           .then(response => {
-            this.toast('Success', `Risk successfully deleted!`)
+            this.toast('Success', 'Risk has been deleted.')
           })
           .catch(error => {
-            this.toast('Error', `Couldn't delete risk! ${error}`)
+            this.toast('Error', 'Risk has not been deleted. Please try again.')
           })
       },
       searching () {

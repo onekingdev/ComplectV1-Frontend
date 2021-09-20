@@ -8,7 +8,7 @@
         .col-md-1.text-center.px-0
           img(src='@/assets/error_20.svg' width="25" height="25")
         .col
-          p.paragraph.m-b-10 You are about to delete the risk and romove any connections to its related controls.
+          p.paragraph.m-b-10 This will remove the risk from the register and unlink it from any policies that serve as a control.
           p.paragraph.mb-0
             b Do you want to continue?
       Errors(:errors="errors.title")
