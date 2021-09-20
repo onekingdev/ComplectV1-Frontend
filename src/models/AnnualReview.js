@@ -13,10 +13,7 @@ export default class AnnualReview {
     if (regulatory_changes && regulatory_changes.length) {
       this.regulatory_changes = regulatory_changes
     } else {
-      this.regulatory_changes = [
-        { change: "", timestamp: new Date().getTime() },
-        { change: "", timestamp: new Date().getTime() + 1 }
-      ]
+      this.regulatory_changes = []
     }
 
     this.review_categories = review_categories || []
