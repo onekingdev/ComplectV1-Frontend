@@ -33,11 +33,14 @@
             .col-md-9.m-b-40
               .card-body.white-card-body.reviews__card
                 .reviews__card--internal.pt-0
-                  .d-flex.justify-content-between.align-items-center
-                    h3
-                      | {{ currentCategory.name }}
-                    CommonDeleteModal.ml-auto(title="Delete Category" content="This will remove the category from this internal review and all of its associated content." @deleteConfirmed="deleteCategory(currentCategory.id)", :inline="false")
-                      b-button.btn.btn-default(variant="light") Delete
+                  .row
+                    .col-md-9.col-lg-9.col-xl-10
+                      h3
+                        input.editable-category-name(v-model="currentCategory.name" placeholder="Enter category name")
+                      Errors(:errors="errors")
+                    .col-md-3.col-lg-3.col-xl-2.text-right.reviews__card--actions
+                      CommonDeleteModal.ml-auto(title="Delete Category" content="This will remove the category from this internal review and all of its associated content." @deleteConfirmed="deleteCategory(currentCategory.id)", :inline="false")
+                        b-button.btn.btn-default(variant="light") Delete
                 .reviews__topiclist(v-if="currentCategory.review_topics")
                   template(v-for="(currentTopic, i) in currentCategory.review_topics")
                     .reviews__card--internal(:key="`${currentCategory.name}-${i}`")
@@ -128,7 +131,8 @@ export default {
         ["blockquote"],
         [{ list: "bullet" }],
         ["link"]
-      ]
+      ],
+      errors: []
     }
   },
   computed: {
@@ -145,15 +149,22 @@ export default {
       getCurrentReviewReview: 'annual/getCurrentReview'
     }),
     async saveCategory () {
+      if (!this.currentCategory.name) {
+          this.errors.push('Required field')
+          return
+      }
+      this.errors = []
       const reviewCategory = this.currentCategory
       const data = {
         annualId: this.annualId,
         ...reviewCategory
       }
+      
       try {
         await this.updateReviewCategory(data)
         this.toast('Success', "Category has been updated..")
         await this.getCurrentReviewReview(this.annualId)
+        
       } catch (error) {
         this.toast('Error', error.message, true)
       }
@@ -261,6 +272,11 @@ export default {
 .finding-area {
     width: calc(100% - 30px);
     float: left;
+}
+
+.editable-category-name {
+  border: none;
+  width: 100%;
 }
 
 @media only screen and (min-width: 1200px) {

@@ -2667,29 +2667,28 @@ table.table {
 /* ---------- reviews ---------- */
 .reviews {
   &__list {
+    &-text {
+      text-overflow: ellipsis;
+      overflow: hidden;
+      line-height: 1.3;
+    }
     &-icon {
       color: #cecfd2;
       font-size: 20px;
-
+      flex-shrink: 0;
+      margin-left: 0.5rem;
       &.checked {
         color: #1ab27f;
       }
     }
-
     &-link {
       display: flex;
       justify-content: space-between;
       align-items: center;
       margin: 0 0 1.25rem 0;
-
       color: $gray-2;
       font-size: 1rem;
       font-weight: 300;
-
-      max-width: 100%;
-      white-space: nowrap;
-      overflow: hidden;
-      text-overflow: ellipsis;
 
       &.router-link-exact-path-active,
       &--active {
