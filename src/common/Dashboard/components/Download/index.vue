@@ -23,11 +23,24 @@
             DatePicker(v-model="download.end_date")
             Errors(:errors="errors.end_date")
         .d-flex.justify-content-between.m-y-20
-          a.btn.link(:href="pdfUrl" target="_blank" @click='closeMe') Download All
-          a.btn.btn-secondary(:href="pdfRangeDownload" @click='closeMe') Download
+          a.btn.link(href @click.prevent='downloadBinary(pdfUrl, "reminders.csv")') Download All
+          a.btn.btn-secondary(href @click.prevent='downloadBinary(pdfRangeDownload, "reminders.csv")') Download
 </template>
 
 <script>
+import axios from '@/services/axios'
+
+const forceDownload = (response, filename) => {
+    const url = window.URL.createObjectURL(new Blob([response.data]))
+    const link = document.createElement('a')
+    link.href = url
+    link.setAttribute('download', filename)
+    document.body.appendChild(link)
+    link.click()
+  }
+const downloadBinary = (url, filename) => axios.get(`..${url}`, { responseType: 'blob' })
+  .then(response => forceDownload(response, filename))
+
   export default {
     props: {
       pdfUrl: {
@@ -54,6 +67,10 @@
         } else {
           this.$refs.dropdown.hide();
         }
+      },
+      downloadBinary(url, filename) {
+        this.closeMe()
+        downloadBinary(url, filename)
       },
       closeMe() {
         this.isCloseable = true;
