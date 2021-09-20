@@ -1,9 +1,11 @@
 <template lang="pug">
   b-form-group#inputCoupon-group-1.mb-0(label='Promo Code' label-for='inputCoupon')
     .d-flex.coupon
-      b-form-input#inputCoupon.coupon__input(v-model='coupon' type='text' placeholder='Enter promo code' required :class="{'is-invalid': errors.coupon }" @keyup="onKeyUp")
-      button.btn.btn-secondary.coupon__btn(v-if="!loading" type="button" :disabled="disabled" @click="activatePromoCode") Apply
-      button.btn.btn-secondary.coupon__btn(v-if="loading")
+      b-form-input#inputCoupon.coupon__input(v-model='coupon' type='text' placeholder='Promo' required :class="{'is-invalid': errors.coupon }" @keyup="onKeyUp")
+      
+  
+      b-button.ml-2(v-if="!loading" type='button' variant='dark' :disabled="disabled" @click="activatePromoCode") Apply
+      b-button(v-if="loading" type='button' variant='none')
         .lds-ring.lds-ring-small
           div
           div
