@@ -459,7 +459,7 @@ export default {
           }})
           .then(response => response.json())
           .then(response => {
-            commit('deletePolicy', {id: response.id})
+            commit('deletePolicy', {id: payload.policyId})
             return response
           })
           .catch(error => {
