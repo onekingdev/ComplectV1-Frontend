@@ -1,8 +1,8 @@
 <template lang="pug">
   b-input-group.mb-1
-    b-form-input(v-bind="datepickerInputOptions" @input="input" :value="formattedDate")
+    b-form-input(placeholder="MM/DD/YYYY" @input="input" :value="formattedDate")
     b-input-group-append
-      b-form-datepicker(v-bind="datepickerOptions" @input="input" :show-decade-nav="false" :hide-header="true" button-only right)
+      b-form-datepicker(v-bind="datepickerOptions" @input="input" button-only right)
 </template>
 
 <script>
@@ -25,15 +25,8 @@ export default {
       const options = {year: 'numeric', month: 'numeric', day: 'numeric' };
       return new Date(this.value).toLocaleString('en-US', options)
     },
-    datepickerInputOptions() {
-      return {
-        placeholder: 'MM/DD/YYYY',
-        value: this.value
-      }
-    },
     datepickerOptions() {
       return {
-        ...this.datepickerInputOptions,
         ...this.options,
         hideHeader: true,
         showDecadeNav: false,
