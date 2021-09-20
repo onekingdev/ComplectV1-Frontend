@@ -13,7 +13,7 @@
       .row(v-if="show")
         .col-12.m-b-1
           label.form-label Email
-          input-group
+          .input-group
             input.form-control(v-model="exam.email" type="email" ref="input" @keyup="onChange")
             .input-group-append
               button.btn.btn-dark(@click="invite") Send
@@ -31,6 +31,7 @@
                 td.auditor-email {{ auditor.email }}
                 td.text-right
                   b-icon.remove-btn(icon="x" @click="unIinvite(auditor.id, auditor.email)")
+
       template(slot="modal-footer" footer-class="d-none")
         button.btn.btn-link(@click="$bvModal.hide(modalId)") Cancel
         // button.btn.btn-dark(@click="invite") Send
@@ -40,8 +41,10 @@
   import Errors from '@/common/Errors'
   import UserAvatar from '@/common/UserAvatar'
   const rnd = () => Math.random().toFixed(10).toString().replace('.', '')
-  const EMAIL_FORMAT = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/
-
+  const EMAIL_FORMAT = new RegExp (['^(([^<>()[\\]\\\.,;:\\s@\"]+(\\.[^<>()\\[\\]\\\.,;:\\s@\"]+)*)',
+                    '|(".+"))@((\\[[0-9]{1,3}\\.[0-9]{1,3}\\.[0-9]{1,3}\\.',
+                    '[0-9]{1,3}\])|(([a-zA-Z\\-0-9]+\\.)+',
+                    '[a-zA-Z]{2,}))$'].join(''))
   export default {
     props: {
       inline: {
@@ -105,6 +108,7 @@
           this.errors = { email: ["Required field"] }
           return
         }
+
         if(!EMAIL_FORMAT.test(this.exam.email)) {
           this.errors = { email: ["Invalid email address"] }
           return
@@ -212,11 +216,11 @@
     width: 100%;
     table-layout: fixed;/* even columns width , fix width of table too*/
   }
-
+  
   thead {
     width: calc( 100% - 1em )/* scrollbar is average 1em/16px width, remove it from thead width */
   }
- 
+
   tbody::-webkit-scrollbar {
     width: 10px;
     height: 15px; }
@@ -224,10 +228,11 @@
   tbody::-webkit-scrollbar-thumb {
     border-radius: 5px;
     background-image: -webkit-gradient(linear, left bottom, left top, from(#a8a8a8), to(#a8a8a8));
-    background-image: linear-gradient(to top, #1B1C29, #2E304F);
+    background-image: linear-gradient(to top, #1B1C29, #2E304F); 
   }
 
   tbody::-webkit-scrollbar-track {
     background: rgba(0, 0, 0, 0.1);
-    border-radius: 5px; }
+    border-radius: 5px;
+  }
 </style>
