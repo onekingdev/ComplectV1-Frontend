@@ -6,7 +6,7 @@
       :general="general"
       :checked="generalComplete"
     )
-    template(v-for="(reviewCategory, index) in reviewsCategories")
+    template(v-for="(reviewCategory, index) in reviewsCategoriesSorted")
       ReviewLink(
         :title="reviewCategory.name"
         :checked="reviewCategory.complete"
@@ -41,6 +41,11 @@ export default {
   },
   components: {
     ReviewLink
+  },
+  computed: {
+    reviewsCategoriesSorted() {
+      return this.reviewsCategories.sort((a, b) => a.id - b.id);
+    }
   },
   methods: {
     ...mapActions({
