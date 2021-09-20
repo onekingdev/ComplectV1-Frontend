@@ -11,8 +11,9 @@
                 b-img(v-if="url" left :src="url" alt="Preview image")
               .d-block
                 input.mb-2(ref="inputFile" type="file" accept="image/*" plain hidden @change="onFileChange")
-                b-button.m-r-1(variant="secondary" @click="selectFile") Upload
-                a.d-block.link.mt-2(href='#' @click.prevent='onRemove') Remove
+                .business-profile-preview-image-controls
+                  b-button.m-r-1(variant="secondary" @click="selectFile") Upload
+                  b-button.btn.btn-link.m-r-1.m-t-05(@click.prevent='onRemove') Remove
         .row
           .col-sm-6.pr-sm-2
             b-form-group#inputB-group-1(label='Company Name' label-for='inputB-1' label-class="label required")

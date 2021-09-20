@@ -11,8 +11,9 @@
                 b-img(v-if="url" left :src="url" alt="Preview image")
               .d-block
                 input(ref="inputFile" type="file" accept="image/*" plain hidden @change="onFileChange")
-                b-button.m-r-1(variant="secondary" @click="selectFile") Upload
-                a.d-block.link.mt-2(href='#' @click.prevent='onRemove') Remove
+                .business-profile-preview-image-controls
+                  b-button.m-r-1(variant="secondary" @click="selectFile") Upload
+                  b-button.btn.btn-link.m-r-1.m-t-05(@click.prevent='onRemove') Remove       
         .row
           .col.pr-2
             b-form-group#input-group-1(label='First Name:' label-for='input-1' label-class="label")
@@ -110,4 +111,12 @@
     },
   }
 </script>
+
+<style>
+.business-profile-preview-image-controls {
+  display: flex;
+  flex-direction: column;
+  /* gap: 1em; */
+}
+</style>
 
