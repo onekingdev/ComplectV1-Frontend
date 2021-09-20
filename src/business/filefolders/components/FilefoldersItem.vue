@@ -205,4 +205,20 @@ export default {
   .zipping-process .lds-ring.lds-ring-small {
     margin-right: 0.5rem
   }
+
+  .text-mg-left {
+    margin-left: -20px;
+    position: relative;
+    top: 3px;
+  }
+
+  .file-name {
+    position: relative;
+    top: -3px;
+  }
+
+  /deep/ .custom-checkbox {
+    position: relative;
+    top: -2px;
+  }
 </style>
