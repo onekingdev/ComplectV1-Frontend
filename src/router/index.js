@@ -127,7 +127,6 @@ const router = new VueRouter({
             { path: 'profile', name: 'profile', component: Profile},
             { path: 'exam_management/:examId(\\d+)/portal', component: PageAuditorPortalInternalAccess, props: paramsToInts(['examId']) },
             { path: 'specialistmarketplace', name: 'specialists-marketplace', component: SpecialistsMarketplace },
-            { path: 'exams/:examUuid(.{36})', component: PageAuditorPortalExternalAccess, props: true },
             { path: 'settings/', name: 'settings', component: Settings,
               children:  [
                 { path: 'general', name: 'settings-general', component: Settings, },
@@ -189,6 +188,7 @@ const router = new VueRouter({
         { path: '/specialist/new', name: 'specialist-onboarding-new', component: SpecialistOnboarding, props: true },
       ]
     },
+    { path: '/exams/:examUuid(.{36})', component: PageAuditorPortalExternalAccess, props: true },
   ],
   mode: 'history'
 })

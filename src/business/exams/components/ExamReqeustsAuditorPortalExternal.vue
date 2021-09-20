@@ -5,7 +5,7 @@
       .row
         .col-xl-6.col-lg-8.col.m-x-auto
           .card-body.white-card-body.reviews__card.px-5.registration
-            h1.text-center Confirm your email!
+            h1.text-center.intro-text Let's get started!
             // p.text-center Enter to the system
             div
               b-alert(:show='dismissCountDown' dismissible fade variant='danger' @dismiss-count-down='countDownChanged')
@@ -16,22 +16,22 @@
                 b-form-group#input-group-1(label='Email:' label-for='input-1')
                   b-form-input#input-1(v-model='form.email' type='email' placeholder='Email' required)
                   .invalid-feedback.d-block(v-if="errors.email") {{ errors.email }}
-                b-button.w-100(type='submit' variant='dark') Confirm
+                b-button.w-100.mb-3.mt-1(type='submit' variant='dark') Confirm
     #step2.form(v-if='!loading' :class="step2 ? 'd-block' : 'd-none'")
-      .row
+      .row.registration.full-width
         .col-xl-6.col-lg-8.col.m-x-auto
-          .card-body.white-card-body.reviews__card.registration.px-5.mt-0
-            h1.text-center Confirm your email!
-            p.text-center We send a 6 digit code to email.com. Please enter it below.
-            div
+          .white-card-body.reviews__card.registration.mt-0.pt-5
+            h1.text-center.registration__title Confirm your email!
+            p.text-center.registration__subtitle.px-4 We send a 6 digit code to {{ this.form.email }}. Please enter it below.
+            div.px-5
               b-form(@submit='onSubmitStep2' @keyup="onCodeChange" v-if='show' autocomplete="off")
                 b-form-group
                   .col.text-center
-                    ion-icon(name="mail-outline")
+                    img.otp-icon(src='@/assets/mail.svg' width="180" height="110")
                 b-form-group
                   .row
                     .col-12.mx-0
-                      .d-flex.justify-content-space-around.mx-auto.w-75
+                      .d-flex.justify-content-space-around.mx-auto
                         b-form-input#inputCode1.code-input.ml-auto(v-model='form2.codePart1' type='number' maxlength="1" required)
                         b-form-input#inputCode2.code-input(v-model='form2.codePart2' type='number' maxlength="1" required)
                         b-form-input#inputCode3.code-input(v-model='form2.codePart3' type='number' maxlength="1" required)
@@ -42,11 +42,12 @@
                   .row
                     .col
                       input(v-model='form2.code' type='hidden')
-                b-button.w-100.mb-2(type='submit' variant='dark' ref="codesubmit") Submit
-                b-form-group
-                  .row
-                    .col-12.text-center
-                      a.link(href="#" @click.stop="resendOTP") Send new code
+                b-button.w-100.mb-2.my-4(type='submit' variant='dark' ref="codesubmit") Submit
+            hr.mb-3
+            b-form-group.mb-0
+              .row.mb-3
+                .col-12.text-center
+                  button.btn.link(@click.stop="resendOTP") Send new code
     #step3.card-body.white-card-body.reviews__card.px-5(v-if='!loading && currentExam'  :class="step3 ? 'd-block' : 'd-none'")
       .reviews__card--internal.d-flex.justify-content-between.p-y-1.m-b-2
         h3 Shared with me
@@ -96,6 +97,7 @@
     data() {
       return {
         // userId: '',
+        errors: {},
         otpSecret: '',
         userType: '',
         form: {
@@ -135,7 +137,7 @@
       onSubmit1(event) {
         event.preventDefault()
         // clear errors
-        this.errors = []
+        this.errors = {}
 
         if (!this.form.email) {
           this.toast('Error', `Please check all fields!`, true)
@@ -150,14 +152,9 @@
         this.confirmEmail(data)
           .then((response) => {
             if (response.error) {
-              this.error = response.error
-              this.toast('Error', `${response.error} ${response.message ? response.message : response.status }`, true)
+              this.$set(this.errors, 'email', 'Email does not have access')
             }
             if (!response.error) {
-              // this.userId = response.userid
-              this.toast('Success', `${response.message ? response.message : response.status}`)
-
-              // open step 2
               this.step1 = false
               this.step2 = true
             }
@@ -174,7 +171,7 @@
       onSubmitStep2(event) {
         event.preventDefault()
         // clear errors
-        this.errors = []
+        this.errors = {}
 
         if(this.form2.code.length !== 6) {
           this.toast('Error', `Code length incorrect!`, true)
@@ -196,7 +193,6 @@
               }
             }
             if (!response.errors) {
-              this.toast('Success', `${response.message ? response.message : response.status}`)
               // open step 3
               this.step2 = false
               this.step3 = true
@@ -283,5 +279,14 @@
 <style scoped>
   #step2 ion-icon {
     font-size: 15rem!important;
+  }
+
+  .intro-text {
+    font-size: 32px;
+    font-weight: 600;
+  }
+
+  .full-width {
+    width: 100%;
   }
 </style>

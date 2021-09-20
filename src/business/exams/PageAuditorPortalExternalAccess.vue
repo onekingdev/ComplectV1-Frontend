@@ -2,11 +2,9 @@
   .container-fluid
     .row
       .col.text-center.px-0.position-relative
-        .header-top.p-y-1
-          p.mb-0: b Viewing Auditor's Portal
-            a.link.m-l-1(href="/business/exam_management/") Exit
+        .p-y-1
         .bg-black
-    .row
+    .row.bg-grey
       .col
         .container.portal
           .row
@@ -16,7 +14,7 @@
                   ion-icon.greeting__icon(name="search-outline")
                   .greeting-text
                     h1.greeting-text__title Welcome
-                    p.greeting-text__subtitle Click on the reqeust item below to view their contents and download any document
+                    p.greeting-text__subtitle Please confirm your email address to get started
           .row
             .col
               ExamReqeustsAuditorPortalExternal(:examUuid="examUuid")
@@ -37,7 +35,7 @@
 
 <style scoped>
   @import "./styles.css";
-
+  @import "../../auth/styles.css";
   .header-top {
     position: relative;
     z-index: 2;
@@ -78,5 +76,9 @@
   }
   .greeting-text__subtitle {
     font-size: 1rem;
+  }
+
+  .bg-grey {
+    background: #F6F6F8;
   }
 </style>
