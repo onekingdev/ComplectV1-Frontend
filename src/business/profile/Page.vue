@@ -57,7 +57,7 @@
   }
   .border-custom {
     margin-top: 35px;
-    margin-bottom: -18px;
+    margin-bottom: -9px;
   }
   .heading {
     font-size: 20px;

@@ -3,7 +3,7 @@
     Loading
     div(v-if='!loading && show')
       b-form-group#input-group-1
-        h4.mb-3.semibold-text My Profile
+        h4.mb-3.mt-2.semibold-text My Profile
         .row
           .col
             .d-flex
