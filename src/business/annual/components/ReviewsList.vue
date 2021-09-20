@@ -6,13 +6,14 @@
       :general="general"
       :checked="generalComplete"
     )
-    template(v-for="reviewCategory in reviewsCategories")
+    template(v-for="(reviewCategory, index) in reviewsCategoriesSorted")
       ReviewLink(
         :title="reviewCategory.name"
         :checked="reviewCategory.complete"
         :id="reviewCategory.id"
         :annual-id="annualId"
         :current-id="currentId"
+        :key="index"
       )
     .review__category-add
       button.btn.btn-default(v-if="!category.visible" @click="category.visible = true")
@@ -40,6 +41,11 @@ export default {
   },
   components: {
     ReviewLink
+  },
+  computed: {
+    reviewsCategoriesSorted() {
+      return this.reviewsCategories.sort((a, b) => a.id - b.id);
+    }
   },
   methods: {
     ...mapActions({

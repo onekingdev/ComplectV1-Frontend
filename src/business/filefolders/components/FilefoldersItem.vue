@@ -2,11 +2,10 @@
   tr
     td(v-if="check" width="5%")
       // b-form-checkbox(v-if="itemType === 'file'" v-model='form.checked[item.id]' @change="onChange")
-      .form-check(v-if="itemType === 'file'")
-        input.valid(:id="`ch-${item.id}`" type='checkbox' name='checkbox' v-model='form.checked[item.id]' @change="onChange")
-        label(:for="`ch-${item.id}`" class='form-check__label')
+      .pl-0(v-if="itemType === 'file'")
+        b-form-checkbox(v-model='form.checked[item.id]' @change="onChange")
     td.align-middle
-      .d-flex.align-items-center.truncate
+      .d-flex.align-items-center.truncate(:class="{'text-mg-left': check}")
         a.link(:href="itemType === 'file' ? item.file_addr : '#'" :target="itemType === 'file' ? '_blank' : '_self'" @click="openFolder($event, item.id, item.file_addr, item.name)")
           ion-icon.m-r-1(:name="itemType === 'folder' ? 'folder-outline' : 'document-outline'" size="small")
           span.file-name {{ item.name }}
@@ -202,7 +201,8 @@ export default {
   ion-icon {
     color: #565759;
   }
-  .zipping-process .lds-ring.lds-ring-small {
+
+.zipping-process .lds-ring.lds-ring-small {
     margin-right: 0.5rem
   }
 
