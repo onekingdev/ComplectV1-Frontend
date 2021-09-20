@@ -6,11 +6,10 @@
       Coupon(@couponApplied="addDiscount")
     .card-body.purchase-summary-body.borderless.p-40.pb-0
       dl.row.mb-0
-        dt.col-6 {{ planComputed.name }} plan
+        dt.col-6.font-weight-bold {{ planComputed.name }} Plan
         dd.col-6.text-right.font-weight-bold {{ billingTypeSelected === 'annually' ?  planComputed.coastAnnuallyFormatted : planComputed.coastMonthlyFormatted }}
       dl.row.mb-0
         .col-6 {{ additionalUsers }} Users ({{ planComputed.usersCount }} Free)
-        //dd.col-6.text-right.font-weight-bold {{ planComputed.additionalUserCoast !== '+$0' ? planComputed.additionalUserCoast : 'FREE' }}
         dd.col-6.text-right.font-weight-bold {{ planComputed.additionalUserCoast }}
       dl.row.mb-0
         .col-6.text-success(v-if="billingTypeSelected === 'annually' && planComputed.id !== 1") Billed Annually
@@ -19,12 +18,6 @@
         .col-6.text-success Discount
         dd.col-6.text-right.text-success(v-if="percent_off") {{ percent_off }}%
         dd.col-6.text-right.text-success(v-if="amount_off") ${{ amount_off }}
-      //.card-body.purchase-summary-body.p-x-40.p-y-20(v-if="planComputed.tax")
-      //  dl.row.mb-0
-      //    dt.col-6
-      //      b Tax
-      //    dd.col-6.text-right.m-b-0
-      //      b {{ planComputed.tax }}
       hr
       dl.row.mb-0.purchase-summary__total
         dt.col-6
