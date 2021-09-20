@@ -4,34 +4,31 @@
       slot
 
     b-modal.fade(:id="modalId" size="xl" title="Select Files(s)" @show="newEtag" @shown="getData")
-      .card
-        .card-header.px-0
-          b-tabs(content-class="mt-0 px-0")
-            b-tab(title="Book and Records" title-item-class="font-weight-bold" active)
-              .card-body
-                .row.m-b-1
-                  .col-12.p-x-1
-                    .d-flex.align-items-center
-                      a.btn.btn-default.m-r-1.p-0(v-if="currentFolderId" @click.stop="backToRoot")
-                        b-icon(icon="arrow-left-square" font-scale="1")
-                      h4.m-b-0 All Documents
-                        span.separator(v-if="currentFolderName") &nbsp/&nbsp;
-                        span(v-if="currentFolderName") {{ currentFolderName }}
-                .row.m-b-1
-                  .col-12.p-x-1
-                    Loading
-                    FilefoldersTable(v-if="!loading && filefolders.files && filefolders.folders" :filefolders="filefolders" :check="true" @selectedItem="collecingFiles")
-                    .row.h-100(v-if="!filefolders.files && !filefolders.folders && !loading")
-                      .col.h-100.text-center
-                        EmptyState
-            b-tab(title="Policies" title-item-class="font-weight-bold")
-              div
-                table.table
-                  thead
-                  tbody
-                    tr
-                      td.text-center(colspan=5)
-                        h4.py-2 No Policies
+      div.select-container
+        b-tabs(content-class="mt-0 px-0")
+          b-tab(title="Book and Records" title-item-class="font-weight-bold" active)
+            .card-body
+              .row.m-b-1
+                .col-12.p-x-1
+                  .d-flex.align-items-center
+                    h4.m-b-0.custom-heading(@click="backToRoot") All Documents
+                      span.separator(v-if="currentFolderName") &nbsp/&nbsp;
+                      span.custom-heading.font-weight-bold(v-if="currentFolderName") {{ currentFolderName }}
+              .row.m-b-1
+                .col-12.p-x-1
+                  Loading
+                  FilefoldersTable(v-if="!loading && filefolders.files && filefolders.folders" :filefolders="filefolders" :check="true" @selectedItem="collecingFiles")
+                  .row.h-100(v-if="!filefolders.files && !filefolders.folders && !loading")
+                    .col.h-100.text-center
+                      EmptyState
+          b-tab(title="Policies" title-item-class="font-weight-bold")
+            div
+              table.table
+                thead
+                tbody
+                  tr
+                    td.text-center(colspan=5)
+                      h4.py-2 No Policies
 
       template(slot="modal-footer")
         .col
@@ -50,7 +47,7 @@
   const rnd = () => Math.random().toFixed(10).toString().replace('.', '')
 
   async function createFile(path, name){
-    let response = await fetch(this.$store.getters.backendUrl+path);
+    let response = await fetch(path);
     let data = await response.blob();
     let metadata = {
       type: 'image/jpeg'
@@ -95,8 +92,9 @@
         try {
           let formData = new FormData()
           for (const fileFromCollection of this.filesCollection) {
-
-            createFile(`${window.location.origin}/${fileFromCollection.file_addr}`, fileFromCollection.name)
+            const backendUrl = this.$store.getters.backendUrl
+            const url = `${backendUrl}/${window.location.origin}/${fileFromCollection.file_addr}`
+            createFile(url, fileFromCollection.name)
               .then(file => {
                 formData.append('file', file);
                 const data = {
@@ -112,8 +110,8 @@
                 });
 
                 sendFIle
-                  .then(response => this.toast('Success', `${response.name} successful uploaded!`))
-                  .catch(error => this.toast('Error', error.message, true))
+                  .then(response => this.toast('Success', 'File has been uploaded.'))
+                  .catch(error => this.toast('Error', 'File has not been uploaded. Please try again.', true))
               })
               .catch(error => console.error(error))
           }
@@ -180,4 +178,23 @@
     },
   }
 </script>
+<style scoped>
+.select-container {
+  border: 1px solid #C6C8CE;
+  border-radius: 5px;
+}
 
+.custom-heading {
+  font-size: 1rem;
+  color: #303132;
+}
+
+.separator {
+  color: #FFC900;
+  font-weight: bold;
+}
+
+/deep/ .nav-tabs {
+  background: none !important;
+}
+</style>

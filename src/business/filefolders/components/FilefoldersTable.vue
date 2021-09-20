@@ -3,9 +3,9 @@
     thead
       tr
         th(v-if='check' width="5%")
-          // b-form-checkbox(v-model='form.checked[]')
-        th(width="45%")
           | Name
+        th(width="45%")
+          div(v-if='!check') Name
         th(@click="sortSelect('progress', 'number')" width="20%").text-right
           | Owner
           b-icon.ml-2(icon='chevron-expand')
