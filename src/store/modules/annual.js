@@ -313,6 +313,34 @@ export default {
         })
       }
     },
+    async downloadReviewPdf({ commit, rootGetters }, payload) {
+      try {
+        const response = await axios.get(`business/annual_reports/${payload.id}/download`)
+        if (response.data.status === 'ok') {
+          let retry = 0
+          const timeRequest = 5000 // 5 seconds
+          const getPdfFile = setInterval(async () => {
+            if (retry > 10) {
+              clearInterval(getPdfFile)
+              return
+            }
+
+            retry = retry + 1
+            const res = await axios.get(`business/annual_reports/${payload.id}`)
+            if (res.data && res.data.pdf_url) {
+              clearInterval(getPdfFile)
+              if (rootGetters.isDevEnv) {
+                window.open(backendUrl + res.data.pdf_url, '_self')
+              } else {
+                window.open(res.data.pdf_url, '_self')
+              }
+            }
+          }, timeRequest)
+        }
+      } catch (error) {
+        throw error;
+      }
+    },
     async updateReviewCategory({ commit, rootGetters }, payload) {
       commit("clearError", null, {
         root: true

@@ -200,7 +200,11 @@ export default {
                   const pdf = data.file || data.pdf
                   if (pdf) {
                     clearInterval(getPdfUrl)
-                    window.open(backendUrl+pdf, '_self')
+                    if (rootGetters.isDevEnv) {
+                      window.open(backendUrl + pdf, '_self')
+                    } else {
+                      window.open(pdf, '_self')
+                    }
                   }
                   return pdf
                 }).catch(err => console.log(err))
