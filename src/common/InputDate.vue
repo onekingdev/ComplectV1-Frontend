@@ -14,6 +14,7 @@
 <script>
 export default {
   props: {
+    labelKlass: String,
     value: String,
     errors: Array,
     placeholder: String,
