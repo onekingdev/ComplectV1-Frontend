@@ -3,7 +3,7 @@
     .page-header
       h2.page-header__title Policies and Procedures
       .page-header__actions
-        span.dowloading.list-page(v-if="isDowloading")
+        span.dowloading.list-page.mr-3.mt-2(v-if="isDowloading")
           .lds-ring.lds-ring-small
              div
              div

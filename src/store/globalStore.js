@@ -71,6 +71,7 @@ const store = new Vuex.Store({
 	getters: {
 		url: () => (url, id) => URLS[url].replace(":id", id),
 		backendUrl: () => backendUrl,
+		isDevEnv: () => process.env.NODE_ENV === 'development',
 		authHeaders: state => ({ headers: { 'Authorization': removeQuotes(state.auth.accessToken) }})
 	},
 

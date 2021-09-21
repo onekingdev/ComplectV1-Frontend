@@ -6,7 +6,13 @@
 			h2.page-header__title: b {{ review ? review.name : '' }}
 		.page-header__actions
 			div
-				button.btn.btn-default.mr-3(@click="download_pdf") Download
+				span.dowloading.list-page.mr-3.mt-2(v-if="isDowloading")
+					.lds-ring.lds-ring-small
+						div
+						div
+						div
+						div
+				button.btn.btn-default.mr-3(v-else @click="download") Download
 				button.btn.btn-dark.mr-3(@click="saveGeneral(true)") Save and Exit
 				button.btn.btn__close(@click="backToList")
 					b-icon(icon="x")
@@ -222,6 +228,7 @@ export default {
 	data() {
 		return {
 			errors: {},
+			isDowloading: false
 		};
 	},
 	computed: {
@@ -259,9 +266,11 @@ export default {
 			updateAnnual: "annual/updateReview",
 			getCurrentReviewReview: "annual/getCurrentReview",
 		}),
-		download_pdf() {
-      		window.location.href="/business/annual_reports/"+this.annualId+".pdf";
-    	},
+		download() {
+			this.isDowloading = true
+			this.$store.dispatch('annual/downloadReviewPdf', { id: this.review.id })
+				.then(() =>{ this.toast('Success', 'Review has been queued for download.') })
+		},
 		validateRegulatory() {
 			const regulatoryChangesSplitLength = this.regulatoryChangesSplit.length;
 			for (let i = 0; i <= regulatoryChangesSplitLength - 1; i++) {
