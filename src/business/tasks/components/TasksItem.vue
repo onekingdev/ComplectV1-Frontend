@@ -73,12 +73,12 @@ export default {
       // console.log('oidParam', oidParam)
       // console.log('target_state', target_state)
 
-      const statusWord = task.done_at ? 'incompleted' : 'completed'
+      const statusWord = task.done_at ? 'incomplete' : 'complete'
 
       try {
         await this.$store.dispatch('reminders/updateTaskStatus', { fixedId, id: taskId, done: target_state, oidParam })
           .then(response => this.toast('Success', `${this.toastMessages.success.complete.replace("$.", statusWord)}.` ))
-          .catch(error => this.toast('Error', this.toastMessages.errors.complete, true))
+          .catch(error => this.toast('Error', this.task.done_at && this.taskId ? 'Task has not been marked as incomplete. Please try again.' : 'Task has not been marked as complete. Please try again.', true ))
       } catch (error) {
         console.error('error catch in task Item', error)
         this.toast('Error', `${error.message}`, true)
