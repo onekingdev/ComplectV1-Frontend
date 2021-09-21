@@ -96,15 +96,15 @@
                       b-form-group
                         label
                           a.btn.btn-default Upload File
-                          input(type="file" name="file" style="display: none")
-                        .row
-                          .col-md-12.m-b-1
+                          input(type="file" name="file" @change="onFileChanged" style="display: none")
+                        Get(:documents="url" :etag="etag" :callback="filterMessagesWithUploads"): template(v-slot="{documents}")
+                          .row(v-for="document in documents" :key="document.id"): .col-md-12.m-b-1
                             .file-card
                               div
                                 b-icon.file-card__icon(icon="file-earmark-text-fill")
                               .ml-0.mr-auto
-                                p.file-card__name Document.pdf
-                                a.file-card__link.link(href="#" target="_blank") Download
+                                p.file-card__name {{ document.file_data.metadata.filename }}
+                                a.file-card__link.link(href="" @click.prevent='downloadDocument(document)' target="_blank") Download
                               .ml-auto.my-auto.align-self-start.actions
                                 b-dropdown(size="sm" class="m-0 p-0" right)
                                   template(#button-content)
@@ -155,6 +155,7 @@ import { splitReminderOccurenceId } from '@/common/TaskHelper'
 import Messages from '@/common/Messages'
 import EtaggerMixin from '@/mixins/EtaggerMixin'
 import TaskDeleteConfirmModal from './TaskDeleteConfirmModal'
+import downloadBinary from '@/services/axios/download'
 
 const rnd = () => Math.random().toFixed(10).toString().replace('.', '')
 const toOption = id => ({ id, label: id })
@@ -191,7 +192,10 @@ const REPEAT_NONE = null,
   REPEAT_OPTIONS = [REPEAT_NONE, REPEAT_DAILY, REPEAT_WEEKLY, REPEAT_MONTHLY, REPEAT_YEARLY]
 
 export default {
-  mixins: [EtaggerMixin('etagMessages')],
+  mixins: [
+    EtaggerMixin(),
+    EtaggerMixin('etagMessages'),
+  ],
   props: {
     id: String,
     taskId: Number,
@@ -221,7 +225,34 @@ export default {
     ...mapActions({
         getEmployees: 'settings/getEmployees',
         getEmployeesSpecialists: 'settings/getEmployeesSpecialists',
-     }),
+    }),
+    downloadDocument(document) {
+      const url = `../uploads/${document.file_data.storage}/${document.file_data.id}`
+      downloadBinary(url, document.file_data.metadata.filename)
+    },
+    async onFileChanged(event) {
+      const file = event.target.files && event.target.files[0],
+        store = this.$store
+      const uploadFile = async function(url, file) {
+        const formData  = new FormData()
+        formData.append('message[file]', file)
+        formData.append('message[message]', '')
+        return await fetch(store.getters.backendUrl+url, {
+          method: 'POST',
+          body: formData,
+          ...store.getters.authHeaders
+        })
+      }
+      if (file) {
+        const success = (await uploadFile(this.url, file)).ok
+        const message = success ? 'Document has been uploaded.' : 'Document has not been uploaded.'
+        this.toast('Document has not been uploaded.', message, !success)
+        this.newEtag()
+      }
+    },
+    filterMessagesWithUploads(messages) {
+      return messages.filter(message => message.file_data && message.file_data.id)
+    },
     messageSaved() {
       this.toast('Comment sent')
       this.newEtagMessages()
@@ -315,6 +346,9 @@ export default {
     }),
     linkToValue() {
       return this.task.linkable_type && this.task.linkable_id ? `${this.task.linkable_type}|${this.task.linkable_id}` : null
+    },
+    url() {
+      return `/api/reminders/${this.taskId || ''}/messages`
     },
     optionsToFetch() {
       return this.isBusiness
