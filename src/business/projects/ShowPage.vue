@@ -1,23 +1,29 @@
 <template lang="pug">
-  .page
+  .page.custom-project-layout-style
     Get.d-flex.flex-column.flex-grow-1(:etag="etag" :project="`/api/local_projects/${projectId}`" currentBusiness="/api/businesses/current"): template(v-slot="{project,currentBusiness}")
-      CommonHeader(:title="project.title" :sub="currentBusiness.business_name" :breadcrumbs="['Projects', project.title]")
+      CommonHeader(section="Projects" :title="project.title" :sub="currentBusiness.business_name")
         .d-flex.justify-content-end
           p.m-b-2: ShowOnCalendarToggle(:project="project")
         .d-flex
-          b-dropdown.m-r-1(variant="light")
+          router-link.m-r-1.btn.btn-default(v-if="project.visible_project" :to='viewHref(project.visible_project)') View Post
+          router-link.m-r-1.btn.btn-default(v-else :to='postHref(project)') Post Project
+          CompleteLocalProjectModal.m-r-1(:project="project" @saved="newEtag")
+          button.btn.btn__close
+            b-icon(icon="x")
+      b-tabs.special-navs(content-class="mt-0 h-100" v-model="tab")
+        template(#tabs-end)
+          //- b-dropdown.actions(text="Actions", variant="default", right)
+          b-dropdown(variant="light")
             template(#button-content)
               | Actions
               b-icon.ml-2(icon="chevron-down")
             li: LocalProjectModal(@saved="newEtag" :project-id="project.id" :inline="false")
               button.dropdown-item Edit
             li: DeleteLocalProjectModal(:project="project")
-          router-link.m-r-1.btn.btn-default(v-if="project.visible_project" :to='viewHref(project.visible_project)') View Post
-          router-link.m-r-1.btn.btn-default(v-else :to='postHref(project)') Post Project
-          CompleteLocalProjectModal(:project="project" @saved="newEtag")
-      b-tabs.special-navs(content-class="mt-0 h-100" v-model="tab")
-        b-tab(title="Overview" active)
-          .card-body.white-card-body.card-body_full-height
+          
+
+        b-tab(title="Detail" active)
+          .card-body.card-body_full-height
             .row
               .col-sm-12
                 ApplicationsNotice(:project="project.visible_project" v-if="project.visible_project")
@@ -276,3 +282,25 @@ export default {
   }
 }
 </script>
+
+
+
+
+<style lang="scss">
+.custom-project-layout-style {
+  .page-header, .special-navs .nav-tabs {
+    background: #fff;
+  }
+  .special-navs .nav-tabs {
+    border-top: 1px solid #dee2e6;
+    border-bottom: 1px solid #dee2e6;
+    display: flex;
+    .btn-group {
+      margin: auto 2.5rem auto auto;
+    }
+  }
+  .card {
+    height: 100%
+  }
+}
+</style>
