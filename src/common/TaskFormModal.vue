@@ -149,6 +149,7 @@
 </template>
 
 <script>
+import { mapGetters, mapActions } from "vuex"
 import { DateTime } from 'luxon'
 import { splitReminderOccurenceId } from '@/common/TaskHelper'
 import Messages from '@/common/Messages'
@@ -217,6 +218,10 @@ export default {
     }
   },
   methods: {
+    ...mapActions({
+        getEmployees: 'settings/getEmployees',
+        getEmployeesSpecialists: 'settings/getEmployeesSpecialists',
+     }),
     messageSaved() {
       this.toast('Comment sent')
       this.newEtagMessages()
@@ -304,6 +309,10 @@ export default {
     }
   },
   computed: {
+    ...mapGetters({
+      employees: 'settings/employees',
+      employeesSpecialists: 'settings/employeesSpecialists'
+    }),
     linkToValue() {
       return this.task.linkable_type && this.task.linkable_id ? `${this.task.linkable_type}|${this.task.linkable_id}` : null
     },
@@ -328,9 +337,15 @@ export default {
     },
     repeatsOptions: () => REPEAT_OPTIONS.map(value => ({ value, text: REPEAT_LABELS[value] })),
     isBusiness() {
-      return 'business' === this.$store.getters.userType
+      return 'business' === this.$store.getters.appModule
     },
     assigneeOptions() {
+      // Also commented on 376 line
+      // let specialists = [
+      //   ...this.employees,
+      //   ...this.employeesSpecialists
+      // ]
+      // console.log(specialists)
       return ['John', 'Doe', 'Another specialist'].map(toOption)
     },
     datepickerOptions() {
@@ -355,6 +370,14 @@ export default {
   components: {
     Messages,
     TaskDeleteConfirmModal,
+  },
+  // async mounted() {
+  //     try {
+  //       await this.getEmployees()
+  //       await this.getEmployeesSpecialists()
+  //     } catch (error) {
+  //       console.error(error)
+  //     }
+  //   }
   }
-}
 </script>
