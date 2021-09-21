@@ -23,7 +23,7 @@ export default {
     formattedDate() {
       if(!this.value) return this.value
       const options = {year: 'numeric', month: 'numeric', day: 'numeric' };
-      return new Date(this.value).toLocaleString('en-US', options)
+      return new Date(this.value + 'T00:00:00').toLocaleString('en-US', options)
     },
     datepickerOptions() {
       return {
