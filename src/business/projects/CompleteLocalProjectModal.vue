@@ -1,6 +1,6 @@
 <template lang="pug">
   .d-inline-block(v-if="project.status !== 'complete'")
-    button.btn.btn-dark(v-b-modal="'CompleteLocalProjectModal'") Complete Project
+    button.btn.btn-dark(v-b-modal="'CompleteLocalProjectModal'") Mark as Complete
     b-modal#CompleteLocalProjectModal.fade(title="Complete Project" :hide-footer="!!hasSpecialist")
       div(v-if="hasSpecialist")
         p ⚠️

@@ -6,7 +6,7 @@
     b-modal.fade(:id="modalId" :title="taskId ? task.body : 'New task'" :size="taskId ? 'xl' : 'md'" @show="resetTask")
       b-row
         div(:class="taskId ? 'col-lg-6 pr-2' : 'col'")
-          InputText(v-model="task.body" :errors="errors.body") Task Name
+          InputText(v-model="task.body" :errors="errors.body" placeholder="Name") Task Name
 
           Get(v-if="isBusiness" v-bind="optionsToFetch"): template(v-slot="{projects,reviews,policies,exams}")
             label.m-t-1.form-label Link to
@@ -130,7 +130,7 @@
         span.mr-2
           b-icon.m-r-1.pointer(icon="check-circle-fill" class="done_task")
           b Completed on {{ task.done_at | asDate }}
-        button.btn.btn-default(@click="toggleDone(task)") Reopen
+        button.btn.btn-default(@click="toggleDone(task)") Mark as Incomplete
 
       template(v-else-if="taskId" slot="modal-footer")
         TaskDeleteConfirmModal.mr-auto(v-if="null === occurenceId" :inline="false" @deleteConfirmed="deleteTask(task)")
@@ -287,8 +287,14 @@ export default {
         method: 'DELETE',
         ...this.$store.getters.authHeaders
       }).then(response => {
-        this.$emit('saved')
-        this.$router.push('/business')
+        if (response.status === 204 || response.status === 200) {
+          this.$emit('deleted')
+          this.toast('Success', 'Task has been deleted.')
+          this.$bvModal.hide(this.modalId)
+        } else {
+          console.error(response.status)
+          this.toast('Error', 'Task has not been deleted. Please try again.', true )
+        }
       })
     },
     toggleDone(task) {
@@ -300,9 +306,14 @@ export default {
         method: 'POST',
         headers: { ...this.$store.getters.authHeaders.headers, 'Content-Type': 'application/json' },
       }).then(response => {
-        this.$emit('saved')
-        this.toast('Task saved')
-        this.$bvModal.hide(this.modalId)
+        if (response.status === 201 || response.status === 200) {
+          this.$emit('saved')
+          this.toast('Success', this.task.done_at && this.taskId ? 'Task has been marked as incomplete.' : 'Task has been marked as complete.')
+          this.$bvModal.hide(this.modalId)
+        } else {
+          console.error(response.status)
+          this.toast('Error', this.task.done_at && this.taskId ? 'Task has not been marked as incomplete. Please try again.' : 'Task has not been marked as complete. Please try again.', true )
+        }
       })
     },
     submit(saveOccurence) {
@@ -415,3 +426,10 @@ export default {
   //   }
   }
 </script>
+
+
+<style>
+.modal-footer .btn.dropdown-toggle {
+  font-weight: bold
+}
+</style>

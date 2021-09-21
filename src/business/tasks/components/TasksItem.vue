@@ -4,7 +4,7 @@
       .name
         b-icon.pointer.m-r-1(font-scale="1" :icon="item.done_at ? 'check-circle-fill' : 'check-circle'" @click="toggleDone(item)" v-bind:class="{ done_task: item.done_at }")
         //ion-icon.m-r-1.pointer(@click="toggleDone(item)" v-bind:class="{ done_task: item.done_at }" name='checkmark-circle-outline')
-        TaskFormModal.link(:taskProp="item" :task-id="item.taskId" :occurence-id="item.oid" @saved="$emit('saved')")
+        TaskFormModal.link(:taskProp="item" :task-id="item.taskId" :occurence-id="item.oid" @saved="$emit('saved')" @deleted="deleteTask(item)")
           span(v-if="!item.done_at" ) {{ item.body }}
           s(v-else) {{ item.body }}
     td(v-if="!shortTable")
@@ -73,12 +73,12 @@ export default {
       // console.log('oidParam', oidParam)
       // console.log('target_state', target_state)
 
-      const statusWord = task.done_at ? 'incompleted' : 'completed'
+      const statusWord = task.done_at ? 'incomplete' : 'complete'
 
       try {
         await this.$store.dispatch('reminders/updateTaskStatus', { fixedId, id: taskId, done: target_state, oidParam })
           .then(response => this.toast('Success', `${this.toastMessages.success.complete.replace("$.", statusWord)}.` ))
-          .catch(error => this.toast('Error', this.toastMessages.errors.complete, true))
+          .catch(error => this.toast('Error', this.task.done_at && this.taskId ? 'Task has not been marked as incomplete. Please try again.' : 'Task has not been marked as complete. Please try again.', true ))
       } catch (error) {
         console.error('error catch in task Item', error)
         this.toast('Error', `${error.message}`, true)

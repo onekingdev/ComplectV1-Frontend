@@ -8,10 +8,10 @@
             h4.alert-heading {{ 'application' | plural(applications) }} received.
             p.mb-0 There {{ applications | isAre }} currently {{ 'applicant' | plural(applications) }} for your project.
         div
-          router-link.btn.btn-light.mt-2(:to="viewPostUrl") View
+          router-link.btn.btn-default.mt-2(:to="viewPostUrl") View
     div(v-else)
       Notifications.m-b-20(:notify="applications")
-        router-link.btn.btn-light.m-r-2(:to="viewPostUrl") View
+        router-link.btn.btn-default.m-r-2(:to="viewPostUrl") View
 
 </template>
 

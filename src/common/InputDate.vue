@@ -1,6 +1,6 @@
 <template lang="pug">
   div
-    label(:class="labelKlass")
+    label.form-label(:class="labelKlass")
       slot
     DatePicker(
       :value="value"
@@ -14,6 +14,7 @@
 <script>
 export default {
   props: {
+    labelKlass: String,
     value: String,
     errors: Array,
     placeholder: String,
