@@ -175,7 +175,9 @@
           return
         }
 
-        // document.querySelector('.sidebar-menu').style.display = "flex"
+        if(routeName === "project-review") this.$store.commit('changeSidebar', 'builder')
+
+
         if(routeName === "file-folders"
           || routeName === "exam-management"
           || routeName === "exam-management-current-review"
@@ -183,7 +185,7 @@
           || routeName === "settings-notification-center"
         ) this.$store.commit('changeSidebar', 'documents')
 
-        if (routeName === 'dashboard' || routeName === 'policies' || routeName === 'annual-reviews') this.$store.commit('changeSidebar', 'default')
+        if (routeName === 'dashboard' || routeName === 'policies' || routeName === 'annual-reviews' || routeName === 'projects') this.$store.commit('changeSidebar', 'default')
         // if(routeName !== "file-folders") this.$store.commit('changeSidebar', 'default')
 
       }

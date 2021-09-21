@@ -198,6 +198,9 @@ export default {
   created() {
     this.modalId = 'modal_' + Math.random().toFixed(9) + Math.random().toFixed(7)
   },
+  // mounted() {
+  //   this.$store.commit('changeSidebar', 'builder')
+  // },
   methods: {
     contractEnded() {
       this.newEtag()
