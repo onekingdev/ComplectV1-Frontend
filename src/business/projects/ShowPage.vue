@@ -8,11 +8,10 @@
           router-link.m-r-1.btn.btn-default(v-if="project.visible_project" :to='viewHref(project.visible_project)') View Post
           router-link.m-r-1.btn.btn-default(v-else :to='postHref(project)') Post Project
           CompleteLocalProjectModal.m-r-1(:project="project" @saved="newEtag")
-          button.btn.btn__close
+          button.btn.btn__close(@click="backToList")
             b-icon(icon="x")
       b-tabs.special-navs(content-class="mt-0 h-100" v-model="tab")
         template(#tabs-end)
-          //- b-dropdown.actions(text="Actions", variant="default", right)
           b-dropdown(variant="light")
             template(#button-content)
               | Actions
@@ -20,8 +19,6 @@
             li: LocalProjectModal(@saved="newEtag" :project-id="project.id" :inline="false")
               button.dropdown-item Edit
             li: DeleteLocalProjectModal(:project="project")
-          
-
         b-tab(title="Detail" active)
           .card-body.card-body_full-height
             .row
@@ -31,9 +28,6 @@
                   TimesheetsNotice(:project="marketProject")
                   EndContractNotice(:project="marketProject" @saved="contractEnded")
                   ChangeContractAlerts(:project="marketProject" @saved="newEtag" for="Business")
-            //.row
-            //  .col
-            //    DueDateNotice(:project="project" @saved="newEtag")
             .row
               .col-md-8.col-sm-12
                 .card
@@ -198,9 +192,6 @@ export default {
   created() {
     this.modalId = 'modal_' + Math.random().toFixed(9) + Math.random().toFixed(7)
   },
-  // mounted() {
-  //   this.$store.commit('changeSidebar', 'builder')
-  // },
   methods: {
     contractEnded() {
       this.newEtag()
@@ -232,6 +223,9 @@ export default {
         .then(result => this.toast('Success', 'The Role has been setted!'))
         .catch(error => console.error(error))
     },
+    backToList() {
+			this.$router.push({ name: "projects" });
+		},
   },
   computed: {
     taskDefaults() {
@@ -265,7 +259,6 @@ export default {
   },
   components: {
     ApplicationsNotice,
-    // DueDateNotice,
     ChangeContractAlerts,
     DiscussionCard,
     LocalProjectModal,

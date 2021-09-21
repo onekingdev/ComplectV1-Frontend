@@ -25,9 +25,3 @@ First, set up backend base URL, and prepare a static build with `npm run build` 
 It produces `dist` directory that should be served as document root directory.
 Index page `/` and all user-accessible page URLs (eg `/business/dashboard`), should respond the same contents from `index.html`.
 This page loads required assets and routing is handled on frontend.
-
-## To-Do
-1. Babel
-	* transform-class-properties ???
-2. Setup ESLint after transfer
-3. Fix Router
