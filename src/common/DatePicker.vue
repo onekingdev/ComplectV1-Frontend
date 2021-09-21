@@ -2,7 +2,7 @@
   b-input-group.mb-1
     b-form-input(v-bind="datepickerInputOptions" @input="input")
     b-input-group-append
-      b-form-datepicker(v-bind="datepickerOptions" @input="input" :show-decade-nav="false" :hide-header="true" locale="en-US" button-only right)
+      b-form-datepicker(v-bind="datepickerOptions" @input="input" :show-decade-nav="false" :hide-header="true" button-only right)
 </template>
 
 <script>
@@ -23,12 +23,13 @@ export default {
     datepickerInputOptions() {
       return {
         placeholder: 'MM/DD/YYYY',
-        value: this.value,
+        value: this.value
       }
     },
     datepickerOptions() {
       return {
         dateFormatOptions: { month: 'numeric', day: 'numeric', year: 'numeric' },
+        locale: 'en-US',
         ...this.datepickerInputOptions,
         hideHeader: true,
         showDecadeNav: false,
