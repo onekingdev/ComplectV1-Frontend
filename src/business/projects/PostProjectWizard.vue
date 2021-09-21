@@ -2,7 +2,8 @@
   ModelLoader(:url="projectId ? endpointUrl : undefined" :default="defaultProject" @loaded="loadProject" :callback="transformBackendModel")
     .page-header
       .d-flex.flex-column
-        Breadcrumbs.mb-2(:items="['Projects', pageTitle]")
+        //- Breadcrumbs.mb-2(:items="['Projects']")
+        h2.page-header__breadcrumbs Projects
         .page-header__title.my-0.ml-0.m-b-10 {{ pageTitle }}
         p.page-header__subtitle.mb-0 Tell us more about your project and get connected to our experienced specialists.
     .white-card-body.card-body_full-height.p-x-40.h-100
@@ -103,7 +104,7 @@ import ExitLocalProjectModal from "./modals/ExitLocalProjectModal";
 import { DateTime } from 'luxon'
 
 const REQUIRED = 'Required field'
-const STEPS = ['Project Details', 'Expertise', 'Budget']
+const STEPS = ['Job Details', 'Expertise', 'Budget']
 const DEFAULT_TYPE = 'rfp'
 
 const toOption = ({ id, name: label }) => ({ id, label })
@@ -249,7 +250,7 @@ export default {
       })
     },
     pageTitle() {
-      return this.projectId ? 'Edit Project' : 'Post Project'
+      return this.projectId ? 'Edit Job' : 'Post Job'
     },
     defaultProject() {
       return () => initialProject(this.localProject)
