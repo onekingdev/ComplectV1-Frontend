@@ -35,8 +35,8 @@ export default {
     UPDATE_CURRENT_SPECIALIST(state, payload) {
       state.currentSpecialist = payload
     },
-    DELETE_SPECIALIST(state, payload) {
-      const index = state.specialists.findIndex(record => record.id === payload.id);
+    DELETE_SPECIALIST(state, id) {
+      const index = state.specialists.findIndex(record => record.id === id);
       state.specialists.splice(index, 1)
     },
   },
@@ -257,29 +257,7 @@ export default {
             });
             if (success) {
               const data = success.data
-              commit('DELETE_SPECIALIST', new Specialist(
-                specialistItem.specialists_business_roles,
-                specialistItem.certifications,
-                specialistItem.experience,
-                specialistItem.first_name,
-                specialistItem.former_regulator,
-                specialistItem.id,
-                specialistItem.industries,
-                specialistItem.jurisdictions,
-                specialistItem.last_name,
-                specialistItem.location,
-                specialistItem.min_hourly_rate,
-                specialistItem.photo,
-                specialistItem.ratings_average,
-                specialistItem.ratings_count,
-                specialistItem.ratings_total,
-                specialistItem.resume_url,
-                specialistItem.seat_role,
-                specialistItem.skills,
-                specialistItem.time_zone,
-                specialistItem.username,
-                specialistItem.visibility,
-              ))
+              commit('DELETE_SPECIALIST', specialistItem.id)
               return success
             }
             if (!success) {

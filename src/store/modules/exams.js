@@ -44,8 +44,8 @@ export default {
     UPDATE_CURRENT_EXAM(state, payload) {
       state.currentExam = payload
     },
-    DELETE_EXAM(state, payload) {
-      const index = state.exams.findIndex(record => record.id === payload.id);
+    DELETE_EXAM(state, id) {
+      const index = state.exams.findIndex(record => record.id === id);
       state.exams.splice(index, 1)
     },
     ADD_REQUEST_CURRENT_EXAM(state, payload) {
@@ -57,8 +57,8 @@ export default {
       examRequest['text_items'] = payload.text_items ? payload.text_items.map(text => ({ text })) : [],
       state.currentExam.exam_requests.splice(index, 1, examRequest)
     },
-    DELETE_REQUEST_CURRENT_EXAM(state, payload) {
-      const index = state.currentExam.exam_requests.findIndex(record => record.id === payload.id);
+    DELETE_REQUEST_CURRENT_EXAM(state, id) {
+      const index = state.currentExam.exam_requests.findIndex(record => record.id === id);
       state.currentExam.exam_requests.splice(index, 1)
     },
     ADD_FILE_REQUEST_CURRENT_EXAM(state, payload) {
@@ -256,18 +256,7 @@ export default {
             });
             if (success) {
               const data = success.data
-              commit('DELETE_EXAM', new ExamManagement(
-                  data.complete,
-                  data.created_at,
-                  data.ends_on,
-                  data.exam_auditors,
-                  data.exam_requests,
-                  data.id,
-                  data.name,
-                  data.share_uuid,
-                  data.starts_on,
-                  data.updated_at,
-                ))
+              commit('DELETE_EXAM', data.id)
               return success
             }
             if (!success) {
@@ -432,7 +421,7 @@ export default {
           .then((success) => {
             if (success) {
               const data = success.data
-              commit('DELETE_REQUEST_CURRENT_EXAM', data)
+              commit('DELETE_REQUEST_CURRENT_EXAM', data.id)
               return success
             }
             if (!success) {
