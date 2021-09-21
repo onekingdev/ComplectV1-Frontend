@@ -76,8 +76,8 @@ export default {
       const updatedState = state.paymentMethods.map(record => ({ ...record, primary: false }));
       state.paymentMethods = updatedState
     },
-    DELETE_PAYMENT_METHOD (state, payload) {
-      const index = state.paymentMethods.findIndex(record => record.id === payload.id);
+    DELETE_PAYMENT_METHOD (state, id) {
+      const index = state.paymentMethods.findIndex(record => record.id === id);
       state.paymentMethods.splice(index, 1)
     },
     SET_EMPLOYEES(state, payload) {
@@ -90,8 +90,8 @@ export default {
       const index = state.employees.findIndex(record => record.id === payload.id);
       state.employees.splice(index, 1, payload)
     },
-    DELETE_EMPLOYEES (state, payload) {
-      const index = state.employees.findIndex(record => record.id === payload.id);
+    DELETE_EMPLOYEE (state, id) {
+      const index = state.employees.findIndex(record => record.id === id);
       state.employees.splice(index, 1)
     },
     SET_STATIC_COLLECTION (state, payload) {
@@ -602,7 +602,7 @@ export default {
             commit("setLoading", false, {root: true});
             if (success) {
               const data = success.data
-              commit('DELETE_PAYMENT_METHOD', { id: payload.id })
+              commit('DELETE_PAYMENT_METHOD', payload.id)
               return data
             }
             if (!success) {
@@ -801,7 +801,7 @@ export default {
             commit("setLoading", false, { root: true });
             if (success) {
               const data = success.data
-              commit('DELETE_EMPLOYEES', data)
+              commit('DELETE_EMPLOYEE', data.id)
               return success.data
             }
             if (!success) {

@@ -20,18 +20,7 @@
 </template>
 
 <script>
-import axios from '@/services/axios'
-
-const forceDownload = (response, filename) => {
-    const url = window.URL.createObjectURL(new Blob([response.data]))
-    const link = document.createElement('a')
-    link.href = url
-    link.setAttribute('download', filename)
-    document.body.appendChild(link)
-    link.click()
-  }
-const downloadBinary = (url, filename) => axios.get(`..${url}`, { responseType: 'blob' })
-  .then(response => forceDownload(response, filename))
+import downloadBinary from '@/services/axios/download'
 
 export default {
   props: {
@@ -62,7 +51,7 @@ export default {
     },
     downloadBinary(url, filename) {
       this.closeMe()
-      downloadBinary(url, filename)
+      downloadBinary(`..${url}`, filename)
     },
     closeMe() {
       this.isCloseable = true;

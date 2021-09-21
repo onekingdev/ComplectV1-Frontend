@@ -43,8 +43,8 @@ export default {
     UPDATE_CURRENT_TASK(state, payload) {
       state.currentTask = payload
     },
-    DELETE_TASK(state, payload) {
-      const index = state.tasks.findIndex(record => record.id === payload.id);
+    DELETE_TASK(state, id) {
+      const index = state.tasks.findIndex(record => record.id === id);
       state.tasks.splice(index, 1)
     },
     GET_CURRENT_TASK_MESSAGES(state, payload) {

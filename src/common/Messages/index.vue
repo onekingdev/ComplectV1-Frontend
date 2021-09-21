@@ -18,7 +18,7 @@
                       b-icon.file-card__icon(icon="file-earmark-text-fill" font-scale="2")
                     div.ml-0.mr-auto
                       p.file-card__name {{ message.file_data.metadata ? message.file_data.metadata.filename : '' }}
-                      a.file-card__link.link(:href="`/uploads/store/${message.file_data.id}`" target="_blank") Download
+                      a.file-card__link.link(href="" @click.prevent="downloadDocument(message)" target="_blank") Download
                     div.ml-auto.align-self-start.actions
                       b-dropdown(size="sm" variant="none" class="m-0 p-0" right)
                         template(#button-content)
@@ -30,6 +30,7 @@
 
 <script>
   import { DateTime } from 'luxon'
+  import downloadBinary from '@/services/axios/download'
   var today = DateTime.now().toLocaleString(DateTime.DATE_FULL)
 
   export default {
@@ -39,15 +40,14 @@
         required: true
       }
     },
-    data() {
-      return {
-
-      }
-    },
     created() {
       this.$emit('created')
     },
     methods: {
+      downloadDocument(document) {
+        const url = `../uploads/${document.file_data.storage}/${document.file_data.id}`
+        downloadBinary(url, document.file_data.metadata.filename)
+      },
       async removeFile(id, fileID) {
 
         const data = {
