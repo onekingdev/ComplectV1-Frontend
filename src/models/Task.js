@@ -1,5 +1,5 @@
 export class Task {
-  constructor(body, created_at, description, done_at, done_occurencies, end_by, end_date, id, linkable_id, linkable_type, note, on_type, remind_at, remindable_id, remindable_type, repeat_every, repeat_on, repeats, skip_occurencies, updated_at) {
+  constructor(body, created_at, description, done_at, done_occurencies, end_by, end_date, id, linkable_id, linkable_type, note, on_type, remind_at, remindable_id, remindable_type, repeat_every, repeat_on, repeats, skip_occurencies, updated_at, assignee_name) {
     this.body = body,
     this.created_at = created_at,
     this.description = description,
@@ -20,6 +20,7 @@ export class Task {
     this.repeats = repeats,
     this.skip_occurencies = skip_occurencies,
     this.updated_at = updated_at
+    this.assignee_name = assignee_name
   }
 }
 

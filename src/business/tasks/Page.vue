@@ -195,7 +195,7 @@
           // await this.$store.dispatch('reminders/getTasks')
 
           const fromTo = DateTime.local().minus({years: 10}).toSQLDate() + '/' + DateTime.local().plus({years: 10}).toSQLDate()
-          await this.$store.dispatch('reminders/getTasksByDate', fromTo)
+          await this.$store.dispatch('reminders/getTasksByDate', `${fromTo}?not_occurence=true`)
 
           // const data = await this.$store.dispatch('reminders/getTasksByDate', fromTo)
           // if (data) console.log('data getTasksByDate', data)

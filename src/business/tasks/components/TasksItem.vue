@@ -12,7 +12,7 @@
         ion-icon.mr-1(v-if="linkedTo(item)" :name="linkedTo(item)" :class="linkedToClass(item)")
         .link(v-if="item.linkable_type") {{ item.linkable_type | linkableTypeCorrector }}
         span(v-else) ---
-    td(v-if="!shortTable") {{ item.assignee ? item.assignee : '---' }}
+    td(v-if="!shortTable") {{ item.assignee_name ? item.assignee_name : '---' }}
     td.text-right(v-if="!shortTable")
       | {{ item.remind_at | asDate }}
     td.text-right(:class="{ overdue: isOverdue(item) }")
