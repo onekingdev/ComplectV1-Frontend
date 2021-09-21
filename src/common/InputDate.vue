@@ -1,6 +1,6 @@
 <template lang="pug">
   div
-    label(:class="labelKlass")
+    label.form-label(:class="labelKlass")
       slot
     DatePicker(
       :value="value"

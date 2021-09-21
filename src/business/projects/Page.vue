@@ -3,9 +3,9 @@
     .page-header
       .page-header__title
         h2.m-b-10 Projects
-        p.page-header__subtitle.mb-0 Plan projects with employees or hire external specialists to help
+        //- p.page-header__subtitle.mb-0 Plan projects with employees or hire external specialists to help
       .page-header__actions.mt-0.mb-auto
-        router-link.btn.btn-default.m-r-1(v-if="role !=='basic'" to='/business/projects/new') Post Project
+        router-link.btn.btn-default.m-r-1(v-if="role !=='basic'" to='/business/projects/new') Post Job
         LocalProjectModal(@saved="newEtag")
           a.btn.btn-primary New Project
     b-tabs.special-navs(content-class="mt-0 h-100")
