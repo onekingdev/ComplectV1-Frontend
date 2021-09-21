@@ -256,8 +256,14 @@ export default {
         method: 'DELETE',
         ...this.$store.getters.authHeaders
       }).then(response => {
-        this.$emit('saved')
-        this.$router.push('/business')
+        if (response.status === 204 || response.status === 200) {
+          this.$emit('deleted')
+          this.toast('Success', 'Task has been deleted.')
+          this.$bvModal.hide(this.modalId)
+        } else {
+          console.error(response.status)
+          this.toast('Error', 'Task has not been deleted. Please try again.', true )
+        }
       })
     },
     toggleDone(task) {
