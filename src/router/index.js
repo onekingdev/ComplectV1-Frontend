@@ -126,7 +126,7 @@ const router = new VueRouter({
             { path: 'reports/financials', name: 'reports-financials', component: ReportsFinancials, beforeEnter: AccessGuard },
             { path: 'profile', name: 'profile', component: Profile},
             { path: 'exam_management/:examId(\\d+)/portal', component: PageAuditorPortalInternalAccess, props: paramsToInts(['examId']) },
-            { path: 'specialistmarketplace', name: 'specialists-marketplace', component: SpecialistsMarketplace },
+            { path: '/specialistmarketplace', name: 'specialists-marketplace', component: SpecialistsMarketplace },
             { path: 'settings/', name: 'settings', component: Settings,
               children:  [
                 { path: 'general', name: 'settings-general', component: Settings, },
