@@ -21,8 +21,8 @@ export default {
       const index = state.reviews.findIndex(record => record.id === payload.id);
       state.reviews.splice(index, 1, payload)
     },
-    DELETE_REVIEW (state, payload) {
-      const index = state.reviews.findIndex(record => record.id === payload.id);
+    DELETE_REVIEW (state, id) {
+      const index = state.reviews.findIndex(record => record.id === id);
       state.reviews.splice(index, 1)
     },
   },
@@ -297,7 +297,7 @@ export default {
       });
       try {
         const response = await axios.delete(`business/annual_reports/${payload.id}`)
-        commit('DELETE_REVIEW', response.data )
+        commit('DELETE_REVIEW', payload.id)
         return response.data
       } catch (error) {
         commit("setError", error.message, {
