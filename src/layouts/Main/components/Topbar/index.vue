@@ -58,42 +58,34 @@
         }
       }
     },
-
     computed: {
       ...mapGetters({
         appModule: 'appModule',
         roles: 'roles/roles',
         role: 'roles/currentRole',
       }),
-
       // It's current active roles (employee attached to Business account and has Roles
       activeContracts () {
         return this.roles
-      }
+      },
+      currentUser() {
+        return this.$store.getters.getUser
+      },
     },
 
     created(){
       window.addEventListener("resize", this.screenWidthChangeHandler);
       if (window.innerWidth < 1000) this.visible = false
-
-      const user = JSON.parse(localStorage.getItem('app.currentUser'));
-      this.account = {
-        first_name: user.contact_first_name ? `${user.contact_first_name}` : `${user.first_name}`,
-        last_name: user.contact_last_name ? `${user.contact_last_name}` : `${user.last_name}`,
-      }
+      this.setAccount(this.currentUser)
     },
-
     destroyed() {
       window.removeEventListener("resize", this.screenWidthChangeHandler);
     },
-    
     methods: {
-      
       screenWidthChangeHandler(e) {
         if (window.innerWidth <= 991.98) this.visible = false
         if (window.innerWidth > 991.98) this.visible = true
       },
-
       signOut() {
         fetch(this.$store.getters.backendUrl + '/api/users/sign_out', {
           method: 'DELETE',
@@ -109,7 +101,6 @@
           })
           .catch(error => console.error(error))
       },
-
       openLink (value) {
         if(value === 'reports') {
           this.$store.commit('changeSidebar', 'reports')
@@ -118,7 +109,6 @@
         if(value === 'documents') this.$store.commit('changeSidebar', 'documents')
         if(value !== 'documents') this.$store.commit('changeSidebar', 'default')
       },
-      
       //When we logged in as Employee, we can opend dashboard as employee for Business account and see some features based on roles
       openSelectedBusiness (business) {
         if (business) {
@@ -131,12 +121,20 @@
           localStorage.removeItem('app.currentUser.role')
           window.location.href = `/specialist`
         }
+      },
+      setAccount(user) {
+        this.account = {
+          first_name: user.contact_first_name ? `${user.contact_first_name}` : `${user.first_name}`,
+          last_name: user.contact_last_name ? `${user.contact_last_name}` : `${user.last_name}`,
+        }
       }
     },
-    
     watch: {
       '$route' () {
         if(window.innerWidth < 992) this.visible = false
+      },
+      'currentUser' (newVal) {
+        this.setAccount(newVal)
       }
     }
   }
