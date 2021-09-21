@@ -19,7 +19,7 @@
                     h3.account-select__title.mb-3 I am a specialist
                     img.account-select__img(src='@/assets/briefcase-outline.svg' width="50" height="50")
                     p.account-select__subtitle Looking to work with potential clients on compliance projects
-            b-button.registration__btn.w-100.mb-2.mt-4(type='submit' variant='dark') Next
+            b-button.registration__btn.w-100.mb-2.mt-2(type='submit' variant='dark') Next
       #step1.form(:class="step1 ? 'd-block' : 'd-none'")
         .registration-welcome
           h1.registration__title Let's get you started!
