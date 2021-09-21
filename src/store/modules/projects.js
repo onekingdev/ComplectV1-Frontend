@@ -4,10 +4,12 @@ const mapAuthProviders = {
   jwt: {
     getProjects: jwt.getProjects,
     createProject: jwt.createProject,
+    createProposal: jwt.createProposal
   },
 }
 
 import LocalProject from "../../models/LocalProject";
+import { createProposal } from '../../services/specialist/projects';
 
 export default {
   state: {
@@ -132,6 +134,43 @@ export default {
       }
       // } finally { commit("setLoading", false, { root: true }) }
     },
+    async submitProposal({commit}, payload) {
+      commit("clearError", null, {
+        root: true
+      });
+      commit("setLoading", true, {
+        root: true
+      });
+
+      try {
+        const data = createProposal(payload)
+          .then((res) => {
+            commit("clearError", null, {
+              root: true
+            });
+            commit("setLoading", false, {
+              root: true
+            });
+            if (res) {
+              return res.data
+            }
+            if (!success) {
+              commit("setError", success.message, { root: true });
+              console.error('Not success', success)
+            }
+          })
+          .catch(error => error)
+        return data
+      } catch (error) {
+        commit("setError", error.message, {
+          root: true
+        });
+        commit("setLoading", false, {
+          root: true
+        });
+        throw error;
+      }
+    }
   },
   getters: {
     projects: state => state.projects,

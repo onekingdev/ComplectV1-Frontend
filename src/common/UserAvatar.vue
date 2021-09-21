@@ -19,7 +19,10 @@ export default {
   },
   computed: {
     src() {
-      return (this.user && this.user.photo) || (this.business && this.business.logo)
+      if (this.user && this.user.photo) return this.user && this.user.photo
+      if (this.business && this.business.logo) {
+        return process.env.NODE_ENV === 'development' ? `${this.$store.getters.backendUrl}/${this.business.logo}` : this.business.logo
+      }
     },
     placeholderText() {
       return this.user

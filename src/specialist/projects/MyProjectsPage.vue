@@ -2,11 +2,9 @@
   .page
     .page-header
       .page-header__title
-        h2.m-b-10 Projects
-      .page-header__actions
-        router-link.btn.btn-default(to='/job_board') Browse Projects
+        h2.m-b-10 Jobs
     b-tabs.special-navs(content-class="mt-0")
-      b-tab(title="My Projects" active)
+      b-tab(title="Jobs" active)
         .card-body.white-card-body.card-body_full-height
           div.m-b-20
             b-dropdown.m-r-1(variant="default")

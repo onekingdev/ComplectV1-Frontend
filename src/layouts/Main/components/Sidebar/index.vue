@@ -156,7 +156,9 @@
           routeName === "annual-reviews-review-category" ||
           routeName === "exam-management-current-review" ||
           routeName === "profile-specialist" ||
-          routeName === 'risk-review'
+          routeName === 'risk-review' ||
+          routeName === 'projects-marketpalce-specialist' ||
+          routeName === 'projects-marketpalce-specialist-view'
         ) {
           this.$store.commit('changeSidebar', 'builder')
           // document.querySelector('.sidebar-menu').style.display = "none"
@@ -183,7 +185,7 @@
           || routeName === "settings-notification-center"
         ) this.$store.commit('changeSidebar', 'documents')
 
-        if (routeName === 'dashboard' || routeName === 'policies' || routeName === 'annual-reviews') this.$store.commit('changeSidebar', 'default')
+        if (routeName === 'dashboard' || routeName === 'dashboard-specialist' || routeName === 'policies' || routeName === 'annual-reviews') this.$store.commit('changeSidebar', 'default')
         // if(routeName !== "file-folders") this.$store.commit('changeSidebar', 'default')
 
       }
@@ -224,7 +226,7 @@
           label: 'Tasks'
         }, {
           to: '/specialist/my-projects',
-          label: 'Projects'
+          label: 'Jobs'
         }]
       },
 

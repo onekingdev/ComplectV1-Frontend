@@ -1,5 +1,5 @@
 <template lang="pug">
-  .container
+  .container.pb-5
     .row
       .col-md-3.px-0.m-t-2
         .card#sidebarMenu_alt
@@ -43,7 +43,7 @@
                 .col-sm-2
                   b-form-group(label="Sort By" label-for="sort-input")
                     b-form-select#sort-input(v-model="filter.sort_by" :options="sortByOptions")
-          .card-body(v-for="project in projects" :key="project.uid")
+          .card-body.project-item(v-for="project in projects" :key="project.uid")
             .col-md-12
               h3.m-b-1
                 a(@click="openDetails(project.id)") {{project.title}}
@@ -60,12 +60,10 @@
       .card
         .card-header.borderless
           .d-flex.justify-content-between
-            b-button(variant="default" @click="isSidebarOpen = false") &lt; Close
-            div
-              a.btn.btn-default(href="#") Save
-              a.btn.btn-default.m-l-1(href="#") Share
+            b-button.mt-3.ml-2(variant="default" @click="isSidebarOpen = false")
+              ion-icon.custom-icon(name='chevron-back-outline')
+              span.font-weight-normal Close
           .d-flex.justify-content-between.m-t-1
-            h4 Project Details
             div
               router-link.btn.btn-dark(v-if="project" :to="applyUrl(project)") Apply
         ProjectDetails(v-if="project" :project="project")
@@ -76,7 +74,7 @@ import ProjectFigures from './ProjectFigures'
 import ProjectDetails from './ProjectDetails'
 import debounce from 'lodash.debounce'
 
-const frontendUrl = '/job_board'
+const frontendUrl = '/specialist/job_board'
 const endpointUrl = '/api/specialist/projects'
 
 const parse = p => ({
@@ -133,14 +131,14 @@ export default {
   },
   methods: {
     refetch() {
-      fetch(this.$store.getters.backendUrl+endpointUrl + this.filterQuery, { headers: {'Accept': 'application/json'}})
+      fetch(this.$store.getters.backendUrl+endpointUrl + this.filterQuery, { headers: {'Accept': 'application/json', 'Authorization': JSON.parse(localStorage.getItem('app.currentUser.token'))}})
         .then(response => response.json())
         .then(result => this.projects = result.map(parse))
     },
     openDetails(id) {
       this.openId = id
       history.pushState({}, '', `${frontendUrl}/${id}`)
-      fetch(this.$store.getters.backendUrl+endpointUrl + '/' + this.openId, { headers: {'Accept': 'application/json'}})
+      fetch(this.$store.getters.backendUrl+endpointUrl + '/' + this.openId, { headers: {'Accept': 'application/json', 'Authorization': JSON.parse(localStorage.getItem('app.currentUser.token'))}})
         .then(response => response.json())
         .then(result => {
           this.project = result
@@ -154,7 +152,7 @@ export default {
       this.isSidebarOpen = false
     },
     applyUrl(project) {
-      return `/job_board/${project.id}/applications/new`
+      return `/specialist/job_board/${project.id}/applications/new`
     }
   },
   computed: {
@@ -208,5 +206,25 @@ export default {
 <style>
 .overflow-y-hidden {
   overflow-y: hidden !important;
+}
+
+.custom-icon {
+  margin-right: 5px;
+
+  position: relative;
+  top: 2px;
+  font-size: 16px;
+}
+
+#ProjectSidebar {
+  padding-top: 78px;
+}
+
+.project-item {
+  border-bottom: 1px solid #DCDEE4;
+}
+
+/deep/ .container .bg-dark {
+  background: none !important;
 }
 </style>

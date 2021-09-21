@@ -1,6 +1,6 @@
 <template lang="pug">
   div
-    label.form-label
+    label.form-label(:class="{ 'required':  required}")
       slot
     select.form-control(:value="value" @input="$emit('input', $event.target.value)" :placeholder="placeholder")
       option(v-for="(label, value) in optionsList" :key="value" :value="value") {{ label }}
@@ -13,6 +13,10 @@ export default {
     value: [String, Number],
     errors: Array,
     placeholder: String,
+    required: {
+      type: Boolean,
+      default: false
+    },
     options: {
       type: [Array, Object],
       required: true

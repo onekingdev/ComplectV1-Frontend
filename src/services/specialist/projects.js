@@ -25,3 +25,16 @@ export async function createProject(payload) {
     })
     .catch(err => err)
 }
+
+export async function createProposal(payload) {
+  const projectId = payload.projectId
+  const data = payload.data
+  return await axios.post(`/specialist/projects/${projectId}/applications`, data)
+    .then(response => {
+      if (response) {
+        return response.data
+      }
+      return false
+    })
+    .catch(err => err)
+}
