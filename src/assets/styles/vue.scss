@@ -860,9 +860,9 @@ input, button, select, optgroup, textarea {
   &__breadcrumbs {
     width: 100%;
     max-width: 450px;
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
+    // white-space: nowrap;
+    // overflow: hidden;
+    // text-overflow: ellipsis;
   }
 
   &__actions {
