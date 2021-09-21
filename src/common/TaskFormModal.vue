@@ -263,7 +263,7 @@ export default {
     scrollMessages() {
       this.$nextTick(() => {
         const messagesContainer = this.$refs.Messages.$refs.MessagesContainer
-        setTimeout(() => messagesContainer.scrollTop = messagesContainer.scrollHeight, 500)
+        messagesContainer && setTimeout(() => messagesContainer.scrollTop = messagesContainer.scrollHeight, 500)
       })
     },
     linkToOptions(projects, reviews, policies, exams) {
