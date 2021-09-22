@@ -24,7 +24,7 @@
     // Right aligned nav items
     b-navbar-nav.flex-row.align-items-center.ml-auto
       router-link.btn.btn-warning.btn-topbar.btn-topbar_find(v-if="appModule !== 'specialist' && role !=='basic'" :to='`/specialistmarketplace`') Find an Expert
-      router-link.btn.btn-warning.btn-topbar.btn-topbar_find(v-if="appModule === 'specialist'" :to='`/job_board`') Browse Projects
+      router-link.btn.btn-warning.btn-topbar.btn-topbar_find(v-if="appModule === 'specialist'" :to='`/specialist/job_board`') Browse Jobs
       router-link.btn.btn-topbar.btn-topbar_notify(:to='`/${appModule}/settings/notification-center`')
         ion-icon(name='notifications-outline')
       b-nav-item-dropdown.topbar-right-dropdown.actions(right)

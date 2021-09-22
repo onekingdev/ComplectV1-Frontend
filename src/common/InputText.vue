@@ -1,6 +1,6 @@
 <template lang="pug">
   div
-    label.form-label
+    label.form-label(:class="{ 'required':  required}")
       slot
     input.form-control(:disabled="disabled" :value="value" @input="$emit('input', $event.target.value)" type="text" :placeholder="placeholder")
     Errors(:errors="errors")
@@ -12,7 +12,11 @@ export default {
     value: [String, Number],
     errors: Array,
     placeholder: String,
-    disabled: Boolean
+    disabled: Boolean,
+    required: {
+      type: Boolean,
+      default: false
+    },
   }
 }
 </script>
