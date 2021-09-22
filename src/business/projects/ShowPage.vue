@@ -224,8 +224,8 @@ export default {
         .catch(error => console.error(error))
     },
     backToList() {
-			this.$router.push({ name: "projects" });
-		},
+      this.$router.push({ name: "projects" });
+    },
   },
   computed: {
     taskDefaults() {
