@@ -4,12 +4,13 @@
       CommonHeader(section="Projects" :title="project.title" :sub="currentBusiness.business_name")
         .d-flex.justify-content-end
           p.m-b-2: ShowOnCalendarToggle(:project="project")
-        .d-flex
-          router-link.m-r-1.btn.btn-default(v-if="project.visible_project" :to='viewHref(project.visible_project)') View Post
-          router-link.m-r-1.btn.btn-default(v-else :to='postHref(project)') Post Project
-          CompleteLocalProjectModal.m-r-1(:project="project" @saved="newEtag")
-          button.btn.btn__close(@click="backToList")
-            b-icon(icon="x")
+        .page-header__actions
+          div
+            router-link.m-r-1.btn.btn-default(v-if="project.visible_project" :to='viewHref(project.visible_project)') View Post
+            router-link.m-r-1.btn.btn-default(v-else :to='postHref(project)') Post Project
+            CompleteLocalProjectModal.m-r-1(:project="project" @saved="newEtag")
+            button.btn.btn__close(@click="backToList")
+              b-icon(icon="x")
       b-tabs.special-navs(content-class="mt-0 h-100" v-model="tab")
         template(#tabs-end)
           b-dropdown(variant="light")
@@ -29,15 +30,15 @@
                   EndContractNotice(:project="marketProject" @saved="contractEnded")
                   ChangeContractAlerts(:project="marketProject" @saved="newEtag" for="Business")
             .row
-              .col-md-8.col-sm-12
+              .col-md-8.col-sm-12.m-b-2
                 .card
                   ProjectDetails(:project="project" @saved="newEtag")
-              .col-md-4.col-sm-12.pl-0.h-100
-                .card.card-body_full-height.h-100
+              .col-md-4.col-sm-12.m-b-2
+                .card.card-body_full-height
                   .card-header.d-flex.justify-content-between
                     h3.m-y-0 Collaborators
                     a.link.btn(@click="viewContract()") View All
-                  .card-body.h-100
+                  .card-body
                     table.rating_table(v-if="getContracts(project.projects).length")
                       thead
                         tr
@@ -61,12 +62,11 @@
                       .applications__body.applications__body_center.applications__body_m-h-200
                         ion-icon.applications__icon.m-b-10(name="person-circle-outline")
                         p.applications__text No collaborators
-            .m-t-1
-              .row
-                .col-md-12
-                  DiscussionCard(:project-id="project.id" :token="token")
+            .row
+              .col-md-12
+                DiscussionCard(:project-id="project.id" :token="token")
         b-tab.h-100(title="Tasks")
-          .card-body.white-card-body.card-body_full-height.h-100
+          .card-body.card-body_full-height.h-100
             .d-flex.m-b-20
               TaskFormModal.m-r-1(id="ProjectTaskFormModal" @saved="taskSaved" :defaults="taskDefaults(project)")
                 button.btn.btn-dark New Task
@@ -87,7 +87,7 @@
         b-tab.h-100(title="Documents")
           DocumentList(:project="project")
         b-tab.h-100(title="Collaborators")
-          .card-body.white-card-body.card-body_full-height
+          .card-body.card-body_full-height
             .row
               .col-sm-12
                 .card(v-if="!showingContract")
