@@ -26,11 +26,11 @@
         .row
           .col-sm.pr-sm-2
             b-form-group#inputB-group-2(label='AUM' label-for='inputB-2' label-class="label")
-              b-form-input#inputB-2(v-model='form.business.aum' type='text' placeholder='AUM' required :class="{'is-invalid': errors.aum }")
+              b-form-input#inputB-2(v-model='form.business.aum' type='text' placeholder='AUM' :class="{'is-invalid': errors.aum }")
               .invalid-feedback.d-block(v-if="errors.aum") {{ errors.aum[0] }}
           .col-sm.pl-sm-2
             b-form-group#inputB-group-3(label='Number of Accounts' label-for='label inputB-3' label-class="label")
-              b-form-input#inputB-3(v-model='form.business.client_account_cnt' type='text' placeholder='Number of Accounts' required :class="{'is-invalid': errors.client_account_cnt }")
+              b-form-input#inputB-3(v-model='form.business.client_account_cnt' type='text' placeholder='Number of Accounts' :class="{'is-invalid': errors.client_account_cnt }")
               .invalid-feedback.d-block(v-if="errors.client_account_cnt") {{ errors.client_account_cnt[0] }}
         .row
           .col-sm-6.pr-sm-2
@@ -99,7 +99,7 @@
         .row
           .col-sm-6.pr-sm-2
             b-form-group#inputB-group-8(label='Phone Number' label-for='inputB-8' label-class="label" description="Optional")
-              b-form-input#inputB-8(v-model='form.business.contact_phone' type='text' placeholder='Phone Number' required :class="{'is-invalid': errors.contact_phone }")
+              b-form-input#inputB-8(v-model='form.business.contact_phone' type='text' placeholder='Phone Number' :class="{'is-invalid': errors.contact_phone }")
               .invalid-feedback.d-block(v-if="errors.contact_phone") {{ errors.contact_phone[0] }}
           .col-sm-6.pl-sm-2
             b-form-group#inputB-group-7(label='Company Website' label-for='inputB-7' label-class="label" description="Optional")
@@ -113,7 +113,7 @@
               .invalid-feedback.d-block(v-if="errors.address_1") {{ errors.address_1[0] }}
           .col-xl-3.pl-xl-2
             b-form-group#inputB-group-10(label='Apt/Unit:' label-for='inputB-10' label-class="label")
-              b-form-input#inputB-10(v-model='form.business.apartment' type='text' placeholder='Apt/Unit' required :class="{'is-invalid': errors.apartment }")
+              b-form-input#inputB-10(v-model='form.business.apartment' type='text' placeholder='Apt/Unit' :class="{'is-invalid': errors.apartment }")
               .invalid-feedback.d-block(v-if="errors.apartment") {{ errors.apartment[0] }}
         .row
           .col-xl-4.pr-xl-2
@@ -172,6 +172,8 @@
     'business_name',
     'crd_number',
     'aum',
+    'contact_phone',
+    'apartment',
     'client_account_cnt',
     'city',
     'state',
