@@ -16,7 +16,7 @@
           template(#button-content)
             b-icon(icon="three-dots")
           router-link.dropdown-item(:to='`/business/annual_reviews/${item.id}`') Edit
-          b-dropdown-item(@click="duplicateReview(item.id)") Duplicate
+          b-dropdown-item(v-if="!(plan === 'team' && reviews.length === 1)" @click="duplicateReview(item.id)") Duplicate
           AnnualModalDelete(@deleteConfirmed="deleteReview(item.id)", :inline="false")
             b-dropdown-item.delete Delete
           b-dropdown-item.d-none
@@ -25,6 +25,7 @@
 
 <script>
 import AnnualModalDelete from '../modals/AnnualModalDelete'
+import { mapGetters } from "vuex"
 
 export default {
   name: "ReviewItem",
@@ -33,6 +34,10 @@ export default {
     AnnualModalDelete
   },
   computed: {
+    ...mapGetters({
+      reviews: 'annual/reviews',
+      plan: 'roles/currentPlan',
+    }),
     progressWidth() {
       const part = 100 / +this.item.review_categories.length
       return +part * +this.item.progress
