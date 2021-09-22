@@ -91,6 +91,11 @@
       },
       async submit(e) {
         e.preventDefault();
+        if (this.plan === 'team' && this.reviews.length === 1) {
+          this.toast('Error', 'Internal review has not been created. Please upgrade plan to create more than one review a year.', true)
+          this.$bvModal.hide(this.modalId)
+          return
+        }
         this.validates()
 
         if (Object.keys(this.errors).length > 0) {
@@ -151,7 +156,8 @@
         filefolders: 'filefolders/filefolders',
         currentFileFolders: 'filefolders/currentFileFolders',
         currentFolderId: 'filefolders/currentFolder',
-        currentFolderName: 'filefolders/currentFolderName'
+        currentFolderName: 'filefolders/currentFolderName',
+        plan: 'roles/currentPlan',
       }),
       reviewsOptions () {
         const revOpt = this.reviews.map(review => {
