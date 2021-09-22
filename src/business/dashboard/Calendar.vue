@@ -23,7 +23,7 @@
                   ion-icon(:name="icon")
                   | &nbsp;
                 span.pointer(@click="openModal(arg.event.extendedProps.taskId, arg.event.extendedProps.oid)" v-if="arg.event.extendedProps.remind_at") {{arg.event.title}}
-                a(v-else :href="arg.event.extendedProps.href" target="_blank") {{arg.event.title}}
+                a.project-name(v-else :href="arg.event.extendedProps.href" target="_blank") {{arg.event.title}}
 </template>
 
 <script>
@@ -126,3 +126,12 @@ export default {
   }
 }
 </script>
+<style scoped>
+/deep/ .fc-popover-body .project-name {
+  color: #0479FF !important;
+}
+
+/deep/ .fc-popover-body .task-is-project:hover a {
+  color: white !important;
+}
+</style>
