@@ -8,14 +8,14 @@
         div(:class="taskId ? 'col-lg-6 pr-2' : 'col'")
           InputText(v-model="task.body" :errors="errors.body" placeholder="Name") Task Name
 
-          Get(v-if="isBusiness" v-bind="optionsToFetch"): template(v-slot="{projects,reviews,policies,exams}")
+          Get(v-if="isBusiness" v-bind="optionsToFetch"): template(v-slot="{projects,reviews,policies,exams, specialists, team_members}")
             label.m-t-1.form-label Link to
             ComboBox(:value="linkToValue" @input="inputLinkTo" :options="linkToOptions(projects, reviews, policies, exams)" placeholder="Select projects, internal reviews, or policies to link the task to" :tree-props="{ disableBranchNodes: true }")
             .form-text.text-muted Optional
             Errors(:errors="errors.linkable_type || errors.linkable_id")
 
             label.m-t-1.form-label Assignee
-            ComboBox(v-model="task.assignee" :options="assigneeOptions" placeholder="Select an assignee")
+            ComboBox(:value="assigneeValue" @input="inputAssigneeTo" :options="assigneeOptions(specialists, team_members)" placeholder="Select an assignee" :tree-props="{ disableBranchNodes: true }")
             .form-text.text-muted Optional
             Errors(:errors="errors.assignee")
 
@@ -125,7 +125,6 @@
           div
             button.btn.btn-link.m-r-1(@click="$bvModal.hide(modalId)") Cancel
             button.btn.btn-dark(@click="submit()") Create
-
       template(v-if="task.done_at && taskId" slot="modal-footer")
         span.mr-2
           b-icon.m-r-1.pointer(icon="check-circle-fill" class="done_task")
@@ -165,7 +164,8 @@ const initialTask = defaults => ({
   body: null,
   linkable_id: null,
   linkable_type: null,
-  assignee: null,
+  assignee_type: null,
+  assignee_id: null,
   remind_at: null,
   end_date: null,
   end_by: null,
@@ -281,6 +281,29 @@ export default {
       this.task.linkable_type = type
       this.task.linkable_id = id
     },
+    inputAssigneeTo(value) {
+      const [type, id] = value.split('|')
+      this.task.assignee_type = type
+      this.task.assignee_id = id
+    },
+    assigneeOptions(specialists, team_members) {
+      const specialistsOptions = specialists.map((item) => {
+        return {
+          id: `Specialist|${item.id}`,
+          label: `${item.first_name} ${item.last_name}`
+        }
+      })
+      const teamMemberOptions = team_members.filter(item => item.active).map((item) => {
+        return {
+          id: `TeamMember|${item.id}`,
+          label: `${item.first_name} ${item.last_name}`
+        }
+      })
+      return [
+        { id: 'Specialists', label: 'Specialists', children: specialistsOptions},
+        { id: 'Team member', label: 'Team member', children: teamMemberOptions},
+      ]
+    },
     deleteTask(task, deleteOccurence) {
       const occurenceParams = deleteOccurence ? `?oid=${this.occurenceId}` : ''
       fetch(this.$store.getters.backendUrl + '/api/reminders/' + this.taskId + occurenceParams, {
@@ -297,29 +320,33 @@ export default {
         }
       })
     },
-    toggleDone(task) {
+    async toggleDone(task) {
+      const fixedId = task.id
       const { taskId, oid } = splitReminderOccurenceId(task.id)
-      const oidParam = oid !== null ? `&oid=${oid}` : ''
-      var target_state = (!(!!task.done_at)).toString()
-      var src_id_params = oid !== null ? `&src_id=${this.taskId}` : ''
-      fetch(`${this.$store.getters.backendUrl}/api/reminders/${taskId}?done=${target_state}${oidParam}${src_id_params}`, {
-        method: 'POST',
-        headers: { ...this.$store.getters.authHeaders.headers, 'Content-Type': 'application/json' },
-      }).then(response => {
-        if (response.status === 201 || response.status === 200) {
-          this.$emit('saved')
-          this.toast('Success', this.task.done_at && this.taskId ? 'Task has been marked as incomplete.' : 'Task has been marked as complete.')
-          this.$bvModal.hide(this.modalId)
-        } else {
-          console.error(response.status)
-          this.toast('Error', this.task.done_at && this.taskId ? 'Task has not been marked as incomplete. Please try again.' : 'Task has not been marked as complete. Please try again.', true )
-        }
-      })
+      const oidParam = oid !== null ? `&oid=${oid}` : ''                               // BACK RETURNS 404 with this
+      let target_state = (!(!!task.done_at)).toString()
+
+      try {
+        await this.$store.dispatch('reminders/updateTaskStatus', { fixedId, id: taskId, done: target_state, oidParam })
+          .then(response => {
+            this.$bvModal.hide(this.modalId)
+            this.toast('Success', this.task.done_at && this.taskId ? 'Task has been marked as incomplete.' : 'Task has been marked as complete.')
+          })
+          .catch(error => this.toast('Error', this.task.done_at && this.taskId ? 'Task has not been marked as incomplete. Please try again.' : 'Task has not been marked as complete. Please try again.', true ))
+      } catch (error) {
+        this.toast('Error', `${error.message}`, true)
+      }
     },
-    submit(saveOccurence) {
-      this.errors = []
+    validate() {
+      this.errors = {}
+      if (this.task.remind_at && this.task.end_date) {
+        if (this.task.remind_at > this.task.end_date) this.$set(this.errors, 'end_date', ['Date must not occur before start date'])
+      }
+    },
+    createNewTask(saveOccurence) {
       const toId = (!saveOccurence && this.taskId) ? `/${this.taskId}` : ''
-      const occurenceParams = saveOccurence ? `?oid=${this.occurenceId}&src_id=${this.taskId}` : ''
+      const occurenceParams = saveOccurence && this.occurenceId ? `?oid=${this.occurenceId}&src_id=${this.taskId}` : ''
+      
       fetch(this.$store.getters.backendUrl + '/api/reminders' + toId + occurenceParams, {
         method: 'POST',
         headers: { ...this.$store.getters.authHeaders.headers, 'Content-Type': 'application/json' },
@@ -337,13 +364,39 @@ export default {
         }
       })
     },
+    updateTask() {
+      const data = {
+        id: this.taskId,
+        task: {
+          ...this.task
+        },
+      }
+      this.$store.dispatch("reminders/updateTask", data)
+        .then(res => {
+          if (res) {
+            this.toast('Success', 'Task has been updated.')
+            this.$emit('saved')
+            this.$bvModal.hide(this.modalId)
+          }
+        })
+        .catch(error => this.toast('Error', 'Task has not been updated. Please try again.'))
+    },
+    submit(saveOccurence) {
+      this.validate()
+      if (Object.keys(this.errors).length > 0) return
+      if (this.taskId) {
+        this.updateTask()
+        return
+      }
+      this.createNewTask(saveOccurence)
+    },
     resetTask() {
       if (this.taskId) {
         fetch(`${this.$store.getters.backendUrl}/api/reminders/${this.taskId}`, {
           method: 'GET',
           ...this.$store.getters.authHeaders
         }).then(response => response.json())
-          .then(result => Object.assign(this.task, result))
+          .then(result => this.task = result)
       } else {
         const withRemindAt = this.remindAt ? { remind_at: this.remindAt } : {}
         this.task = initialTask({ ...this.defaults, ...withRemindAt })
@@ -358,6 +411,9 @@ export default {
     linkToValue() {
       return this.task.linkable_type && this.task.linkable_id ? `${this.task.linkable_type}|${this.task.linkable_id}` : null
     },
+    assigneeValue() {
+      return this.task.assignee_type && this.task.assignee_id ? `${this.task.assignee_type}|${this.task.assignee_id}` : null
+    },
     url() {
       return `/api/reminders/${this.taskId || ''}/messages`
     },
@@ -367,7 +423,9 @@ export default {
             projects: '/api/local_projects',
             reviews: '/api/business/annual_reports',
             policies: '/api/business/compliance_policies',
-            exams: '/api/business/exams'
+            exams: '/api/business/exams',
+            specialists: '/api/business/team_members/specialists',
+            team_members: '/api/business/team_members'
           }
         : {}
     },
@@ -383,15 +441,6 @@ export default {
     repeatsOptions: () => REPEAT_OPTIONS.map(value => ({ value, text: REPEAT_LABELS[value] })),
     isBusiness() {
       return 'business' === this.$store.getters.appModule
-    },
-    assigneeOptions() {
-      // Also commented on 376 line
-      // let specialists = [
-      //   ...this.employees,
-      //   ...this.employeesSpecialists
-      // ]
-      // console.log(specialists)
-      return ['John', 'Doe', 'Another specialist'].map(toOption)
     },
     datepickerOptions() {
       return {
@@ -410,7 +459,7 @@ export default {
           this.task.end_date = value
         }
       }
-    }
+    },
   },
   components: {
     Messages,

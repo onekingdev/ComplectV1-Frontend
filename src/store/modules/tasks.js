@@ -142,6 +142,7 @@ export default {
                   taskItem.repeats,
                   taskItem.skip_occurencies,
                   taskItem.updated_at,
+                  taskItem.assignee_name
                 ))
               }
               commit('SET_TASKS', tasks)
@@ -283,7 +284,7 @@ export default {
       });
       try {
         const updateTask = mapAuthProviders[rootState.shared.settings.authProvider].updateTask
-        updateTask(payload)
+        return updateTask(payload)
           .then((success) => {
             commit("clearError", null, {
               root: true
@@ -317,6 +318,7 @@ export default {
                 data.repeats,
                 data.skip_occurencies,
                 data.updated_at,
+                data.assignee_name
               ))
               commit('UPDATE_CURRENT_TASK', new Task(
                 data.body,
