@@ -3,8 +3,7 @@ import * as jwt from '@/services/common/projects'
 const mapAuthProviders = {
   jwt: {
     getProjects: jwt.getProjects,
-    createProject: jwt.createProject,
-    createProposal: jwt.createProposal
+    createProject: jwt.createProject
   },
 }
 

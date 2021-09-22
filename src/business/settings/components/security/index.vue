@@ -12,8 +12,11 @@
                   h4.semibold-text Change Email
               .row
                 .col-md-8.col-lg-6
+                  b-form-group#input-group-1.mt-3(label='Current Email' label-for='input-1' label-class="settings__card--label")
+                    .d-flex
+                      b-form-input#input-1(:value='user.user_email' type='email' placeholder='Email' disabled)
                   b-form(@submit='onSubmitEmail' v-if='show1')
-                    b-form-group#input-group-1(label='Email' label-for='input-1' label-class="settings__card--label required")
+                    b-form-group#input-group-1(label='New Email' label-for='input-1' label-class="settings__card--label required")
                       .d-flex
                         b-form-input#input-1(v-model.trim='form1.email' type='email' placeholder='Email' :class="{'is-invalid': errors.email }")
                         b-button.ml-2(type='submit' variant="dark") Save
@@ -24,7 +27,7 @@
                     b-form-group#input-group-2(label='Old Password' label-for='input-2'  label-class="settings__card--label required" )
                       b-form-input#input-2(v-model.trim='form2.current_password' type='password' placeholder='Old Password' :class="{'is-invalid': errors.current_password }")
                       Errors(:errors="errors.current_password")
-                    b-form-group#input-group-3(label='New Password' label-for='input-3' description="Minimum 6 character" label-class="settings__card--label required" )
+                    b-form-group#input-group-3(label='New Password' label-for='input-3' description="Minimum 6 characters" label-class="settings__card--label required" )
                       b-form-input#input-3(v-model.trim='form2.password' type='password' placeholder='New Password' :class="{'is-invalid': errors.password }")
                       Errors(:errors="errors.password")
                     b-form-group#input-group-4(label='Confirm Password' label-for='input-4' label-class="settings__card--label required")
@@ -38,14 +41,14 @@
               .row
                 .col-md-12
                   h4.semibold-text Delete Account
-              .row
+              .row.mt-3
                 .col-md-6
                   p By deleting your account, you will purge all account information&nbsp;
                     | and saved documents associated with this account. This deletion cannot be reversed.&nbsp;
                     | Please take appropriate steps to save down to your own storage devices&nbsp;
                     | those records you may wish to access after the deletion of this account.
                   DeleteAccountModal(@deleteConfirmed="deleteAccount")
-                    button.btn.btn-warning.font-weight-bold Delete
+                    button.btn.btn-danger.font-weight-bold Delete
 </template>
 
 <script>
@@ -75,6 +78,7 @@
         form1: initialFormEmail(),
         form2: initialFormResetPassword(),
         errors: {},
+        user: this.$store.getters.getUser
       };
     },
     methods: {

@@ -108,10 +108,7 @@
 											:errors="errors.regulatory[index][1]"
 										)
 									.delete-col
-										button.btn.btn__close.float-right.remove-regulatory(
-											v-if="regulatoryChangesSplit.length > 1",
-											@click="removeRegulatoryChange(regulatory, index)"
-										)
+										button.btn.btn__close.float-right.remove-regulatory(@click="removeRegulatoryChange(regulatory, index)")
 											b-icon(icon="x", font-scale="1")
 								.mt-3
 									button.btn.btn-default(@click="addRegulatoryChange")
@@ -444,7 +441,7 @@ export default {
 				const responseIndex = this.review.regulatory_changes.findIndex(
 					(item) => item.id === response.id
 				);
-				if (changeIndex && responseIndex) {
+				if (changeIndex > -1 && responseIndex > -1) {
 					this.$set(this.review.regulatory_changes, changeIndex, change);
 					this.$set(this.review.regulatory_changes, responseIndex, response);
 				}
@@ -452,7 +449,8 @@ export default {
 				const changeIndex = this.review.regulatory_changes.findIndex(
 					(item) => item.timestamp === change.timestamp
 				);
-				if (changeIndex) {
+
+				if (changeIndex > -1) {
 					this.review.regulatory_changes.splice(changeIndex, 2);
 				}
 			}
