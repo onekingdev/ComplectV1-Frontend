@@ -308,7 +308,6 @@ import Tiptap from '@/common/Tiptap'
       },
       policy(){
         const id = this.policyId
-        console.log(this.$store.getters.policyById(id))
         return this.$store.getters.policyById(id)
       },
       policiesComputed: {
