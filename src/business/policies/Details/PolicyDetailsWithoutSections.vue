@@ -114,7 +114,7 @@ import Tiptap from '@/common/Tiptap'
         sections: [],
         count: 0,
         isDowloading: false,
-        isPublishing: false,
+        isPublishing: false
       }
     },
     methods: {
@@ -157,7 +157,7 @@ import Tiptap from '@/common/Tiptap'
           .then(response => {
             this.toast('Success', 'Policy has been published.')
             setTimeout(() => {
-              this.$router.push(`${this.$store.getters.backendUrl}/business/compliance_policies/${response.id}`)
+              this.$router.push(`/business/compliance_policies/${response.id}`)
             }, 2000)
           })
           .catch((err) => {
@@ -308,6 +308,7 @@ import Tiptap from '@/common/Tiptap'
       },
       policy(){
         const id = this.policyId
+        console.log(this.$store.getters.policyById(id))
         return this.$store.getters.policyById(id)
       },
       policiesComputed: {
