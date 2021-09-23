@@ -162,6 +162,7 @@
             }
             if (!response.errors) {
               this.toast('Success', 'Password has been updated.')
+              this.form2 = initialFormResetPassword()
             }
           }
           if (!response) console.error(response)
