@@ -3,7 +3,7 @@
     .page-header.bg-white
       div
         h2.page-header__breadcrumbs Internal Review
-        h2.page-header__title: b {{ review ? review.year : '' }} {{ review ? review.name : '' }}
+        h2.page-header__title: b {{ review ? review.name : '' }}
       .page-header__actions
         div
           button.btn.btn-default.mr-3.d-none Download
@@ -13,10 +13,11 @@
 
     b-tabs.reviews__tabs(content-class="mt-0")
       template(#tabs-end)
-        b-dropdown.actions(text='Actions', variant="default", right)
+        //- b-dropdown(size="xs" variant="light" class="m-0 p-0" right)
+        b-dropdown.actions(text='Actions' variant="light" right)
           template(#button-content)
             | Actions
-            b-icon.m-l-1(icon="chevron-down" font-scale="1")
+            b-icon.ml-2(icon="chevron-down")
           AnnualModalEdit(:review="review || {}" :inline="false")
             b-dropdown-item Edit
           AnnualModalDelete(@deleteConfirmed="deleteReview(review.id)" :inline="false")
@@ -40,7 +41,7 @@
                       Errors(:errors="errors")
                     .col-md-3.col-lg-3.col-xl-2.text-right.reviews__card--actions
                       CommonDeleteModal.ml-auto(title="Delete Category" content="This will remove the category from this internal review and all of its associated content." @deleteConfirmed="deleteCategory(currentCategory.id)", :inline="false")
-                        b-button.btn.btn-default(variant="light") Delete
+                        b-button.btn.btn-primary(variant="light") Delete
                 .reviews__topiclist(v-if="currentCategory.review_topics")
                   template(v-for="(currentTopic, i) in currentCategory.review_topics")
                     .reviews__card--internal(:key="`${currentCategory.name}-${i}`")
@@ -79,7 +80,7 @@
                           template(v-for="(finding, findingIndex) in topicItem.findings")
                             .col-md-10.offset-md-1(:key="`${currentTopic.name}-${i}-${topicItemIndex}-${findingIndex}`")
                               textarea.finding-area.form-control.m-b-1(v-model="currentCategory.review_topics[i].items[topicItemIndex].findings[findingIndex]" type="text")
-                              button.btn.btn__close.float-right(@click="removeFinding(i, topicItemIndex, findingIndex)")
+                              button.btn.btn__close.float-right.m-t-05(@click="removeFinding(i, topicItemIndex, findingIndex)")
                                 b-icon(icon="x" font-scale="1")
                 .reviews__card--internal.borderless.p-t-20
                   .d-flex.justify-content-between.align-items-center
