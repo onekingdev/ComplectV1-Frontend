@@ -1,7 +1,7 @@
 <template lang="pug">
   .card.m-t-1
     .card-body
-      div.d-flex.align-items-center
+      div.d-flex.align-items-center.mt-3
         UserAvatar.mr-3(:business="business")
         span.mr-auto
           span.business-name {{ business.business_name }}

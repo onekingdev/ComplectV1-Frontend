@@ -113,10 +113,10 @@
           .container
             .row.p-x-1
               .col-md-12
-                Get(:application="applicationUrl(project.id)"): template(v-slot="{application}")
-                  PropertiesTable(title="Proposal" :properties="proposalProps(application)")
-                    EditProposalModal(:project-id="project.id" :application-id="application.id")
-                      button.btn.btn-outline-dark.float-right Edit
+                Get(:application="applicationUrl(project.id)" :callback="setApplication"): template(v-slot="{application}")
+                PropertiesTable(v-if="application" title="Proposal" :properties="proposalPropsData")
+                  EditProposalModal(v-if="application" :project-id="project.id" :application-id="application.id" :proposal="application" :project="project")
+                    button.btn.btn-outline-dark.float-right Edit
 </template>
 
 <script>
@@ -182,8 +182,14 @@ export default {
     readablePaymentSchedule,
     proposalProps: fields,
     isContractComplete,
+    setApplication(application) {
+      this.$store.commit('projects/SET_CURRENT_PROPOSAL', application)
+    },
     applicationUrl(projectId) {
       return '/api/specialist/projects/' + projectId + '/applications/my'
+    },
+    showEditModal() {
+      this.$bvModal.show('EditProposalModal')
     },
     getContractsByLocalProject(localProject) {
       return localProject.projects.filter(lp => lp.specialist)
@@ -202,10 +208,13 @@ export default {
     viewContract(collaborator) {
       this.tab = 3
       this.showingContract = collaborator || null
-    },
+    }
   },
   computed: {
     ...mapGetters(['accessToken', 'getUser']),
+    application() {
+      return this.$store.getters['projects/currentProposal']
+    },
     projectUrl() {
       return this.$store.getters.url('URL_API_MY_PROJECT', this.id)
     },
@@ -214,6 +223,31 @@ export default {
     },
     showTimesheetBtn() {
       return project => 'hourly' === project.pricing_type
+    },
+    proposalPropsData() {
+      if (!this.application) return []
+      const newProps = []
+      const application = this.application
+      const props = this.proposalProps(application)
+      for(let i = 0; i < props.length; i++) {
+        const item = props[i]
+        if (item.name !== 'Attachments') {
+          newProps.push(item)
+        } else {
+          const isDevEnv = this.$store.getters.isDevEnv
+          const url = application.attachment ? (isDevEnv ? `${this.$store.getters.backendUrl}/${application.attachment.url}` : application.attachment.url) : ''
+          const value = application.attachment.name ? application.attachment.name : ''
+          const prop = {
+            name: 'Attachments',
+            value: value,
+            url: url,
+            type: 'link'
+          }
+
+          newProps.push(prop)
+        }
+      }
+      return newProps
     }
   },
   components: {
