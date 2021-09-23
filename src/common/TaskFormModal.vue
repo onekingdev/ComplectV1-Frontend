@@ -95,7 +95,7 @@
                     .card-body.p-0
                       b-form-group
                         label
-                          a.btn.btn-default Upload File
+                          a.btn.btn-default Upload
                           input(type="file" name="file" @change="onFileChanged" style="display: none")
                         Get(:documents="url" :etag="etag" :callback="filterMessagesWithUploads"): template(v-slot="{documents}")
                           .row(v-for="document in documents" :key="document.id"): .col-md-12.m-b-1
