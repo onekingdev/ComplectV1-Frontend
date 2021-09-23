@@ -9,8 +9,8 @@
           b-form-select(v-model="reviewSelected" :options="reviewsOptions")
       .row
         .col-12
-          label.form-label Name
-          input.form-control(v-model="annual_review.name" type="text" ref="input")
+          label.form-label Review Name
+          input.form-control(v-model="annual_review.name" type="text" ref="input" placeholder="Name")
           Errors(:errors="errors.name")
       .row.m-t-1
         .col-6

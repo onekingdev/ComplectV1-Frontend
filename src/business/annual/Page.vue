@@ -6,7 +6,7 @@
         AnnualModalCreate(:reviews="reviews")
           button.btn.btn-dark.float-end New Review
     .card-body.white-card-body.card-body_full-height.p-x-40
-      Notifications.m-b-20(:notify="notify")
+      Notifications.m-b-20(v-if="!loading" :notify="notify")
         a.btn.btn-default(href='https://www.sec.gov/exams', target="_blank") View
       p(v-show="!loading" v-html="noticeText")
       Loading

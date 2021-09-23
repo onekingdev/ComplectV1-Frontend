@@ -47,7 +47,7 @@
                     .reviews__card--internal(:key="`${currentCategory.name}-${i}`")
                       .row.m-b-2
                         .col-md-9.col-lg-9.col-xl-10
-                          textarea-autosize.reviews__input.reviews__topic-name(v-model="currentTopic.name" :min-height="30" placeholder="New Topic")
+                          textarea-autosize.reviews__input.reviews__topic-name.rounded(v-model="currentTopic.name" :min-height="30" placeholder="New Topic")
                         .col-md-3.col-lg-3.col-xl-2.text-right.reviews__card--actions
                           b-dropdown(size="xs" variant="light" class="m-0 p-0" right)
                             template(#button-content)
