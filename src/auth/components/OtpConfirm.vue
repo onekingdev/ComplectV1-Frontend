@@ -59,7 +59,12 @@
         if (res.status === 'ok') {
           this.toast('Success', 'Email has been updated.')
           setTimeout(() => {
-            this.$router.push({name: 'settings-security'})
+            if (this.$store.getters.appModule === 'specialist') {
+              this.$router.push({name: 'settings-security-specialist'})
+            } else {
+              this.$router.push({name: 'settings-security'})
+            }
+            
           }, 2000)
         } else {
           this.toast('Error', 'Email has not been updated. Please try again.', true)

@@ -41,15 +41,12 @@
     },
     created() {
       this.component = General;
-      // this.component = Security;
-      // this.component = Subscriptions;
-      // this.component = ClientPermisssions;
-      // this.component = Billings;
-      // this.component = Notifications;
-
-      // console.log(window.location)
-      // const pathName = window.location.pathname.split('settings/')
-      // console.log(pathName)
+      const pathName = window.location.pathname.split('settings/')[1]
+      if(pathName) {
+        const pathNameFixed = pathName.charAt(0).toUpperCase() + pathName.slice(1);
+        this.openSetting(pathNameFixed)
+      }
+      if(!pathName) this.openSetting('General')
     },
     data() {
       return {
