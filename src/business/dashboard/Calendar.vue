@@ -131,7 +131,15 @@ export default {
   color: #0479FF !important;
 }
 
-/deep/ .fc-popover-body .task-is-project:hover a {
+/deep/ .fc-popover-body .task-is-project .fc-event-title {
+  background: #0479FF !important;
+}
+
+/deep/ .fc-popover-body .task-is-project .fc-event-title span {
+  color: white !important;
+}
+
+/deep/ .fc-popover-body .task-is-project a {
   color: white !important;
 }
 </style>
