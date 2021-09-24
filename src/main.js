@@ -4,7 +4,6 @@ import router from './router'
 
 import store from '@/store/globalStore'
 
-
 import { BootstrapVue, IconsPlugin } from 'bootstrap-vue'
 import '@/assets/styles/vue.scss'
 import Treeselect from '@riophae/vue-treeselect'
@@ -41,6 +40,8 @@ import VueRouter from 'vue-router'
 import Loading from '@/common/Loading/Loading'
 import EmptyState from '@/common/EmptyState'
 import TextareaAutosize from 'vue-textarea-autosize'
+
+import { downloadDirective  } from './services/axios/download'
 
 const data = () => ({
   isProfileMenuOpen: false
@@ -94,6 +95,7 @@ Vue.directive('google-maps-autocomplete', {
     new google.maps.places.Autocomplete(el)
   }
 })
+Vue.directive('download', downloadDirective)
 
 
 new Vue({
