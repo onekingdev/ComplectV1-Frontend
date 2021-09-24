@@ -177,7 +177,7 @@
           return
         }
 
-        if(routeName === "project-review") this.$store.commit('changeSidebar', 'builder')
+        if(routeName === "project-review" || routeName === "project-post-view") this.$store.commit('changeSidebar', 'builder')
 
 
         if(routeName === "file-folders"
