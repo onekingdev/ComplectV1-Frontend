@@ -99,7 +99,7 @@ export default {
       } else {
         this.$store.commit('projects/SET_CURRENT_PROPOSAL', res)
         this.$bvModal.hide('EditProposalModal')
-        this.toast('Success', 'Proposal has been submitted.')
+        this.toast('Success', 'Proposal has been updated.')
       }
     },
     loaded(result) {
