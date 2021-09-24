@@ -53,9 +53,6 @@
         } catch (error) {
           this.toast('Error', error.message, true)
         }
-      },
-      calcDate(vaue) {
-        return today - vaue
       }
     },
     components: {
