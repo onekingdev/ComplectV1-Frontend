@@ -22,7 +22,7 @@
         .col-xl-6.col-lg-8.col.m-x-auto
           .white-card-body.reviews__card.registration.mt-0.pt-5
             h1.text-center.registration__title Confirm your email!
-            p.text-center.registration__subtitle.px-4 We send a 6 digit code to {{ this.form.email }}. Please enter it below.
+            p.text-center.registration__subtitle.px-4 We sent a 6 digit code to {{ this.form.email }}. Please enter it below.
             div.px-5
               b-form(@submit='onSubmitStep2' @keyup="onCodeChange" v-if='show' autocomplete="off")
                 b-form-group
@@ -189,7 +189,7 @@
             if (response.errors) {
               for (const type of Object.keys(response.errors)) {
                 this.errors = response.errors[type]
-                this.toast('Error', `Email successful confirmed!`, true)
+                this.toast('Error', `Verification has been completed.`, true)
               }
             }
             if (!response.errors) {
@@ -198,7 +198,7 @@
               this.step3 = true
             }
           })
-          .catch((error) => this.toast('Error', `Couldn't submit form! ${error.message}`, true) )
+          .catch((error) => this.toast('Error', `Verification has not been completed. Please try again.`, true) )
       },
       onCodeChange(e){
         this.errors = []
