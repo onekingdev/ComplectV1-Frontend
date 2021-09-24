@@ -231,7 +231,6 @@ export default {
       this.currentCategory.review_topics.splice(i, 1);
     },
     deleteCategory(id) {
-      console.log('currentCategory id: ', id)
       this.$store.dispatch('annual/deleteReviewCategory', { annualId: this.review.id, id: id })
         .then(response => {
           this.toast('Success', `The annual review category has been deleted! ${response.id}`)
@@ -239,9 +238,6 @@ export default {
           this.$router.push(`/business/annual_reviews/${response.annual_report_id}`)
         })
         .catch(error => this.toast('Error', `Something wrong! ${error.message}`, true))
-    },
-    createTask(i){
-      console.log('createTask: ', i)
     },
     saveAndExit() {
       this.saveCategory()
