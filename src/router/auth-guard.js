@@ -13,12 +13,12 @@ const AccessGuard = (to, from, next) => {
 }
 
 const BusinessGuard = (to, from, next) => {
-  if (appModule !== 'business') next(`/access-denied`)
+  if (appModule !== 'business') next(`/unauthorized`)
   else next()
 }
 
 const SpecialistGuard = (to, from, next) => {
-  if (appModule !== 'specialist') next(`/access-denied`)
+  if (appModule !== 'specialist') next(`/unauthorized`)
   else next()
 }
 

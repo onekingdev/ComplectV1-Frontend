@@ -13,6 +13,7 @@ const SpecialistLayout = () => import('@/specialist/SpecialistLayout')
 // COMMON
 const PageNotFound = () => import ('@/common/PageNotFound')
 const AccessDenied = () => import ('@/common/AccessDenied')
+const PageUnauthorized = () => import ('@/common/PageUnauthorized')
 const PaymentRequired = () => import ('@/common/PaymentRequired')
 
 // AUTH
@@ -82,6 +83,7 @@ const router = new VueRouter({
     //ROLES AND PERMISSIONS
     { path: "/access-denied", component: AccessDenied },
     { path: "/payment-required", component: PaymentRequired },
+    { path: "/unauthorized", component: PageUnauthorized },
 
     // REDIRECTS
     { path: '/business/new', redirect: '/business/onboarding' },
