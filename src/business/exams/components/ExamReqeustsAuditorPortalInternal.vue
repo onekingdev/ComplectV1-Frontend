@@ -22,7 +22,7 @@
         .col-xl-6.col-lg-8.col.m-x-auto
           .card-body.white-card-body.reviews__card.registration.px-5.mt-0
             h1.text-center Confirm your email!
-            p.text-center We send a 6 digit code to email.com. Please enter it below.
+            p.text-center We sent a 6 digit code to email.com. Please enter it below.
             div
               b-form(@submit='onSubmitStep2' @keyup="onCodeChange" v-if='show' autocomplete="off")
                 b-form-group
