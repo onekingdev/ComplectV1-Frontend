@@ -117,7 +117,7 @@
                   label.form-label Comment
                   textarea-autosize.w-100.form-control.d-block(v-model="message.message" :min-height="100")
                   Errors(:errors="messageErrors.message")
-                  Post(:action="`/api/reminders/${taskId}/messages`" :model="{ message }" @errors="messageErrors = $event" @saved="messageSaved")
+                  Post(:action="`/api/reminders/${taskId}/messages`" :model="{ message }" @errors="messageErrors = $event" @saved="messageSaved" alignRight)
                     button.btn.btn-primary.save-comment-btn Send
 
       template(v-if="!taskId" slot="modal-footer")
