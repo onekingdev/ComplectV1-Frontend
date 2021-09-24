@@ -21,7 +21,7 @@
       .row.registration.full-width
         .col-xl-6.col-lg-8.col.m-x-auto
           .white-card-body.reviews__card.registration.mt-0.pt-5
-            h1.text-center.registration__title Confirm your email!
+            h1.text-center.registration__title Confirm your email
             p.text-center.registration__subtitle.px-4 We sent a 6 digit code to {{ this.form.email }}. Please enter it below.
             div.px-5
               b-form(@submit='onSubmitStep2' @keyup="onCodeChange" v-if='show' autocomplete="off")
