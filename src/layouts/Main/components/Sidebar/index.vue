@@ -152,6 +152,7 @@
           routeName === "settings-subscriptions-specialist" ||
           routeName === "settings-billings-specialist" ||
           routeName === "settings-notifications-specialist" ||
+          routeName === "settings-notification-center-specialist" ||
           routeName === "annual-reviews-general" ||
           routeName === "annual-reviews-review-category" ||
           routeName === "exam-management-current-review" ||
