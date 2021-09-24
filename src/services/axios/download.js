@@ -9,7 +9,19 @@ const forceDownload = (response, filename) => {
   link.click()
 }
 
-const download = (url, filename) => axios.get(url, { responseType: 'blob' })
+const downloadBinary = (url, filename) => axios.get(url, { responseType: 'blob' })
   .then(response => forceDownload(response, filename))
 
-export default download
+const downloadDirective = {
+  inserted(el, binding) {
+    const url = binding.value.file_url
+    if (url.indexOf('http') === 0) {
+      el.href = url
+      el.target = '_blank'
+    } else {
+      el.addEventListener('click', () => downloadBinary(`..${binding.value.file_url}`, binding.value.file_name))
+    }
+  }
+}
+
+export { downloadBinary, downloadDirective }

@@ -95,7 +95,7 @@
                     .card-body.p-0
                       b-form-group
                         label
-                          a.btn.btn-default Upload File
+                          a.btn.btn-default Upload
                           input(type="file" name="file" @change="onFileChanged" style="display: none")
                         Get(:documents="url" :etag="etag" :callback="filterMessagesWithUploads"): template(v-slot="{documents}")
                           .row(v-for="document in documents" :key="document.id"): .col-md-12.m-b-1
@@ -103,8 +103,8 @@
                               div
                                 b-icon.file-card__icon(icon="file-earmark-text-fill")
                               .ml-0.mr-auto
-                                p.file-card__name {{ document.file_data.metadata.filename }}
-                                a.file-card__link.link(href="" @click.prevent='downloadDocument(document)' target="_blank") Download
+                                p.file-card__name {{ document.file_name }}
+                                a.file-card__link.link(v-download="document") Download
                               .ml-auto.my-auto.align-self-start.actions
                                 b-dropdown(size="sm" class="m-0 p-0" right)
                                   template(#button-content)
@@ -154,7 +154,6 @@ import { splitReminderOccurenceId } from '@/common/TaskHelper'
 import Messages from '@/common/Messages'
 import EtaggerMixin from '@/mixins/EtaggerMixin'
 import TaskDeleteConfirmModal from './TaskDeleteConfirmModal'
-import downloadBinary from '@/services/axios/download'
 
 const rnd = () => Math.random().toFixed(10).toString().replace('.', '')
 const toOption = id => ({ id, label: id })
@@ -226,10 +225,6 @@ export default {
         getEmployees: 'settings/getEmployees',
         getEmployeesSpecialists: 'settings/getEmployeesSpecialists',
     }),
-    downloadDocument(document) {
-      const url = `../uploads/${document.file_data.storage}/${document.file_data.id}`
-      downloadBinary(url, document.file_data.metadata.filename)
-    },
     async onFileChanged(event) {
       const file = event.target.files && event.target.files[0],
         store = this.$store
@@ -251,7 +246,7 @@ export default {
       }
     },
     filterMessagesWithUploads(messages) {
-      return messages.filter(message => message.file_data && message.file_data.id)
+      return messages.filter(message => message.file_url && message.file_name)
     },
     messageSaved() {
       this.toast('Comment sent')

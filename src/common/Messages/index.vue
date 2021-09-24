@@ -10,15 +10,15 @@
           .d-block.text-left
             p.message__user-name {{ message.sender.first_name }} {{ message.sender.last_name }} commented.
             p.message__comment(v-html="message.message")
-            .row(:class="message.file_data ? 'm-t-10' : ''")
-              template(v-if="message.file_data")
-                .col-12(:class="message.file_data.length !== 1 ? 'm-b-1' : ''")
+            .row(:class="message.file_url ? 'm-t-10' : ''")
+              template(v-if="message.file_url")
+                .col-12.m-b-1
                   .file-card
                     div
                       b-icon.file-card__icon(icon="file-earmark-text-fill" font-scale="2")
                     div.ml-0.mr-auto
-                      p.file-card__name {{ message.file_data.metadata ? message.file_data.metadata.filename : '' }}
-                      a.file-card__link.link(href="" @click.prevent="downloadDocument(message)" target="_blank") Download
+                      p.file-card__name {{ message.file_name }}
+                      a.file-card__link.link(v-download="message") Download
                     div.ml-auto.align-self-start.actions
                       b-dropdown(size="sm" variant="none" class="m-0 p-0" right)
                         template(#button-content)
@@ -30,7 +30,6 @@
 
 <script>
   import { DateTime } from 'luxon'
-  import downloadBinary from '@/services/axios/download'
   var today = DateTime.now().toLocaleString(DateTime.DATE_FULL)
 
   export default {
@@ -44,10 +43,6 @@
       this.$emit('created')
     },
     methods: {
-      downloadDocument(document) {
-        const url = `../uploads/${document.file_data.storage}/${document.file_data.id}`
-        downloadBinary(url, document.file_data.metadata.filename)
-      },
       async removeFile(id, fileID) {
 
         const data = {
@@ -70,7 +65,3 @@
     }
   }
 </script>
-
-<style scoped>
-
-</style>

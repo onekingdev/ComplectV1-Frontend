@@ -16,7 +16,8 @@
         dd.col-sm-9 {{ experience }}
         dt.col-sm-3 Description
         dd.col-sm-9 {{ project.description }}
-      div {{ project.role_details }}
+        dt.col-sm-3 Role Details
+        dd.col-sm-9 {{ project.role_details }}
       ProjectFigures(:project="project")
     hr(v-if="project.skills && project.skills.length > 0")
     .card-body.pb-4(v-if="project.skills && project.skills.length > 0")

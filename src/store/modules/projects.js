@@ -8,12 +8,13 @@ const mapAuthProviders = {
 }
 
 import LocalProject from "../../models/LocalProject";
-import { createProposal } from '../../services/specialist/projects';
+import { createProposal, updateProposal, getCurrentProposal } from '../../services/specialist/projects';
 
 export default {
   state: {
     projects: [],
     currentProject: null,
+    currentProposal: null
   },
   mutations: {
     SET_PROJECTS(state, payload) {
@@ -25,6 +26,9 @@ export default {
     ADD_PROJECT(state, payload) {
       state.projects.push(payload)
     },
+    SET_CURRENT_PROPOSAL(state, payload) {
+      state.currentProposal = payload
+    }
   },
   actions: {
     async getProjects({state, commit, rootState}) {
@@ -169,10 +173,14 @@ export default {
         });
         throw error;
       }
+    },
+    updateProposal({commit}, payload) {
+      return updateProposal(payload)
     }
   },
   getters: {
     projects: state => state.projects,
-    currentProject: state => state.currentProject
+    currentProject: state => state.currentProject,
+    currentProposal: state => state.currentProposal
   },
 };
