@@ -79,7 +79,7 @@
                             label.form-label Finding
                           template(v-for="(finding, findingIndex) in topicItem.findings")
                             .col-md-10.offset-md-1(:key="`${currentTopic.name}-${i}-${topicItemIndex}-${findingIndex}`")
-                              textarea.finding-area.form-control.m-b-1(v-model="currentCategory.review_topics[i].items[topicItemIndex].findings[findingIndex]" type="text")
+                              textarea-autosize.finding-area.form-control.m-b-1(v-model="currentCategory.review_topics[i].items[topicItemIndex].findings[findingIndex]" type="text")
                               button.btn.btn__close.float-right.m-t-05(@click="removeFinding(i, topicItemIndex, findingIndex)")
                                 b-icon(icon="x" font-scale="1")
                 .reviews__card--internal.borderless.p-t-20
