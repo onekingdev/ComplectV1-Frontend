@@ -67,15 +67,7 @@
                 DiscussionCard(:project-id="project.id" :token="token")
         b-tab.h-100(title="Tasks")
           .card-body.card-body_full-height.h-100
-            .d-flex.m-b-20
-              TaskFormModal.m-r-1(id="ProjectTaskFormModal" @saved="taskSaved" :defaults="taskDefaults(project)")
-                button.btn.btn-dark New Task
-              b-dropdown.m-r-1(text="Show: All Tasks" variant="default")
-                b-dropdown-item All Tasks
-                b-dropdown-item My Tasks
-                b-dropdown-item Complete Tasks
-              button.btn.btn-default.float-right(@click="completedTasksOpen = false"): strong Collapse All
-            TaskTable(v-if="incompleteTasks(project).length" :tasks="incompleteTasks(project)")
+            TaskTableExtended(v-if="incompleteTasks(project).length" :tasks="incompleteTasks(project)" :task-defaults="taskDefaults(project)" @saved="newEtag")
             .row.h-100(v-else)
               .col.h-100.text-center
                 EmptyState(name="Tasks")
@@ -83,7 +75,7 @@
               span.caret(:class="{caret_rotated:!completedTasksOpen}")
               | Completed Tasks
             b-collapse.m-t-1(v-if="completedTasks(project).length" v-model="completedTasksOpen")
-              TaskTable(:tasks="completedTasks(project)")
+              TaskTableExtended(:tasks="completedTasks(project)" :task-defaults="taskDefaults(project)" :create-button="false" @saved="newEtag")
         b-tab.h-100(title="Documents")
           DocumentList(:project="project")
         b-tab.h-100(title="Collaborators")
@@ -165,7 +157,7 @@ import ShowOnCalendarToggle from './ShowOnCalendarToggle'
 import ChangeContractAlerts from '@/common/projects/ChangeContractAlerts'
 import EditContractModal from '@/common/projects/EditContractModal'
 import TaskFormModal from '@/common/TaskFormModal'
-import TaskTable from './ShowPageTaskTable'
+import TaskTableExtended from "@/common/TaskTableExtended";
 import IssueModal from './IssueModal'
 import EditRoleModal from './EditRoleModal'
 
@@ -275,7 +267,7 @@ export default {
     IssueModal,
     EditRoleModal,
     TaskFormModal,
-    TaskTable,
+    TaskTableExtended,
   }
 }
 </script>
