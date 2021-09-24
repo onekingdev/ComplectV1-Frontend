@@ -1,4 +1,5 @@
 import * as jwt from '@/services/common/tasks'
+import axios from '@/services/axios'
 
 const mapAuthProviders = {
   jwt: {
@@ -624,6 +625,17 @@ export default {
         throw error;
       }
     },
+    async deleteTaskMessageById({ commit }, id) {
+      commit("clearError", null, { root: true })
+      commit("setLoading", true, { root: true })
+      try {
+        return await axios.delete(`/reminders/messages/${id}`)
+      } catch (error) {
+        commit("setError", error.message, { root: true })
+        commit("setLoading", false, { root: true })
+        throw error;
+      }
+    }
   },
   getters: {
     tasks: state => state.tasks,

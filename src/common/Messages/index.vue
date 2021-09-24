@@ -4,7 +4,7 @@
       h4 No Comments to Display
       p.mb-0 Type in the comment box below to get started
     .messages(v-if="messages && messages.length" ref="MessagesContainer")
-      .message(v-for="(message, i) in messages" :key="i" class="pb-0")
+      .message(v-for="(message, i) in messages" :key="i")
         .d-flex.align-items-start
           UserAvatar(:user="message.sender")
           .d-block.text-left
@@ -23,12 +23,14 @@
                       b-dropdown(size="sm" variant="none" class="m-0 p-0" right)
                         template(#button-content)
                           b-icon(icon="three-dots")
-                        b-dropdown-item.delete(@click="removeFile(message.id)") Delete file
+                        CommonDeleteModal(title="Delete File" content="" @deleteConfirmed="deleteFile(message.id)" :inline="true")
+                          b-dropdown-item.delete Delete File
           .d-block.text-right.ml-auto
             p.message__date {{ message.created_at | asDate }}
 </template>
 
 <script>
+  import CommonDeleteModal from '@/common/Modals/CommonDeleteModal'
   import { DateTime } from 'luxon'
   var today = DateTime.now().toLocaleString(DateTime.DATE_FULL)
 
@@ -43,25 +45,24 @@
       this.$emit('created')
     },
     methods: {
-      async removeFile(id, fileID) {
-
-        const data = {
-          id,
-          file: { id: fileID },
+      async deleteFile(id) {
+        try {
+          await this.$store.dispatch('reminders/deleteTaskMessageById', id)
+          this.toast('Success', `File deleted`)
+          this.$emit('saved')
+        } catch (error) {
+          this.toast('Error', error.message, true)
         }
-        // try {
-        //   await this.$store.dispatch('reminders/deleteFile', data)
-        //     .then(response => {
-        //       this.toast('Success', `File successfull deleted!`)
-        //     })
-        //     .catch(error => this.toast('Error', error.message, true))
-        // } catch (error) {
-        //   this.toast('Error', error.message, true)
-        // }
-      },
-      calcDate(vaue) {
-        return today - vaue
       }
+    },
+    components: {
+      CommonDeleteModal
     }
   }
 </script>
+
+<style scoped>
+p.message__comment {
+  word-break: break-all;
+}
+</style>

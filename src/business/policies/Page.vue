@@ -3,13 +3,14 @@
     .page-header
       h2.page-header__title Policies and Procedures
       .page-header__actions
-        span.dowloading.list-page.mr-3.mt-2(v-if="isDowloading")
-          .lds-ring.lds-ring-small
-             div
-             div
-             div
-             div
-        button.btn.btn.btn-default.mr-3(v-else @click="download") Download
+        template(v-if="filteredUnArchivedList.length")
+          span.dowloading.list-page.mr-3.mt-2(v-if="isDowloading")
+            .lds-ring.lds-ring-small
+              div
+              div
+              div
+              div
+          button.btn.btn.btn-default.mr-3(v-else @click="download") Download
         PoliciesModalCreate(@savedConfirmed="updateList")
           button.btn.btn-dark.float-end New Policy
     b-tabs.special-navs(content-class="mt-0")

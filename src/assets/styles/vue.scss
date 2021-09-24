@@ -3968,6 +3968,10 @@ select.custom-select {
   height: 100%;
   min-height: 250px;
 
+  &__text {
+    color: $gray-2;
+  }
+
   &__title {
     margin-bottom: 1.25rem;
     font-size: $font-size-20;
@@ -4179,9 +4183,7 @@ select.custom-select {
 }
 
 .save-comment-btn {
-  position: absolute;
-  right: 2rem;
-  bottom: 2rem;
+  margin-top: 1rem;
 }
 
 

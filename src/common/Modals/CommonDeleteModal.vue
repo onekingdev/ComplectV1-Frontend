@@ -1,6 +1,6 @@
 <template lang="pug">
-  div(:class="{'d-inline-block':inline}")
-    div(v-b-modal="modalId" :class="{'d-inline-block':inline}")
+  div(:class="{'d-inline':inline}")
+    div(v-b-modal="modalId" :class="{'d-inline':inline}")
       slot
 
     b-modal.fade(:id="modalId" :title="title")

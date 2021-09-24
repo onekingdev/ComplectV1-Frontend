@@ -1,20 +1,26 @@
 <template lang="pug">
-  .d-inline-block(v-if="project.status !== 'complete'")
+  .d-inline-block
     button.btn.btn-dark(v-b-modal="'CompleteLocalProjectModal'") Mark as Complete
     b-modal#CompleteLocalProjectModal.fade(title="Complete Project" :hide-footer="!!hasSpecialist")
-      div(v-if="hasSpecialist")
-        p ⚠️
-        p The project can't be completed because there is still a contract in progres. To continue, please end the contract with:
-        p: strong {{ specialistName }}
-      div(v-else)
-        p ✅
-        p The following project will be marked as complete.
-        p: strong Do you want to continue?
+      .row(v-if="hasSpecialist")
+        col-md-1.text-center.px-0
+          b-icon.mt-1.ml-3(icon="exclamation-triangle-fill" width="25" height="25" variant="warning")
+        .col
+          p.paragraph.m-b-10 The project can't be completed because there is still a contract in progres. To continue, please end the contract with:
+          p.paragraph.mb-0
+            b strong {{ specialistName }}
+      .row(v-else)
+        .col-md-1.text-center.px-0
+          b-icon.mt-1.ml-3(icon="check-circle-fill" width="25" height="25" variant="success")
+        .col
+          p.paragraph.m-b-10 This will mark the project as complete and close the project to further edits.
+          p.paragraph.mb-0
+            b Do you want to continue?
 
       template(#modal-footer="{ hide }")
         button.btn.btn-link(@click="hide") Cancel
         Put(:action="url" :model="{ status: 'complete' }" @saved="hide(), completed()")
-          button.btn.btn-default Confirm
+          button.btn.btn-dark Confirm
 </template>
 
 <script>
@@ -27,7 +33,7 @@ export default {
   },
   methods: {
     completed() {
-      this.toast('Success', 'Project completed')
+      this.toast('Success', 'Project has been marked as complete.')
       this.$emit('saved')
       this.redirect('/business/projects')
     }

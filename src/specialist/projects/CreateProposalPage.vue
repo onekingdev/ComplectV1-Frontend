@@ -84,19 +84,23 @@ export default {
     }
   },
   methods: {
-    submit(forDraft = false) {
+    async submit(forDraft = false) {
       this.validate()
       if (Object.keys(this.errors).length > 0) return
-      if (forDraft) this.status.form = 'draft'
-      const root = this.$root
-      this.$store.dispatch('projects/submitProposal', { projectId: this.projectId, data: this.submitData(forDraft) })
-        .then(res => {
-          if (res && res['prerequisites']) {
-            this.toast('Error', res['prerequisites'][0], true)
-          } else {
-            this.$router.push('/specialist/my-projects/', () => root.toast('Proposal sent', ' '))
-          }
-        })
+      if (forDraft) this.form.status = 'draft'
+      const res = await this.$store.dispatch('projects/submitProposal', { projectId: this.projectId, data: this.submitData(forDraft) }) 
+      if (res.id) {
+        const text = forDraft ? 'Proposal has been saved.' : 'Proposal sent'
+        this.toast('Success', text)
+        setTimeout(() => {
+          this.$router.push('/specialist/my-projects/')
+        }, 2000)
+      } else {
+        if (forDraft) this.toast('Error', 'Proposal has not been saved. Please try again.', true)
+        const firstField = Object.keys(res)[0]
+        const text = res[firstField]
+        this.toast('Error', text, true)
+      }
     },
     projectLoaded(payload) {
       this.project = payload

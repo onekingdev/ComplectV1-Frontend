@@ -87,7 +87,7 @@
                 b-row
                   .col.text-center
                     Get(:messages="`/api/reminders/${taskId}/messages`" :etag="etagMessages"): template(v-slot="{ messages }"): .card-body.p-0
-                      Messages(:messages="messages" ref="Messages" @created="scrollMessages")
+                      Messages(:messages="messages" ref="Messages" @created="scrollMessages" @saved="newEtagMessages")
               b-tab(title="Files")
                 //- @todo restrict deletion for specialist/by condition
                 b-row
@@ -109,7 +109,8 @@
                                 b-dropdown(size="sm" class="m-0 p-0" right)
                                   template(#button-content)
                                     b-icon(icon="three-dots")
-                                  b-dropdown-item.delete Delete
+                                  CommonDeleteModal(title="Delete File" content="" @deleteConfirmed="deleteFile(document.id)" :inline="true")
+                                    b-dropdown-item.delete Delete
             hr.m-0
             b-row
               .col
@@ -117,7 +118,7 @@
                   label.form-label Comment
                   textarea-autosize.w-100.form-control.d-block(v-model="message.message" :min-height="100")
                   Errors(:errors="messageErrors.message")
-                  Post(:action="`/api/reminders/${taskId}/messages`" :model="{ message }" @errors="messageErrors = $event" @saved="messageSaved")
+                  Post(:action="`/api/reminders/${taskId}/messages`" :model="{ message }" @errors="messageErrors = $event" @saved="messageSaved" alignRight)
                     button.btn.btn-primary.save-comment-btn Send
 
       template(v-if="!taskId" slot="modal-footer")
@@ -154,6 +155,7 @@ import { splitReminderOccurenceId } from '@/common/TaskHelper'
 import Messages from '@/common/Messages'
 import EtaggerMixin from '@/mixins/EtaggerMixin'
 import TaskDeleteConfirmModal from './TaskDeleteConfirmModal'
+import CommonDeleteModal from '@/common/Modals/CommonDeleteModal'
 
 const rnd = () => Math.random().toFixed(10).toString().replace('.', '')
 const toOption = id => ({ id, label: id })
@@ -240,8 +242,8 @@ export default {
       }
       if (file) {
         const success = (await uploadFile(this.url, file)).ok
-        const message = success ? 'Document has been uploaded.' : 'Document has not been uploaded.'
-        this.toast('Document has not been uploaded.', message, !success)
+        if(success) this.toast('Success', 'Document has been uploaded.')
+        else this.toast('Error', 'Document has not been uploaded.', true)
         this.newEtag()
       }
     },
@@ -396,6 +398,16 @@ export default {
         const withRemindAt = this.remindAt ? { remind_at: this.remindAt } : {}
         this.task = initialTask({ ...this.defaults, ...withRemindAt })
       }
+    },
+    async deleteFile(id) {
+      try {
+        await this.$store.dispatch('reminders/deleteTaskMessageById', id)
+        this.toast('Success', `File deleted`)
+        this.newEtagMessages()
+        this.newEtag()
+      } catch (error) {
+        this.toast('Error', error.message, true)
+      }
     }
   },
   computed: {
@@ -459,6 +471,7 @@ export default {
   components: {
     Messages,
     TaskDeleteConfirmModal,
+    CommonDeleteModal,
   },
   // async mounted() {
   //     try {

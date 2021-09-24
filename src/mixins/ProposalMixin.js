@@ -63,6 +63,7 @@ export default {
       const proposalStartDate = DateTime.fromISO(this.form.starts_on)
       const proposalEndDate =  DateTime.fromISO(this.form.ends_on)
       
+      if (proposalStartDate && proposalStartDate < DateTime.now()) this.$set(this.errors, 'starts_on', ['Start date cannot be in the past'])
       if (!this.form.starts_on) this.$set(this.errors, 'starts_on', ['Required field'])
       if (!this.form.ends_on) this.$set(this.errors, 'ends_on', ['Required field'])
       if (proposalStartDate && proposalEndDate && proposalStartDate > proposalEndDate) this.$set(this.errors, 'ends_on', ['Date must be before start date'])

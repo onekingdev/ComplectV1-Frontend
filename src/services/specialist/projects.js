@@ -38,17 +38,14 @@ export async function getCurrentProposal(payload) {
     .catch(err => err)
 }
 
-export async function createProposal(payload) {
+export function createProposal(payload) {
   const projectId = payload.projectId
   const data = payload.data
-  return await axios.post(`/specialist/projects/${projectId}/applications`, data)
+  return axios.post(`/specialist/projects/${projectId}/applications`, data)
     .then(response => {
-      if (response) {
-        return response.data
-      }
-      return false
+      return response.data
     })
-    .catch(err => err)
+    .catch(err => err.data)
 }
 
 export async function updateProposal(payload) {

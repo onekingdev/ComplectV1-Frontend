@@ -1,5 +1,5 @@
 <template lang="pug">
-  span(@click.stop.prevent="submit")
+  span(@click.stop.prevent="submit" :class="{alignRight}")
     slot
 </template>
 
@@ -21,7 +21,8 @@ export default {
     method: {
       type: String,
       default: 'POST'
-    }
+    },
+    alignRight: Boolean
   },
   methods: {
     submit() {
@@ -50,3 +51,10 @@ export default {
   }
 }
 </script>
+
+<style scoped>
+  span.alignRight {
+    display: flex;
+    justify-content: flex-end;
+  }
+</style>

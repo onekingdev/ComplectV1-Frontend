@@ -3,7 +3,7 @@
     .card-header
       h3.mb-0 Project Details
       LocalProjectModal(@saved="$emit('saved')" :project-id="project.id")
-        button.btn.btn-default Edit
+        button.btn.btn-primary Edit
     .card-body
       h3
       dl.row
@@ -11,13 +11,10 @@
         dd.col-sm-9 {{ project.title }}
         dt.col-sm-3 Start Date
         dd.col-sm-9 {{ project.starts_on | asDate }}
-        dt.col-sm-3 Due Date
+        dt.col-sm-3 End Date
         dd.col-sm-9 {{ project.ends_on | asDate }}
         dt.col-sm-3 Description
         dd.col-sm-9.mb-0 {{ project.description }}
-        //dt.col-sm-3 Members
-        //dd.col-sm-9
-
 </template>
 
 <script>

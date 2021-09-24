@@ -124,14 +124,26 @@ export default {
       this.$store
         .dispatch(method, {...this.risk})
         .then(response => {
-          if (method == 'createRisk') {
-            this.toast('Success', 'Risk has been created.')
+          if (response.id) {
+            if (this.risksList && this.policyId) {
+              const index = this.risksList.findIndex(item => item.id === response.id)
+              if (index > -1) this.toast('Error', 'Risk has not been created. A policy cannot be linked to the same risk more than once.', true)
+            } else {
+              if (method == 'createRisk') {
+                this.toast('Success', 'Risk has been created.')
+              } else {
+                this.toast('Success', 'Risk has been updated.')
+              }
+            }
+            
+            this.$emit('saved', response)
+            this.$bvModal.hide(this.modalId)
+            this.newEtag()
           } else {
-            this.toast('Success', 'Risk has been updated.')
+            if (response.name[0] === 'has already been taken'){
+              this.$set(this.errors, 'name', ['Risk already exists.'])
+            }
           }
-          this.$emit('saved', response)
-          this.$bvModal.hide(this.modalId)
-          this.newEtag()
         })
         .catch(error => this.toast('Error', error.message, true))
     },

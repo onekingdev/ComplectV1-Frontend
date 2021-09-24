@@ -137,42 +137,8 @@ export default {
       }
       // } finally { commit("setLoading", false, { root: true }) }
     },
-    async submitProposal({commit}, payload) {
-      commit("clearError", null, {
-        root: true
-      });
-      commit("setLoading", true, {
-        root: true
-      });
-
-      try {
-        const data = createProposal(payload)
-          .then((res) => {
-            commit("clearError", null, {
-              root: true
-            });
-            commit("setLoading", false, {
-              root: true
-            });
-            if (res) {
-              return res.data
-            }
-            if (!success) {
-              commit("setError", success.message, { root: true });
-              console.error('Not success', success)
-            }
-          })
-          .catch(error => error)
-        return data
-      } catch (error) {
-        commit("setError", error.message, {
-          root: true
-        });
-        commit("setLoading", false, {
-          root: true
-        });
-        throw error;
-      }
+    submitProposal({commit}, payload) {
+      return createProposal(payload)
     },
     updateProposal({commit}, payload) {
       return updateProposal(payload)
