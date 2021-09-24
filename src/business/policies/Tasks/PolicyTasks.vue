@@ -2,7 +2,7 @@
   .policy-details.position-relative
     h3.policy-details__title Tasks
     .policy-actions
-      TaskFormModal(:defaults="taskDefaults" v-if="!currentUserBasic && !policy.archived" @saved="$emit('saved')")
+      TaskFormModal(:defaults="taskDefaults" v-if="createButton" @saved="$emit('saved')")
         button.btn.btn-dark New Task
     .policy-details__body
       table.table
@@ -48,13 +48,17 @@ import EtaggerMixin from '@/mixins/EtaggerMixin'
 export default {
   mixins: [EtaggerMixin()],
   props: {
-    policy: {
-      type: Object,
+    tasks: {
+      type: Array,
       required: true
     },
-    currentUserBasic: {
+    taskDefaults: {
+      type: Object,
+      default: () => ({})
+    },
+    createButton: {
       type: Boolean,
-      required: true
+      default: true
     }
   },
   data() {
@@ -74,24 +78,15 @@ export default {
     loading() {
       return this.$store.getters.loading;
     },
-    tasksComputed() {
-      return this.policy.reminders || []
-    },
     tasksSorted() {
       if (this.sortField) {
         const compare = (aField, bField) => {
           const [a, b] = [aField[this.sortField], bField[this.sortField]]
           return a > b ? this.sortDirection : (a < b ? (this.sortDirection * -1) : 0)
         }
-        return this.tasksComputed.sort(compare)
+        return this.tasks.sort(compare)
       }
-      return this.tasksComputed
-    },
-    taskDefaults() {
-      return {
-        linkable_type: 'CompliancePolicy',
-        linkable_id: this.policy.id
-      }
+      return this.tasks
     }
   },
   components: {
