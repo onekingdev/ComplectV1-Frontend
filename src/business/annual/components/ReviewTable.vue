@@ -2,23 +2,16 @@
   table.table.reviews-table
     thead
       tr
-        th(width="25%")
-          | Name
-        th(@click="sortSelect('progress', 'number')" width="25%")
-          | Progress
-          b-icon.ml-2(icon='chevron-expand')
-        th(@click="sortSelect('findings', 'number')").text-right
-          | Findings
-          b-icon.ml-2(icon='chevron-expand')
-        th(@click="sortSelect('updated_at', 'date')").text-right
-          | Last Modified
-          b-icon.ml-2(icon='chevron-expand')
-        th(@click="sortSelect('created_at', 'date')").text-right
-          | Date Create
-          b-icon.ml-2(icon='chevron-expand')
-        th(@click="sortSelect('created_at', 'date')").text-right
-          | Date Completed
-          b-icon.ml-2(icon='chevron-expand')
+        th(width="25%") Name
+        th(width="25%") Progress
+        th
+          span.ml-2 Findings
+        th
+          span.ml-2 Last Modified
+        th
+          span.ml-2 Date Create
+        th
+          span.ml-2 Date Completed
         th(width="35px")
     tbody
       ReviewItem(v-for="item in sortedReview" :key="item.id" :item="item")
