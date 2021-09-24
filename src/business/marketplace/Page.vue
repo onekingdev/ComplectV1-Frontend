@@ -146,7 +146,7 @@
           .then(result => this.projects = result.map(parse))
       },
       closeSidebar() {
-        history.pushState({}, '', '/business/specialists')
+        history.pushState({}, '', '/specialistmarketplace')
         this.isSidebarOpen = false
       }
     },

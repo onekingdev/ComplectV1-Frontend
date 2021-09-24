@@ -6,7 +6,8 @@
       .row
         .col-md-9.col
           h3.m-b-1
-            a.link(:href="specialist.resume_url" @click="openDetails(project.id)" target="_blank") {{ specialist.first_name }} {{ specialist.last_name }}
+            a.link(v-if="specialist.resume_url" v-download="specialist.resume_url" target="_blank") {{ specialist.first_name }} {{ specialist.last_name }}
+            span(v-else) {{ specialist.first_name }} {{ specialist.last_name }}
           h6.pb-1.card-subtitle.text-muted.mb-2  {{ specialist.location }} |
           .d-inline(v-if="specialist.industries" v-for="ind in specialist.industries") &nbsp;{{ ind.name }}&nbsp;
           .d-flex.py-2
@@ -20,10 +21,7 @@
             b-icon.linkedin.mr-3(icon='linkedin' font-scale="1.5")
             b-button(variant="default" @click="$emit('directMessage')") Message
     .offset-lg-2.col-lg-10.col
-      b-card-text.m-t-1(v-if="specialist.description") {{specialist.description}}
-      b-card-text.m-t-1(v-else)
-      | Hi, my name Chris Jakson Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco
-      | laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse
+      b-card-text.m-t-1 {{specialist.description}}
       .d-flex.justify-content-between
       SpecialistFigures(:specialist="specialist")
 </template>
@@ -33,7 +31,6 @@ import SpecialistFigures from './SpecialistFigures'
 import StarsRating from './StarsRating'
 
 export default {
-  name: 'SpecialistPanel',
   components: {
     SpecialistFigures,
     StarsRating
@@ -42,11 +39,6 @@ export default {
     specialist: {
       type: Object,
       required: true
-    }
-  },
-  data() {
-    return {
-      experienceOptions: ['Junior', 'Intermediate', 'Expert'],
     }
   }
 }

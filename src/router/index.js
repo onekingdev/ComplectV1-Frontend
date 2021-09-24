@@ -36,7 +36,7 @@ const ProjectTimesheetsShowPage = () => import ('@/business/projects/TimesheetsS
 const Tasks = () => import ('@/business/tasks/Page')
 const Policies = () => import ('@/business/policies/Page')
 const PoliciesEntire = () => import ('@/business/policies/PoliciesEntire')
-const PolicyCurrentNoSections = () => import ('@/business/policies/Details/PolicyDetailsWithoutSections')
+const PolicyDetailsWithoutSections = () => import ('@/business/policies/Details/PolicyDetailsWithoutSections')
 const AnnualReviews = () => import ('@/business/annual/Page')
 const AnnualReviewsCurrentGeneral = () => import ('@/business/annual/PageCurrentGeneral')
 const AnnualReviewsCurrentReviewCategory = () => import ('@/business/annual/PageCurrentReviewCategory')
@@ -114,7 +114,7 @@ const router = new VueRouter({
             { path: 'reminders', name: 'tasks', component: Tasks },
             { path: 'compliance_policies', name: 'policies', component: Policies, beforeEnter: AccessGuard },
             { path: 'compliance_policies/entire', name: 'policies-entire', props: true, component: PoliciesEntire, beforeEnter: AccessGuard },
-            { path: 'compliance_policies/:policyId(\\d+)', name: 'policy-current', props: route => ({ policyId: +route.params.policyId, toggleVueEditor: route.params.toggleVueEditor }), component: PolicyCurrentNoSections, beforeEnter: AccessGuard },
+            { path: 'compliance_policies/:policyId(\\d+)', name: 'policy-current', props: route => ({ policyId: +route.params.policyId, toggleVueEditor: route.params.toggleVueEditor }), component: PolicyDetailsWithoutSections, beforeEnter: AccessGuard },
             { path: 'annual_reviews', name: 'annual-reviews', component: AnnualReviews, beforeEnter: AccessGuard },
             { path: 'annual_reviews/:annualId(\\d+)', name: 'annual-reviews-general', props: route => ({ annualId: +route.params.annualId }), component: AnnualReviewsCurrentGeneral, beforeEnter: AccessGuard },
             { path: 'annual_reviews/:annualId(\\d+)/:revcatId(\\d+)', name: 'annual-reviews-review-category', props: route => ({ annualId: +route.params.annualId, revcatId: +route.params.revcatId }), component: AnnualReviewsCurrentReviewCategory, beforeEnter: AccessGuard },

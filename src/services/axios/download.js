@@ -12,14 +12,17 @@ const forceDownload = (response, filename) => {
 const downloadBinary = (url, filename) => axios.get(url, { responseType: 'blob' })
   .then(response => forceDownload(response, filename))
 
+// This directive accepts either string URL or `{ URL: filename }` object
 const downloadDirective = {
-  inserted(el, binding) {
-    const url = binding.value.file_url
+  inserted(el, { value }) {
+    const filenameFromUrl = url => url.split('\\').pop().split('/').pop()
+    const valueEntry = typeof value === 'object' ? value : { [value]: filenameFromUrl(value) }
+    const [url, filename] = Object.entries(valueEntry)[0]
     if (url.indexOf('http') === 0) {
       el.href = url
       el.target = '_blank'
     } else {
-      el.addEventListener('click', () => downloadBinary(`..${binding.value.file_url}`, binding.value.file_name))
+      el.addEventListener('click', () => downloadBinary(`..${url}`, filename))
     }
   }
 }
