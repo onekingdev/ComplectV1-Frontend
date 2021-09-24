@@ -87,7 +87,7 @@
                 b-row
                   .col.text-center
                     Get(:messages="`/api/reminders/${taskId}/messages`" :etag="etagMessages"): template(v-slot="{ messages }"): .card-body.p-0
-                      Messages(:messages="messages" ref="Messages" @created="scrollMessages")
+                      Messages(:messages="messages" ref="Messages" @created="scrollMessages" @saved="newEtagMessages")
               b-tab(title="Files")
                 //- @todo restrict deletion for specialist/by condition
                 b-row
@@ -109,7 +109,8 @@
                                 b-dropdown(size="sm" class="m-0 p-0" right)
                                   template(#button-content)
                                     b-icon(icon="three-dots")
-                                  b-dropdown-item.delete Delete
+                                  CommonDeleteModal(title="Delete File" content="" @deleteConfirmed="deleteFile(document.id)" :inline="true")
+                                    b-dropdown-item.delete Delete
             hr.m-0
             b-row
               .col
@@ -154,6 +155,7 @@ import { splitReminderOccurenceId } from '@/common/TaskHelper'
 import Messages from '@/common/Messages'
 import EtaggerMixin from '@/mixins/EtaggerMixin'
 import TaskDeleteConfirmModal from './TaskDeleteConfirmModal'
+import CommonDeleteModal from '@/common/Modals/CommonDeleteModal'
 
 const rnd = () => Math.random().toFixed(10).toString().replace('.', '')
 const toOption = id => ({ id, label: id })
@@ -396,6 +398,16 @@ export default {
         const withRemindAt = this.remindAt ? { remind_at: this.remindAt } : {}
         this.task = initialTask({ ...this.defaults, ...withRemindAt })
       }
+    },
+    async deleteFile(id) {
+      try {
+        await this.$store.dispatch('reminders/deleteTaskMessageById', id)
+        this.toast('Success', `File deleted`)
+        this.newEtagMessages()
+        this.newEtag()
+      } catch (error) {
+        this.toast('Error', error.message, true)
+      }
     }
   },
   computed: {
@@ -459,6 +471,7 @@ export default {
   components: {
     Messages,
     TaskDeleteConfirmModal,
+    CommonDeleteModal,
   },
   // async mounted() {
   //     try {
