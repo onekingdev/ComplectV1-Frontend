@@ -3,26 +3,32 @@
     .page-header.bg-white
       div
         h2.page-header__breadcrumbs Internal Review
-        h2.page-header__title: b {{ review ? review.year : '' }} {{ review ? review.name : '' }}
+        h2.page-header__title: b {{ review ? review.name : '' }}
       .page-header__actions
         div
-          button.btn.btn-default.mr-3.d-none Download
+          span.dowloading.list-page.mr-3.mt-2(v-if="isDowloading")
+            .lds-ring.lds-ring-small
+              div
+              div
+              div
+              div
+          button.btn.btn-default.mr-3(v-else @click="download") Download
           button.btn.btn-dark.mr-3(@click="saveAndExit()") Save and Exit
           button.btn.btn__close(@click="backToList")
             b-icon(icon="x")
 
-    b-tabs.reviews__tabs(content-class="mt-0")
+    b-tabs.reviews__tabs(content-class="mt-0" v-if="review")
       template(#tabs-end)
-        b-dropdown.actions(text='Actions', variant="default", right)
+        b-dropdown.actions(text="Actions" variant="default" right)
           template(#button-content)
             | Actions
-            b-icon.m-l-1(icon="chevron-down" font-scale="1")
+            b-icon.ml-2(icon="chevron-down")
           AnnualModalEdit(:review="review || {}" :inline="false")
             b-dropdown-item Edit
           AnnualModalDelete(@deleteConfirmed="deleteReview(review.id)" :inline="false")
             b-dropdown-item.delete Delete
       b-tab(title="Detail" active)
-        .p-x-40(v-if="review")
+        .p-x-40
           .row
             .col-md-3
               ReviewsList(
@@ -40,13 +46,13 @@
                       Errors(:errors="errors")
                     .col-md-3.col-lg-3.col-xl-2.text-right.reviews__card--actions
                       CommonDeleteModal.ml-auto(title="Delete Category" content="This will remove the category from this internal review and all of its associated content." @deleteConfirmed="deleteCategory(currentCategory.id)", :inline="false")
-                        b-button.btn.btn-default(variant="light") Delete
+                        b-button.btn.btn-primary(variant="light") Delete
                 .reviews__topiclist(v-if="currentCategory.review_topics")
                   template(v-for="(currentTopic, i) in currentCategory.review_topics")
                     .reviews__card--internal(:key="`${currentCategory.name}-${i}`")
                       .row.m-b-2
                         .col-md-9.col-lg-9.col-xl-10
-                          textarea-autosize.reviews__input.reviews__topic-name(v-model="currentTopic.name" :min-height="30" placeholder="New Topic")
+                          textarea-autosize.reviews__input.reviews__topic-name.rounded(v-model="currentTopic.name" :min-height="30" placeholder="New Topic")
                         .col-md-3.col-lg-3.col-xl-2.text-right.reviews__card--actions
                           b-dropdown(size="xs" variant="light" class="m-0 p-0" right)
                             template(#button-content)
@@ -78,8 +84,8 @@
                             label.form-label Finding
                           template(v-for="(finding, findingIndex) in topicItem.findings")
                             .col-md-10.offset-md-1(:key="`${currentTopic.name}-${i}-${topicItemIndex}-${findingIndex}`")
-                              textarea.finding-area.form-control.m-b-1(v-model="currentCategory.review_topics[i].items[topicItemIndex].findings[findingIndex]" type="text")
-                              button.btn.btn__close.float-right(@click="removeFinding(i, topicItemIndex, findingIndex)")
+                              textarea-autosize.finding-area.form-control.m-b-1(v-model="currentCategory.review_topics[i].items[topicItemIndex].findings[findingIndex]" type="text")
+                              button.btn.btn__close.float-right.m-t-05(@click="removeFinding(i, topicItemIndex, findingIndex)")
                                 b-icon(icon="x" font-scale="1")
                 .reviews__card--internal.borderless.p-t-20
                   .d-flex.justify-content-between.align-items-center
@@ -92,11 +98,9 @@
                       AnnualModalComplite(v-else @compliteConfirmed="markComplete", :completedStatus="currentCategory.complete" :name="currentCategory.name" :inline="false")
                         button.btn(:class="'btn-dark'") Mark as Complete
       b-tab(title="Tasks")
-        PageTasks
+        PageTasks(:review="review")
       b-tab(title="Documents")
         PageDocuments
-      b-tab(title="Activity")
-        PageActivity
 </template>
 
 <script>
@@ -109,7 +113,6 @@ import CommonDeleteModal from '@/common/Modals/CommonDeleteModal'
 import TaskFormModal from '@/common/TaskFormModal'
 import PageTasks from './PageTasks'
 import PageDocuments from './PageDocuments'
-import PageActivity from './PageActivity'
 
 export default {
   props: ['annualId', 'revcatId'],
@@ -121,8 +124,7 @@ export default {
     CommonDeleteModal,
     TaskFormModal,
     PageTasks,
-    PageDocuments,
-    PageActivity
+    PageDocuments
   },
   data () {
     return {
@@ -132,7 +134,8 @@ export default {
         [{ list: "bullet" }],
         ["link"]
       ],
-      errors: []
+      errors: [],
+      isDowloading: false,
     }
   },
   computed: {
@@ -228,7 +231,6 @@ export default {
       this.currentCategory.review_topics.splice(i, 1);
     },
     deleteCategory(id) {
-      console.log('currentCategory id: ', id)
       this.$store.dispatch('annual/deleteReviewCategory', { annualId: this.review.id, id: id })
         .then(response => {
           this.toast('Success', `The annual review category has been deleted! ${response.id}`)
@@ -236,9 +238,6 @@ export default {
           this.$router.push(`/business/annual_reviews/${response.annual_report_id}`)
         })
         .catch(error => this.toast('Error', `Something wrong! ${error.message}`, true))
-    },
-    createTask(i){
-      console.log('createTask: ', i)
     },
     saveAndExit() {
       this.saveCategory()
@@ -257,7 +256,15 @@ export default {
     },
     backToList() {
       this.$router.push({ name: 'annual-reviews' })
-    }
+    },
+    download() {
+      this.isDowloading = true;
+      this.$store
+        .dispatch("annual/downloadReviewPdf", { id: this.review.id })
+        .then(() => {
+          this.toast("Success", "Review has been queued for download.");
+        });
+    },
   },
   async mounted () {
     try {
