@@ -3,7 +3,7 @@
     h3.policy-details__title Risks
     .policy-actions
       //button.btn.btn.btn-default.mr-3 Download
-      RisksAddEditModal(:risks="risksComputed" :policyId="policyId" :showRiskOption="true" @saved="savedConfirmed")
+      RisksAddEditModal(:risks="risksComputed" :policyId="policyId" :showRiskOption="true" :risksList="policyById.risks" @saved="savedConfirmed")
         button.btn.btn-dark(v-if="!currentUserBasic && !policy.archived") New Risk
     .policy-details__body
       table.table
@@ -80,7 +80,6 @@
     },
     methods: {
       getRisks(risks) {
-        console.log('risks', risks)
         return risks
       },
       badgeVariant(num) {
@@ -132,7 +131,8 @@
           })
       },
       savedConfirmed(value){
-        this.policyById.risks.push(value)
+        const index = this.policyById.risks.findIndex(item => item.id === value.id)
+        if (index < 0) this.policyById.risks.push(value)
       },
     },
     computed: {
