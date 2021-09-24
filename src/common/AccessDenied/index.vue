@@ -6,17 +6,23 @@
           img(src='@/assets/rocket.svg')
         h3.access-denied__title Upgrade to Access Feature
         p.access-denied__subtitle Choose a plan to get started!
-        b-button.access-denied__btn(variant="dark") Check out plans
+        b-button.access-denied__btn(variant="dark" @click="openPlans") Check out plans
           b-icon.ml-2(icon="chevron-right")
 </template>
 
 <script>
   import AccessDeniedModal from "@/common/AccessDenied/modals/AccessDeniedModal";
   export default {
-    components: {AccessDeniedModal}
+    components: {AccessDeniedModal},
+    computed: {
+      appModule() {
+        return this.$store.getters.appModule
+      }
+    },
+    methods: {
+      openPlans() {
+        this.$router.push(`${this.appModule}/settings/subscriptions`);
+      }
+    }
   }
 </script>
-
-<style scoped>
-
-</style>

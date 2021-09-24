@@ -70,7 +70,7 @@ export default {
     },
     saved() {
       this.$emit('saved')
-      this.toast('Success', 'The project has been saved')
+      this.toast('Success', this.projectId ? 'Project has been updated.' : 'Project has been created.')
       this.$bvModal.hide(this.modalId)
       this.newEtag()
     }

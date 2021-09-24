@@ -6,7 +6,7 @@
           p.m-b-2: ShowOnCalendarToggle(:project="project")
         .page-header__actions
           div
-            router-link.m-r-1.btn.btn-default(v-if="project.visible_project" :to='viewHref(project.visible_project)') View Post
+            router-link.m-r-1.btn.btn-default(v-if="project.visible_project" :to='viewHref(project.visible_project)' target="_blank") View Post
             router-link.m-r-1.btn.btn-default(v-else :to='postHref(project)') Post Project
             CompleteLocalProjectModal.m-r-1(:project="project" @saved="newEtag")
             button.btn.btn__close(@click="backToList")
@@ -60,8 +60,8 @@
                               b-dropdown-item(@click="viewContract(contract)") View Contract
                     .applications(v-if="!getContracts(project.projects).length")
                       .applications__body.applications__body_center.applications__body_m-h-200
-                        ion-icon.applications__icon.m-b-10(name="person-circle-outline")
-                        p.applications__text No collaborators
+                        ion-icon.applications__icon.m-b-10(name="people-outline")
+                        p.empty-state__text.mb-0 No collaborators
             .row
               .col-md-12
                 DiscussionCard(:project-id="project.id" :token="token")
@@ -94,17 +94,18 @@
                   .card-header.d-flex.justify-content-between
                     h3.m-y-0 Collaborators
                     Get(:etag="etag" :specialists="`/api/business/team_members/specialists`" :callback="getSpecialistsOptions" ): template(v-slot="{specialists}")
-                      button.btn.btn-default.float-right(v-b-modal="'AddCollaboratorModal'") Add Collaborator
-                      b-modal#AddCollaboratorModal(title="Add Collaborator" :project="project")
-                        p Select a user to add.
-                        p
+                      button.btn.btn-primary.float-right(v-b-modal="'AddCollaboratorModal'") New Collaborator
+                      b-modal#AddCollaboratorModal(title="New Collaborator" :project="project")
+                        p.fs-14 Select a user to add.
+                        p.fs-14
                           strong Note:&nbsp;
                           | An unlimited amount of employees can be added to the project but only one specialist can be actively working on a project at a time.
-                        InputSelect(v-model="id" :options="specialists") Select User
+                        label.m-t-1.form-label Select User
+                        ComboBox(v-model="id" :options="specialists")
                         template(#modal-footer="{ hide }")
                           button.btn.btn-link(@click="hide") Cancel
                           Post(:action="'/api/local_projects/' + project.id + '/specialists'" :model="{id}" @saved="newEtag()")
-                            button.btn.btn-dark Add
+                            button.btn.btn-dark Create
                   .card-body
                     .card.p-20(v-for="contract in getContracts(project.projects)" :key="contract.specialist.id")
                       .d-flex.justify-content-between.align-items-center
@@ -124,8 +125,8 @@
                           button.btn.btn-default(@click="showingContract = contract") View Contract
                     .applications(v-if="!getContracts(project.projects).length")
                       .applications__body.applications__body_center.applications__body_m-h-200
-                        ion-icon.applications__icon.m-b-10(name="person-circle-outline")
-                        p.applications__text No collaborators
+                        ion-icon.applications__icon.m-b-10(name="people-outline")
+                        p.empty-state__text.mb-0 No collaborators
                 div(v-else)
                   .row(v-if="!isContractComplete(showingContract)"): .col-sm-12
                     EndContractModal(:project="showingContract" @saved="contractEnded")

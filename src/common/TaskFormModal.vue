@@ -117,7 +117,7 @@
                   label.form-label Comment
                   textarea-autosize.w-100.form-control.d-block(v-model="message.message" :min-height="100")
                   Errors(:errors="messageErrors.message")
-                  Post(:action="`/api/reminders/${taskId}/messages`" :model="{ message }" @errors="messageErrors = $event" @saved="messageSaved")
+                  Post(:action="`/api/reminders/${taskId}/messages`" :model="{ message }" @errors="messageErrors = $event" @saved="messageSaved" alignRight)
                     button.btn.btn-primary.save-comment-btn Send
 
       template(v-if="!taskId" slot="modal-footer")
@@ -240,8 +240,8 @@ export default {
       }
       if (file) {
         const success = (await uploadFile(this.url, file)).ok
-        const message = success ? 'Document has been uploaded.' : 'Document has not been uploaded.'
-        this.toast('Document has not been uploaded.', message, !success)
+        if(success) this.toast('Success', 'Document has been uploaded.')
+        else this.toast('Error', 'Document has not been uploaded.', true)
         this.newEtag()
       }
     },

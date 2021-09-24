@@ -1,22 +1,19 @@
 <template lang="pug">
   .page
     Get(:project="url"): template(v-slot="{project}")
-      .page-header
-        .d-flex.flex-column
-          Breadcrumbs.m-b-20(:items="['Project', project.title, 'Job Post']")
-          h2.page-header__title.m-b-20
-            //span.badge.badge-default.m-r-1(v-if="'draft' === project.status") Draft
-            | {{ project.title }}
-        .page-header__actions
-          PostProjectModalDelete.m-t-auto.mb-0
-            button.btn.btn-default Delete Post
-      .card-body.white-card-body.card-body_full-height
+      .page-header.flex-column.align-items-start.m-b-20
+        Breadcrumbs.m-b-20(:items="['Project', project.title, 'Job Post']")
+        .d-flex.w-100
+          h2.page-header__title {{ project.title }}
+          PostProjectModalDelete.ml-auto
+            button.btn.btn-primary Delete Post
+      .card-body.card-body_full-height
         .row
-          .col-lg-7.pr-lg-1
-            .card
+          .col-lg-7.m-b-1.pr-lg-1
+            .card.h-100
               .card-header
                 h3.mb-0 Post Details
-                router-link.btn.btn-default.float-right(:to='`/business/project_posts/${project.id}/edit`') Edit
+                router-link.btn.btn-primary.float-right(:to='`/business/project_posts/${project.id}/edit`') Edit
               .card-body
                 dl.row
                   dt.col-sm-4 Title
@@ -37,7 +34,7 @@
                   dd.col-sm-8 {{ project.key_deliverables }}
                   dt.col-sm-4 Minimum Experience
                   dd.col-sm-8 {{ project.experience | capital }}
-                  dt.col-sm-4 Former Regulator?
+                  dt.col-sm-4 Former Regulator
                   dd.col-sm-8 {{ project.regulators_only | yesNo }}
                   dt.col-sm-4 Skills
                   dd.col-sm-8 {{ project.skills | names }}
@@ -45,13 +42,13 @@
                   dd.col-sm-8 {{ (project.est_budget || project.fixed_budget) | usdWhole }}
                   dt.col-sm-4 Payment Schedule
                   dd.col-sm-8 {{ paymentScheduleReadable(project) }}
-          .col-lg-5.pl-lg-1
-            .card.applications
+          .col-lg-5.m-b-1.pl-lg-1
+            .card.applications.h-100
               .card-header: h3.mb-0 Applicants
               .card-body.applications__body.h-100: Get(:applications="applicationsUrl"): template(v-slot="{applications}")
                 .d-flex.flex-column.justify-content-center.align-items-center.m-t-60(v-if="!applications.length")
-                  ion-icon.applications__icon.m-b-10(name="person-circle-outline")
-                  p.applications__text No Applicants
+                  ion-icon.applications__icon.m-b-10(name="people-outline")
+                  p.empty-state__text.mb-0 No applicants
                 table.table(v-else)
                   thead
                     tr
