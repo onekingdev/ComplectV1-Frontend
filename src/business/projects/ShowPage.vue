@@ -6,7 +6,7 @@
           p.m-b-2: ShowOnCalendarToggle(:project="project")
         .page-header__actions
           div
-            router-link.m-r-1.btn.btn-default(v-if="project.visible_project" :to='viewHref(project.visible_project)') View Post
+            router-link.m-r-1.btn.btn-default(v-if="project.visible_project" :to='viewHref(project.visible_project)' target="_blank") View Post
             router-link.m-r-1.btn.btn-default(v-else :to='postHref(project)') Post Project
             CompleteLocalProjectModal.m-r-1(:project="project" @saved="newEtag")
             button.btn.btn__close(@click="backToList")
