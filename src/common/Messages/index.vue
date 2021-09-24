@@ -4,7 +4,7 @@
       h4 No Comments to Display
       p.mb-0 Type in the comment box below to get started
     .messages(v-if="messages && messages.length" ref="MessagesContainer")
-      .message(v-for="(message, i) in messages" :key="i" class="pb-0")
+      .message(v-for="(message, i) in messages" :key="i")
         .d-flex.align-items-start
           UserAvatar(:user="message.sender")
           .d-block.text-left
@@ -72,5 +72,7 @@
 </script>
 
 <style scoped>
-
+p.message__comment {
+  word-break: break-all;
+}
 </style>
