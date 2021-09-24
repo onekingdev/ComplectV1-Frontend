@@ -34,8 +34,8 @@
                   input.d-none(type="file" accept="application/pdf" @change="pickFile")
             .text-right
               button.m-r-1.btn(@click="back") Cancel
-              button.m-r-1.btn.btn-default(@click="submit(true)") Save Draft
-              button.btn.btn-dark(@click="submit()") Submit Proposal
+              button.m-r-1.btn.btn-default(@click="submit(true)") Save as Draft
+              button.btn.btn-dark(@click="submit()") Submit
           .col-md-6
             .card
               ProjectDetails(:project="project")
@@ -90,7 +90,7 @@ export default {
       if (forDraft) this.form.status = 'draft'
       const res = await this.$store.dispatch('projects/submitProposal', { projectId: this.projectId, data: this.submitData(forDraft) }) 
       if (res.id) {
-        const text = forDraft ? 'Proposal has been saved.' : 'Proposal sent'
+        const text = forDraft ? 'Proposal has been saved.' : 'Proposal has been submitted.'
         this.toast('Success', text)
         setTimeout(() => {
           this.$router.push('/specialist/my-projects/')
