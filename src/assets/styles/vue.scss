@@ -1970,7 +1970,7 @@ table.table {
 }
 
 .fc-direction-ltr .fc-daygrid-block-event:not(.fc-event-end), .fc-direction-rtl .fc-daygrid-block-event:not(.fc-event-start) {
-  // border-top-right-radius: 4px !important;
+  border-top-right-radius: 4px !important;
   border-bottom-right-radius: 4px !important;
   border-right-width: 1px !important;
   //border-color: transparent;
