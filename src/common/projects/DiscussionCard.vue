@@ -50,7 +50,6 @@ export default {
   methods: {
     commentSaved() {
       this.newEtag()
-      this.toast('Success', 'Comment added')
       this.comment.message = null
     },
   },
