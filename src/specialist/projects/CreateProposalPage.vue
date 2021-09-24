@@ -90,7 +90,7 @@ export default {
       if (forDraft) this.form.status = 'draft'
       const res = await this.$store.dispatch('projects/submitProposal', { projectId: this.projectId, data: this.submitData(forDraft) }) 
       if (res.id) {
-        const text = forDraft ? 'Proposal has been saved.' : 'Proposal sent'
+        const text = forDraft ? 'Proposal has been saved.' : 'Proposal has been submitted.'
         this.toast('Success', text)
         setTimeout(() => {
           this.$router.push('/specialist/my-projects/')
