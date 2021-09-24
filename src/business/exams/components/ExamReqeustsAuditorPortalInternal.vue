@@ -5,7 +5,7 @@
       .row
         .col-xl-6.col-lg-8.col.m-x-auto
           .card-body.white-card-body.reviews__card.px-5.registration
-            h1.text-center Confirm your email!
+            h1.text-center Confirm your email
             // p.text-center Enter to the system
             div
               b-alert(:show='dismissCountDown' dismissible fade variant='danger' @dismiss-count-down='countDownChanged')
