@@ -1,9 +1,9 @@
 <template lang="pug">
   Get(staticCollections="/api/static_collection"): template(v-slot="{ staticCollections: { industries: industryIds, jurisdictions: jurisdictionIds }}"): .card#sidebarMenu_alt
     .card-header(style='border-bottom: 0px;')
-      b Filters
+      b.standard-text Filters
     .card-body
-      h5.d-flex.justify-content-between(role="button" v-b-toggle.collapse_industry)
+      h5.d-flex.justify-content-between.small-text(role="button" v-b-toggle.collapse_industry)
         | Industry
         ion-icon(name='chevron-down-outline')
       b-collapse#collapse_industry(visible)
@@ -19,20 +19,20 @@
             required)
           .invalid-feedback.d-block(v-if="errors.industry") {{ errors.industry }}
       hr
-      h5.d-flex.justify-content-between(role="button" v-b-toggle.collapse_experience)
+      h5.d-flex.justify-content-between.small-text(role="button" v-b-toggle.collapse_experience)
         | Experience Level
         ion-icon(name='chevron-down-outline')
       b-collapse#collapse_experience(visible)
         b-form-checkbox(v-for="(option, i) in experienceOptions" :value="experienceOptions[i]" v-model="optionsForRequest.experienceLevel" :key="'e'+i") {{ option }}
       hr
-      h5.d-flex.justify-content-between(role="button" v-b-toggle.collapse_hourly_rate)
+      h5.d-flex.justify-content-between.small-text(role="button" v-b-toggle.collapse_hourly_rate)
         | Hourly rate
         ion-icon(name='chevron-down-outline')
       b-collapse#collapse_hourly_rate(visible)
         .slieder-contaner
           vue-slider(v-model="optionsForRequest.hourlyRate" :enable-cross="false" v-bind="options")
       hr
-      h5.d-flex.justify-content-between(role="button" v-b-toggle.collapse_jurisdiction)
+      h5.d-flex.justify-content-between.small-text(role="button" v-b-toggle.collapse_jurisdiction)
         | Jurisdiction
         ion-icon(name='chevron-down-outline')
       b-collapse#collapse_jurisdiction(visible)
@@ -49,7 +49,7 @@
             required)
           .invalid-feedback.d-block(v-if="errors.jurisdictions") {{ errors.jurisdictions }}
       hr
-      h5.d-flex.justify-content-between(role="button" v-b-toggle.collapse_former_regulator)
+      h5.d-flex.justify-content-between.small-text(role="button" v-b-toggle.collapse_former_regulator)
         | Former Regulator
         ion-icon(name='chevron-down-outline')
       b-collapse#collapse_former_regulator(visible)

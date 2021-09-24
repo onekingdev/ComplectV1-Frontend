@@ -76,6 +76,8 @@ export default {
                   specialistItem.time_zone,
                   specialistItem.username,
                   specialistItem.visibility,
+                  specialistItem.city,
+                  specialistItem.state
                 ))
               }
               commit('SET_SPECIALISTS', specialists)
@@ -313,6 +315,7 @@ export default {
                 specialistItem.time_zone,
                 specialistItem.username,
                 specialistItem.visibility,
+                specialistItem.description
               ))
               return success
             }
@@ -368,6 +371,9 @@ export default {
                 specialistItem.time_zone,
                 specialistItem.username,
                 specialistItem.visibility,
+                specialistItem.city,
+                specialistItem.state,
+                specialistItem.description
               ))
               return success
             }

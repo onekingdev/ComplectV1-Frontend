@@ -15,12 +15,13 @@
             .card-header
               .col-md-12
                 h3.mb-0 Browse Specialist
-            .card-body
+            .card-body.pb-0
               MarketPlaceSearchInput(@searchCompleted="optionsForRequest.tags = $event")
-            .card-body
+            .card-body.pt-0
               SpecialistPanel(v-for="specialist in filteredSpecialists" :specialist="specialist" :key="specialist.id" @directMessage="isSidebarOpen = true")
               Loading
-              b-pagination(v-if="filteredSpecialists.length && !loading" v-model='currentPage' :total-rows='rows' :per-page='perPage' aria-controls='my-table' align="center" pills size="sm")
+            hr
+            //- b-pagination(v-if="filteredSpecialists.length && !loading" v-model='currentPage' :total-rows='rows' :per-page='perPage' aria-controls='my-table' align="center" pills size="sm")
             .card-body(v-if="!filteredSpecialists.length && !loading")
               EmptyState
 

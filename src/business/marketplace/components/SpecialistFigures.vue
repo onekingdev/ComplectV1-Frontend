@@ -7,7 +7,7 @@
       b {{ specialist.min_hourly_rate | usdWhole }}
     li.list-group-item
       ion-icon.float-left.mt-3.mr-3(name="analytics-outline")
-      | Expirience
+      | Experience
       br
       b {{ experienceOptions[specialist.experience] }}
     li.list-group-item
