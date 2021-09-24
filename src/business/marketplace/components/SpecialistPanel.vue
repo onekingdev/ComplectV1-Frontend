@@ -31,7 +31,6 @@ import SpecialistFigures from './SpecialistFigures'
 import StarsRating from './StarsRating'
 
 export default {
-  name: 'SpecialistPanel',
   components: {
     SpecialistFigures,
     StarsRating
@@ -40,11 +39,6 @@ export default {
     specialist: {
       type: Object,
       required: true
-    }
-  },
-  data() {
-    return {
-      experienceOptions: ['Junior', 'Intermediate', 'Expert'],
     }
   }
 }
