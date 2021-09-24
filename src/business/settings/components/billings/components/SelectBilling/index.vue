@@ -81,8 +81,8 @@
               .col-md-6.mx-auto
                 .card
                   .card-body
-                    h1.text-center Confirm your email!
-                    p.text-center We send a 6 digit code to email. Please enter it below.
+                    h1.text-center Confirm your email
+                    p.text-center We sent a 6 digit code to email. Please enter it below.
                     div
                       b-form
                         b-form-group
