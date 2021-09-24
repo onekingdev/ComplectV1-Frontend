@@ -18,7 +18,7 @@
                       b-icon.file-card__icon(icon="file-earmark-text-fill" font-scale="2")
                     div.ml-0.mr-auto
                       p.file-card__name {{ message.file_name }}
-                      a.file-card__link.link(v-download="message") Download
+                      a.file-card__link.link(v-download="{ [message.file_url]: message.file_name }") Download
                     div.ml-auto.align-self-start.actions
                       b-dropdown(size="sm" variant="none" class="m-0 p-0" right)
                         template(#button-content)
