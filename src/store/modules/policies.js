@@ -175,7 +175,7 @@ export default {
         })
           .then(response => {
           if (!response.ok)
-            throw new Error(`Could't download policy (${response.status})`);
+            throw new Error(`Compliance Manual has not been queued for download. There are no published policies.`);
           return response.blob()
         })
           .then(async (myBlob) => {
