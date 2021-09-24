@@ -193,13 +193,9 @@
                   )
                     button.btn(:class="'btn-dark'") Mark as {{ review.complete ? 'Incomplete' : 'Complete' }}
       b-tab(title="Tasks")
-        Get(
-          :reviewModel="`/api/business/annual_reports/${annualId}`",
-          :etag="tasksEtag"
-        ): template(
-          v-slot="{ reviewModel }"
-        )
-          PageTasks(:review="reviewModel", @saved="newTasksEtag")
+        Get(:reviewModel="`/api/business/annual_reports/${annualId}`" :etag="tasksEtag"): template(v-slot="{ reviewModel }")
+          .container: .row.p-x-1: .col
+            TaskTableExtended(:tasks="reviewModel.reminders" :task-defaults="{ linkable_type: 'AnnualReport', linkable_id: review.id }" @saved="newTasksEtag")
       b-tab(title="Documents")
         PageDocuments
 </template>
@@ -210,7 +206,7 @@ import ReviewsList from "./components/ReviewsList";
 import AnnualModalComplite from "./modals/AnnualModalComplite";
 import AnnualModalEdit from "./modals/AnnualModalEdit";
 import AnnualModalDelete from "./modals/AnnualModalDelete";
-import PageTasks from "./PageTasks";
+import TaskTableExtended from "@/common/TaskTableExtended";
 import PageDocuments from "./PageDocuments";
 import PageActivity from "./PageActivity";
 import EtaggerMixin from "@/mixins/EtaggerMixin";
@@ -223,7 +219,7 @@ export default {
     AnnualModalComplite,
     AnnualModalEdit,
     AnnualModalDelete,
-    PageTasks,
+    TaskTableExtended,
     PageDocuments,
     PageActivity,
   },
