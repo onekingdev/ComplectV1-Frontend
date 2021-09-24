@@ -20,7 +20,7 @@
 </template>
 
 <script>
-import downloadBinary from '@/services/axios/download'
+import { downloadBinary } from '@/services/axios/download'
 
 export default {
   props: {
