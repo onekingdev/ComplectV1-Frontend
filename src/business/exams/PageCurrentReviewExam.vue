@@ -121,7 +121,8 @@
                         ExamModalComplite(@compliteConfirmed="markCompleteExam", :completedStatus="currentExam.complete", :countCompleted="countCompleted" :inline="false")
                           button.btn(:class="currentExam.complete ? 'btn-default' : 'btn-dark'") Mark as {{ currentExam.complete ? 'Incomplete' : 'Complete' }}
       b-tab(title="Tasks" lazy)
-        PageTasks
+        .container-fluid: .row: .col.mx-auto
+          TaskTableExtended(:tasks="currentExam.reminders")
       b-tab(title="Documents" lazy)
         .container
           .row.p-x-1
@@ -145,7 +146,7 @@
   import ExamModalShare from "./modals/ExamModalShare";
   import ExamModalUpload from "./modals/ExamModalUpload";
   import ExamModalSelectFiles from "./modals/ExamModalSelectFiles";
-  import PageTasks from "./PageTasks";
+  import TaskTableExtended from "@/common/TaskTableExtended";
   import PageAttachments from "./PageAttachments";
   import PageActivity from "./PageActivity";
 
@@ -155,7 +156,7 @@
       Loading,
       PageActivity,
       PageAttachments,
-      PageTasks,
+      TaskTableExtended,
       ExamModalSelectFiles,
       ExamModalUpload,
       ExamModalShare,

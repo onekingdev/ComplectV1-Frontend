@@ -1,5 +1,5 @@
 export default class ExamManagement {
-  constructor(complete, created_at, ends_on, exam_auditors, exam_requests, id, name, share_uuid, starts_on, updated_at) {
+  constructor(complete, created_at, ends_on, exam_auditors, exam_requests, id, name, share_uuid, starts_on, updated_at, reminders) {
     this.complete = complete,
     this.created_at = created_at,
     this.ends_on = ends_on,
@@ -10,7 +10,8 @@ export default class ExamManagement {
     this.name = name,
     this.share_uuid = share_uuid,
     this.starts_on = starts_on,
-    this.updated_at = updated_at
+    this.updated_at = updated_at,
+    this.reminders = reminders
   }
 
   examRequests(exam_requests) {
