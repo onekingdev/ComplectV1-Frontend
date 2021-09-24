@@ -1,207 +1,207 @@
 <template lang="pug">
-.page.review
-  .page-header.bg-white
-    div
-      h2.page-header__breadcrumbs Internal Review
-      h2.page-header__title: b {{ review ? review.name : '' }}
-    .page-header__actions
+  .page.review
+    .page-header.bg-white
       div
-        span.dowloading.list-page.mr-3.mt-2(v-if="isDowloading")
-          .lds-ring.lds-ring-small
-            div
-            div
-            div
-            div
-        button.btn.btn-default.mr-3(v-else, @click="download") Download
-        button.btn.btn-dark.mr-3(@click="saveGeneral(true)") Save and Exit
-        button.btn.btn__close(@click="backToList")
-          b-icon(icon="x")
+        h2.page-header__breadcrumbs Internal Review
+        h2.page-header__title: b {{ review ? review.name : '' }}
+      .page-header__actions
+        div
+          span.dowloading.list-page.mr-3.mt-2(v-if="isDowloading")
+            .lds-ring.lds-ring-small
+              div
+              div
+              div
+              div
+          button.btn.btn-default.mr-3(v-else @click="download") Download
+          button.btn.btn-dark.mr-3(@click="saveGeneral(true)") Save and Exit
+          button.btn.btn__close(@click="backToList")
+            b-icon(icon="x")
 
-  b-tabs.reviews__tabs(content-class="mt-0")
-    template(#tabs-end)
-      b-dropdown.actions(text="Actions", variant="default", right)
-        template(#button-content)
-          | Actions
-          b-icon.m-l-1(icon="chevron-down", font-scale="1")
-        AnnualModalEdit(:review="review || {}", :inline="false")
-          b-dropdown-item Edit
-        AnnualModalDelete(
-          @deleteConfirmed="deleteReview(review.id)",
-          :inline="false"
-        )
-          b-dropdown-item.delete Delete
-    b-tab(title="Detail", active)
-      .p-x-40(v-if="review")
-        .row
-          .col-md-3
-            ReviewsList(
-              :annual-id="annualId",
-              :reviews-categories="review.review_categories",
-              :general="true",
-              :generalComplete="review.complete"
-            )
-          .col-md-9.m-b-40
-            .card-body.white-card-body.reviews__card
-              .reviews__card--internal.pt-0
-                h3
-                  | General
-              .reviews__card--internal
-                .row
-                  .col-md-12
-                    h4
-                      b Review Period
-                    //p For internal reviews, this time period typically spans a calendar or fiscal year and wil be referred to hereafter as "the Review Period
-                .row
-                  .col-6
-                    label.form-label Start Date
-                    b-form-datepicker(
-                      v-model="review.review_start",
-                      :date-format-options="{ year: 'numeric', month: '2-digit', day: '2-digit' }",
-                      locale="en-US"
-                    )
-                    Errors(:errors="errors.review_start")
-                  .col-6
-                    label.form-label End Date
-                    b-form-datepicker(
-                      v-model="review.review_end",
-                      :date-format-options="{ year: 'numeric', month: '2-digit', day: '2-digit' }",
-                      locale="en-US"
-                    )
-                    Errors(:errors="errors.review_end")
-              .reviews__card--internal
-                .row
-                  .col-md-12
-                    h4
-                      b Material Business Changes
-                    p List any changes to your business processes, key vendors, and/or key employees during the Review Period
-                  .col-12
-                    textarea-autosize.form-control.w-100(
-                      v-model="review.material_business_changes",
-                      :min-height="70"
-                    )
-                    .invalid-feedback.d-block(v-if="errors.material_business_changes") {{ errors.material_business_changes }}
-              .reviews__card--internal
-                .row
-                  .col-md-12
-                    h4
-                      b Material Regulatory Changes
-                    p List any regulatory changes that impacted you during the Review Period and how the business responded.
-                .row.mb-3(
-                  v-for="(regulatory, index) in regulatoryChangesSplit",
-                  :key="index"
-                )
-                  .custom-col
-                    label.form-label Change
-                    textarea.form-control(
-                      v-model.trim="regulatory[0].change",
-                      placeholder="Describe the change"
-                    )
-                    Errors(
-                      v-if="errors.regulatory && errors.regulatory[index] && errors.regulatory[index][0]",
-                      :errors="errors.regulatory[index][0]"
-                    )
-                  .custom-col
-                    label.form-label Response
-                    textarea.form-control(
-                      v-model.trim="regulatory[1].change",
-                      placeholder="Describe the response"
-                    )
-                    Errors(
-                      v-if="errors.regulatory && errors.regulatory[index] && errors.regulatory[index][1]",
-                      :errors="errors.regulatory[index][1]"
-                    )
-                  .delete-col
-                    button.btn.btn__close.float-right.remove-regulatory(
-                      @click="removeRegulatoryChange(regulatory, index)"
-                    )
-                      b-icon(icon="x", font-scale="1")
-                .mt-3
-                  button.btn.btn-default(@click="addRegulatoryChange")
-                    b-icon.mr-2(icon="plus-circle-fill")
-                    | New Entry
-              .reviews__card--internal
-                .row
-                  .col-md-12
-                    h4 
-                      b Key Employees Interviewed
-                    p Regulators interview employees to uncover potential discrepancies in a firm's policies and procedures and their day-to-day practicies. It's important to interview those employees responsible for certain key tasks or have access to sensitive client in order to hear about their day-to-day activities in their own words.
-                      //a.link(href="#") hiring one of our compilance specialists&nbsp;
-                      //| to conduct mock interviews for you to see and learn how to do it on your own!
-                .row
-                  .col-md-12
-                    b-form
-                      .row(
-                        v-if="review.annual_review_employees && review.annual_review_employees.length"
+    b-tabs.reviews__tabs(content-class="mt-0")
+      template(#tabs-end)
+        b-dropdown.actions(text="Actions" variant="default" right)
+          template(#button-content)
+            | Actions
+            b-icon.ml-2(icon="chevron-down")
+          AnnualModalEdit(:review="review || {}" :inline="false")
+            b-dropdown-item Edit
+          AnnualModalDelete(
+            @deleteConfirmed="deleteReview(review.id)",
+            :inline="false"
+          )
+            b-dropdown-item.delete Delete
+      b-tab(title="Detail", active)
+        .p-x-40(v-if="review")
+          .row
+            .col-md-3
+              ReviewsList(
+                :annual-id="annualId",
+                :reviews-categories="review.review_categories",
+                :general="true",
+                :generalComplete="review.complete"
+              )
+            .col-md-9.m-b-40
+              .card-body.white-card-body.reviews__card
+                .reviews__card--internal.pt-0
+                  h3
+                    | General
+                .reviews__card--internal
+                  .row
+                    .col-md-12
+                      h4
+                        b Review Period
+                      //p For internal reviews, this time period typically spans a calendar or fiscal year and wil be referred to hereafter as "the Review Period
+                  .row
+                    .col-6
+                      label.form-label Start Date
+                      b-form-datepicker(
+                        v-model="review.review_start",
+                        :date-format-options="{ year: 'numeric', month: '2-digit', day: '2-digit' }",
+                        locale="en-US"
                       )
-                        .col-4
-                          label Employee Name
-                        .col-4.px-0
-                          label Title/Role
-                        .col-4
-                          label Department
-                      template(
-                        v-for="(annualReviewEmployee, annualReviewEmployeeIndex) in employees"
+                      Errors(:errors="errors.review_start")
+                    .col-6
+                      label.form-label End Date
+                      b-form-datepicker(
+                        v-model="review.review_end",
+                        :date-format-options="{ year: 'numeric', month: '2-digit', day: '2-digit' }",
+                        locale="en-US"
                       )
-                        .row(v-for="", :key="`${annualReviewEmployeeIndex}`")
+                      Errors(:errors="errors.review_end")
+                .reviews__card--internal
+                  .row
+                    .col-md-12
+                      h4
+                        b Material Business Changes
+                      p List any changes to your business processes, key vendors, and/or key employees during the Review Period
+                    .col-12
+                      textarea-autosize.form-control.w-100(
+                        v-model="review.material_business_changes"
+                        :min-height="70"
+                      )
+                      .invalid-feedback.d-block(v-if="errors.material_business_changes") {{ errors.material_business_changes }}
+                .reviews__card--internal
+                  .row
+                    .col-md-12
+                      h4
+                        b Material Regulatory Changes
+                      p List any regulatory changes that impacted you during the Review Period and how the business responded.
+                  .row.mb-3(
+                    v-for="(regulatory, index) in regulatoryChangesSplit",
+                    :key="index"
+                  )
+                    .custom-col
+                      label.form-label Change
+                      textarea.form-control(
+                        v-model.trim="regulatory[0].change",
+                        placeholder="Describe the change"
+                      )
+                      Errors(
+                        v-if="errors.regulatory && errors.regulatory[index] && errors.regulatory[index][0]",
+                        :errors="errors.regulatory[index][0]"
+                      )
+                    .custom-col
+                      label.form-label Response
+                      textarea.form-control(
+                        v-model.trim="regulatory[1].change",
+                        placeholder="Describe the response"
+                      )
+                      Errors(
+                        v-if="errors.regulatory && errors.regulatory[index] && errors.regulatory[index][1]",
+                        :errors="errors.regulatory[index][1]"
+                      )
+                    .delete-col
+                      button.btn.btn__close.float-right.remove-regulatory(
+                        @click="removeRegulatoryChange(regulatory, index)"
+                      )
+                        b-icon(icon="x", font-scale="1")
+                  .mt-3
+                    button.btn.btn-default(@click="addRegulatoryChange")
+                      b-icon.mr-2(icon="plus-circle-fill")
+                      | New Entry
+                .reviews__card--internal
+                  .row
+                    .col-md-12
+                      h4 
+                        b Key Employees Interviewed
+                      p Regulators interview employees to uncover potential discrepancies in a firm's policies and procedures and their day-to-day practicies. It's important to interview those employees responsible for certain key tasks or have access to sensitive client in order to hear about their day-to-day activities in their own words.
+                        //a.link(href="#") hiring one of our compilance specialists&nbsp;
+                        //| to conduct mock interviews for you to see and learn how to do it on your own!
+                  .row
+                    .col-md-12
+                      b-form
+                        .row(
+                          v-if="review.annual_review_employees && review.annual_review_employees.length"
+                        )
                           .col-4
-                            b-input-group.m-b-1
-                              b-form-input.mb-2.mr-sm-2.mb-sm-0(
-                                v-model="annualReviewEmployee.name",
-                                placeholder="Enter Name"
-                              )
-                              Errors(
-                                v-if="errors.employees && errors.employees[annualReviewEmployeeIndex] && errors.employees[annualReviewEmployeeIndex]['name']",
-                                :errors="errors.employees[annualReviewEmployeeIndex]['name']"
-                              )
+                            label Employee Name
                           .col-4.px-0
-                            b-input-group.m-b-1
-                              b-form-input.mb-2.mr-sm-2.mb-sm-0(
-                                v-model="annualReviewEmployee.title",
-                                placeholder="Enter Title"
-                              )
+                            label Title/Role
                           .col-4
-                            b-input-group.m-b-1
-                              b-form-input.mb-2.mr-sm-2.mb-sm-0.rounded(
-                                v-model="annualReviewEmployee.department",
-                                placeholder="Enter Department"
-                              )
-                              button.btn.btn__close.float-right(
-                                @click="deleteEntry(annualReviewEmployeeIndex)"
-                              )
-                                b-icon.remove-employee(icon="x", font-scale="1")
-                      b-input-group
-                        b-button(variant="default", @click="addEntry")
-                          b-icon.mr-2(icon="plus-circle-fill")
-                          | New Entry
-                      //b-input-group
-                      //  b-button(variant='primary' class="btn-none" @click="addEntry")
-                      //    b-icon.mr-2(icon='plus-circle-fill')
-                      //    | Add Entry
-              .d-flex.justify-content-end.m-t-20
-                button.btn.btn-default.m-r-1(@click="saveGeneral()") Save
-                button.btn(
-                  v-if="review.complete",
-                  :class="'btn-dark'",
-                  @click="markComplete"
-                ) Mark as Incomplete
-                AnnualModalComplite(
-                  v-else,
-                  @compliteConfirmed="markComplete",
-                  :completedStatus="review.complete",
-                  :name="review.name",
-                  :inline="false"
-                )
-                  button.btn(:class="'btn-dark'") Mark as {{ review.complete ? 'Incomplete' : 'Complete' }}
-    b-tab(title="Tasks")
-      Get(
-        :reviewModel="`/api/business/annual_reports/${annualId}`",
-        :etag="tasksEtag"
-      ): template(
-        v-slot="{ reviewModel }"
-      )
-        PageTasks(:review="reviewModel", @saved="newTasksEtag")
-    b-tab(title="Documents")
-      PageDocuments
+                            label Department
+                        template(
+                          v-for="(annualReviewEmployee, annualReviewEmployeeIndex) in employees"
+                        )
+                          .row(v-for="", :key="`${annualReviewEmployeeIndex}`")
+                            .col-4
+                              b-input-group.m-b-1
+                                b-form-input.mb-2.mr-sm-2.mb-sm-0(
+                                  v-model="annualReviewEmployee.name",
+                                  placeholder="Enter Name"
+                                )
+                                Errors(
+                                  v-if="errors.employees && errors.employees[annualReviewEmployeeIndex] && errors.employees[annualReviewEmployeeIndex]['name']",
+                                  :errors="errors.employees[annualReviewEmployeeIndex]['name']"
+                                )
+                            .col-4.px-0
+                              b-input-group.m-b-1
+                                b-form-input.mb-2.mr-sm-2.mb-sm-0(
+                                  v-model="annualReviewEmployee.title",
+                                  placeholder="Enter Title"
+                                )
+                            .col-4
+                              b-input-group.m-b-1
+                                b-form-input.mb-2.mr-sm-2.mb-sm-0.rounded(
+                                  v-model="annualReviewEmployee.department",
+                                  placeholder="Enter Department"
+                                )
+                                button.btn.btn__close.float-right(
+                                  @click="deleteEntry(annualReviewEmployeeIndex)"
+                                )
+                                  b-icon.remove-employee(icon="x", font-scale="1")
+                        b-input-group
+                          b-button(variant="default", @click="addEntry")
+                            b-icon.mr-2(icon="plus-circle-fill")
+                            | New Entry
+                        //b-input-group
+                        //  b-button(variant='primary' class="btn-none" @click="addEntry")
+                        //    b-icon.mr-2(icon='plus-circle-fill')
+                        //    | Add Entry
+                .d-flex.justify-content-end.m-t-20
+                  button.btn.btn-default.m-r-1(@click="saveGeneral()") Save
+                  button.btn(
+                    v-if="review.complete",
+                    :class="'btn-dark'",
+                    @click="markComplete"
+                  ) Mark as Incomplete
+                  AnnualModalComplite(
+                    v-else,
+                    @compliteConfirmed="markComplete",
+                    :completedStatus="review.complete",
+                    :name="review.name",
+                    :inline="false"
+                  )
+                    button.btn(:class="'btn-dark'") Mark as {{ review.complete ? 'Incomplete' : 'Complete' }}
+      b-tab(title="Tasks")
+        Get(
+          :reviewModel="`/api/business/annual_reports/${annualId}`",
+          :etag="tasksEtag"
+        ): template(
+          v-slot="{ reviewModel }"
+        )
+          PageTasks(:review="reviewModel", @saved="newTasksEtag")
+      b-tab(title="Documents")
+        PageDocuments
 </template>
 
 <script>

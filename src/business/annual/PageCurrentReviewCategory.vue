@@ -6,15 +6,20 @@
         h2.page-header__title: b {{ review ? review.name : '' }}
       .page-header__actions
         div
-          button.btn.btn-default.mr-3.d-none Download
+          span.dowloading.list-page.mr-3.mt-2(v-if="isDowloading")
+            .lds-ring.lds-ring-small
+              div
+              div
+              div
+              div
+          button.btn.btn-default.mr-3(v-else @click="download") Download
           button.btn.btn-dark.mr-3(@click="saveAndExit()") Save and Exit
           button.btn.btn__close(@click="backToList")
             b-icon(icon="x")
 
-    b-tabs.reviews__tabs(content-class="mt-0")
+    b-tabs.reviews__tabs(content-class="mt-0" v-if="review")
       template(#tabs-end)
-        //- b-dropdown(size="xs" variant="light" class="m-0 p-0" right)
-        b-dropdown.actions(text='Actions' variant="light" right)
+        b-dropdown.actions(text="Actions" variant="default" right)
           template(#button-content)
             | Actions
             b-icon.ml-2(icon="chevron-down")
@@ -23,7 +28,7 @@
           AnnualModalDelete(@deleteConfirmed="deleteReview(review.id)" :inline="false")
             b-dropdown-item.delete Delete
       b-tab(title="Detail" active)
-        .p-x-40(v-if="review")
+        .p-x-40
           .row
             .col-md-3
               ReviewsList(
@@ -93,11 +98,9 @@
                       AnnualModalComplite(v-else @compliteConfirmed="markComplete", :completedStatus="currentCategory.complete" :name="currentCategory.name" :inline="false")
                         button.btn(:class="'btn-dark'") Mark as Complete
       b-tab(title="Tasks")
-        PageTasks
+        PageTasks(:review="review")
       b-tab(title="Documents")
         PageDocuments
-      b-tab(title="Activity")
-        PageActivity
 </template>
 
 <script>
@@ -110,7 +113,6 @@ import CommonDeleteModal from '@/common/Modals/CommonDeleteModal'
 import TaskFormModal from '@/common/TaskFormModal'
 import PageTasks from './PageTasks'
 import PageDocuments from './PageDocuments'
-import PageActivity from './PageActivity'
 
 export default {
   props: ['annualId', 'revcatId'],
@@ -122,8 +124,7 @@ export default {
     CommonDeleteModal,
     TaskFormModal,
     PageTasks,
-    PageDocuments,
-    PageActivity
+    PageDocuments
   },
   data () {
     return {
@@ -133,7 +134,8 @@ export default {
         [{ list: "bullet" }],
         ["link"]
       ],
-      errors: []
+      errors: [],
+      isDowloading: false,
     }
   },
   computed: {
@@ -258,7 +260,15 @@ export default {
     },
     backToList() {
       this.$router.push({ name: 'annual-reviews' })
-    }
+    },
+    download() {
+      this.isDowloading = true;
+      this.$store
+        .dispatch("annual/downloadReviewPdf", { id: this.review.id })
+        .then(() => {
+          this.toast("Success", "Review has been queued for download.");
+        });
+    },
   },
   async mounted () {
     try {
