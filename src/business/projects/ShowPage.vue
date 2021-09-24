@@ -75,15 +75,15 @@
                 b-dropdown-item My Tasks
                 b-dropdown-item Complete Tasks
               button.btn.btn-default.float-right(@click="completedTasksOpen = false"): strong Collapse All
-            TaskTable(v-if="incompleteTasks.length" :tasks="incompleteTasks")
+            TaskTable(v-if="incompleteTasks(project).length" :tasks="incompleteTasks(project)")
             .row.h-100(v-else)
               .col.h-100.text-center
                 EmptyState(name="Tasks")
-            h3.pointer(v-if="completedTasks.length" @click="completedTasksOpen = !completedTasksOpen")
+            h3.pointer(v-if="completedTasks(project).length" @click="completedTasksOpen = !completedTasksOpen")
               span.caret(:class="{caret_rotated:!completedTasksOpen}")
               | Completed Tasks
-            b-collapse.m-t-1(v-if="completedTasks.length" v-model="completedTasksOpen")
-              TaskTable(:tasks="completedTasks")
+            b-collapse.m-t-1(v-if="completedTasks(project).length" v-model="completedTasksOpen")
+              TaskTable(:tasks="completedTasks(project)")
         b-tab.h-100(title="Documents")
           DocumentList(:project="project")
         b-tab.h-100(title="Collaborators")
@@ -251,10 +251,10 @@ export default {
       return (this.modalId || '') + '_confirm'
     },
     incompleteTasks() {
-      return []
+      return project => project.reminders.filter(task => !task.done_at)
     },
     completedTasks() {
-      return []
+      return project => project.reminders.filter(task => task.done_at)
     },
     token: () => TOKEN
   },
