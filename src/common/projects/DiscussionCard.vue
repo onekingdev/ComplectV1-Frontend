@@ -18,7 +18,7 @@
       .card-body
         InputTextarea.m-b-20(v-model="comment.message" placeholder="Make a comment or leave a note..." :errors="commentErrors && commentErrors.message") Comment
         Post(v-bind="postCommentProps" @saved="commentSaved" @errors="commentErrors = $event" alignRight)
-          button.btn.btn-default Send
+          button.btn.btn-primary.save-comment-btn Send
 </template>
 
 <script>
