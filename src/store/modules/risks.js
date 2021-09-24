@@ -90,7 +90,7 @@ export default {
             : `Could\'t publish Risk ${error.message}`
         commit("setError", errorText);
         commit("setLoading", false);
-        throw new Error(errorText);
+        return error.data
       }
     },
     async updateRisk({ commit, getters }, payload) {
