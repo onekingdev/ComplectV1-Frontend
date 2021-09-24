@@ -245,8 +245,8 @@ export default {
       }
       if (file) {
         const success = (await uploadFile(this.url, file)).ok
-        const message = success ? 'Document has been uploaded.' : 'Document has not been uploaded.'
-        this.toast('Document has not been uploaded.', message, !success)
+        if(success) this.toast('Success', 'Document has been uploaded.')
+        else this.toast('Error', 'Document has not been uploaded.', true)
         this.newEtag()
       }
     },
