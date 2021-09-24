@@ -23,12 +23,14 @@
                       b-dropdown(size="sm" variant="none" class="m-0 p-0" right)
                         template(#button-content)
                           b-icon(icon="three-dots")
-                        b-dropdown-item.delete(@click="removeFile(message.id)") Delete file
+                        CommonDeleteModal(title="Delete File" content="" @deleteConfirmed="deleteFile(message.id)" :inline="true")
+                          b-dropdown-item.delete Delete File
           .d-block.text-right.ml-auto
             p.message__date {{ message.created_at | asDate }}
 </template>
 
 <script>
+  import CommonDeleteModal from '@/common/Modals/CommonDeleteModal'
   import { DateTime } from 'luxon'
   var today = DateTime.now().toLocaleString(DateTime.DATE_FULL)
 
@@ -43,25 +45,18 @@
       this.$emit('created')
     },
     methods: {
-      async removeFile(id, fileID) {
-
-        const data = {
-          id,
-          file: { id: fileID },
+      async deleteFile(id) {
+        try {
+          await this.$store.dispatch('reminders/deleteTaskMessageById', id)
+          this.toast('Success', `File deleted`)
+          this.$emit('saved')
+        } catch (error) {
+          this.toast('Error', error.message, true)
         }
-        // try {
-        //   await this.$store.dispatch('reminders/deleteFile', data)
-        //     .then(response => {
-        //       this.toast('Success', `File successfull deleted!`)
-        //     })
-        //     .catch(error => this.toast('Error', error.message, true))
-        // } catch (error) {
-        //   this.toast('Error', error.message, true)
-        // }
-      },
-      calcDate(vaue) {
-        return today - vaue
       }
+    },
+    components: {
+      CommonDeleteModal
     }
   }
 </script>
