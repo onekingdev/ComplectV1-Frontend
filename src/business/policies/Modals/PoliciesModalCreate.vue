@@ -6,7 +6,7 @@
     b-modal.fade(:id="modalId" title="New policy")
 
       label.form-label Policy Name
-      input.form-control(v-model="policy.name" ref="input" type="text" @keyup.enter="submit" @input="clearErrors")
+      input.form-control(v-model="policy.name" ref="input" type="text" @keyup.enter="submit" @input="clearErrors" placeholder="Name")
       Errors(:errors="errors")
 
       template(slot="modal-footer")
