@@ -129,6 +129,7 @@ const router = new VueRouter({
             { path: 'profile', name: 'profile', component: Profile},
             { path: 'exam_management/:examId(\\d+)/portal', component: PageAuditorPortalInternalAccess, props: paramsToInts(['examId']) },
             { path: '/specialistmarketplace', name: 'specialists-marketplace', component: SpecialistsMarketplace },
+            { path: 'notification-center', name: 'settings-notification-center', component: SettingsNotifications },
             { path: 'settings/', name: 'settings', component: Settings,
               children:  [
                 { path: 'general', name: 'settings-general', component: Settings, },
@@ -138,7 +139,6 @@ const router = new VueRouter({
                 { path: 'subscriptions', name: 'settings-subscriptions', component: Settings, },
                 { path: 'billings', name: 'settings-billings', component: Settings, },
                 { path: 'notifications', name: 'settings-notifications', component: Settings, },
-                { path: 'notification-center', name: 'settings-notification-center', component: SettingsNotifications },
               ],
             },
           ]
@@ -155,6 +155,7 @@ const router = new VueRouter({
             { path: 'my-projects/:id(\\d+)', name: 'project-review-specialist', props: paramsToInts(['id']), component: ProjectReviewS },
             { path: 'my-projects/:id(\\d+)/timesheets', name: 'my-project-timesheet-page', props: paramsToInts(['id']), component: ProjectTimesheetsPage },
             { path: 'profile', name: 'profile-specialist', component: ProfileS },
+            { path: 'notification-center', name: 'settings-notification-center-specialist', component: SettingsNotificationsS },
             { path: 'settings/', name: 'settings-specialist', component: SettingsS,
               children:  [
                 { path: 'general', name: 'settings-general-specialist', component: SettingsS, },
@@ -165,7 +166,6 @@ const router = new VueRouter({
                 { path: 'notifications', name: 'settings-notifications-specialist', component: SettingsS, }
               ],
             },
-            { path: 'settings/notification-center', name: 'settings-notification-center-specialist', component: SettingsNotificationsS },
             { path: 'job_board', name: 'projects-marketpalce-specialist', component: ProjectsMarketplaceS },
             { path: 'job_board/:initialOpenId(\\d+)', name: 'projects-marketpalce-specialist-view', props: paramsToInts(['initialOpenId']), component: ProjectsMarketplaceS },
             { path: 'job_board/:projectId(\\d+)/applications/new', name: 'projects-marketplace-create-proposal', props: paramsToInts(['projectId']), component: CreateProposalPage, beforeEnter: AccessGuard },
