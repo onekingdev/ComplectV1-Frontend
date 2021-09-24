@@ -34,8 +34,8 @@
                   input.d-none(type="file" accept="application/pdf" @change="pickFile")
             .text-right
               button.m-r-1.btn(@click="back") Cancel
-              button.m-r-1.btn.btn-default(@click="submit(true)") Save Draft
-              button.btn.btn-dark(@click="submit()") Submit Proposal
+              button.m-r-1.btn.btn-default(@click="submit(true)") Save as Draft
+              button.btn.btn-dark(@click="submit()") Submit
           .col-md-6
             .card
               ProjectDetails(:project="project")
