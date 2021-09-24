@@ -3,22 +3,22 @@
     .card-header
       h3.mb-0 Discussion
     Get(:messages="messagesUrl" :etag="etag"): template(v-slot="{messages}")
-      .card-body.discussion__body(v-if="!messages.length")
-        .d-flex.flex-column.justify-content-center.align-items-center
-          ion-icon.discussion__icon.m-b-10(name="chatbox-ellipses-outline")
-          p.discussion__text.mb-0 No comments posted
-        hr
-      .card-body(v-else)
-        div(v-for="message in messages" :key="message.id")
-          p.discussion__text.mb-0
-            span.discussion__date.float-right {{ message.created_at | asDate }}
-            | {{ message.message }}
-          hr
-    .card-body
-      InputTextarea.m-b-20(v-model="comment.message" placeholder="Make a comment or leave a note..." :errors="commentErrors && commentErrors.message") Comment
-      Post(v-bind="postCommentProps" @saved="commentSaved" @errors="commentErrors = $event")
-        button.btn.btn-default Add Comment
-
+      .card-body.messages.justify-content-center.align-items.center.text-center(v-if="!messages.length")
+        h4 No Comments to Display
+        p.mb-0 Type in the comment box below to get started
+      .card-body.messages(v-if="messages && messages.length" ref="MessagesContainer")
+        .message(v-for="(message, i) in messages" :key="i")
+          .d-flex.align-items-start
+            UserAvatar(:user="message.sender")
+            .d-block.text-left
+              p.message__user-name {{ message.sender.first_name }} {{ message.sender.last_name }} commented.
+              p.message__comment(v-html="message.message")
+            .d-block.text-right.ml-auto
+              p.message__date {{ message.created_at | asDate }}
+      .card-body
+        InputTextarea.m-b-20(v-model="comment.message" placeholder="Make a comment or leave a note..." :errors="commentErrors && commentErrors.message") Comment
+        Post(v-bind="postCommentProps" @saved="commentSaved" @errors="commentErrors = $event" alignRight)
+          button.btn.btn-default Send
 </template>
 
 <script>
