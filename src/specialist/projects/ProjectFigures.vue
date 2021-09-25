@@ -3,7 +3,7 @@
     li.list-group-item(v-if="project.pricing_type === 'fixed'")
       ion-icon.custom-icon.float-left.mt-3.mr-3(name="cash-outline")
       span.small-text Estimated Budget
-      div.font-weight-bold.infor {{ project.est_budget | usdWhole }}, Fixed
+      div.font-weight-bold.d-flex {{ project.est_budget | usdWhole }}, Fixed
     li.list-group-item(v-else)
       ion-icon.custom-icon.float-left.mt-3.mr-3(name="cash-outline")
       span.small-text Hourly
@@ -12,7 +12,7 @@
     li.list-group-item
       ion-icon.custom-icon.float-left.mt-3.mr-3(name="cash-outline")
       span.small-text Payment Schedule
-      div.font-weight-bold.infor {{ paymentScheduleReadable }}
+      div.font-weight-bold.d-flex {{ paymentScheduleReadable }}
     li.list-group-item.jurisdictions
       ion-icon.custom-icon.float-left.mt-3.mr-3(name="earth-outline")
       span.small-text Jurisdiction
