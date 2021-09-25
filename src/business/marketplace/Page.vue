@@ -180,8 +180,12 @@
 
         const filterExperience = specialist => {
           if (!this.optionsForRequest.experienceLevel || !this.optionsForRequest.experienceLevel.length) return true
-          const levels = ['Junior', 'Intermediate', 'Expert']
-          const specialistLevel = levels.indexOf(specialist.experience)
+          const specialistLevels = {
+            0: 'Junior',
+            1: 'Intermediate',
+            2: 'Expert'
+          }
+          const specialistLevel = specialistLevels[specialist.experience]
           return this.optionsForRequest.experienceLevel.includes(specialistLevel)
         }
 
