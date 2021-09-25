@@ -78,19 +78,16 @@
                                 span.float-right Outstanding Due <br> {{ 500 | usdWhole }}
                           .card-body
                             p
-                              b Project name
+                              b Job Name
                               span.float-right {{ showingContract.title }}
                             p
-                              b Payment method
+                              b Payment Schedule
                               span.float-right {{ readablePaymentSchedule(showingContract.payment_schedule) }}
-                            p
-                              b Date Issued
-                              span.float-right
                             p
                               b Payment Method
                               span.float-right Transfer to Visa
                           .card-body
-                            p.text-right.text-muted *Transactional fees have been included and invoice will be automatically deducted.
+                            p.text-right.text-muted *Invoice will be automatically deducted.
                         template(slot="modal-footer")
                           button.btn(@click="$bvModal.hide('EndContractModal')") Cancel
                           Post(:action="completeUrl(showingContract)" :model="{}" @saved="completeSuccess" @errors="completeErrors")
