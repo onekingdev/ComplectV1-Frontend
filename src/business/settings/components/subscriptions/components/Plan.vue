@@ -31,7 +31,7 @@
             name: 'Team Plan',
             users: '10',
             billinPeriod: 'monthly',
-            monthCoast: '100$/month',
+            monthCoast: '$100/month',
             paymentCardType: 'Visa',
             paymentCard: '**** **** **** 4242',
             nextPaymentDate: 'October 25, 2021',
