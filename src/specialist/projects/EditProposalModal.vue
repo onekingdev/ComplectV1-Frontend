@@ -23,13 +23,10 @@
           h3.m-t-1 Attachments
           .card.m-b-1
             .card-body
-              div.mb-2(v-if="form.document")
-                span.font-weight-bold {{ form.document.name }}
-              div.mb-2(v-else-if="proposal.attachment")
-                a(:href="attachmentUrl" target="_blank") {{ proposal.attachment.name }}
               label
                   a.btn.btn-light Upload File
                   input.d-none(type="file" accept="application/pdf" @change="pickFile")
+              FileUpload(v-if="form.document" :file="fileObject" @delete="removeFile")
       template(#modal-footer="{ hide }")
         a.m-r-1.btn(@click="hide") Cancel
         button.btn.btn-dark(@click="saved") Resubmit
@@ -93,7 +90,13 @@ export default {
     async saved() {
       this.validate()
       if (Object.keys(this.errors).length > 0) return
-      const res = await this.$store.dispatch('projects/updateProposal', { projectId: this.projectId, id: this.applicationId, data: this.submitData() })
+      const formData = this.submitData()
+      if (!this.form.document) {
+        formData.append('document', null)
+      } else {
+        if (!this.form.document.lastModified) formData.delete('document')
+      }
+      const res = await this.$store.dispatch('projects/updateProposal', { projectId: this.projectId, id: this.applicationId, data: formData})
       if (res && res['prerequisites']) {
         this.toast('Error', res['prerequisites'][0], true)
       } else {
@@ -104,6 +107,7 @@ export default {
     },
     loaded(result) {
       Object.assign(this.form, { ...result, ...specialAttributes(result) })
+      this.form.document = this.proposal.attachment
     },
     initialForm,
     calcPricingType
