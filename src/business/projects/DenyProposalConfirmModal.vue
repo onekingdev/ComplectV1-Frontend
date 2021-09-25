@@ -7,7 +7,7 @@
         p You are rejecting the terms of this proposal. The specialist will be notified and removed from your applicant pool.
         p: strong Do you want to continue?
     template(#modal-footer="{ hide }")
-      button.btn.btn-hyperlink(@click="$emit('back')") Cancel
+      button.btn.btn-link(@click="$emit('back')") Cancel
       Post(:action="denyUrl" :model="{}" @saved="$emit('denied', application.project.local_project_id)")
         button.btn.btn-dark Confirm
 </template>
