@@ -4318,6 +4318,30 @@ select.custom-select {
   }
 }
 
+#sidebarMenu_alt {
+  .title {
+    @include font-semi-bold-16;
+  }
+
+  .sub-title {
+    @include font-medium-12;
+  }
+}
+
+.project-item {
+  &:first-child {
+    padding-top: 0px;
+  }
+
+  .title {
+    @include font-bold-16;
+  }
+
+  .sub-title {
+    @include font-regular-14;
+  }
+}
+
 /* ---------- steps ---------- */
 .steps {
   display: flex;
