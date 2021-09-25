@@ -1,5 +1,5 @@
 <template lang="pug">
-  b-modal.fade(:id="modalId" title="View Proposal" size="xl" no-stacking)
+  b-modal.fade(:id="modalId" title="Messages" size="xl" no-stacking)
     .row
       .col-lg-6.pr-lg-2
         .card.messages-info
