@@ -11,7 +11,7 @@
                 h4.semibold-text Payment Method
               .col.text-right
                 BillingMethodModalAdd(@selected="addMethod")
-                  b-button.btn.mr-2.font-weight-bold(type='button' variant='default') Add Method
+                  b-button.btn.mr-2.font-weight-bold(type='button' variant='default') New Method
                 BillingMethodCardModalAdd(:billingMethod="billingMethod" @complitedPaymentMethod="addPaymentMethod")
                   b-button.d-none(ref="special") Card add
             .row
@@ -28,7 +28,7 @@
             .row
               .col
                 InvoicesTable(:invoices="invoices")
-                div(v-if="!invoices && invoices.length") Invoices not avaliable
+                div(v-if="!invoices && invoices.length") No invoices avaliable
 </template>
 
 <script>
