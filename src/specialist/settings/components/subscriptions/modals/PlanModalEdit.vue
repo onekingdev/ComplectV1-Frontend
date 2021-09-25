@@ -124,7 +124,7 @@
       linkToOptions() {
         return [
           {...toOption('Billed monthly')},
-          {...toOption('Billed anually')}
+          {...toOption('Billed annually')}
           ]
       },
     }
