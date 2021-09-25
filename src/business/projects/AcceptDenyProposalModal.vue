@@ -5,7 +5,7 @@
       .card-body
         SpecialistDetails(:specialist="application.specialist")
         InputSelect(v-model="role" :options="specialistRoleOptions") Select Role
-        .form-text.text-muted Determines the permissions you wish to grant the specialist to your account
+        .form-text.text-muted Determines the permissions to grant the specialist
     template(#modal-footer="{ hide }")
       button.btn.btn-hyperlink(@click="hide") Cancel
       Post(:action="hireUrl + '?job_application_id=' + application.id" :model="{role}" @saved="$emit('saved', application.project.local_project_id, role)")
