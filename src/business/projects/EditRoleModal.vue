@@ -4,7 +4,7 @@
       slot
 
     b-modal.fade(:id="modalId" title="Edit Role")
-      p Please confirm the applicant you wish to hire.
+      p Please confirm the role you wish to assign the hired specialist.
       .card
         .card-body
           SpecialistDetails(:specialist="specialist")
