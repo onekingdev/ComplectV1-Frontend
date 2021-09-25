@@ -125,7 +125,7 @@
           },
           {
             id: 'anually',
-            label: 'Billed anually',
+            label: 'Billed annually',
           }
         ]
       },
