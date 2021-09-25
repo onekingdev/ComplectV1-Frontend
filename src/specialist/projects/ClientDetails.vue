@@ -9,7 +9,7 @@
           span.location {{ [business.city, business.state, business.country] | commas }}
     hr
     .card-body
-      dl.row
+      dl.row.details-infor
         dt.col-sm-3 Industry
         dd.col-sm-9.semibold {{ business.industries | names}}
         dt.col-sm-3 Jurisdictions

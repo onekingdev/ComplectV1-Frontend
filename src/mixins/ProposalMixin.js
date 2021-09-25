@@ -1,3 +1,4 @@
+import FileUpload from '@/common/FileUpload'
 import { DateTime } from 'luxon'
 import {
   PRICING_TYPES_OPTIONS,
@@ -10,6 +11,9 @@ const MAX_FILE_SIZE = 2 // MB
 const FIXED_BUDGET = Object.keys(PRICING_TYPES_OPTIONS)[0]
 
 export default {
+  components: {
+    FileUpload
+  },
   data() {
     return {
       errors: {}
@@ -31,9 +35,29 @@ export default {
     },
     isFixedBudget() {
       return FIXED_BUDGET === this.form.pricing_type
+    },
+    fileObject() {
+      if (this.form.document.lastModified) {
+        return {
+          name: this.form.document.name,
+          url: URL.createObjectURL(this.form.document)
+        }
+      }
+
+      if (this.proposal && this.proposal.attachment) {
+        return {
+          name: this.proposal.attachment.name,
+          url: this.attachmentUrl
+        }
+      }
+
+      return null
     }
   },
   methods: {
+    removeFile() {
+      this.form.document = null
+    },
     changePaymentType() {
       if (this.form.pricing_type === 'fixed') {
         this.form.fixed_payment_schedule = Object.keys(this.fixedPaymentScheduleOptions)[0]
@@ -80,7 +104,7 @@ export default {
         if (!this.form.estimated_hours) this.$set(this.errors, 'estimated_hours', ['Required field'])
       }
 
-      if (this.form.document) {
+      if (this.form.document && this.form.document.lastModified) {
         const fileSize = this.form.document.size / 1024 / 1024
         if (fileSize > MAX_FILE_SIZE) {
           this.toast('Error', 'Document has not been uploaded. File size must be less than 2MB.', true)

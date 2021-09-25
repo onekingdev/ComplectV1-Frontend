@@ -224,6 +224,12 @@ export default {
   border-bottom: 1px solid #DCDEE4;
 }
 
+@media screen and (max-width: 800px) {
+  #ProjectSidebar {
+    width: 100% !important;
+  }
+}
+
 /deep/ .container .bg-dark {
   background: none !important;
 }

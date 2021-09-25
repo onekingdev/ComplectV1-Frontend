@@ -3,7 +3,7 @@
     .card-body
       h4.semibold-text.mb-4.mt-3 Project Details
       h5 {{ project.title }}
-      dl.row.m-t-2
+      dl.row.m-t-2.details-infor
         dt.col-sm-3 Location
         dd.col-sm-9 {{ location }}
         dt.col-sm-3 Industry

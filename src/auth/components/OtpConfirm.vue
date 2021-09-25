@@ -58,6 +58,9 @@
         const res = await this.updateLoginEmail({otp_secret: this.form2.code, new_email: this.form.newEmail})
         if (res.status === 'ok') {
           this.toast('Success', 'Email has been updated.')
+          const user = this.$store.getters.getUser
+          user.user_email = this.form.newEmail
+          localStorage.setItem('app.currentUser', JSON.stringify(user))
           setTimeout(() => {
             if (this.$store.getters.appModule === 'specialist') {
               this.$router.push({name: 'settings-security-specialist'})
