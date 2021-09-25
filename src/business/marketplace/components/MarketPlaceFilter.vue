@@ -53,7 +53,21 @@
         | Former Regulator
         ion-icon(name='chevron-down-outline')
       b-collapse#collapse_former_regulator(visible)
-        b-form-checkbox(v-for="(option, i) in regulatorOptions" :value="regulatorOptions[i]" v-model="optionsForRequest.formerRegulator" :key="i") {{ option }}
+        b-form-group(label-for='selectS-7' label-class="label pb-0")
+          div(
+          :class="{ 'invalid': errors.regulator }"
+          )
+            multiselect#selectS-7(
+            v-model="optionsForRequest.formerRegulator"
+            :options="regulatorOptions"
+            :multiple="true"
+            :show-labels="false"
+            track-by="name",
+            label="name",
+            tag-placeholder="Add",
+            placeholder="Search or add a tag",
+            :taggable="true",
+            @tag="addTag")
 </template>
 
 <script>
@@ -84,44 +98,25 @@ export default {
       industryOptions: [],
       jurisdictionOptions: [],
       experienceOptions: ['Junior', 'Intermediate', 'Expert'],
-      regulatorOptions: ['SEC', 'FINRA', 'State', 'International'],
-      // value: [0, 100],
+      regulatorOptions: [],
       options: {
         min: 0,
         max: 500,
         tooltip: 'always',
         tooltipPlacement: 'bottom',
         tooltipFormatter: v => `$${v}`,
-      },
-      // vueRangeOptions: {
-      //   min: 0,
-      //   max: 500,
-      //   bgStyle: {
-      //     backgroundColor: '#fff',
-      //     boxShadow: 'inset 0.5px 0.5px 3px 1px rgba(0,0,0,.36)'
-      //   },
-      //   tooltipStyle: {
-      //     color: '#303132',
-      //     backgroundColor: 'transparent',
-      //     border: 'none',
-      //     marginTop: '-9px'
-      //   },
-      //   labelStyle: {
-      //     bottom: 0
-      //   },
-      //   processStyle: {
-      //     backgroundColor: '#303132'
-      //   },
-      //   sliderStyle: {
-      //     backgroundColor: '#303132',
-      //   },
-      //   tooltipMerge: false,
-      //   formatter: value => `$${value}`,
-      //   tooltipDir: 'bottom'
-      // },
-      // value: [0, 100],
-      // mainProps: { blank: false, blankColor: '#777', width: 100, height: 100, class: 'm1' }
+      }
     }
+  },
+  methods: {
+    addTag (newTag) {
+      const tag = {
+        name: newTag,
+        code: newTag.substring(0, 2) + Math.floor((Math.random() * 10000000))
+      }
+      this.regulatorOptions.push(tag)
+      this.optionsForRequest.formerRegulator.push(tag)
+    },
   }
 }
 </script>

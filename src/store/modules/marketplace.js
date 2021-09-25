@@ -52,35 +52,7 @@ export default {
             commit("setLoading", false, { root: true });
             if (success) {
               const data = success.data
-              const specialists = []
-              for (const specialistItem of data) {
-                specialists.push(new Specialist(
-                  specialistItem.specialists_business_roles,
-                  specialistItem.certifications,
-                  specialistItem.experience,
-                  specialistItem.first_name,
-                  specialistItem.former_regulator,
-                  specialistItem.id,
-                  specialistItem.industries,
-                  specialistItem.jurisdictions,
-                  specialistItem.last_name,
-                  specialistItem.location,
-                  specialistItem.min_hourly_rate,
-                  specialistItem.photo,
-                  specialistItem.ratings_average,
-                  specialistItem.ratings_count,
-                  specialistItem.ratings_total,
-                  specialistItem.resume_url,
-                  specialistItem.seat_role,
-                  specialistItem.skills,
-                  specialistItem.time_zone,
-                  specialistItem.username,
-                  specialistItem.visibility,
-                  specialistItem.city,
-                  specialistItem.state
-                ))
-              }
-              commit('SET_SPECIALISTS', specialists)
+              commit('SET_SPECIALISTS', data)
               return data
             }
             if (!success) {
@@ -286,37 +258,14 @@ export default {
         root: true
       });
       try {
-        const getSpecialistsById = mapAuthProviders[rootState.shared.settings.authProvider].getSpecialistsById
-        getSpecialistsById(payload)
+        const getSpecialistById = mapAuthProviders[rootState.shared.settings.authProvider].getSpecialistById
+        getSpecialistById(payload)
           .then((success) => {
             commit("clearError", null, { root: true });
             commit("setLoading", false, { root: true });
             if (success) {
               const data = success.data
-              commit('SET_CURRENT_SPECIALIST', new Specialist(
-                specialistItem.specialists_business_roles,
-                specialistItem.certifications,
-                specialistItem.experience,
-                specialistItem.first_name,
-                specialistItem.former_regulator,
-                specialistItem.id,
-                specialistItem.industries,
-                specialistItem.jurisdictions,
-                specialistItem.last_name,
-                specialistItem.location,
-                specialistItem.min_hourly_rate,
-                specialistItem.photo,
-                specialistItem.ratings_average,
-                specialistItem.ratings_count,
-                specialistItem.ratings_total,
-                specialistItem.resume_url,
-                specialistItem.seat_role,
-                specialistItem.skills,
-                specialistItem.time_zone,
-                specialistItem.username,
-                specialistItem.visibility,
-                specialistItem.description
-              ))
+              commit('SET_CURRENT_SPECIALIST', data)
               return success
             }
             if (!success) {
@@ -349,7 +298,7 @@ export default {
             commit("setLoading", false, { root: true });
             if (success) {
               const data = success.data
-              commit('SET_CURRENT_SPECIALIST', new Specialist(
+              commit('UPDATE_CURRENT_SPECIALIST', new Specialist(
                 specialistItem.specialists_business_roles,
                 specialistItem.certifications,
                 specialistItem.experience,

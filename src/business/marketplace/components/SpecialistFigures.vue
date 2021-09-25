@@ -1,20 +1,20 @@
 <template lang="pug">
-  ul.list-group.list-group-horizontal.w-100.project-figures.specialist-figures
-    li.list-group-item
-      ion-icon.float-left.mt-3.mr-3(name="cash-outline")
-      | Hourly rate
+  ul.list-group.list-group-horizontal.w-100.project-figures.specialist-figures.mt-2
+    li.list-group-item.small-text
+      ion-icon.float-left.mt-3.mr-3.specialist-infor-icon(name="cash-outline")
+      span.small-text.text-uppercase Hourly rate
       br
-      b {{ specialist.min_hourly_rate | usdWhole }}
-    li.list-group-item
-      ion-icon.float-left.mt-3.mr-3(name="analytics-outline")
-      | Experience
+      b.font-14 {{ specialist.min_hourly_rate | usdWhole }}
+    li.list-group-item.small-text
+      ion-icon.float-left.mt-3.mr-3.specialist-infor-icon(name="analytics-outline")
+      span.small-text.text-uppercase Experience
       br
-      b {{ experienceOptions[specialist.experience] }}
-    li.list-group-item
-      ion-icon.float-left.mt-3.mr-3(name="earth-outline")
-      | Jurisdiction
+      b.font-14 {{ experienceOptions[specialist.experience] }}
+    li.list-group-item.small-text
+      ion-icon.float-left.mt-3.mr-3.specialist-infor-icon(name="earth-outline")
+      span.small-text.text-uppercase Jurisdiction
       br
-      b {{ specialist.jurisdictions | names }}
+      div.jurisdictions.font-14 {{ specialist.jurisdictions | names }}
 </template>
 
 <script>
@@ -37,3 +37,9 @@ export default {
   }
 }
 </script>
+<style scoped>
+.jurisdictions {
+  padding-left: 27px;
+  font-weight: bold;
+}
+</style>
