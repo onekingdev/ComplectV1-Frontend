@@ -32,7 +32,7 @@ export default {
   },
   methods: {
     saved() {
-      this.toast('Success', 'Issue submitted')
+      this.toast('Success', 'Issue has been submitted')
       this.$bvModal.hide('IssueModal')
       Object.assign(this.form, initialForm())
     }
