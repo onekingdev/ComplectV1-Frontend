@@ -59,7 +59,7 @@
                 button.btn.btn-dark.save-comment-btn Send
 
     template(#modal-footer="{ ok, cancel, hide }")
-      button.btn.btn-light(@click="hide") Cancel
+      button.btn.btn-link(@click="hide") Cancel
       button.btn.btn-outline-dark(v-if="!hasSpecialist(application.project)" v-b-modal="'DenyProposalConfirm'") Reject
       button.btn.btn-dark(v-if="!hasSpecialist(application.project)" v-b-modal="confirmModalId") Accept
 </template>
