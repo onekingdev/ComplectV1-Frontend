@@ -6,7 +6,7 @@
           h3 Create Proposal
       .card-body
         Get(:project='`/api/specialist/projects/${projectId}`' :callback="projectLoaded"): template(v-slot="{project}"): div.row.pl-3
-          .col-md-6
+          .col-md-12.col-lg-6
             h3 Terms
             .row
               .col-sm: InputDate(v-model="form.starts_on" :errors="errors.starts_on" labelKlass="required") Start Date
@@ -31,11 +31,11 @@
                   a.btn.btn-light Upload File
                   input.d-none(type="file" accept="application/pdf" @change="pickFile")
                 FileUpload(v-if="form.document" :file="fileObject" @delete="removeFile")
-            .text-right
+            .text-right.mb-2
               button.m-r-1.btn(@click="back") Cancel
               button.m-r-1.btn.btn-default(@click="submit(true)") Save as Draft
               button.btn.btn-dark(@click="submit()") Submit
-          .col-md-6
+          .col-md-12.col-lg-6
             .card
               ProjectDetails(:project="project")
 </template>
@@ -114,3 +114,9 @@ export default {
   }
 }
 </script>
+<style>
+.details-infor dd {
+  position: relative;
+  left: 12px;
+}
+</style>

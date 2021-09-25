@@ -158,7 +158,8 @@
           routeName === "profile-specialist" ||
           routeName === 'risk-review' ||
           routeName === 'projects-marketpalce-specialist' ||
-          routeName === 'projects-marketpalce-specialist-view'
+          routeName === 'projects-marketpalce-specialist-view' ||
+          routeName === 'projects-marketplace-create-proposal'
         ) {
           this.$store.commit('changeSidebar', 'builder')
           // document.querySelector('.sidebar-menu').style.display = "none"
