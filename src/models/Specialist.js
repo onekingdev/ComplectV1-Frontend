@@ -23,5 +23,6 @@ export default class Specialist {
     this.visibility = visibility
     this.city = city
     this.state = state
+    this.description = description
   }
 }
