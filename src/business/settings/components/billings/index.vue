@@ -11,7 +11,7 @@
                 h4.semibold-text Payment Method
               .col.text-right
                 BillingMethodModalAdd(@selected="addMethod")
-                  b-button.btn.mr-2.font-weight-bold(type='button' variant='default') New Method
+                  b-button.btn.mr-2.font-weight-bold(type='button' variant='default') Add Method
                 BillingMethodCardModalAdd(:billingMethod="billingMethod" @complitedPaymentMethod="addPaymentMethod")
                   b-button.d-none(ref="special") Card add
             .row
