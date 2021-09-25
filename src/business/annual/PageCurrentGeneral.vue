@@ -195,7 +195,7 @@
       b-tab(title="Tasks")
         Get(:reviewModel="`/api/business/annual_reports/${annualId}`" :etag="tasksEtag"): template(v-slot="{ reviewModel }")
           .container: .row.p-x-1: .col
-            TaskTableExtended(:tasks="reviewModel.reminders" :task-defaults="{ linkable_type: 'AnnualReport', linkable_id: review.id }" @saved="newTasksEtag")
+            TaskTableExtended(:tasks="reviewModel.reminders" :task-defaults="{ linkable_type: 'AnnualReport', linkable_id: reviewModel.id }" @saved="newTasksEtag")
       b-tab(title="Documents")
         PageDocuments
 </template>
