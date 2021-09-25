@@ -77,6 +77,11 @@
   font-weight: $font-weight-bold;
 }
 
+@mixin font-medium-12 {
+  font-size: $font-size-12;
+  font-weight: $font-weight-medium;
+}
+
 @mixin border-bottom-gray-1 {
   border-bottom: solid 1px $gray-1;
 }
