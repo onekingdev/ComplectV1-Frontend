@@ -136,7 +136,7 @@ const overviewProps = project => {
     { name: 'Industry', value: project.industries, filter: 'names' },
     { name: 'Jurisdiction', value: project.jurisdictions, filter: 'names' },
     { name: 'Minimum Experience', value: project.minimum_experience, filter: 'capital' },
-    { name: 'Former Regulator?', value: project.only_regulators, filter: 'yesNo' },
+    { name: 'Former Regulator', value: project.only_regulators, filter: 'yesNo' },
     { name: 'Skills', value: project.skills, filter: 'names' },
     {
       name: project.pricing_type === 'fixed' ? 'Estimated Budget' : 'Hourly Rate',
