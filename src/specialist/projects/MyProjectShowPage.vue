@@ -97,7 +97,6 @@
                     .col-sm-12
                       PropertiesTable(title="Contract Details" :properties="proposalProps(showingContract)")
                         EditContractModal(v-if="!isContractComplete(showingContract)" :project="showingContract" @saved="newEtag(), tab = 0")
-      //- b-tab(title="Activity")
     b-tabs(v-else)
       b-tab(title="Overview")
         .white-card-body.p-y-1
