@@ -29,7 +29,7 @@
               p
                 b ${{ summary.total }}
                 | /month
-              p.text-success.mb-0(v-if="showDiscount") You saved {{ summary.discount }}$/month
+              p.text-success.mb-0(v-if="showDiscount") You saved ${{ summary.discount }}/month
       b-row
         b-col
           h5.mb-3 Payment method
