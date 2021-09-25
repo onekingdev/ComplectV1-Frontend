@@ -32,7 +32,7 @@
             dt.col-sm-3.label Payment Method
             dd.col-sm-9.text-right Transfer to Visa
         .card-footer.bg-white
-          p.text-right.text-muted.mb-0 *Transactional fees lorem ipsum dolor.
+          p.text-right.text-muted.mb-0 *Transactional fees have been included and invoice will be automatically deducted.
       template(#modal-footer="{ hide }")
         button.btn.btn-link(@click="hide") Cancel
         Post(:action="completeUrl" :model="{}" @saved="contractEnded" @errors="$emit('errors', $event)")
