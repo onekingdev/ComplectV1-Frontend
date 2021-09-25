@@ -225,10 +225,6 @@ export default {
   font-size: 16px;
 }
 
-#ProjectSidebar {
-  padding-top: 78px;
-}
-
 .project-item {
   border-bottom: 1px solid #DCDEE4;
 }

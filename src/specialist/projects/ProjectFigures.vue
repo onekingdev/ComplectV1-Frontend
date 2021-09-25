@@ -39,7 +39,7 @@ export default {
 </script>
 <style scoped>
 .small-text {
-  font-size: 10px;
+  font-size: 12px;
   text-transform: uppercase;
   color: #797B7E;
 }
