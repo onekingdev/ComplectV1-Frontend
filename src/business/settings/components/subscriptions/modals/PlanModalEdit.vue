@@ -8,7 +8,7 @@
         b-col(cols="8").pr-0
           b-row
             b-col
-              p Your organization currently has {{ plan.users }} acive users
+              p Your organization currently has {{ plan.users }} active users
           b-row.m-b-2
             b-col(class="pr-1")
               label.form-label Billing plan
