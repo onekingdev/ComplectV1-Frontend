@@ -7,7 +7,7 @@
         InputSelect(v-model="role" :options="specialistRoleOptions") Select Role
         .form-text.text-muted Determines the permissions to grant the specialist
     template(#modal-footer="{ hide }")
-      button.btn.btn-hyperlink(@click="hide") Cancel
+      button.btn.btn-link(@click="hide") Cancel
       Post(:action="hireUrl + '?job_application_id=' + application.id" :model="{role}" @saved="$emit('saved', application.project.local_project_id, role)")
         button.btn.btn-dark Confirm
 </template>
