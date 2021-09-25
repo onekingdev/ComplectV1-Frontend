@@ -1,7 +1,7 @@
 <template lang="pug">
   .alert.alert-warning(v-if="hasPendingTimesheets")
-    h4.alert-heading Timesheeet approval required
-    p A new timesheet submission requires approval for completion.
+    h4.alert-heading Timesheet approval is required
+    p A new timesheet has been submitted for approval.
     router-link.btn.btn-light(:to="url('URL_PROJECT_TIMESHEETS', project.id)") View
 </template>
 
