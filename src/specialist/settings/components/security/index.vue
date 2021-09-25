@@ -43,10 +43,10 @@
                   h4.semibold-text Delete Account
               .row.mt-3
                 .col-md-6
-                  p By deleting your account, you will purge all account information&nbsp;
-                    | and saved documents associated with this account. This deletion cannot be reversed.&nbsp;
+                  p By deleting your account, you will purge all information and saved&nbsp;
+                    | documents associated with this account. This deletion cannot be reversed.&nbsp;
                     | Please take appropriate steps to save down to your own storage devices&nbsp;
-                    | those records you may wish to access after the deletion of this account.
+                    | any records you need to access after the deletion of this account.
                   DeleteAccountModal(@deleteConfirmed="deleteAccount")
                     button.btn.btn-danger.font-weight-bold Delete
 </template>
