@@ -197,10 +197,10 @@ export default {
     },
     completeSuccess() {
       this.$bvModal.hide('EndContractModal')
-      this.toast('Success', 'Project End has been requested')
+      this.toast('Success', 'Contract early termination request has been submitted.')
     },
     completeErrors(errors) {
-      errors.length && this.toast('Error', 'Cannot request End project')
+      errors.length && this.toast('Error', 'Contract early termination request has not been submitted. Please try again.')
     },
     viewContract(collaborator) {
       this.tab = 3
