@@ -20,19 +20,16 @@
             h4 {{ 500 | usdWhole }}
         .card-body
           dl.row.mb-0
-            dt.col-sm-3.label Project name
+            dt.col-sm-3.label Job Name
             dd.col-sm-9.text-right {{ project.title }}
           dl.row.mb-0
-            dt.col-sm-3.label Payment method
+            dt.col-sm-3.label Payment Schedule
             dd.col-sm-9.text-right {{ readablePaymentSchedule(project.payment_schedule) }}
-          dl.row.mb-0
-            dt.col-sm-3.label Date Issued
-            dd.col-sm-9.text-right
           dl.row.mb-0
             dt.col-sm-3.label Payment Method
             dd.col-sm-9.text-right Transfer to Visa
         .card-footer.bg-white
-          p.text-right.text-muted.mb-0 *Transactional fees have been included and invoice will be automatically deducted.
+          p.text-right.text-muted.mb-0 *Invoice will be automatically deducted.
       template(#modal-footer="{ hide }")
         button.btn.btn-link(@click="hide") Cancel
         Post(:action="completeUrl" :model="{}" @saved="contractEnded" @errors="$emit('errors', $event)")
