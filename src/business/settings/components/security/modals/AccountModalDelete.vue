@@ -8,7 +8,7 @@
         .col-md-1.text-center.px-0
           img.mt-1.ml-3(src='@/assets/error_20.svg' width="25" height="25")
         .col
-          p.paragraph.m-b-10 By deleting your account, you will purge all account information.
+          p.paragraph.m-b-10 Account deletion is not reversible. Please ensure you have downloaded all the records you would like to retain after this account is deleted..
           p.paragraph.mb-0
             b Do you want to continue?
 
