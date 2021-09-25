@@ -120,8 +120,8 @@
                             template(#button-content)
                               | Actions
                               b-icon.ml-2(icon="chevron-down")
-                            b-dropdown-item Messages
-                            b-dropdown-item Edit Permissions
+                            b-dropdown-item Message
+                            b-dropdown-item Edit Role
                           button.btn.btn-default(@click="showingContract = contract") View Contract
                     .applications(v-if="!getContracts(project.projects).length")
                       .applications__body.applications__body_center.applications__body_m-h-200
