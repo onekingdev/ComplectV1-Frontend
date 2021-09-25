@@ -90,7 +90,7 @@
                               b Payment Method
                               span.float-right Transfer to Visa
                           .card-body
-                            p.text-right.text-muted *Transactional fees lorem ipsum dolor.
+                            p.text-right.text-muted *Transactional fees have been included and invoice will be automatically deducted.
                         template(slot="modal-footer")
                           button.btn(@click="$bvModal.hide('EndContractModal')") Cancel
                           Post(:action="completeUrl(showingContract)" :model="{}" @saved="completeSuccess" @errors="completeErrors")
