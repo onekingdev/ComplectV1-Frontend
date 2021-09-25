@@ -59,7 +59,7 @@ export default {
   methods: {
     saved() {
       this.$bvModal.hide(this.modalId)
-      this.toast('Success', 'Modification requested.')
+      this.toast('Success', 'Contract modification has been requested.')
       this.$emit('saved')
     }
   }
