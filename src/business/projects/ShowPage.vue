@@ -196,7 +196,7 @@ export default {
   methods: {
     contractEnded() {
       this.newEtag()
-      this.toast('Success', 'Project End has been requested')
+      this.toast('Success', 'Contract early termination request has been submitted.')
     },
     taskSaved() {
       this.toast('Success', 'Task created')
@@ -221,7 +221,7 @@ export default {
         body: JSON.stringify({ "specialist": { "role": `${role}` } })
       })
         .then(response => response.json())
-        .then(result => this.toast('Success', 'The Role has been setted!'))
+        .then(result => this.toast('Success', 'Role has been assigned.'))
         .catch(error => console.error(error))
     },
     backToList() {
