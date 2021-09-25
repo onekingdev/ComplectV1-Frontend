@@ -3,7 +3,7 @@
     div(v-b-modal="modalId" :class="{'d-inline-block':inline}")
       slot
 
-    b-modal.fade(:id="modalId" title="Set Role")
+    b-modal.fade(:id="modalId" title="Edit Role")
       p Please confirm the applicant you wish to hire.
       .card
         .card-body
@@ -13,7 +13,7 @@
 
       template(#modal-footer="{ hide }")
         button.btn.btn-link(@click="hide") Cancel
-        button.btn.btn-dark(@click="submit") Set
+        button.btn.btn-dark(@click="submit") Submit
 </template>
 
 <script>
