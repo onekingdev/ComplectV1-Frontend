@@ -6,8 +6,8 @@
   //  .d-flex.align-items-center
   //    b-icon.m-r-2.m-l-1(icon="exclamation-triangle-fill" scale="2" variant="warning")
   //    .d-block.mr-auto
-  //      h4: b The project's due date tommorow
-  //      p.mb-0 Do you want to extend the dataline?
+  //      h4: b Contract deadline is tommorow
+  //      p.mb-0 Do you need to extend the contract deadline?
   //    ExtendDeadlineModal(@saved="$emit('saved')" :project="project" :project-id="project.id")
   //      button.btn.btn-default Extend
 
@@ -31,8 +31,8 @@
       return {
         notify: {
           show: 'show',
-          mainText: `The project's due date tommorow`,
-          subText: 'Do you want to extend the dataline?',
+          mainText: `Contract deadline is tommorow`,
+          subText: 'Do you need to extend the contract deadline?',
           variant: 'warning',
           dismissible: true,
           icon: null,

@@ -31,7 +31,7 @@ export default {
     return {
       // notify: {
       //   show: 'show',
-      //   mainText: `Your project is currently posted on the job board as of ${ project.created_at | asDate }.`,
+      //   mainText: `Your job is currently posted on the job board as of ${ project.created_at | asDate }.`,
       //   subText: 'Keep an eye out! Specialists may reach out to you soon.',
       //   variant: 'primary',
       //   dismissible: true,
@@ -62,7 +62,7 @@ export default {
       if (this.project.status === 'published') {
         notify = {
           show: 'show',
-          mainText: `Your project is currently posted on the job board as of ${ this.$options.filters.asDate(this.project.created_at) }.`,
+          mainText: `Your job is currently posted on the job board as of ${ this.$options.filters.asDate(this.project.created_at) }.`,
           subText: 'Keep an eye out! Specialists may reach out to you soon.',
           variant: 'primary',
           dismissible: true,
@@ -72,8 +72,8 @@ export default {
       } else {
         notify = {
           show: 'show',
-          mainText: `Your posting is currently in draft`,
-          subText: 'Finish the posting to send it to our job board',
+          mainText: `Your job posting is currently in draft`,
+          subText: 'Finish the posting to submit it to our job board.',
           variant: 'primary',
           dismissible: true,
           icon: null,

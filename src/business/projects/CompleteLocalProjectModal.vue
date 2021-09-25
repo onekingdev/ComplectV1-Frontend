@@ -6,7 +6,7 @@
         col-md-1.text-center.px-0
           b-icon.mt-1.ml-3(icon="exclamation-triangle-fill" width="25" height="25" variant="warning")
         .col
-          p.paragraph.m-b-10 The project can't be completed because there is still a contract in progres. To continue, please end the contract with:
+          p.paragraph.m-b-10 The project cannot be marked as complete while there is still an active contract in progress. To continue, please end the contract with:
           p.paragraph.mb-0
             b strong {{ specialistName }}
       .row(v-else)
