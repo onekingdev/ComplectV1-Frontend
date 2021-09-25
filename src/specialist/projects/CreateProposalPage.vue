@@ -28,7 +28,7 @@
               .card-body
                 p Attach a cover letter, resume, or other document here. Limited to only one file.
                 label
-                  a.btn.btn-light Upload File
+                  a.btn.btn-light Upload
                   input.d-none(type="file" accept="application/pdf" @change="pickFile")
                 FileUpload(v-if="form.document" :file="fileObject" @delete="removeFile")
             .text-right.mb-2

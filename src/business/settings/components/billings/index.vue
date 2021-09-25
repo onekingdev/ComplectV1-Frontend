@@ -28,7 +28,7 @@
             .row
               .col
                 InvoicesTable(:invoices="invoices")
-                div(v-if="!invoices && invoices.length") Invoices not avaliable
+                div(v-if="!invoices && invoices.length") No invoices avaliable
 </template>
 
 <script>
