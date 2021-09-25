@@ -9,7 +9,7 @@
         .card-body
           SpecialistDetails(:specialist="specialist")
           InputSelect(v-model="role" :options="specialistRoleOptions") Select Role
-          .form-text.text-muted Determines the permissions the specialist will have access to
+          .form-text.text-muted Determines the permissions to grant the specialist
 
       template(#modal-footer="{ hide }")
         button.btn.btn-link(@click="hide") Cancel
