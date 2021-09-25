@@ -1,5 +1,5 @@
 <template lang="pug">
-  b-modal.fade(:id="modalId" title="View Proposal" size="xl" no-stacking)
+  b-modal.fade(:id="modalId" title="Messages" size="xl" no-stacking)
     .row
       .col-lg-6.pr-lg-2
         .card.messages-info
@@ -59,9 +59,9 @@
                 button.btn.btn-dark.save-comment-btn Send
 
     template(#modal-footer="{ ok, cancel, hide }")
-      button.btn.btn-light(@click="hide") Close
-      button.btn.btn-outline-dark(v-if="!hasSpecialist(application.project)" v-b-modal="'DenyProposalConfirm'") Deny Proposal
-      button.btn.btn-dark(v-if="!hasSpecialist(application.project)" v-b-modal="confirmModalId") Accept Proposal
+      button.btn.btn-link(@click="hide") Cancel
+      button.btn.btn-outline-dark(v-if="!hasSpecialist(application.project)" v-b-modal="'DenyProposalConfirm'") Reject
+      button.btn.btn-dark(v-if="!hasSpecialist(application.project)" v-b-modal="confirmModalId") Accept
 </template>
 
 <script>

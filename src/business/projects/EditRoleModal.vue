@@ -3,17 +3,17 @@
     div(v-b-modal="modalId" :class="{'d-inline-block':inline}")
       slot
 
-    b-modal.fade(:id="modalId" title="Set Role")
+    b-modal.fade(:id="modalId" title="Edit Role")
       p Please confirm the applicant you wish to hire.
       .card
         .card-body
           SpecialistDetails(:specialist="specialist")
           InputSelect(v-model="role" :options="specialistRoleOptions") Select Role
-          .form-text.text-muted Determines the permissions the specialist will have access to
+          .form-text.text-muted Determines the permissions to grant the specialist
 
       template(#modal-footer="{ hide }")
         button.btn.btn-link(@click="hide") Cancel
-        button.btn.btn-dark(@click="submit") Set
+        button.btn.btn-dark(@click="submit") Submit
 </template>
 
 <script>

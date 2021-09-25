@@ -20,27 +20,24 @@
             h4 {{ 500 | usdWhole }}
         .card-body
           dl.row.mb-0
-            dt.col-sm-3.label Project name
+            dt.col-sm-3.label Job Name
             dd.col-sm-9.text-right {{ project.title }}
           dl.row.mb-0
-            dt.col-sm-3.label Payment method
+            dt.col-sm-3.label Payment Schedule
             dd.col-sm-9.text-right {{ readablePaymentSchedule(project.payment_schedule) }}
-          dl.row.mb-0
-            dt.col-sm-3.label Date Issued
-            dd.col-sm-9.text-right
           dl.row.mb-0
             dt.col-sm-3.label Payment Method
             dd.col-sm-9.text-right Transfer to Visa
         .card-footer.bg-white
-          p.text-right.text-muted.mb-0 *Transactional fees lorem ipsum dolor.
+          p.text-right.text-muted.mb-0 *Invoice will be automatically deducted.
       template(#modal-footer="{ hide }")
         button.btn.btn-link(@click="hide") Cancel
         Post(:action="completeUrl" :model="{}" @saved="contractEnded" @errors="$emit('errors', $event)")
           button.btn.btn-dark Confirm
     b-modal(:id="modalId + '_review'" title="Write a Review")
-      p Please rate/describe your experience and leave any additional comments for the specialist!
+      p Please rate your experience and review your experience with the specialist.
       InputRating(v-model="review.value" :errors="errors.value") Rating
-      InputTextarea(v-model="review.review" :errors="errors.review" placeholder="Describe your overall experience and leave any notes for the specialist")
+      InputTextarea(v-model="review.review" :errors="errors.review" placeholder="Describe your overall experience and any notes regarding the engagement")
       template(#modal-footer="{ hide }")
         button.btn.btn-link(@click="hide") Cancel
         button.btn.btn-dark(v-if="review.value === null" title="Please rate your experience" disabled) Submit

@@ -120,8 +120,8 @@
                             template(#button-content)
                               | Actions
                               b-icon.ml-2(icon="chevron-down")
-                            b-dropdown-item Messages
-                            b-dropdown-item Edit Permissions
+                            b-dropdown-item Message
+                            b-dropdown-item Edit Role
                           button.btn.btn-default(@click="showingContract = contract") View Contract
                     .applications(v-if="!getContracts(project.projects).length")
                       .applications__body.applications__body_center.applications__body_m-h-200
@@ -133,10 +133,10 @@
                       button.btn.btn-dark.float-right End Contract
                     b-dropdown.m-x-1.float-right(text="Actions" variant="default")
                       EditRoleModal(:specialist="showingContract.specialist" :inline="false" @saved="accepted")
-                        b-dropdown-item Set role
+                        b-dropdown-item Back
                       b-dropdown-item(v-b-modal="'IssueModal'") Report Issue
                       EditContractModal(:project="showingContract" :inline="true" @saved="newEtag(), tab = 0")
-                        b-dropdown-item Edit Contraxt
+                        b-dropdown-item Edit Role
                       b-dropdown-item(:to="`/business/projects/${showingContract.id}/timesheets`") View Timesheet
                     IssueModal(:project-id="showingContract.id" :token="token")
                     Breadcrumbs.m-y-1(:items="['Collaborators', `${showingContract.specialist.first_name} ${showingContract.specialist.last_name}`]")
@@ -196,7 +196,7 @@ export default {
   methods: {
     contractEnded() {
       this.newEtag()
-      this.toast('Success', 'Project End has been requested')
+      this.toast('Success', 'Contract early termination request has been submitted.')
     },
     taskSaved() {
       this.toast('Success', 'Task created')
@@ -221,7 +221,7 @@ export default {
         body: JSON.stringify({ "specialist": { "role": `${role}` } })
       })
         .then(response => response.json())
-        .then(result => this.toast('Success', 'The Role has been setted!'))
+        .then(result => this.toast('Success', 'Role has been assigned.'))
         .catch(error => console.error(error))
     },
     backToList() {

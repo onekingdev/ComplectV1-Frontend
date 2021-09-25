@@ -1,11 +1,10 @@
 <template lang="pug">
   b-modal#IssueModal(title="Report Issue")
     InputSelect(v-model="form.type" :options="types" :errors="errors.type" placeholder="Select an option") I want to
-    InputTextarea(v-model="form.issue" :errors="errors.issue" placeholder="Enter the details of the issue") Details
+    InputTextarea(v-model="form.issue" :errors="errors.issue" placeholder="Details of your issue and desired resolution") Details
     .form-text.text-muted Include anything you'd like us to know so we can best help you
     template(#modal-footer="{ hide }")
       button.btn.btn-link(@click="hide") Cancel
-      button.btn.btn-dark(v-if="submitDisabled" disabled) Submit
       Post(v-else :action="createUrl" :model="formModel" @errors="errors = $event" @saved="saved" :headers="headers")
         button.btn.btn-dark Submit
 </template>
@@ -33,7 +32,7 @@ export default {
   },
   methods: {
     saved() {
-      this.toast('Success', 'Issue submitted')
+      this.toast('Success', 'Issue has been submitted')
       this.$bvModal.hide('IssueModal')
       Object.assign(this.form, initialForm())
     }

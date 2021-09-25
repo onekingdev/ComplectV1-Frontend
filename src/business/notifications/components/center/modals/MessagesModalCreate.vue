@@ -99,9 +99,8 @@
                   button.btn.btn-dark.save-comment-btn Send
 
       template(slot="modal-footer")
-        button.btn.link(@click="$bvModal.hide(modalId)") Exit
-        button.btn.btn-default(@click="submit") Add to Contacts
-        button.btn.btn-dark(@click="submit") Invite to Project
+        button.btn.link(@click="$bvModal.hide(modalId)") Cancel
+        button.btn.btn-dark(@click="submit") Add to Contacts
 </template>
 
 <script>

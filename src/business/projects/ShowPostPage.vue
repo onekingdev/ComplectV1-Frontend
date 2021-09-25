@@ -108,7 +108,7 @@ export default {
         .then(result => console.log(result))
         .catch(error => console.error(error))
 
-      redirectWithToast(this.$store.getters.url('URL_PROJECT_SHOW', id), 'Specialist added to project.')
+      redirectWithToast(this.$store.getters.url('URL_PROJECT_SHOW', id), 'Specialist has been hired.')
       this.$bvModal.hide(this.confirmModalId)
     },
     deleted() {

@@ -78,19 +78,16 @@
                                 span.float-right Outstanding Due <br> {{ 500 | usdWhole }}
                           .card-body
                             p
-                              b Project name
+                              b Job Name
                               span.float-right {{ showingContract.title }}
                             p
-                              b Payment method
+                              b Payment Schedule
                               span.float-right {{ readablePaymentSchedule(showingContract.payment_schedule) }}
-                            p
-                              b Date Issued
-                              span.float-right
                             p
                               b Payment Method
                               span.float-right Transfer to Visa
                           .card-body
-                            p.text-right.text-muted *Transactional fees lorem ipsum dolor.
+                            p.text-right.text-muted *Invoice will be automatically deducted.
                         template(slot="modal-footer")
                           button.btn(@click="$bvModal.hide('EndContractModal')") Cancel
                           Post(:action="completeUrl(showingContract)" :model="{}" @saved="completeSuccess" @errors="completeErrors")
@@ -139,7 +136,7 @@ const overviewProps = project => {
     { name: 'Industry', value: project.industries, filter: 'names' },
     { name: 'Jurisdiction', value: project.jurisdictions, filter: 'names' },
     { name: 'Minimum Experience', value: project.minimum_experience, filter: 'capital' },
-    { name: 'Former Regulator?', value: project.only_regulators, filter: 'yesNo' },
+    { name: 'Former Regulator', value: project.only_regulators, filter: 'yesNo' },
     { name: 'Skills', value: project.skills, filter: 'names' },
     {
       name: project.pricing_type === 'fixed' ? 'Estimated Budget' : 'Hourly Rate',
@@ -200,10 +197,10 @@ export default {
     },
     completeSuccess() {
       this.$bvModal.hide('EndContractModal')
-      this.toast('Success', 'Project End has been requested')
+      this.toast('Success', 'Contract early termination request has been submitted.')
     },
     completeErrors(errors) {
-      errors.length && this.toast('Error', 'Cannot request End project')
+      errors.length && this.toast('Error', 'Contract early termination request has not been submitted. Please try again.')
     },
     viewContract(collaborator) {
       this.tab = 3
