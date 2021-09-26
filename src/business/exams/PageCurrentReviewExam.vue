@@ -22,7 +22,7 @@
           template(#button-content)
             | Actions
             b-icon.ml-2(icon="chevron-down" font-scale="1")
-          ExamModalEdit(:exam="currentExam" :inline="false" @saved="examSaved")
+          ExamModalEdit(:exam="currentExam" :inline="false" @saved="refetchExam")
             b-dropdown-item Edit
           ExamModalDelete(@deleteConfirmed="deleteExam(currentExam.id)" :inline="false")
             b-dropdown-item.delete Delete
@@ -121,7 +121,8 @@
                         ExamModalComplite(@compliteConfirmed="markCompleteExam", :completedStatus="currentExam.complete", :countCompleted="countCompleted" :inline="false")
                           button.btn(:class="currentExam.complete ? 'btn-default' : 'btn-dark'") Mark as {{ currentExam.complete ? 'Incomplete' : 'Complete' }}
       b-tab(title="Tasks" lazy)
-        PageTasks
+        .container: .row.p-x-1: .col: .card
+          TaskTableExtended(:tasks="currentExam.reminders" @saved="refetchExam" :task-defaults="taskDefaults")
       b-tab(title="Documents" lazy)
         .container
           .row.p-x-1
@@ -145,7 +146,7 @@
   import ExamModalShare from "./modals/ExamModalShare";
   import ExamModalUpload from "./modals/ExamModalUpload";
   import ExamModalSelectFiles from "./modals/ExamModalSelectFiles";
-  import PageTasks from "./PageTasks";
+  import TaskTableExtended from "@/common/TaskTableExtended";
   import PageAttachments from "./PageAttachments";
   import PageActivity from "./PageActivity";
 
@@ -155,7 +156,7 @@
       Loading,
       PageActivity,
       PageAttachments,
-      PageTasks,
+      TaskTableExtended,
       ExamModalSelectFiles,
       ExamModalUpload,
       ExamModalShare,
@@ -181,10 +182,9 @@
       loading() {
         return this.$store.getters.loading;
       },
-      // currentExam() {
-      //   // return this.exam.exam_categories.find(item => item.id === this.revcatId)
-      //   return this.exam
-      // },
+      taskDefaults() {
+        return { linkable_id: this.currentExam?.id, linkable_type: 'Exam' }
+      },
       currentExamRequestsFiltered() {
         if (this.filterOption === 'shared') {
           return this.currentExam.exam_requests.filter(exam => exam.shared)
@@ -216,7 +216,7 @@
       }
     },
     methods: {
-      examSaved() {
+      refetchExam() {
         this.getCurrentExam(this.examId)
       },
       ...mapActions({

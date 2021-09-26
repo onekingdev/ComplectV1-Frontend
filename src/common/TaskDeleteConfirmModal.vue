@@ -23,6 +23,7 @@
   const rnd = () => Math.random().toFixed(10).toString().replace('.', '')
   export default {
     props: {
+      id: String,
       inline: {
         type: Boolean,
         default: true
@@ -35,7 +36,7 @@
     },
     data() {
       return {
-        modalId: `modal_${rnd()}`,
+        modalId: this.id || `modal_${rnd()}`,
         errors: []
       }
     },
