@@ -28,7 +28,7 @@
         tbody.text-dark(v-if="tasksSorted && tasksSorted.length")
           tr(v-for="task in tasksSorted" :key="task.id")
             td
-              TaskFormModal.link(:task-id="task.id" @saved="$emit('saved')") {{ task.body }}
+              TaskFormModal.link(:id="taskFormModalId(task)" :task-id="task.id" @saved="$emit('saved')") {{ task.body }}
             td {{ task.assignee_name || '' }}
             td {{ task.remind_at | asDate }}
             td {{ task.end_date | asDate }}
@@ -36,7 +36,7 @@
               b-dropdown(size="sm" variant="light" class="m-0 p-0" right)
                 template(#button-content)
                   b-icon(icon="three-dots")
-                b-dropdown-item-button Edit
+                b-dropdown-item-button(v-b-modal="taskFormModalId(task)") Edit
                 b-dropdown-item-button Delete
       EmptyState(v-if="!loading && !tasksSorted.length")
 </template>
@@ -74,6 +74,7 @@ export default {
       this.sortDirection = this.sortField === field ? -1 * this.sortDirection : initialDirection
       this.sortField = field
     },
+    taskFormModalId: task => `TaskFormModal_${task.id}`
   },
   computed: {
     loading() {
