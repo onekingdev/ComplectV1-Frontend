@@ -2,7 +2,7 @@
   div
     label.form-label(:class="{ 'required':  required}")
       slot
-    textarea.form-control(v-bind="{value,placeholder,rows}" @input="$emit('input', $event.target.value)")
+    textarea.form-control(v-bind="{value,placeholder,rows}" @input="$emit('input', $event.target.value)" @keyup.enter="$emit('submit')")
     Errors(:errors="errors")
 </template>
 
