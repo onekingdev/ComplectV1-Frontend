@@ -39,10 +39,10 @@
                     h3.m-y-0 Collaborators
                     a.link.btn(@click="viewContract()") View All
                   .card-body
-                    table.rating_table(v-if="getContracts(project.projects).length")
+                    table.rating_table.collaborators_table(v-if="getContracts(project.projects).length")
                       thead
                         tr
-                          th
+                          th.fw-400
                             | Name
                             b-icon.ml-2(icon='chevron-expand')
                           th
@@ -52,8 +52,8 @@
                             .d-flex.align-items-center.mb-3
                               div
                                 UserAvatar.userpic_small.mr-2(:user="contract.specialist")
-                              div.d-flex.flex-column
-                                b {{ contract.specialist.first_name }} {{ contract.specialist.last_name }}
+                              div.d-flex.flex-column.fw-600.fs-14
+                                span {{ contract.specialist.first_name }} {{ contract.specialist.last_name }}
                                 span {{ contract.specialist.seat_role }}
                           td
                             b-dropdown.float-right(text="..." variant="default" right)
