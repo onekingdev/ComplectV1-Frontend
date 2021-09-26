@@ -220,7 +220,7 @@ export default {
     },
     saved() {
       const redirectUrl = `/business/projects/${this.project.local_project_id || ''}`
-      redirectWithToast(redirectUrl, 'Job has been posted.')
+      redirectWithToast(redirectUrl, 'Job posting has been saved.', 'Success')
     },
     getSkillOptions(skills) {
       return skills.map(({ name }) => ({ id: name, label: name }))
