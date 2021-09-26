@@ -67,10 +67,7 @@
                 DiscussionCard(:project-id="project.id" :token="token")
         b-tab.h-100(title="Tasks")
           .card-body.card-body_full-height.h-100: .card
-            TaskTableExtended(v-if="incompleteTasks(project).length" :tasks="incompleteTasks(project)" :task-defaults="taskDefaults(project)" @saved="newEtag")
-            .row.h-100(v-else)
-              .col.h-100.text-center
-                EmptyState(name="Tasks")
+            TaskTableExtended(:tasks="incompleteTasks(project)" :task-defaults="taskDefaults(project)" @saved="newEtag")
             h3.pointer(v-if="completedTasks(project).length" @click="completedTasksOpen = !completedTasksOpen")
               span.caret(:class="{caret_rotated:!completedTasksOpen}")
               | Completed Tasks
