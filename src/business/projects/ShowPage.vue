@@ -131,7 +131,10 @@
                   .row(v-if="!isContractComplete(showingContract)"): .col-sm-12
                     EndContractModal(:project="showingContract" @saved="contractEnded")
                       button.btn.btn-dark.float-right End Contract
-                    b-dropdown.m-x-1.float-right(text="Actions" variant="default")
+                    b-dropdown.m-x-1.float-right(variant="default")
+                      template(#button-content)
+                        | Actions
+                        b-icon.ml-2(icon="chevron-down")
                       EditRoleModal(:specialist="showingContract.specialist" :inline="false" @saved="accepted")
                         b-dropdown-item Back
                       b-dropdown-item(v-b-modal="'IssueModal'") Report Issue
