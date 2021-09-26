@@ -22,7 +22,7 @@
           template(#button-content)
             | Actions
             b-icon.ml-2(icon="chevron-down" font-scale="1")
-          ExamModalEdit(:exam="currentExam" :inline="false" @saved="examSaved")
+          ExamModalEdit(:exam="currentExam" :inline="false" @saved="refetchExam")
             b-dropdown-item Edit
           ExamModalDelete(@deleteConfirmed="deleteExam(currentExam.id)" :inline="false")
             b-dropdown-item.delete Delete
@@ -122,7 +122,7 @@
                           button.btn(:class="currentExam.complete ? 'btn-default' : 'btn-dark'") Mark as {{ currentExam.complete ? 'Incomplete' : 'Complete' }}
       b-tab(title="Tasks" lazy)
         .container-fluid: .row: .col.mx-auto
-          TaskTableExtended(:tasks="currentExam.reminders")
+          TaskTableExtended(:tasks="currentExam.reminders" @saved="refetchExam")
       b-tab(title="Documents" lazy)
         .container
           .row.p-x-1
@@ -217,7 +217,7 @@
       }
     },
     methods: {
-      examSaved() {
+      refetchExam() {
         this.getCurrentExam(this.examId)
       },
       ...mapActions({
