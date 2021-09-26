@@ -27,7 +27,8 @@
             th(width="35px")
         tbody.text-dark(v-if="tasksSorted && tasksSorted.length")
           tr(v-for="task in tasksSorted" :key="task.id")
-            td {{ task.body }}
+            td
+              TaskFormModal.link(:task-id="task.id" @saved="$emit('saved')") {{ task.body }}
             td {{ task.assignee_name || '' }}
             td {{ task.remind_at | asDate }}
             td {{ task.end_date | asDate }}
