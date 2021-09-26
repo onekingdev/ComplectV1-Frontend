@@ -38,7 +38,7 @@
 
       template(slot="modal-footer")
         button.btn.btn-link(@click="$bvModal.hide(modalId)") Cancel
-        button.btn.btn-dark(@click="submit") Update
+        button.btn.btn-dark(@click="submit") Save
 </template>
 
 <script>
