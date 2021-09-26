@@ -1,7 +1,7 @@
 <template lang="pug">
-  b-modal.messages-modal.fade(:id="modalId" :title="`Messages with ${application.specialist.first_name}`" size="xl" no-stacking)
+  b-modal.fade(:id="modalId" :title="`Messages with ${application.specialist.first_name}`" size="xl" no-stacking)
     .messages-modal
-      //- pre {{application}}
+      
       .info-box
         .header
           UserAvatar(:user="application.specialist" :bg="true")
