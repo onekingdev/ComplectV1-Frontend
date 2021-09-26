@@ -5,7 +5,7 @@
     .form-text.text-muted Include anything you'd like us to know so we can best help you
     template(#modal-footer="{ hide }")
       button.btn.btn-link(@click="hide") Cancel
-      Post(v-else :action="createUrl" :model="formModel" @errors="errors = $event" @saved="saved" :headers="headers")
+      Post(:action="createUrl" :model="formModel" @errors="errors = $event" @saved="saved" :headers="headers")
         button.btn.btn-dark Submit
 </template>
 
