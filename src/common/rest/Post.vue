@@ -27,15 +27,17 @@ export default {
   methods: {
     submit() {
       this.$emit('errors', [])
+      const headers = {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json',
+        ...this.$store.getters.authHeaders.headers,
+        ...this.headers
+      }
+      const businessId = window.localStorage["app.business_id"]
+      if (businessId) headers['business_id'] = businessId
       fetch(this.$store.getters.backendUrl+this.action, {
         method: this.method,
-        headers: {
-          'Accept': 'application/json',
-          'Content-Type': 'application/json',
-          'business_id': window.localStorage["app.business_id"],
-          ...this.$store.getters.authHeaders.headers,
-          ...this.headers
-        },
+        headers: headers,
         body: JSON.stringify(this.model)
       }).then(response => {
         if (response.status === 422) {
