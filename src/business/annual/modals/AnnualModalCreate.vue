@@ -92,7 +92,7 @@
       async submit(e) {
         e.preventDefault();
         if (this.plan === 'team' && this.reviews.length === 1) {
-          this.toast('Error', 'Internal review has not been created. Please upgrade plan to create more than one review a year.', true)
+          this.toast('Error', 'Internal review has not been created. Please upgrade plan to create more reviews per year.', true)
           this.$bvModal.hide(this.modalId)
           return
         }
