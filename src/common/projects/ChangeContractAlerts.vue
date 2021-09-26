@@ -1,17 +1,17 @@
 <template lang="pug">
   div(v-if="hasChanges || isSuggestionVisible")
     .alert.alert-warning.m-b-20(v-if="hasChanges && !isMyChange && project.extension.ends_on_only")
-      h4.alert-heading {{ counterpartyName }} has requested to extend the deadline to {{ project.extension.ends_on | asDate }}
+      h4.alert-heading Contract extension till {{ project.extension.ends_on | asDate }} requested
       p.mb-0
         Post(:action="`${submitUrl}/1`" method="PUT" :model="{confirm:true}" @saved="saved('Deadline extended')")
           button.btn.btn-default.float-right Accept
         Post(:action="`${submitUrl}/1`" method="PUT" :model="{deny:true}" @saved="saved('Deadline extension denied')")
           button.btn.btn-default.float-right.m-r-1 Deny
-        | Would you like to proceed?
+        | {{ counterpartyName }} has requested to extend the contract.
     .alert.alert-warning.m-b-20(v-else-if="hasChanges && !isMyChange")
-      h4.alert-heading Contract change requested
+      h4.alert-heading Modification to contract terms requested
       p.mb-0
-        | Would you like to proceed?
+        | {{ counterpartyName }} has requested to modify the terms of the contract.
         ApproveContractChangesModal(:project="project" @saved="$emit('saved')")
     Notifications.m-b-20(v-else-if="isSuggestionVisible" :notify="notifyDueDate")
       button.btn.btn-default.m-r-2(v-b-modal="'ExtendDeadlineModal'") Extend
@@ -19,18 +19,18 @@
           InputDate(v-model="form.ends_on" :errors="errors.ends_on" :options="datepickerOptions") New Due Date
           template(#modal-footer="{ hide }")
             button.btn.btn-link.float-right(@click="hide") Cancel
-            Post(:action="submitUrl" :model="form" @errors="errors = $event" @saved="saved('A project extension has been requested')")
+            Post(:action="submitUrl" :model="form" @errors="errors = $event" @saved="saved('Contract extension has been requested.')")
               button.btn.btn-dark.float-right Confirm
     //.alert.alert-warning.m-b-20(v-else-if="isSuggestionVisible")
-    //  h4.alert-heading The project's due date is tomorrow.
+    //  h4.alert-heading Contract deadline is tomorrow
     //  p.mb-0
     //    button.btn.btn-default.float-right(v-b-modal="'ExtendDeadlineModal'") Extend
-    //    | Do you want to extend the deadline?
+    //    | Contract ends tomorrow and outstanding invoices will automatically be processed. Do you need to extend the deadline?
     //    b-modal(id="ExtendDeadlineModal" title="Extend Deadline")
     //      InputDate(v-model="form.ends_on" :errors="errors.ends_on" :options="datepickerOptions") New Due Date
     //      template(#modal-footer="{ hide }")
     //        button.btn.btn-link.float-right(@click="hide") Cancel
-    //        Post(:action="submitUrl" :model="form" @errors="errors = $event" @saved="saved('A project extension has been requested')")
+    //        Post(:action="submitUrl" :model="form" @errors="errors = $event" @saved="saved('Contract extension has been requested.')")
     //          button.btn.btn-dark.float-right Confirm
 </template>
 
@@ -62,8 +62,8 @@ export default {
       errors: {},
       notifyDueDate: {
         show: 'show',
-        mainText: `The project's due date tommorow`,
-        subText: 'Do you want to extend the dataline?',
+        mainText: `Contract deadline is tomorrow`,
+        subText: 'Contract ends tomorrow and outstanding invoices will automatically be processed. Do you need to extend the deadline?',
         variant: 'warning',
         dismissible: true,
         icon: null,
