@@ -98,7 +98,7 @@
                       AnnualModalComplite(v-else @compliteConfirmed="markComplete", :completedStatus="currentCategory.complete" :name="currentCategory.name" :inline="false")
                         button.btn(:class="'btn-dark'") Mark as Complete
       b-tab(title="Tasks")
-        .container: .row.p-x-1: .col
+        .container: .row.p-x-1: .col: .card
           TaskTableExtended(:tasks="review.reminders" :task-defaults="{ linkable_type: 'AnnualReport', linkable_id: review.id }")
       b-tab(title="Documents")
         PageDocuments

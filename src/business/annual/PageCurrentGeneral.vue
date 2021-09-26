@@ -194,7 +194,7 @@
                     button.btn(:class="'btn-dark'") Mark as {{ review.complete ? 'Incomplete' : 'Complete' }}
       b-tab(title="Tasks")
         Get(:reviewModel="`/api/business/annual_reports/${annualId}`" :etag="tasksEtag"): template(v-slot="{ reviewModel }")
-          .container: .row.p-x-1: .col
+          .container: .row.p-x-1: .col: .card
             TaskTableExtended(:tasks="reviewModel.reminders" :task-defaults="{ linkable_type: 'AnnualReport', linkable_id: reviewModel.id }" @saved="newTasksEtag")
       b-tab(title="Documents")
         PageDocuments
