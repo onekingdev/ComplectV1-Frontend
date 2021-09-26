@@ -99,7 +99,7 @@ export default {
       return this.timesheet ? 'Edit Log Time' : 'Log Time'
     },
     buttonSaveText() {
-      return this.timesheet ? 'Save' : 'Submit'
+      return this.timesheet ? 'Submit' : 'Submit'
     },
     timesheetsUrl() {
       const baseUrl = this.$store.getters.url('URL_API_PROJECT_TIMESHEET', this.project.id)
