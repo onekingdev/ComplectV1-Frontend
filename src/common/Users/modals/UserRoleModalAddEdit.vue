@@ -3,7 +3,7 @@
     div(v-b-modal="modalId" :class="{'d-inline-block':inline}")
       slot
 
-    b-modal.fade(:id="modalId" title="Add User")
+    b-modal.fade(:id="modalId" title="New User")
       .row
         .col-12.m-b-1
           Notifications(:notify="notify")
@@ -32,7 +32,7 @@
 
       template(slot="modal-footer")
         button.btn.btn-link(@click="$bvModal.hide(modalId)") Cancel
-        button.btn.btn-dark(@click="submit") Add
+        button.btn.btn-dark(@click="submit") Create
 </template>
 
 <script>
@@ -77,7 +77,7 @@
         notify: {
           show: 'show',
           mainText: 'User limit reached',
-          subText: 'Please edit your plan in order to add additional users',
+          subText: 'Please edit your plan and purchase more seats in order to add additional users',
           variant: 'warning',
           dismissible: false,
           icon: null,
@@ -92,7 +92,7 @@
 
         try {
 
-          this.toast('Success', `User successfully added!`)
+          this.toast('Success', `User has been created.`)
           this.$emit('saved')
           this.$bvModal.hide(this.modalId)
         } catch (error) {
