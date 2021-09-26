@@ -15,7 +15,7 @@
               ComboBox(V-model="plan.billingPlan" :options="linkToOptions" placeholder="Select a billing plan" @input="selectPlan")
               Errors(:errors="errors.billingPlan")
             b-col(class="pl-1")
-              label.form-label Users
+              label.form-label Additional Users
               input.form-control(v-model="additionalUsers" type="number" placeholder="Users" ref="input" min="0" @keyup.enter="submit" @input="calcPrice")
               Errors(:errors="errors.count")
         b-col
