@@ -67,7 +67,8 @@
                           a.link(href="#" @click.prevent v-b-modal="modalId")
                             b-icon.mr-2(icon="search")
                             | View
-                        ProposalModal(v-bind="{ application, modalId, confirmModalId, projectId }")
+                        MessagesModal(v-bind="{ application, modalId, confirmModalId, projectId }")
+                        //- ProposalModal(v-bind="{ application, modalId, confirmModalId, projectId }")
                         DenyProposalConfirmModal(:application="application" :project-id="projectId" @back="goBack" @denied="denied")
                         AcceptDenyProposalModal(:id="confirmModalId" :application="application" @back="goBack" @saved="accepted")
 </template>
@@ -76,6 +77,7 @@
 import AcceptDenyProposalModal from './AcceptDenyProposalModal'
 import DenyProposalConfirmModal from './DenyProposalConfirmModal'
 import ProposalModal from './ProposalModal'
+import MessagesModal from '@/common/Messages/MessagesModal'
 import { FIXED_PAYMENT_SCHEDULE_OPTIONS } from '@/common/ProjectInputOptions'
 import { redirectWithToast } from '@/common/Toast'
 import PostProjectModalDelete from "./modals/PostProjectModalDelete";
@@ -141,7 +143,8 @@ export default {
     PostProjectModalDelete,
     AcceptDenyProposalModal,
     DenyProposalConfirmModal,
-    ProposalModal
+    ProposalModal,
+    MessagesModal
   }
 }
 </script>

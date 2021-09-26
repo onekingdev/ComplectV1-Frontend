@@ -1,6 +1,6 @@
 <template lang="pug">
-  b-modal.fade(:id="modalId" :title="`Messages with ${application.specialist.first_name}`" size="xl" no-stacking)
-    .proposal-box
+  b-modal.messages-modal.fade(:id="modalId" :title="`Messages with ${application.specialist.first_name}`" size="xl" no-stacking)
+    .messages-modal
       .info-box
         .header
           UserAvatar(:user="application.specialist" :bg="true")
@@ -21,14 +21,12 @@
             button.btn.btn-primary.save-comment-btn Send
     template(#modal-footer="{ hide }")
       button.btn.btn-link(@click="hide") Cancel
-      button.btn.btn-dark(v-if="!hasSpecialist(application.project)" v-b-modal="confirmModalId") Add to Contacts
+      button.btn.btn-dark(v-b-modal="confirmModalId") Add to Contacts
 
 </template>
 
 <script>
-import SpecialistDetails from './SpecialistDetails'
 import StarsRating from "@/business/marketplace/components/StarsRating"
-import { FIXED_PAYMENT_SCHEDULE_OPTIONS } from '@/common/ProjectInputOptions'
 import Messages from '@/common/Messages'
 
 export default {
@@ -62,9 +60,6 @@ export default {
     }
   },
   computed: {
-    hasSpecialist: () => project => !!project.specialist_id,
-    paymentScheduleReadable: () => application => FIXED_PAYMENT_SCHEDULE_OPTIONS[application.payment_schedule],
-    attachmentUrl: () => document => `/uploads/${document.storage}/${document.id}`,
     specialistInformation() {
       return {
         "Rate": '$'+this.application.specialist.min_hourly_rate,
@@ -75,7 +70,6 @@ export default {
     }
   },
   components: {
-    SpecialistDetails,
     StarsRating,
     Messages,
   }
@@ -89,7 +83,7 @@ export default {
 </style>
 
 <style lang="scss" scoped>
-.proposal-box {
+.messages-modal {
   display: flex;
   flex-wrap: wrap;
   gap: 1rem;
