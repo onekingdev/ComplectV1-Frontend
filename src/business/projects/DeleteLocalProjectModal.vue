@@ -36,7 +36,7 @@ export default {
   methods: {
     deleted() {
       this.$bvModal.hide('DeleteProjectModal')
-      redirectWithToast(redirectUrl, 'Project deleted')
+      redirectWithToast('/business/projects', 'Project has been deleted.', 'Success')
     }
   },
   computed: {
