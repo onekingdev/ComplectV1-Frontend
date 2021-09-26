@@ -91,7 +91,7 @@
         notify: {
           show: 'show',
           mainText: 'User limit reached',
-          subText: 'Please edit your plan in order to add additional users',
+          subText: 'Please edit your plan to create additional users',
           variant: 'warning',
           dismissible: false,
           icon: null,
