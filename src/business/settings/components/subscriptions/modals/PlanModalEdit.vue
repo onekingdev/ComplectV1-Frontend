@@ -11,7 +11,7 @@
               p Your organization currently has {{ plan.users }} active users
           b-row.m-b-2
             b-col(class="pr-1")
-              label.form-label Billing plan
+              label.form-label Billing Plan
               ComboBox(V-model="plan.billingPlan" :options="linkToOptions" placeholder="Select a billing plan" @input="selectPlan")
               Errors(:errors="errors.billingPlan")
             b-col(class="pl-1")
