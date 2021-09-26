@@ -23,7 +23,13 @@
           Post(:action="`/api/messages/${contact.meta.id}`" :model="{ message }" @errors="messageErrors = $event" @saved="messageSaved" alignRight)
             button.btn.btn-primary.save-comment-btn Send
 
-    template(#modal-footer="{ hide }")
+    
+    
+    template(v-if="proposal" #modal-footer="{ ok, cancel, hide }")
+      button.btn.btn-link(@click="hide") Cancel
+      button.btn.btn-outline-dark(v-if="!hasSpecialist(application.project)" v-b-modal="'DenyProposalConfirm'") Reject
+      button.btn.btn-dark(v-if="!hasSpecialist(application.project)" v-b-modal="confirmModalId") Accept
+    template(v-else #modal-footer="{ hide }")
       button.btn.btn-link(@click="hide") Cancel
       button.btn.btn-dark Add to Contacts
 
@@ -72,6 +78,10 @@ export default {
     }
   },
   computed: {
+    hasSpecialist: () => project => !!project.specialist_id,
+    proposal() {
+      return true
+    },
     contact() {
       return {
         meta: {
