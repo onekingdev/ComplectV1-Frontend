@@ -108,7 +108,6 @@
                             button.btn.btn-dark Create
                   .card-body
                     .p-20.collaborator(v-for="contract in getContracts(project.projects)" :key="contract.specialist.id")
-                      pre {{contract}}
                       .d-flex.justify-content-between.align-items-center
                         .d-flex.align-items-center
                             div
