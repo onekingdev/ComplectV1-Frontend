@@ -105,7 +105,7 @@ new Vue({
   store,
   created() {
     const toast = extractToastMessage()
-    toast && this.toast('', toast)
+    toast && this.toast(toast.title, toast.message)
   },
   render: h => h(App),
 }).$mount('#app')
