@@ -11,11 +11,11 @@
               p Your organization currently has {{ plan.users }} active users
           b-row.m-b-2
             b-col(class="pr-1")
-              label.form-label Billing plan
+              label.form-label Billing Plan
               ComboBox(V-model="plan.billingPlan" :options="linkToOptions" placeholder="Select a billing plan" @input="selectPlan")
               Errors(:errors="errors.billingPlan")
             b-col(class="pl-1")
-              label.form-label Users
+              label.form-label Additional Users
               input.form-control(v-model="additionalUsers" type="number" placeholder="Users" ref="input" min="0" @keyup.enter="submit" @input="calcPrice")
               Errors(:errors="errors.count")
         b-col
@@ -38,7 +38,7 @@
 
       template(slot="modal-footer")
         button.btn.btn-link(@click="$bvModal.hide(modalId)") Cancel
-        button.btn.btn-dark(@click="submit") Update
+        button.btn.btn-dark(@click="submit") Save
 </template>
 
 <script>
