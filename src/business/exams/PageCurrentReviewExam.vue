@@ -122,7 +122,7 @@
                           button.btn(:class="currentExam.complete ? 'btn-default' : 'btn-dark'") Mark as {{ currentExam.complete ? 'Incomplete' : 'Complete' }}
       b-tab(title="Tasks" lazy)
         .container: .row.p-x-1: .col: .card
-          TaskTableExtended(:tasks="currentExam.reminders" @saved="refetchExam")
+          TaskTableExtended(:tasks="currentExam.reminders" @saved="refetchExam" :task-defaults="taskDefaults")
       b-tab(title="Documents" lazy)
         .container
           .row.p-x-1
@@ -182,10 +182,9 @@
       loading() {
         return this.$store.getters.loading;
       },
-      // currentExam() {
-      //   // return this.exam.exam_categories.find(item => item.id === this.revcatId)
-      //   return this.exam
-      // },
+      taskDefaults() {
+        return { linkable_id: this.currentExam?.id, linkable_type: 'Exam' }
+      },
       currentExamRequestsFiltered() {
         if (this.filterOption === 'shared') {
           return this.currentExam.exam_requests.filter(exam => exam.shared)
