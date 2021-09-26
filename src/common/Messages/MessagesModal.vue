@@ -1,29 +1,32 @@
 <template lang="pug">
   b-modal.messages-modal.fade(:id="modalId" :title="`Messages with ${application.specialist.first_name}`" size="xl" no-stacking)
     .messages-modal
+      
       .info-box
         .header
           UserAvatar(:user="application.specialist" :bg="true")
-          .name {{ application.specialist.first_name }} {{ application.specialist.last_name }}
-          StarsRating(:rate="application.specialist.ratings_average")
-        .information
-          .section(v-for="(content, title) in specialistInformation")
+          .name {{ contact.meta.name }}
+          StarsRating(:rate="contact.meta.rating")
+        .details
+          .section(v-for="(content, title) in contact.details")
             .title {{ title }}
             .content {{ content }}
+        
       .messages-box
-        Get(:messages="`/api/reminders/${taskId}/messages`" :etag="etagMessages"): template(v-slot="{ messages }"): .card-body.p-0
-          Messages(:messages="messages" ref="Messages" @created="scrollMessages" @saved="newEtagMessages")
-        .input-area
-          label.form-label Comment
-          textarea-autosize.w-100.form-control.d-block(v-model="message.message" :min-height="100")
-          Errors(:errors="errors.message")
-          Post(:action="`/api/reminders/${taskId}/messages`" :model="{ message }" @errors="messageErrors = $event" @saved="messageSaved" alignRight)
-            button.btn.btn-primary.save-comment-btn Send
+          Get(:messages="`/api/reminders/${taskId}/messages`" :etag="etagMessages"): template(v-slot="{ messages }"): .card-body.p-0
+            Messages(:messages="messages" ref="Messages" @created="scrollMessages" @saved="newEtagMessages")
+          .input-area
+            label.form-label Comment
+            textarea-autosize.w-100.form-control.d-block(v-model="message.message" :min-height="100")
+            Errors(:errors="errors.message")
+            Post(:action="`/api/reminders/${taskId}/messages`" :model="{ message }" @errors="messageErrors = $event" @saved="messageSaved" alignRight)
+              button.btn.btn-primary.save-comment-btn Send
     template(#modal-footer="{ hide }")
       button.btn.btn-link(@click="hide") Cancel
       button.btn.btn-dark(v-b-modal="confirmModalId") Add to Contacts
 
 </template>
+
 
 <script>
 import StarsRating from "@/business/marketplace/components/StarsRating"
@@ -60,12 +63,18 @@ export default {
     }
   },
   computed: {
-    specialistInformation() {
+    contact() {
       return {
-        "Rate": '$'+this.application.specialist.min_hourly_rate,
-        "Industries": this.application.specialist.industries.map(industry => industry.name).join(', '),
-        "Jurisdictions": this.application.specialist.jurisdictions.map(jurisdiction => jurisdiction.name).join(', '),
-        "About Me": this.application.specialist.description,
+        meta: {
+          name: `${this.application.specialist.first_name} ${this.application.specialist.last_name}`,
+          rating: this.application.specialist.ratings_average,
+        },
+        details: {
+          "Rate": '$'+this.application.specialist.min_hourly_rate,
+          "Industries": this.application.specialist.industries.map(industry => industry.name).join(', '),
+          "Jurisdictions": this.application.specialist.jurisdictions.map(jurisdiction => jurisdiction.name).join(', '),
+          "About Me": this.application.specialist.description,
+        }
       }
     }
   },
@@ -75,6 +84,7 @@ export default {
   }
 }
 </script>
+
 
 <style lang="scss">
 .modal-title {
@@ -87,7 +97,6 @@ export default {
   display: flex;
   flex-wrap: wrap;
   gap: 1rem;
-  // align-items: flex-start;
   .info-box, .messages-box {
     border: solid 1px #DCDEE4;
     border-radius: 4px;
@@ -108,7 +117,7 @@ export default {
         margin: 0.5rem 0;
       }
     }
-    .information {
+    .details {
       flex: 1;
       max-height: 350px;
       overflow-y: auto;
