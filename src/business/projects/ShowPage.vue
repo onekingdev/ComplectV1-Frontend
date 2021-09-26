@@ -66,7 +66,7 @@
               .col-md-12
                 DiscussionCard(:project-id="project.id" :token="token")
         b-tab.h-100(title="Tasks")
-          .card-body.card-body_full-height.h-100
+          .card-body.card-body_full-height.h-100: .card
             TaskTableExtended(v-if="incompleteTasks(project).length" :tasks="incompleteTasks(project)" :task-defaults="taskDefaults(project)" @saved="newEtag")
             .row.h-100(v-else)
               .col.h-100.text-center

@@ -95,3 +95,7 @@ export default {
   },
 }
 </script>
+
+<style>
+  @import "../business/policies/styles.css";
+</style>
