@@ -29,6 +29,7 @@
           tr(v-for="task in tasksSorted" :key="task.id")
             td
               TaskFormModal.link(:id="taskFormModalId(task)" :task-id="task.id" @saved="$emit('saved')") {{ task.body }}
+              TaskDeleteConfirmModal(:id="taskDeleteConfirmModalId(task)" @deleteConfirmed="deleteTask(task)")
             td {{ task.assignee_name || '' }}
             td {{ task.remind_at | asDate }}
             td {{ task.end_date | asDate }}
@@ -37,14 +38,16 @@
                 template(#button-content)
                   b-icon(icon="three-dots")
                 b-dropdown-item-button(v-b-modal="taskFormModalId(task)") Edit
-                b-dropdown-item-button Delete
+                b-dropdown-item-button(v-b-modal="taskDeleteConfirmModalId(task)") Delete
       EmptyState(v-if="!loading && !tasksSorted.length")
 </template>
 
 <script>
 import Loading from '@/common/Loading/Loading'
 import TaskFormModal from '@/common/TaskFormModal'
+import TaskDeleteConfirmModal from '@/common/TaskDeleteConfirmModal'
 import EtaggerMixin from '@/mixins/EtaggerMixin'
+import axios from '@/services/axios'
 
 export default {
   mixins: [EtaggerMixin()],
@@ -74,7 +77,17 @@ export default {
       this.sortDirection = this.sortField === field ? -1 * this.sortDirection : initialDirection
       this.sortField = field
     },
-    taskFormModalId: task => `TaskFormModal_${task.id}`
+    async deleteTask({ id }) {
+      try {
+        await axios.delete(`/reminders/${id}`)
+        this.toast('Success', 'Task Deleted')
+        this.$emit('saved')
+      } catch (e) {
+        this.toast('Error', 'Cannot delete task', true)
+      }
+    },
+    taskFormModalId: task => `TaskFormModal_${task.id}`,
+    taskDeleteConfirmModalId: task => `TaskDeleteConfirmModal_${task.id}`,
   },
   computed: {
     loading() {
@@ -93,7 +106,8 @@ export default {
   },
   components: {
     Loading,
-    TaskFormModal
+    TaskFormModal,
+    TaskDeleteConfirmModal,
   },
 }
 </script>
