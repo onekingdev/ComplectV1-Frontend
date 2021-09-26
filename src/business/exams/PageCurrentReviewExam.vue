@@ -121,7 +121,7 @@
                         ExamModalComplite(@compliteConfirmed="markCompleteExam", :completedStatus="currentExam.complete", :countCompleted="countCompleted" :inline="false")
                           button.btn(:class="currentExam.complete ? 'btn-default' : 'btn-dark'") Mark as {{ currentExam.complete ? 'Incomplete' : 'Complete' }}
       b-tab(title="Tasks" lazy)
-        .container-fluid: .row: .col.mx-auto
+        .container: .row.p-x-1: .col: .card
           TaskTableExtended(:tasks="currentExam.reminders" @saved="refetchExam")
       b-tab(title="Documents" lazy)
         .container
