@@ -1,7 +1,7 @@
 <template lang="pug">
   b-modal.messages-modal.fade(:id="modalId" :title="`Messages with ${application.specialist.first_name}`" size="xl" no-stacking)
     .messages-modal
-      
+      //- pre {{application}}
       .info-box
         .header
           UserAvatar(:user="application.specialist" :bg="true")
@@ -13,17 +13,19 @@
             .content {{ content }}
         
       .messages-box
-          Get(:messages="`/api/reminders/${taskId}/messages`" :etag="etagMessages"): template(v-slot="{ messages }"): .card-body.p-0
+        .messages
+          Get(:messages="`/api/messages/${contact.meta.id}`"): template(v-slot="{ messages }"): .card-body.p-0
             Messages(:messages="messages" ref="Messages" @created="scrollMessages" @saved="newEtagMessages")
-          .input-area
-            label.form-label Comment
-            textarea-autosize.w-100.form-control.d-block(v-model="message.message" :min-height="100")
-            Errors(:errors="errors.message")
-            Post(:action="`/api/reminders/${taskId}/messages`" :model="{ message }" @errors="messageErrors = $event" @saved="messageSaved" alignRight)
-              button.btn.btn-primary.save-comment-btn Send
+        .input-area
+          label.form-label Comment
+          textarea-autosize.w-100.form-control.d-block(v-model="message.message" :min-height="100")
+          Errors(:errors="messageErrors.message")
+          Post(:action="`/api/messages/${contact.meta.id}`" :model="{ message }" @errors="messageErrors = $event" @saved="messageSaved" alignRight)
+            button.btn.btn-primary.save-comment-btn Send
+
     template(#modal-footer="{ hide }")
       button.btn.btn-link(@click="hide") Cancel
-      button.btn.btn-dark(v-b-modal="confirmModalId") Add to Contacts
+      button.btn.btn-dark Add to Contacts
 
 </template>
 
@@ -31,8 +33,17 @@
 <script>
 import StarsRating from "@/business/marketplace/components/StarsRating"
 import Messages from '@/common/Messages'
+import EtaggerMixin from '@/mixins/EtaggerMixin'
 
 export default {
+  components: {
+    StarsRating,
+    Messages
+  },
+  mixins: [
+    EtaggerMixin(),
+    EtaggerMixin('etagMessages'),
+  ],
   props: {
     modalId: {
       type: String,
@@ -54,18 +65,17 @@ export default {
   data() {
     return {
       message: {
-        comment: ''
+        message: null
       },
-      messages: [],
-      // messages: [{"id":42,"sender":{"first_name":"First","last_name":"Business","photo":null},"recipient":null,"message":"\u003cp\u003ewqewqe\u003c/p\u003e","file_data":null,"created_at":"2021-08-25T06:48:06.742Z"},{"id":41,"sender":{"first_name":"First","last_name":"Business","photo":null},"recipient":null,"message":"\u003cp\u003eqewqeqwe\u003c/p\u003e","file_data":null,"created_at":"2021-08-25T06:39:32.441Z"}],
-      errors: {},
-      files: null
+      messageErrors: {},
+      errors: {}
     }
   },
   computed: {
     contact() {
       return {
         meta: {
+          id: this.application.specialist_id,
           name: `${this.application.specialist.first_name} ${this.application.specialist.last_name}`,
           rating: this.application.specialist.ratings_average,
         },
@@ -78,9 +88,19 @@ export default {
       }
     }
   },
-  components: {
-    StarsRating,
-    Messages,
+  methods: {
+    scrollMessages() {
+      this.$nextTick(() => {
+        const messagesContainer = this.$refs.Messages.$refs.MessagesContainer
+        messagesContainer && setTimeout(() => messagesContainer.scrollTop = messagesContainer.scrollHeight, 500)
+      })
+    },
+    messageSaved() {
+      this.newEtagMessages()
+      this.message.message = null
+      this.messageErrors = {}
+      this.scrollMessages()
+    },
   }
 }
 </script>
@@ -136,6 +156,12 @@ export default {
   }
   .messages-box {
     flex: 3 0 auto;
+    ::v-deep .message {
+      margin: 0 1rem;
+      &:last-child {
+        border-bottom: 0
+      }
+    }
     .input-area {
       border-top: solid 1px #DCDEE4;
       padding: 1.25rem;
