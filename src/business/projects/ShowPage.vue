@@ -107,13 +107,14 @@
                           Post(:action="'/api/local_projects/' + project.id + '/specialists'" :model="{id}" @saved="newEtag()")
                             button.btn.btn-dark Create
                   .card-body
-                    .card.p-20(v-for="contract in getContracts(project.projects)" :key="contract.specialist.id")
+                    .p-20.collaborator(v-for="contract in getContracts(project.projects)" :key="contract.specialist.id")
+                      pre {{contract}}
                       .d-flex.justify-content-between.align-items-center
                         .d-flex.align-items-center
                             div
                               UserAvatar.userpic_small.mr-2(:user="contract.specialist")
                             div.d-flex.flex-column
-                              b {{ contract.specialist.first_name }} {{ contract.specialist.last_name }}
+                              b.collaborator__name {{ contract.specialist.first_name }} {{ contract.specialist.last_name }}
                               span {{ contract.specialist.seat_role }}
                         .d-flex.justify-content-end
                           b-dropdown.bg-white.mr-2(variant="light", right)
@@ -122,7 +123,7 @@
                               b-icon.ml-2(icon="chevron-down")
                             b-dropdown-item Message
                             b-dropdown-item Edit Role
-                          button.btn.btn-default(@click="showingContract = contract") View Contract
+                          button.btn.btn-primary(@click="showingContract = contract") View Contract
                     .applications(v-if="!getContracts(project.projects).length")
                       .applications__body.applications__body_center.applications__body_m-h-200
                         ion-icon.applications__icon.m-b-10(name="people-outline")
@@ -298,6 +299,15 @@ export default {
   }
   .card {
     height: 100%
+  }
+  .collaborator {
+    border-bottom: 1px solid #dee2e6;
+    &:last-child {
+      border: none;
+    }
+    &__name {
+      font-weight: 600
+    }
   }
 }
 </style>
