@@ -160,7 +160,8 @@
           routeName === 'risk-review' ||
           routeName === 'projects-marketpalce-specialist' ||
           routeName === 'projects-marketpalce-specialist-view' ||
-          routeName === 'projects-marketplace-create-proposal'
+          routeName === 'projects-marketplace-create-proposal' ||
+          routeName === 'my-project-timesheet-page'
         ) {
           this.$store.commit('changeSidebar', 'builder')
           // document.querySelector('.sidebar-menu').style.display = "none"
