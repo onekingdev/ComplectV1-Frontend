@@ -6,41 +6,15 @@
     b-modal.fade(:id="modalId" title="Add Card")
       .row
         .col
-          stripe-element-card(ref="elementRef"
-          :pk="pk"
-          @token="tokenCreated")
-      // .row
-      //   .col
-      //     b-form-group#inputBilling-group-1(label='Name on Card' label-for='inputBilling-1')
-      //       b-form-input#inputBilling-1(v-model='cardDetail.nameOnCard' type='text' placeholder='Name on Card' required)
-      //       .invalid-feedback.d-block(v-if="errors.nameOnCard") {{ errors.nameOnCard }}
-      // .row
-      //   .col-7.pr-2
-      //     b-form-group#inputBilling-group-2(label='Card Number' label-for='inputBilling-2')
-      //       b-form-input#inputBilling-2(v-model='cardDetail.cardNumber' type='text' placeholder='Card Number' required)
-      //       .invalid-feedback.d-block(v-if="errors.cardNumber") {{ errors.cardNumber }}
-      //   .col.px-2
-      //     b-form-group#inputBilling-group-3(label='Exp date' label-for='inputBilling-3')
-      //       b-form-input#inputBilling-3(v-model='cardDetail.expDate' type='text' placeholder='MM' required)
-      //       .invalid-feedback.d-block(v-if="errors.expDate") {{ errorMonths.expDateMonth }}
-      //   .col.px-2
-      //     b-form-group#inputBilling-group-4(label='.' label-for='inputBilling-4')
-      //       b-form-input#inputBilling-4(v-model='cardDetail.expDateYear' type='text' placeholder='YY' required)
-      //       .invalid-feedback.d-block(v-if="errors.expDateYear") {{ errors.expDateYear }}
-      //   .col.pl-2
-      //     b-form-group#inputBilling-group-5(label='CVC/CVV' label-for='inputBilling-5')
-      //       b-form-input#inputBilling-5(v-model='cardDetail.CVV' type='text' placeholder='3 or 4 digits' required)
-      //       .invalid-feedback.d-block(v-if="errors.CVV") {{ errors.CVV }}
-      // .row
-      //   .col.pr-2
-      //     b-form-group#inputBilling-group-6(label='Country' label-for='inputBilling-6')
-      //       b-form-input#inputBilling-6(v-model='cardDetail.country' type='text' placeholder='Country' required)
-      //       .invalid-feedback.d-block(v-if="errors.country") {{ errors.country }}
-      //   .col.pl-2
-      //     b-form-group#inputBilling-group-7(label='Zip' label-for='inputBilling-7')
-      //       b-form-input#inputBilling-7(v-model='cardDetail.zip' type='text' placeholder='Enter zip code' required)
-      //       .invalid-feedback.d-block(v-if="errors.zip") {{ errors.zip }}
-
+          stripe-element-card(ref="elementRef" :pk="pk" @token="tokenCreated")
+          .row
+            .col.text-right
+              b-button(v-show="loading" type='button' variant='none')
+                .lds-ring.lds-ring-small
+                  div
+                  div
+                  div
+                  div
       template(slot="modal-footer")
         button.btn.btn-link(@click="$bvModal.hide(modalId)") Cancel
         button.btn.btn-dark(@click="submit") Save
@@ -84,19 +58,9 @@
     methods: {
       submit(e) {
         e.preventDefault();
-
-        // this will trigger the process
         this.$refs.elementRef.submit()
-
-        // this.toast('Success', `....!`)
-        // this.$emit('saved')
-        // this.$bvModal.hide(this.modalId)
       },
       async tokenCreated (token) {
-        console.log(token)
-        // handle the token
-        // send it to your server
-
         try {
           const dataToSend = {
             userType: this.userType,
@@ -118,8 +82,11 @@
       },
     },
     computed: {
+      loading() {
+        return this.$store.getters.loading;
+      },
       pk() {
-        return process.env.STRIPE_PUBLISHABLE_KEY
+        return this.$store.getters.staticCollection.STRIPE_PUBLISHABLE_KEY
       }
     },
   }
