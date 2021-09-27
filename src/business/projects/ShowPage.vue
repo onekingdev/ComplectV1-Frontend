@@ -120,8 +120,11 @@
                             template(#button-content)
                               | Actions
                               b-icon.ml-2(icon="chevron-down")
-                            b-dropdown-item Message
-                            b-dropdown-item Edit Role
+                            
+                            //- MessagesModal(v-bind="{ contract, modalId, confirmModalId, projectId }")
+                            //-   b-dropdown-item Message
+                            EditRoleModal(:specialist="contract.specialist" :inline="false" @saved="accepted")
+                              b-dropdown-item Edit Role
                           button.btn.btn-primary(@click="showingContract = contract") View Contract
                     .applications(v-if="!getContracts(project.projects).length")
                       .applications__body.applications__body_center.applications__body_m-h-200
@@ -135,8 +138,7 @@
                       template(#button-content)
                         | Actions
                         b-icon.ml-2(icon="chevron-down")
-                      EditRoleModal(:specialist="showingContract.specialist" :inline="false" @saved="accepted")
-                        b-dropdown-item Back
+                      b-dropdown-item(@click="showingContract = null") Back
                       b-dropdown-item(v-b-modal="'IssueModal'") Report Issue
                       EditContractModal(:project="showingContract" :inline="true" @saved="newEtag(), tab = 0")
                         b-dropdown-item Edit Role
@@ -171,6 +173,7 @@ import TaskFormModal from '@/common/TaskFormModal'
 import TaskTable from './ShowPageTaskTable'
 import IssueModal from './IssueModal'
 import EditRoleModal from './EditRoleModal'
+import MessagesModal from '@/common/Messages/MessagesModal'
 
 const TOKEN = localStorage.getItem('app.currentUser.token') ? JSON.parse(localStorage.getItem('app.currentUser.token')) : ''
 const isContractComplete = contract => contract.status === 'complete'
@@ -279,6 +282,7 @@ export default {
     EditRoleModal,
     TaskFormModal,
     TaskTable,
+    MessagesModal
   }
 }
 </script>

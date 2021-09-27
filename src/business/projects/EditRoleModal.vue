@@ -4,11 +4,11 @@
       slot
 
     b-modal.fade(:id="modalId" title="Edit Role")
-      p Please confirm the applicant you wish to hire.
+      p.fs-14 Please confirm the applicant you wish to hire.
       .card
         .card-body
           SpecialistDetails(:specialist="specialist")
-          InputSelect(v-model="role" :options="specialistRoleOptions") Select Role
+          InputSelect.m-t-1(v-model="role" :options="specialistRoleOptions") Select Role
           .form-text.text-muted Determines the permissions to grant the specialist
 
       template(#modal-footer="{ hide }")
@@ -46,7 +46,6 @@
       submit(e) {
         e.preventDefault();
         this.errors = [];
-
         this.$emit('saved', this.specialist.id, this.role)
         this.$bvModal.hide(this.modalId)
       },
