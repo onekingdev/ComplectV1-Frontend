@@ -101,6 +101,14 @@
       }),
       filteredUsers () {
         const users = this.users
+        const currentUser = this.$store.getters.getUser
+
+        users.map(user => {
+          if (user.email === currentUser.user_email) {
+            user.role = 'admin'
+            user.isAccountOwner = true
+          }
+        })
         return users.filter(user => {
           const fullName = `${user.first_name} ${user.last_name}`
           return fullName?.toLowerCase().includes(this.searchInput.toLowerCase())
