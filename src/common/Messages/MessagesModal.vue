@@ -1,14 +1,13 @@
 <template lang="pug">
   b-modal.fade(:id="modalId" :title="`Messages with ${application.specialist.first_name}`" size="xl" no-stacking)
     .messages-modal
-      
       .info-box
         .header
           UserAvatar(:user="application.specialist" :bg="true")
           .name {{ contact.meta.name }}
           StarsRating(:rate="contact.meta.rating")
         .details
-          .section(v-for="(content, title) in contact.details")
+          .section(v-for="(content, title) in proposal ? contact.proposal : contact.details")
             .title {{ title }}
             .content {{ content }}
         
@@ -80,6 +79,7 @@ export default {
   computed: {
     hasSpecialist: () => project => !!project.specialist_id,
     proposal() {
+      // need to check, if specialist already in project or not
       return true
     },
     contact() {
@@ -94,6 +94,14 @@ export default {
           "Industries": this.application.specialist.industries.map(industry => industry.name).join(', '),
           "Jurisdictions": this.application.specialist.jurisdictions.map(jurisdiction => jurisdiction.name).join(', '),
           "About Me": this.application.specialist.description,
+        },
+        proposal: {
+          "Start Date": this.formattedDate(this.application.starts_on),
+          "Due Date": this.formattedDate(this.application.ends_on),
+          "Bid Price": '$'+this.application.fixed_budget,
+          "Payment Schedule": this.formattedPaymentType(this.application.payment_schedule),
+          "Role Details": this.application.key_deliverables,
+          "Key Deliverables": this.application.role_details,
         }
       }
     }
@@ -104,6 +112,27 @@ export default {
         const messagesContainer = this.$refs.Messages.$refs.MessagesContainer
         messagesContainer && setTimeout(() => messagesContainer.scrollTop = messagesContainer.scrollHeight, 500)
       })
+    },
+    formattedDate(date) {
+      const options = {year: 'numeric', month: 'numeric', day: 'numeric' };
+      return new Date(date + 'T00:00:00').toLocaleString('en-US', options)
+    },
+    formattedPaymentType(type) {
+      let paymentType;
+      switch(type) {
+        case 'upfront':
+          paymentType = 'Upfront';
+          break;
+        case 'fifty_fifty':
+          paymentType = '50/50';
+          break;
+        case 'upon_completion':
+          paymentType = 'Upon Completion';
+          break;
+        default:
+          paymentType = '';
+      }
+      return paymentType
     },
     messageSaved() {
       this.newEtagMessages()
