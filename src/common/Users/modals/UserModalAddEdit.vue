@@ -134,7 +134,7 @@
               
 
               if (!response.errors) {
-                this.toast('Success', `User has been ${!this.user ? 'created' : 'updated'}`)
+                this.toast('Success', `User has been ${!this.user ? 'created' : 'updated'}.`)
                 this.$store.dispatch('settings/getAvailableSeatsCount')
                 this.$emit('saved', !this.user ? 'created' : 'updated');
                 this.form = initialForm();
