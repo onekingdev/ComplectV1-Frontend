@@ -22,7 +22,7 @@
                 | Drop files here or
                 a.btn.btn-light Upload
       template(#modal-footer="{ hide }")
-        button.btn.btn-link.mr-2(@click="hide") Cancel
+        button.btn.btn-link.(@click="hide") Cancel
         Post(:action="`/api/projects/${project.id}/extension`" :model="form" @errors="errors = $event" @saved="saved")
           button.btn.btn-dark Submit
 </template>
