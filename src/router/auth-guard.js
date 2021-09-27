@@ -13,6 +13,7 @@ const AccessGuard = (to, from, next) => {
 }
 
 const BusinessGuard = (to, from, next) => {
+  return next()
   if (appModule !== 'business') next(`/unauthorized`)
   else next()
 }
