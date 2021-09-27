@@ -8,10 +8,11 @@
         .row
           .col
             .d-flex.align-items-center
-              b-icon(v-if="payment.last4" icon='credit-card2-back-fill' variant="dark" font-scale="2")
+              img(v-if="isBankAccount(payment)" src="@/assets/bank-connected.svg" class="bank")
+              img(v-else-if="payment.last4" src="@/assets/credit-card-connected.svg" class="credit-card")
               ion-icon.payment(v-if="!payment.brand" name="logo-paypal")
               .d-block.ml-4
-                h5(v-if="payment.last4"): strong Credit Card
+                h5(v-if="payment.last4"): strong {{ paymentName(payment) }}
                   span(v-if="payment.primary") (Primary)
                 p.mb-0 {{ '**** **** **** ' + payment.last4 }} {{ payment.brand }} {{ payment.email }}
           .col
@@ -27,35 +28,17 @@
     components: {},
     data() {
       return {
-        userType: 'business',
-        // paymentMethods: [
-          // {
-          //   id: 1,
-          //   name: 'Credit Card(primary)',
-          //   users: '10',
-          //   billinPeriod: 'monthly',
-          //   monthCoast: '100$/month',
-          //   paymentCardType: 'Visa',
-          //   paymentCard: '**** **** **** 4242',
-          //   nextPaymentDate: 'October 25, 2021',
-          //   primary: true
-          // },
-          // {
-          //   id: 2,
-          //   name: 'Paypal',
-          //   email: 'email: some_email@example.com',
-          //   users: '10',
-          //   billinPeriod: 'monthly',
-          //   monthCoast: '100$/month',
-          //   // paymentCardType: 'Paypal',
-          //   // paymentCard: '**** **** **** 4242',
-          //   nextPaymentDate: 'October 25, 2021',
-          //   primary: false
-          // }
-        // ]
+        userType: 'business'
       }
     },
     methods: {
+      isBankAccount(payment) {
+        return payment.type === 'PaymentSource::Ach'
+      },
+      paymentName(payment) {
+        if (this.isBankAccount(payment)) return 'Bank Account'
+        return 'Credit Card'
+      },
       async makePrimary(cardId) {
         try {
           const dataToSend = {
@@ -96,12 +79,18 @@
     }
   }
 </script>
-
-<style scoped>
-
-</style>
 <style>
   ion-icon.payment {
     font-size: 2rem;
+  }
+
+  .bank {
+    width: 24px;
+    position: relative;
+    top: -4px;
+  }
+
+  .credit-card {
+    width: 25px;
   }
 </style>

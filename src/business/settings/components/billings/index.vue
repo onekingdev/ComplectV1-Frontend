@@ -10,6 +10,9 @@
               .col
                 h4.semibold-text Payment Method
               .col.text-right
+                plaid-link(env='sandbox' :publicKey='plaidPK' clientName='Test App' product='auth' v-bind='{ onSuccess }')
+                  template(slot='button' slot-scope='props')
+                    a.btn.btn-default.d-none(ref="bank" @click="props.onClick") Add Bank Account
                 BillingMethodModalAdd(@selected="addMethod")
                   b-button.btn.mr-2.font-weight-bold(type='button' variant='default') Add Method
                 BillingMethodCardModalAdd(:billingMethod="billingMethod" @complitedPaymentMethod="addPaymentMethod")
@@ -38,7 +41,7 @@
   import PaymentMethod from "./components/PaymentMethod";
   import BillingMethodModalAdd from "./modals/BillingMethodModalAdd";
   import BillingMethodCardModalAdd from "./modals/BillingMethodCardModalAdd";
-  // import ClientBilling from "./components/ClientBilling";
+  import PlaidLink from "vue-plaid-link";
   import Download from '@/common/Dashboard/components/Download'
 
   const pdfUrl = '/business/reminders.csv'
@@ -50,14 +53,13 @@
       PaymentMethod,
       InvoicesTable,
       Loading,
-      // ClientBilling,
+      PlaidLink,
       Download,
     },
     data() {
       return {
         userType: 'business',
         billingMethod: '',
-        // paymentMethods: []
       };
     },
     methods: {
@@ -66,15 +68,38 @@
       }),
       addMethod(value) {
         this.billingMethod = value
-        // this.$root.$emit("bv::show::modal", "CardModalAdd");
-        // console.log(this.$root.$emit("bv::show::modal", "CardModalAdd"))
-        this.$refs.special.click()
+        if (this.billingMethod === 'ba') this.$refs.bank.click()
+        if (this.billingMethod === 'cc') this.$refs.special.click()
       },
       addPaymentMethod (response) {
         this.paymentMethods.push(response)
       },
       openComponent (value) {
         this.$emit('openComponent', value)
+      },
+      onSuccess (publicToken, metadata) {
+        const data = {
+          userType: this.userType,
+          plaid: {
+            payment_source_ach: {
+              plaid_token: publicToken,
+              plaid_account_id: metadata.account_id,
+              plaid_institution: metadata.institution.name
+            }
+          }
+        }
+
+        console.log('data', data)
+
+        this.$store.dispatch('generatePaymentMethod', data)
+          .then(response => {
+            this.paymentMethods.push(response)
+            localStorage.setItem('app.currentUser.paymentMethod', JSON.stringify(data));
+            this.toast('Success', `Payment method successfully added!`)
+          })
+          .catch(error => {
+            console.error(error)
+          })
       }
     },
     computed: {
@@ -82,25 +107,16 @@
         loading: 'loading',
         paymentMethods: 'settings/paymentMethods'
       }),
+      plaidPK() {
+        return this.$store.getters.staticCollection.PLAID_PUBLIC_KEY;
+      },
       invoices() {
-        return [
-          {
-            date: '27/11/2020',
-            name: 'Plan - Compilance Command Center Subscription',
-            type: 'Plan',
-            price: '$50'
-          },
-          {
-            date: '28/12/2020',
-            name: 'Plan - Compilance Command Center Subscription',
-            type: 'Plan',
-            price: '$50'
-          }
-        ]
+        return []
       },
       pdfUrl: () => pdfUrl,
     },
     async mounted() {
+      this.$store.dispatch('getStaticCollection')
       try {
         const data = {
           userType: this.userType,
