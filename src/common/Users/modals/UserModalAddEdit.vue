@@ -160,7 +160,7 @@
         return ['', 'basic', 'trusted', 'admin'].map(toOption)
       },
       isAccountOwner() {
-        return this.user.isAccountOwner
+        return this.user && this.user.isAccountOwner
       },
     },
   }
