@@ -42,10 +42,10 @@
                     table.rating_table.collaborators_table(v-if="getContracts(project.projects).length")
                       thead
                         tr
-                          th.fw-400
+                          th.fw-400.p-b-05
                             | Name
                             b-icon.ml-2(icon='chevron-expand')
-                          th
+                          th.p-b-05
                       tbody
                         tr(v-for="contract in getContracts(project.projects)" :key="contract.specialist.id")
                           td
@@ -109,9 +109,10 @@
                             template(#button-content)
                               | Actions
                               b-icon.ml-2(icon="chevron-down")
+                              //- p {{contract}}
                             
                             //- MessagesModal(v-bind="{ contract, modalId, confirmModalId, projectId }")
-                            //-   b-dropdown-item Message
+                              b-dropdown-item Message
                             b-dropdown-item Message
                             EditRoleModal(:specialist="contract.specialist" :inline="false" @saved="accepted")
                               b-dropdown-item Edit Role
@@ -132,7 +133,7 @@
                       b-dropdown-item(v-b-modal="'IssueModal'") Report Issue
                       EditContractModal(:project="showingContract" :inline="true" @saved="newEtag(), tab = 0")
                         b-dropdown-item Edit Role
-                      b-dropdown-item(:to="`/business/projects/${showingContract.id}/timesheets`") View Timesheet
+                      b-dropdown-item(:to="`/business/projects/${showingContract.id}/timesheets`" target="_blank") View Timesheet
                     IssueModal(:project-id="showingContract.id" :token="token")
                     Breadcrumbs.m-y-1(:items="['Collaborators', `${showingContract.specialist.first_name} ${showingContract.specialist.last_name}`]")
                   .row(v-else): .col-sm-12

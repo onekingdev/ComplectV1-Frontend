@@ -5,7 +5,7 @@
         .col-md-1.text-center.px-0
           b-icon.mt-1.ml-3(icon="exclamation-triangle-fill" variant="warning" width="25" height="25")
         .col
-          div
+          div.fs-14
             p.m-b-10 You are rejecting the terms of this proposal. The specialist will be notified and removed from your applicant pool.
             p.mb-0: strong Do you want to continue?
 
