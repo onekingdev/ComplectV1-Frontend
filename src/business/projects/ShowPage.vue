@@ -112,6 +112,7 @@
                             
                             //- MessagesModal(v-bind="{ contract, modalId, confirmModalId, projectId }")
                             //-   b-dropdown-item Message
+                            b-dropdown-item Message
                             EditRoleModal(:specialist="contract.specialist" :inline="false" @saved="accepted")
                               b-dropdown-item Edit Role
                           button.btn.btn-primary(@click="showingContract = contract") View Contract
