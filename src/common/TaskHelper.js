@@ -35,18 +35,18 @@ const splitReminderOccurenceId = val => {
     ? { taskId: +matches[0][1], oid: +matches[0][2] }
     : { taskId: val, oid: null }
 }
-const badgeClass = project => project.status == "pending" ? 'badge-secondary'
-                            : project.status == "inprogress" ? "badge-progress"
-                            : project.status == "complete" ? "badge-success"
-                            : project.status == "draft" ? 'badge-secondary'
-                            : project.status == "published" ? 'badge-success'
+const badgeClass = project => project.status_business == "Pending" ? 'badge-secondary'
+                            : project.status_business == "In Progress" ? "badge-progress"
+                            : project.status_business == "Complete" ? "badge-success"
+                            : project.status_business == "Draft" ? 'badge-secondary'
+                            : project.status_business == "Published" ? 'badge-success'
                             : isOverdue(project) ? "badge-warning" : ''
 
-const businessProjectBadgeClass = project => project.status_business == "not_started" ? 'badge-secondary'
-                                           : project.status_business == "in_progress" ? "badge-progress"
-                                           : project.status_business == "complete" ? "badge-success"
-                                           : project.status_business == "draft" ? 'badge-secondary'
-                                           : project.status_business == "pending" ? 'badge-light' : ''
+const businessProjectBadgeClass = project => project.status_business == "Not Started" ? 'badge-secondary'
+                                           : project.status_business == "In Progress" ? "badge-progress"
+                                           : project.status_business == "Complete" ? "badge-success"
+                                           : project.status_business == "Draft" ? 'badge-light'
+                                           : project.status_business == "Pending" ? 'badge-light' : ''
 
 const linkedTo = linkableType => linkableType.linkable_type === 'CompliancePolicy' ? 'document-text'
                                : linkableType.linkable_type === "AnnualReport" ? "reader"

@@ -14,7 +14,7 @@
           div.m-b-20
             b-dropdown.m-r-1(variant="default")
               template(#button-content)
-                | Filter by: {{filteredStatus}}
+                | Filter by: {{filteredStatusBusiness}}
                 ion-icon.ml-2(name="chevron-down-outline" size="small")
               b-dropdown-item(v-for="(status, key) in filterStatuses" :key="key" @click="filterStatus = key") {{status}}
             //b-dropdown.m-r-1(variant="default")
@@ -91,7 +91,7 @@ const FILTER_STATUSES = {
   all: 'All',
   not_started: 'Not Started',
   draft: 'Draft',
-  in_progres: 'In Progress',
+  inprogress: 'In Progress',
   pending: 'Pending',
   complete: 'Complete',
   overdue: 'Overdue'
@@ -130,7 +130,7 @@ export default {
       }, [])
     },
     filterProjects(projects) {
-      return projects.filter(project => ['all', project.status_business].includes(this.filterStatus))
+      return projects.filter(project => ['All', project.status_business].includes(this.filteredStatusBusiness))
     }
   },
   computed: {
@@ -140,7 +140,7 @@ export default {
       plan: 'roles/currentPlan',
     }),
     filterStatuses: () => FILTER_STATUSES,
-    filteredStatus() {
+    filteredStatusBusiness() {
       return FILTER_STATUSES[this.filterStatus]
     },
     loading() {
