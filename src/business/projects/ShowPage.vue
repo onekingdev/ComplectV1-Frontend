@@ -66,24 +66,13 @@
               .col-md-12
                 DiscussionCard(:project-id="project.id" :token="token")
         b-tab.h-100(title="Tasks")
-          .card-body.card-body_full-height.h-100
-            .d-flex.m-b-20
-              TaskFormModal.m-r-1(id="ProjectTaskFormModal" @saved="taskSaved" :defaults="taskDefaults(project)")
-                button.btn.btn-dark New Task
-              b-dropdown.m-r-1(text="Show: All Tasks" variant="default")
-                b-dropdown-item All Tasks
-                b-dropdown-item My Tasks
-                b-dropdown-item Complete Tasks
-              button.btn.btn-default.float-right(@click="completedTasksOpen = false"): strong Collapse All
-            TaskTable(v-if="incompleteTasks.length" :tasks="incompleteTasks")
-            .row.h-100(v-else)
-              .col.h-100.text-center
-                EmptyState(name="Tasks")
-            h3.pointer(v-if="completedTasks.length" @click="completedTasksOpen = !completedTasksOpen")
+          .card-body.card-body_full-height.h-100: .card
+            TaskTableExtended(:tasks="incompleteTasks(project)" :task-defaults="taskDefaults(project)" @saved="newEtag")
+            h3.pointer(v-if="completedTasks(project).length" @click="completedTasksOpen = !completedTasksOpen")
               span.caret(:class="{caret_rotated:!completedTasksOpen}")
               | Completed Tasks
-            b-collapse.m-t-1(v-if="completedTasks.length" v-model="completedTasksOpen")
-              TaskTable(:tasks="completedTasks")
+            b-collapse.m-t-1(v-if="completedTasks(project).length" v-model="completedTasksOpen")
+              TaskTableExtended(:tasks="completedTasks(project)" :task-defaults="taskDefaults(project)" :create-button="false" @saved="newEtag")
         b-tab.h-100(title="Documents")
           DocumentList(:project="project")
         b-tab.h-100(title="Collaborators")
@@ -93,7 +82,7 @@
                 .card(v-if="!showingContract")
                   .card-header.d-flex.justify-content-between
                     h3.m-y-0 Collaborators
-                    Get(:etag="etag" :specialists="`/api/business/team_members/specialists`" :callback="getSpecialistsOptions" ): template(v-slot="{specialists}")
+                    Get(:etag="etag" :collaborators="`/api/business/team_members`" :callback="getActiveCollaboratorOptions" ): template(v-slot="{collaborators}")
                       button.btn.btn-primary.float-right(v-b-modal="'AddCollaboratorModal'") New Collaborator
                       b-modal#AddCollaboratorModal(title="New Collaborator" :project="project")
                         p.fs-14 Select a user to add.
@@ -101,7 +90,7 @@
                           strong Note:&nbsp;
                           | An unlimited amount of employees can be added to the project but only one specialist can be actively working on a project at a time.
                         label.m-t-1.form-label Select User
-                        ComboBox(v-model="id" :options="specialists")
+                        ComboBox(v-model="id" :options="collaborators")
                         template(#modal-footer="{ hide }")
                           button.btn.btn-link(@click="hide") Cancel
                           Post(:action="'/api/local_projects/' + project.id + '/specialists'" :model="{id}" @saved="newEtag()")
@@ -170,7 +159,7 @@ import ShowOnCalendarToggle from './ShowOnCalendarToggle'
 import ChangeContractAlerts from '@/common/projects/ChangeContractAlerts'
 import EditContractModal from '@/common/projects/EditContractModal'
 import TaskFormModal from '@/common/TaskFormModal'
-import TaskTable from './ShowPageTaskTable'
+import TaskTableExtended from "@/common/TaskTableExtended";
 import IssueModal from './IssueModal'
 import EditRoleModal from './EditRoleModal'
 import MessagesModal from '@/common/Messages/MessagesModal'
@@ -217,8 +206,8 @@ export default {
     contractDetails: fields,
     readablePaymentSchedule,
     isContractComplete,
-    getSpecialistsOptions(specialists) {
-      return specialists.map(({ id, first_name, last_name }) => ({ id: id, label: `${first_name} ${last_name}`}))
+    getActiveCollaboratorOptions(collaborators) {
+      return collaborators.filter(item => item.active).map(({ id, first_name, last_name }) => ({ id: id, label: `${first_name} ${last_name}`}))
     },
     accepted(id, role) {
       fetch(`${this.$store.getters.backendUrl}/api/business/specialist_roles/${id}`, {
@@ -257,10 +246,10 @@ export default {
       return (this.modalId || '') + '_confirm'
     },
     incompleteTasks() {
-      return []
+      return project => project.reminders.filter(task => !task.done_at)
     },
     completedTasks() {
-      return []
+      return project => project.reminders.filter(task => task.done_at)
     },
     token: () => TOKEN
   },
@@ -281,8 +270,8 @@ export default {
     IssueModal,
     EditRoleModal,
     TaskFormModal,
-    TaskTable,
-    MessagesModal
+    MessagesModal,
+    TaskTableExtended
   }
 }
 </script>

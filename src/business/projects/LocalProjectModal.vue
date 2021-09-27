@@ -68,9 +68,12 @@ export default {
     loadProject(project) {
       this.project = Object.assign({}, this.project, project)
     },
-    saved() {
+    async saved(response) {
+      const result = await response.json()
+
       this.$emit('saved')
       this.toast('Success', this.projectId ? 'Project has been updated.' : 'Project has been created.')
+      this.redirect('/business/projects/' + result.id)
       this.$bvModal.hide(this.modalId)
       this.newEtag()
     }

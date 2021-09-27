@@ -2,7 +2,7 @@
   .policy-details.position-relative
     h3.policy-details__title Tasks
     .policy-actions
-      TaskFormModal(:defaults="taskDefaults" v-if="!currentUserBasic && !policy.archived" @saved="$emit('saved')")
+      TaskFormModal(:defaults="taskDefaults" v-if="createButton" @saved="$emit('saved')")
         button.btn.btn-dark New Task
     .policy-details__body
       table.table
@@ -27,7 +27,9 @@
             th(width="35px")
         tbody.text-dark(v-if="tasksSorted && tasksSorted.length")
           tr(v-for="task in tasksSorted" :key="task.id")
-            td {{ task.body }}
+            td
+              TaskFormModal.link(:id="taskFormModalId(task)" :task-id="task.id" @saved="$emit('saved')") {{ task.body }}
+              TaskDeleteConfirmModal(:id="taskDeleteConfirmModalId(task)" @deleteConfirmed="deleteTask(task)")
             td {{ task.assignee_name || '' }}
             td {{ task.remind_at | asDate }}
             td {{ task.end_date | asDate }}
@@ -35,26 +37,32 @@
               b-dropdown(size="sm" variant="light" class="m-0 p-0" right)
                 template(#button-content)
                   b-icon(icon="three-dots")
-                b-dropdown-item-button Edit
-                b-dropdown-item-button Delete
+                b-dropdown-item-button(v-b-modal="taskFormModalId(task)") Edit
+                b-dropdown-item-button(v-b-modal="taskDeleteConfirmModalId(task)") Delete
       EmptyState(v-if="!loading && !tasksSorted.length")
 </template>
 
 <script>
 import Loading from '@/common/Loading/Loading'
 import TaskFormModal from '@/common/TaskFormModal'
+import TaskDeleteConfirmModal from '@/common/TaskDeleteConfirmModal'
 import EtaggerMixin from '@/mixins/EtaggerMixin'
+import axios from '@/services/axios'
 
 export default {
   mixins: [EtaggerMixin()],
   props: {
-    policy: {
-      type: Object,
+    tasks: {
+      type: Array,
       required: true
     },
-    currentUserBasic: {
+    taskDefaults: {
+      type: Object,
+      default: () => ({})
+    },
+    createButton: {
       type: Boolean,
-      required: true
+      default: true
     }
   },
   data() {
@@ -69,13 +77,21 @@ export default {
       this.sortDirection = this.sortField === field ? -1 * this.sortDirection : initialDirection
       this.sortField = field
     },
+    async deleteTask({ id }) {
+      try {
+        await axios.delete(`/reminders/${id}`)
+        this.toast('Success', 'Task Deleted')
+        this.$emit('saved')
+      } catch (e) {
+        this.toast('Error', 'Cannot delete task', true)
+      }
+    },
+    taskFormModalId: task => `TaskFormModal_${task.id}`,
+    taskDeleteConfirmModalId: task => `TaskDeleteConfirmModal_${task.id}`,
   },
   computed: {
     loading() {
-      return this.$store.getters.loading;
-    },
-    tasksComputed() {
-      return this.policy.reminders || []
+      return this.$store.getters.loading
     },
     tasksSorted() {
       if (this.sortField) {
@@ -83,20 +99,19 @@ export default {
           const [a, b] = [aField[this.sortField], bField[this.sortField]]
           return a > b ? this.sortDirection : (a < b ? (this.sortDirection * -1) : 0)
         }
-        return this.tasksComputed.sort(compare)
+        return this.tasks.sort(compare)
       }
-      return this.tasksComputed
-    },
-    taskDefaults() {
-      return {
-        linkable_type: 'CompliancePolicy',
-        linkable_id: this.policy.id
-      }
+      return this.tasks
     }
   },
   components: {
     Loading,
-    TaskFormModal
+    TaskFormModal,
+    TaskDeleteConfirmModal,
   },
 }
 </script>
+
+<style>
+  @import "../business/policies/styles.css";
+</style>

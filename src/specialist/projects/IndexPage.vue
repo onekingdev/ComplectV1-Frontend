@@ -4,16 +4,16 @@
       .col-md-3.px-0.m-t-2
         .card#sidebarMenu_alt
           .card-title.p-x-20(style='border-bottom: 0px;')
-            h3.mb-0 Filters
+            h3.title.mb-0 Filters
           .card-body
-            h5.d-flex.justify-content-between(role="button" v-b-toggle.collapse_pricing_type)
-              | Job Type
+            h5.sub-title.d-flex.justify-content-between(role="button" v-b-toggle.collapse_pricing_type)
+              | JOB TYPE
               ion-icon(name='chevron-down-outline')
             b-collapse#collapse_pricing_type(visible)
               b-form-checkbox(v-for="(option, i) in pricingTypeOptions" v-model="filter.pricing_type[i]" :key="'p'+i") {{option.label}}
             hr
-            h5.d-flex.justify-content-between(role="button" v-b-toggle.collapse_experience)
-              | Experience Level
+            h5.sub-title.d-flex.justify-content-between(role="button" v-b-toggle.collapse_experience)
+              | EXPERIENCE LEVEL
               ion-icon(name='chevron-down-outline')
             b-collapse#collapse_experience(visible)
               b-form-checkbox(v-for="(option, i) in experienceOptions" v-model="filter.experience[i]" :key="'e'+i") {{option.label}}
@@ -24,8 +24,8 @@
             //b-collapse#collapse_budget(visible)
               b-form-checkbox(v-for="(option, i) in budgetOptions" v-model="filter.budget[i]") {{option.label}}
             //hr
-            h5.d-flex.justify-content-between(role="button" v-b-toggle.collapse_duration)
-              | Estimated Duration
+            h5.sub-title.d-flex.justify-content-between(role="button" v-b-toggle.collapse_duration)
+              | ESTIMATED DURATION
               ion-icon(name='chevron-down-outline')
             b-collapse#collapse_duration(visible)
               b-form-checkbox(v-for="(option, i) in durationOptions" v-model="filter.duration[i]" :key="'d'+i") {{option.label}}
@@ -33,7 +33,7 @@
       .col-md-9.m-t-2
         .card
           .card-title.p-x-20
-            h3.mb-0 Browse Projects
+            h3.mb-0 Browse Jobs
           .card-body
             .col-md-12
               .row.py-2
@@ -45,14 +45,14 @@
                     b-form-select#sort-input(v-model="filter.sort_by" :options="sortByOptions")
           .card-body.project-item(v-for="project in projects" :key="project.uid")
             .col-md-12
-              h3.m-b-1
+              h3.title.m-b-1
                 a(@click="openDetails(project.id)") {{project.title}}
-              h6.pb-1.card-subtitle.text-muted.mb-2 {{project.subTitle}} | Start {{project.starts_on|asDate}}
+              h6.sub-title.pb-1.card-subtitle.text-muted.mb-2 {{project.subTitle}} | Start {{project.starts_on|asDate}}
               .badge.badge-default.m-r-1(v-for="skill in project.skills") {{ skill.name }}
-              b-card-text.m-t-1 {{project.description}}
+              b-card-text.m-t-1.mb-0 {{project.description}}
               .d-flex.justify-content-between
                 ProjectFigures(:project="project")
-                div.m-t-1
+                div.view-details-btn.m-t-1
                   b-button(@click="openDetails(project.id)" variant="default") View Details
           .card-body.m-2.text-danger(v-if="!projects.length" title="No projects")
 
@@ -77,10 +77,19 @@ import debounce from 'lodash.debounce'
 const frontendUrl = '/specialist/job_board'
 const endpointUrl = '/api/specialist/projects'
 
+const capitalizeTheFirstLetterOfEachWord = (words) => {
+   var separateWord = words.toLowerCase().split('_and_');
+   for (var i = 0; i < separateWord.length; i++) {
+      separateWord[i] = separateWord[i].charAt(0).toUpperCase() +
+      separateWord[i].substring(1);
+   }
+   return separateWord.join(' + ');
+}
+
 const parse = p => ({
   ...p,
   uid: p.id + (p.starts_on ? '-p' : '-lp'),
-  subTitle: [p.location_type, ...p.industries.map(({ name }) => name)].join(' | ')
+  subTitle: [capitalizeTheFirstLetterOfEachWord('remote'), p.industries.map(({ name }) => name).join(', ')].join(' | ')
 })
 
 const PRICING_TYPE_OPTIONS = [{ label: 'Fixed Price', value: 'fixed' }, { label: 'Hourly', value: 'hourly' }]
@@ -216,10 +225,6 @@ export default {
   font-size: 16px;
 }
 
-#ProjectSidebar {
-  padding-top: 78px;
-}
-
 .project-item {
   border-bottom: 1px solid #DCDEE4;
 }
@@ -232,5 +237,9 @@ export default {
 
 /deep/ .container .bg-dark {
   background: none !important;
+}
+
+.view-details-btn {
+  width: 130px;
 }
 </style>

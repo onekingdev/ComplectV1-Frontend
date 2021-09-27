@@ -60,7 +60,7 @@
                 PolicyRisks(:policy="policy" :policyId="policyId" :currentUserBasic="currentUserBasic")
             b-tab(title="Tasks" lazy)
               .card-body.white-card-body.card-body_full-height.policy-details-card.p-0
-                PolicyTasks(:policy="policy" :currentUserBasic="currentUserBasic" @saved="updateList")
+                TaskTableExtended(v-bind="taskTableProps" @saved="updateList")
             b-tab(title="History")
               .card-body.white-card-body.card-body_full-height.policy-details-card.p-0
                 HistoryPolicy(:policy="policy")
@@ -74,7 +74,7 @@ import Tiptap from '@/common/Tiptap'
   import SubsectionPolicy from "./PolicySubsection";
   import HistoryPolicy from "./PolicyHistory";
   import PolicyRisks from "../Risks/PolicyRisks";
-  import PolicyTasks from "../Tasks/PolicyTasks";
+  import TaskTableExtended from "@/common/TaskTableExtended";
   import PoliciesModalCreate from "../Modals/PoliciesModalCreate";
   import PoliciesModalDelete from "../Modals/PoliciesModalDelete";
   import PoliciesModalArchive from "../Modals/PoliciesModalArchive";
@@ -96,7 +96,7 @@ import Tiptap from '@/common/Tiptap'
       SubsectionPolicy,
       HistoryPolicy,
       PolicyRisks,
-      PolicyTasks,
+      TaskTableExtended,
       PoliciesModalCreate,
       PoliciesModalDelete,
       PoliciesModalArchive,
@@ -303,6 +303,13 @@ import Tiptap from '@/common/Tiptap'
       },
     },
     computed: {
+      taskTableProps() {
+        return {
+          tasks: this.policy.reminders,
+          createButton: !this.currentUserBasic && !this.policy.archived,
+          taskDefaults: { linkable_type: 'CompliancePolicy', linkable_id: this.policy.id }
+        }
+      },
       loading() {
         return this.$store.getters.loading;
       },

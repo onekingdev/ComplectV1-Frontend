@@ -61,7 +61,7 @@
 
           .m-t-1(v-if="project.pricing_type === pricingTypes[0].id")
             InputText(v-model="project.est_budget" :errors="errors.est_budget") Estimated Budget
-            InputSelect.form-control_no-icon.m-t-1(v-model="project.fixed_payment_schedule" :errors="errors.fixed_payment_schedule" :options="fixedPaymentScheduleOptions") Method of Payment
+            InputSelect.form-control_no-icon.m-t-1(v-model="project.fixed_payment_schedule" :errors="errors.fixed_payment_schedule" :options="fixedPaymentScheduleOptions") Payment Schedule
 
           div(v-else)
             .m-t-1
@@ -69,7 +69,7 @@
             .m-t-1
               InputText(v-model="project.upper_hourly_rate" :errors="errors.upper_hourly_rate") Upper Hourly Rate
             .m-t-1
-              InputSelect.form-control_no-icon.m-t-1(v-model="project.hourly_payment_schedule" :errors="errors.hourly_payment_schedule" :options="hourlyPaymentScheduleOptions") Method of Payment
+              InputSelect.form-control_no-icon.m-t-1(v-model="project.hourly_payment_schedule" :errors="errors.hourly_payment_schedule" :options="hourlyPaymentScheduleOptions") Payment Schedule
 
       .row.no-gutters
         .col-lg-6.m-t-2.m-b-40
@@ -80,7 +80,7 @@
             ExitLocalProjectModal.m-r-1.ml-auto
               button.btn.btn-link Exit
             button.btn.btn-default.m-r-1(v-if="saveDraftEnabled && !canSaveDraft" @click="toast('Error', 'Please enter title')") Save as Draft
-            Post(v-else-if="saveDraftEnabled" :action="endpointUrl" :model="draftProject" :method="method" @saved="saved" @errors="errors = $event")
+            Post(v-else-if="saveDraftEnabled" :action="endpointUrl" :model="draftProject" :method="method" @saved="handleSaveDraft" @errors="errors = $event")
               button.btn.btn-default.m-r-1 Save as Draft
             button.btn.btn-dark(v-if="nextEnabled" @click="next") Next
               b-icon.ml-2(icon="chevron-right")
@@ -220,10 +220,14 @@ export default {
     },
     saved() {
       const redirectUrl = `/business/projects/${this.project.local_project_id || ''}`
-      redirectWithToast(redirectUrl, 'Job has been posted.')
+      redirectWithToast(redirectUrl, 'Job has been posted.', 'Success')
     },
     getSkillOptions(skills) {
       return skills.map(({ name }) => ({ id: name, label: name }))
+    },
+    handleSaveDraft() {
+      const redirectUrl = `/business/projects/${this.project.local_project_id || ''}`
+      redirectWithToast(redirectUrl, 'Job posting has been saved.', 'Success')
     }
   },
   computed: {

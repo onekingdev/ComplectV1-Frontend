@@ -8,7 +8,7 @@ const mapAuthProviders = {
 }
 
 import LocalProject from "../../models/LocalProject";
-import { createProposal, updateProposal, getCurrentProposal } from '../../services/specialist/projects';
+import { createProposal, updateProposal, deleteTimeSheet } from '../../services/specialist/projects';
 
 export default {
   state: {
@@ -142,6 +142,9 @@ export default {
     },
     updateProposal({commit}, payload) {
       return updateProposal(payload)
+    },
+    deleteTimeSheet({commit}, payload) {
+      return deleteTimeSheet(payload)
     }
   },
   getters: {

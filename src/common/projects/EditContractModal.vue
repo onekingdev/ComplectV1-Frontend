@@ -20,11 +20,11 @@
             .card-body
               p
                 | Drop files here or
-                a.btn.btn-light Upload Files
+                a.btn.btn-light Upload
       template(#modal-footer="{ hide }")
         button.btn.btn-link.mr-2(@click="hide") Cancel
         Post(:action="`/api/projects/${project.id}/extension`" :model="form" @errors="errors = $event" @saved="saved")
-          button.btn.btn-dark Resubmit
+          button.btn.btn-dark Submit
 </template>
 
 <script>
@@ -59,7 +59,7 @@ export default {
   methods: {
     saved() {
       this.$bvModal.hide(this.modalId)
-      this.toast('Success', 'Modification requested.')
+      this.toast('Success', 'Contract modification has been requested.')
       this.$emit('saved')
     }
   }

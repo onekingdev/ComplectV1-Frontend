@@ -1,7 +1,7 @@
 <template lang="pug">
   Get(:project="projectUrl" :etag="etag"): template(v-slot="{project}")
     CommonHeader(:title="project.title" :sub="project.business.business_name" :breadcrumbs="['Projects', project.title]")
-      router-link.btn.btn-outline-dark.float-right(v-if="showTimesheetBtn(project)" :to="timesheetUrl") My Timesheet
+      router-link.btn.btn-outline-dark.align-self-end(v-if="showTimesheetBtn(project)" :to="timesheetUrl" target="_blank") My Timesheet
     Get(v-if="isApproved(project)" :localProject="projectUrl + '/local'"): template(v-slot="{localProject}"): b-tabs(v-model="tab" content-class="mt-0")
       b-tab(title="Overview")
         .white-card-body.p-y-1
@@ -97,7 +97,6 @@
                     .col-sm-12
                       PropertiesTable(title="Contract Details" :properties="proposalProps(showingContract)")
                         EditContractModal(v-if="!isContractComplete(showingContract)" :project="showingContract" @saved="newEtag(), tab = 0")
-      //- b-tab(title="Activity")
     b-tabs(v-else)
       b-tab(title="Overview")
         .white-card-body.p-y-1

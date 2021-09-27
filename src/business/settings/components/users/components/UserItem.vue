@@ -21,9 +21,9 @@
           b-icon(icon="three-dots")
         UserModalAddEdit(:user="item",  :inline="false")
           b-dropdown-item Edit
-        UserModalArchive(v-if="item.active" :user="item" :archiveStatus="item.active" :inline="false" @archiveConfirmed="archiveUser")
+        UserModalArchive(v-if="!item.isAccountOwner && item.active" :user="item" :archiveStatus="item.active" :inline="false" @archiveConfirmed="archiveUser")
           b-dropdown-item {{ item.active ? 'Disable' : 'Enable' }}
-        b-dropdown-item(v-if="!item.active" @click="archiveUser(item)") Enable
+        b-dropdown-item(v-if="!item.isAccountOwner && !item.active" @click="archiveUser(item)") Enable
         UserModalDelete(v-if="!item.active" :inline="false" @deleteConfirmed="deleteUser(item.id)")
           b-dropdown-item.delete Delete
 </template>

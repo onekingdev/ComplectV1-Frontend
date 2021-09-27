@@ -1,10 +1,16 @@
-const redirectWithToast = (url, toast) => window.location.href = `${url}#toast=${encodeURIComponent(toast)}`
+const redirectWithToast = (url, toast, title = null) => window.location.href = `${url}#toast=${encodeURIComponent(toast)}&#title=${encodeURIComponent(title)}`
 
 const extractToastMessage = () => {
-  const match = window.location.hash.match(/#toast=(.+)/)
-  if (match && match[1]) {
+  const toast = window.location.hash.split('&')
+  const message = toast[0] && toast[0].match(/#toast=(.+)/)
+  const title = toast[1] && toast[1].match(/#title=(.+)/)
+
+  if (message && message[1] || title && title[1]) {
     history.replaceState(null, null, ' ')
-    return decodeURI(match[1])
+    return {
+      title: decodeURI(title && title[1] || ''),
+      message: decodeURI(message && message[1] || '')
+    }
   }
 }
 

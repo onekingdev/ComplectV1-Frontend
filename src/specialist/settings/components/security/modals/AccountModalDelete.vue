@@ -8,7 +8,7 @@
         .col-md-1.text-center.px-0
           b-icon.mt-2.ml-3(icon="dash-circle-fill" scale="2" variant="danger")
         .col
-          p By deleting your account, you will purge all account information.
+          p Account deletion is not reversible. Please ensure you have downloaded all the records you would like to retain after this account is deleted. 
             br
             b Do you want to continue?
 

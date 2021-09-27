@@ -15,9 +15,9 @@
         dt.col-sm-3 Jurisdictions
         dd.col-sm-9 {{ business.jurisdictions | names}}
         dt.col-sm-3 AUM
-        dd.col-sm-9 {{ business.aum ? business.aum : '' }}
+        dd.col-sm-9 {{ Number(business.aum) ? business.aum : '' }}
         dt.col-sm-3 Accounts
-        dd.col-sm-9 {{ business.client_account_cnt }}
+        dd.col-sm-9 {{ business.client_account_cnt ? business.client_account_cnt : '' }}
         dt.col-sm-3 Employees
         dd.col-sm-9 {{ business.active_member }} {{ business.active_member > 1 ? 'Employees' : 'Employee'}}
         dt.col-sm-3 Description

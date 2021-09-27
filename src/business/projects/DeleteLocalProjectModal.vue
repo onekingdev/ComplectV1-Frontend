@@ -7,14 +7,14 @@
           b-icon.mt-1.ml-3(icon="exclamation-triangle-fill" variant="warning" width="25" height="25")
         .col
           div
-            p.m-b-10 The project can't be deleted because there is still a contract in progres. To continue, please end the contract with:
+            p.m-b-10 The project cannot be deleted while there is still an active contract in progress. To continue, please end the contract with:
             p.mb-0: strong {{ specialistName }}
       .row(v-else)
         .col-md-1.text-center.px-0
           img.mt-1.ml-3(src='@/assets/error_20.svg' width="25" height="25")
         .col
           div.fs-14
-            p The following project and all of its related tasks, documents, and activity will be deleted.
+            p This will remove the project and all of its related tasks, documents, and activity from your records.
             p.mb-0: strong Do you want to continue?
 
       template(#modal-footer="{ hide }")
@@ -36,7 +36,7 @@ export default {
   methods: {
     deleted() {
       this.$bvModal.hide('DeleteProjectModal')
-      redirectWithToast(redirectUrl, 'Project deleted')
+      redirectWithToast('/business/projects', 'Project has been deleted.', 'Success')
     }
   },
   computed: {

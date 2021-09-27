@@ -19,9 +19,9 @@
                       .d-flex.justify-content-end
                         button.btn.btn-default.mr-2.d-none Download
                         UserModalAddEdit(@editPlan="showModal")
-                          button.btn.btn-dark Add User
+                          button.btn.btn-dark New User
                         PlanModalEdit(:plan="plan")
-                          button.d-none(ref="editPlanModal") Add User
+                          button.d-none(ref="editPlanModal") New User
 
                 UsersTable(:users="filteredUsersActive")
                 Loading
@@ -38,7 +38,7 @@
                       .d-flex.justify-content-end
                         button.btn.btn-default.mr-2 Export
                         UserModalAddEdit
-                          button.btn.btn-dark Add User
+                          button.btn.btn-dark New User
                 UsersTable(v-if="!loading" :users="filteredUsersDisabled" :disabled="true" )
                 Loading
                 EmptyState(v-if="!loading &&  !filteredUsersDisabled.length")
@@ -101,6 +101,14 @@
       }),
       filteredUsers () {
         const users = this.users
+        const currentUser = this.$store.getters.getUser
+
+        users.map(user => {
+          if (user.email === currentUser.user_email) {
+            user.role = 'admin'
+            user.isAccountOwner = true
+          }
+        })
         return users.filter(user => {
           const fullName = `${user.first_name} ${user.last_name}`
           return fullName?.toLowerCase().includes(this.searchInput.toLowerCase())

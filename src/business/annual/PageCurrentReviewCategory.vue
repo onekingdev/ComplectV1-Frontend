@@ -98,7 +98,8 @@
                       AnnualModalComplite(v-else @compliteConfirmed="markComplete", :completedStatus="currentCategory.complete" :name="currentCategory.name" :inline="false")
                         button.btn(:class="'btn-dark'") Mark as Complete
       b-tab(title="Tasks")
-        PageTasks(:review="review")
+        .container: .row.p-x-1: .col: .card
+          TaskTableExtended(:tasks="review.reminders" :task-defaults="{ linkable_type: 'AnnualReport', linkable_id: review.id }")
       b-tab(title="Documents")
         PageDocuments
 </template>
@@ -111,7 +112,7 @@ import AnnualModalEdit from './modals/AnnualModalEdit'
 import AnnualModalDelete from './modals/AnnualModalDelete'
 import CommonDeleteModal from '@/common/Modals/CommonDeleteModal'
 import TaskFormModal from '@/common/TaskFormModal'
-import PageTasks from './PageTasks'
+import TaskTableExtended from '@/common/TaskTableExtended'
 import PageDocuments from './PageDocuments'
 
 export default {
@@ -123,7 +124,7 @@ export default {
     AnnualModalDelete,
     CommonDeleteModal,
     TaskFormModal,
-    PageTasks,
+    TaskTableExtended,
     PageDocuments
   },
   data () {
@@ -165,7 +166,7 @@ export default {
       
       try {
         await this.updateReviewCategory(data)
-        this.toast('Success', "Category has been updated..")
+        this.toast('Success', "Category has been updated.")
         await this.getCurrentReviewReview(this.annualId)
         
       } catch (error) {

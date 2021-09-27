@@ -24,7 +24,7 @@
                         template(#button-content)
                           b-icon(icon="three-dots")
                         CommonDeleteModal(title="Delete File" content="" @deleteConfirmed="deleteFile(message.id)" :inline="true")
-                          b-dropdown-item.delete Delete File
+                          b-dropdown-item.delete Delete
           .d-block.text-right.ml-auto
             p.message__date {{ message.created_at | asDate }}
 </template>
@@ -48,7 +48,7 @@
       async deleteFile(id) {
         try {
           await this.$store.dispatch('reminders/deleteTaskMessageById', id)
-          this.toast('Success', `File deleted`)
+          this.toast('Success', `File has been deleted.`)
           this.$emit('saved')
         } catch (error) {
           this.toast('Error', error.message, true)

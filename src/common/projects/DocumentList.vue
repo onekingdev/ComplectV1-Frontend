@@ -1,7 +1,7 @@
 <template lang="pug">
   .card-body.white-card-body.card-body_full-height
     label
-      a.btn.btn-default Upload File
+      a.btn.btn-default Upload
       input(type="file" name="file" @change="onFileChanged" style="display: none")
     Get(:documents="url" :etag="etag"): template(v-slot="{documents}"): .row.p-x-1
       .alert.alert-info.col-md-4(v-for="document in documents" :key="document.id")
@@ -34,7 +34,7 @@ export default {
       const file = event.target.files && event.target.files[0]
       if (file) {
         const success = (await uploadFile(this.url, file)).ok
-        const message = success ? 'Document uploaded' : 'Document upload failed'
+        const message = success ? 'Document has been uploaded.' : 'Document has not been uploaded. Please try again.'
         this.toast('Document Upload', message, !success)
         this.newEtag()
       }

@@ -16,8 +16,8 @@
             .d-block.text-right.ml-auto
               p.message__date {{ message.created_at | asDate }}
       .card-body
-        InputTextarea.m-b-20(v-model="comment.message" placeholder="Make a comment or leave a note..." :errors="commentErrors && commentErrors.message") Comment
-        Post(v-bind="postCommentProps" @saved="commentSaved" @errors="commentErrors = $event" alignRight)
+        InputTextarea(v-model="comment.message" placeholder="Make a comment or leave a note..." :errors="commentErrors && commentErrors.message" @submit="handleSubmitComment") Comment
+        Post(ref="postButton" v-bind="postCommentProps" @saved="commentSaved" @errors="commentErrors = $event" alignRight)
           button.btn.btn-primary.save-comment-btn Send
 </template>
 
@@ -52,6 +52,9 @@ export default {
       this.newEtag()
       this.comment.message = null
     },
+    handleSubmitComment() {
+      this.$refs.postButton.submit()
+    }
   },
   computed: {
     postCommentProps() {

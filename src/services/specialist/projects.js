@@ -61,3 +61,16 @@ export async function updateProposal(payload) {
     })
     .catch(err => err)
 }
+
+export async function deleteTimeSheet(payload) {
+  const projectId = payload.projectId
+  const id = payload.id
+  return await axios.delete(`/specialist/projects/${projectId}/timesheets/${id}`)
+    .then(response => {
+      if (response) {
+        return response.data
+      }
+      return false
+    })
+    .catch(err => err)
+}

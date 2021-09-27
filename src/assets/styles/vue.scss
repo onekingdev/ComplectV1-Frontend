@@ -1864,8 +1864,8 @@ table.table {
 
 .badge-success {
   color: #1bb380;
-  background-color: #d5fbef;
-  border-color: #d5fbef;
+  background-color: $green-light;
+  border-color: $green-light;
 }
 
 .badge-danger {
@@ -1882,8 +1882,8 @@ table.table {
 
 .badge-light {
   color: $gray-3;
-  background-color: $gray-hover;
-  border-color: $gray-hover;
+  background-color: $gray-background;
+  border-color: $gray-background;
 }
 
 .badge-progress {
@@ -1894,8 +1894,8 @@ table.table {
 
 .badge-secondary {
   color: #373839;
-  background-color: #ffffff;
-  border-color: $gray-1;
+  background-color: $white;
+  border-color: $black;
 }
 
 .badge-primary {
@@ -4154,7 +4154,6 @@ select.custom-select {
 
   width: 100%;
   min-height: 20.3125rem;//325px;
-  height: 100%;
   max-height: 22.9375rem; //367px;
   overflow: auto;
 }
@@ -4327,6 +4326,30 @@ select.custom-select {
   &__text {
     @include font-regular-14;
     color: $gray-3;
+  }
+}
+
+#sidebarMenu_alt {
+  .title {
+    @include font-semi-bold-16;
+  }
+
+  .sub-title {
+    @include font-medium-12;
+  }
+}
+
+.project-item {
+  &:first-child {
+    padding-top: 0px;
+  }
+
+  .title {
+    @include font-bold-16;
+  }
+
+  .sub-title {
+    @include font-regular-14;
   }
 }
 

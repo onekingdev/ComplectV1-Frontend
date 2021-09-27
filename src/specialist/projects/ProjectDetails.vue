@@ -18,9 +18,11 @@
         dd.col-sm-9 {{ project.description }}
         dt.col-sm-3 Role Details
         dd.col-sm-9 {{ project.role_details }}
-      ProjectFigures(:project="project")
+        dt.col-sm-3
+        dd.col-sm-9
+          ProjectFigures(:project="project")
     hr(v-if="project.skills && project.skills.length > 0")
-    .card-body.pb-4(v-if="project.skills && project.skills.length > 0")
+    .card-body(v-if="project.skills && project.skills.length > 0")
       h4.m-t-1.semibold-text.py-2 Skills
       p
         .badge.badge-default.m-r-1(v-for="skill in project.skills") {{ skill.name }}
@@ -28,6 +30,7 @@
     .card-body
       h4.m-t-1.semibold-text.py-2 Client Details
       ClientDetails(:business="project.business")
+    hr.mt-3.mb-5
 </template>
 
 <script>

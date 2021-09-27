@@ -1,5 +1,5 @@
 <template lang="pug">
-  Treeselect(@input="input" v-bind="args")
+  Treeselect(@input="input" v-bind="args" :disabled="disabled")
     template(v-if="idAsLabel" v-slot:value-label="{node}") {{node.id}}
 </template>
 
@@ -18,6 +18,10 @@ export default {
       default: () => ({})
     },
     multiple: {
+      type: Boolean,
+      default: false
+    },
+    disabled: {
       type: Boolean,
       default: false
     }

@@ -104,6 +104,7 @@ export default {
                   examItem.share_uuid,
                   examItem.starts_on,
                   examItem.updated_at,
+                  examItem.reminders,
                 ))
               }
               commit('SET_EXAMS', exams)
@@ -153,6 +154,7 @@ export default {
                   data.share_uuid,
                   data.starts_on,
                   data.updated_at,
+                  data.reminders,
                 ))
               return success
             }
@@ -204,6 +206,7 @@ export default {
                   data.share_uuid,
                   data.starts_on,
                   data.updated_at,
+                  data.reminders,
                 ))
               commit('UPDATE_CURRENT_EXAM', new ExamManagement(
                   data.complete,
@@ -216,6 +219,7 @@ export default {
                   data.share_uuid,
                   data.starts_on,
                   data.updated_at,
+                  data.reminders,
                 ))
               return success
             }
@@ -303,6 +307,7 @@ export default {
                 data.share_uuid,
                 data.starts_on,
                 data.updated_at,
+                data.reminders,
               ))
               return success
             }
@@ -664,6 +669,7 @@ export default {
                 data.share_uuid,
                 data.starts_on,
                 data.updated_at,
+                data.reminders,
               ))
               return success.data
             }

@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="50px" height="40px" viewBox="0 0 50 40" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <title>Group 2</title>
+    <g id="Mocks" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="07.1_03" transform="translate(-463.000000, -406.000000)">
+            <g id="Group-3" transform="translate(419.495957, 287.000000)">
+                <g id="Group-2" transform="translate(43.504043, 119.000000)">
+                    <polygon id="Rectangle" fill="#E4E6EC" points="25 0 50 9 0 9"></polygon>
+                    <rect id="Rectangle" fill="#D1D9E2" x="0" y="35" width="50" height="5"></rect>
+                    <rect id="Rectangle-Copy-5" fill="#D1D9E2" x="0" y="9" width="50" height="5"></rect>
+                    <rect id="Rectangle" fill="#B8C0C9" x="5" y="14" width="6" height="21"></rect>
+                    <rect id="Rectangle-Copy-3" fill="#B8C0C9" x="16" y="14" width="6" height="21"></rect>
+                    <rect id="Rectangle-Copy-6" fill="#B8C0C9" x="27" y="14" width="6" height="21"></rect>
+                    <rect id="Rectangle-Copy-4" fill="#B8C0C9" x="38" y="14" width="6" height="21"></rect>
+                </g>
+            </g>
+        </g>
+    </g>
+</svg>
