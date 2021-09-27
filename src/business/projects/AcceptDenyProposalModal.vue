@@ -1,10 +1,10 @@
 <template lang="pug">
   b-modal.fade(:id="id" title="Set Role")
-    p Please confirm the applicant you wish to hire.
+    p.fs-14 Please confirm the applicant you wish to hire.
     .card
       .card-body
         SpecialistDetails(:specialist="application.specialist")
-        InputSelect(v-model="role" :options="specialistRoleOptions") Select Role
+        InputSelect.m-t-1(v-model="role" :options="specialistRoleOptions") Select Role
         .form-text.text-muted Determines the permissions to grant the specialist
     template(#modal-footer="{ hide }")
       button.btn.btn-link(@click="hide") Cancel
