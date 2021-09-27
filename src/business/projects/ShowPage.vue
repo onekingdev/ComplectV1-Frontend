@@ -74,7 +74,8 @@
             b-collapse.m-t-1(v-if="completedTasks(project).length" v-model="completedTasksOpen")
               TaskTableExtended(:tasks="completedTasks(project)" :task-defaults="taskDefaults(project)" :create-button="false" @saved="newEtag")
         b-tab.h-100(title="Documents")
-          DocumentList(:project="project")
+          .card-body.card-body_full-height.h-100: .card
+            DocumentList(:project="project")
         b-tab.h-100(title="Collaborators")
           .card-body.card-body_full-height
             .row
