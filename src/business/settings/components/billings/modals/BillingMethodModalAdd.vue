@@ -10,7 +10,7 @@
             .card-body
               .d-flex.justify-content-between
                 .d-flex.align-items-center
-                  ion-icon.card-billing__icon(name="home-outline")
+                  img(src="@/assets/bank-icon.svg" class="card-billing__icon")
                   .d-flex.flex-column.ml-3
                     h3 Bank account
                     p.mb-0 Use your bank account for future payments
@@ -22,7 +22,7 @@
             .card-body
               .d-flex.justify-content-between
                 .d-flex.align-items-center
-                  ion-icon.card-billing__icon(name="card-outline")
+                  img(src="@/assets/card-icon.svg" class="card-billing__icon")
                   .d-flex.flex-column.ml-3
                     h3 Credit Card
                     p.mb-0 Add a card for future payments
@@ -57,15 +57,17 @@
 </script>
 
 <style scoped>
-  .card-billing {
-    transition: background-color 200ms ease-in;
-  }
-  .card-billing:hover,
-  .card-billing:active {
-    background-color: #f6f6f8;
-    cursor: pointer;
-  }
-  ion-icon.card-billing__icon {
-    font-size: 44px;
-  }
+.card-billing {
+  transition: background-color 200ms ease-in;
+}
+
+.card-billing:hover,
+.card-billing:active {
+  background-color: #f6f6f8;
+  cursor: pointer;
+}
+
+.card-billing__icon {
+  width: 30px;
+}
 </style>

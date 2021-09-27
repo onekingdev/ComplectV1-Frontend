@@ -8,8 +8,8 @@
         .row
           .col
             .d-flex.align-items-center
-              img(v-if="isBankAccount(payment)" src="@/assets/bank.svg" class="bank")
-              img(v-else-if="payment.last4" src="@/assets/card.svg" class="credit-card")
+              img(v-if="isBankAccount(payment)" src="@/assets/bank-connected.svg" class="bank")
+              img(v-else-if="payment.last4" src="@/assets/credit-card-connected.svg" class="credit-card")
               ion-icon.payment(v-if="!payment.brand" name="logo-paypal")
               .d-block.ml-4
                 h5(v-if="payment.last4"): strong {{ paymentName(payment) }}
@@ -85,7 +85,7 @@
   }
 
   .bank {
-    width: 20px;
+    width: 24px;
     position: relative;
     top: -4px;
   }
