@@ -24,11 +24,11 @@
           .card.m-b-1
             .card-body
               label
-                  a.btn.btn-light Upload File
+                  a.btn.btn-light Upload
                   input.d-none(type="file" accept="application/pdf" @change="pickFile")
               FileUpload(v-if="form.document" :file="fileObject" @delete="removeFile")
       template(#modal-footer="{ hide }")
-        a.m-r-1.btn(@click="hide") Cancel
+        a.m-r-1.btn.btn-light(@click="hide") Cancel
         button.btn.btn-dark(@click="saved") Submit
 </template>
 
