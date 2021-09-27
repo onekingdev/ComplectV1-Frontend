@@ -14,7 +14,7 @@
           .badge.badge-default.m-r-1.mb-1(v-for="(skill, index) in specialist.skills" :key="index") {{ skill.name }}
         .col-md-3.col.justify-content-end
           .d-flex.align-items-center.justify-content-lg-end
-            b-button(variant="default") Message
+            b-button(variant="dark") Message
     .offset-lg-2.col-lg-10.col.mt-2
       div.mt-1(v-if="specialist.description") {{specialist.description}}
       .d-flex.justify-content-between

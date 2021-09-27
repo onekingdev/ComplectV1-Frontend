@@ -207,6 +207,7 @@
         }
 
         return this.specialists
+          .filter(item => item.plan !== 'free')
           .filter(filterIndustries)
           .filter(filterJurisdictions)
           .filter(filterTags)

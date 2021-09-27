@@ -28,7 +28,7 @@
                       StarsRating(:rate="Math.floor(Math.random() * 5)")
                   .col-md-5.col.justify-content-end
                     .d-flex.align-items-center.justify-content-lg-end
-                      b-button(variant="default" @click="$emit('directMessage')") Message
+                      b-button(variant="dark" @click="$emit('directMessage')") Message
               .offset-lg-2.col-lg-10.col
                 b-card-text.m-t-1.grey-text(v-if="specialist.description") {{specialist.description}}
                 .d-flex.justify-content-between
