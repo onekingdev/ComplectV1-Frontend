@@ -24,12 +24,12 @@
           .card.m-b-1
             .card-body
               label
-                  a.btn.btn-light Upload File
+                  a.btn.btn-light Upload
                   input.d-none(type="file" accept="application/pdf" @change="pickFile")
               FileUpload(v-if="form.document" :file="fileObject" @delete="removeFile")
       template(#modal-footer="{ hide }")
         a.m-r-1.btn(@click="hide") Cancel
-        button.btn.btn-dark(@click="saved") Resubmit
+        button.btn.btn-dark(@click="saved") Submit
 </template>
 
 <script>
@@ -102,7 +102,7 @@ export default {
       } else {
         this.$store.commit('projects/SET_CURRENT_PROPOSAL', res)
         this.$bvModal.hide('EditProposalModal')
-        this.toast('Success', 'Proposal has been updated.')
+        this.toast('Success', 'Proposal has been submitted.')
       }
     },
     loaded(result) {

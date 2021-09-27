@@ -61,7 +61,7 @@
 
           .m-t-1(v-if="project.pricing_type === pricingTypes[0].id")
             InputText(v-model="project.est_budget" :errors="errors.est_budget") Estimated Budget
-            InputSelect.form-control_no-icon.m-t-1(v-model="project.fixed_payment_schedule" :errors="errors.fixed_payment_schedule" :options="fixedPaymentScheduleOptions") Method of Payment
+            InputSelect.form-control_no-icon.m-t-1(v-model="project.fixed_payment_schedule" :errors="errors.fixed_payment_schedule" :options="fixedPaymentScheduleOptions") Payment Schedule
 
           div(v-else)
             .m-t-1
@@ -69,7 +69,7 @@
             .m-t-1
               InputText(v-model="project.upper_hourly_rate" :errors="errors.upper_hourly_rate") Upper Hourly Rate
             .m-t-1
-              InputSelect.form-control_no-icon.m-t-1(v-model="project.hourly_payment_schedule" :errors="errors.hourly_payment_schedule" :options="hourlyPaymentScheduleOptions") Method of Payment
+              InputSelect.form-control_no-icon.m-t-1(v-model="project.hourly_payment_schedule" :errors="errors.hourly_payment_schedule" :options="hourlyPaymentScheduleOptions") Payment Schedule
 
       .row.no-gutters
         .col-lg-6.m-t-2.m-b-40

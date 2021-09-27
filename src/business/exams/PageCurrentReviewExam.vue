@@ -310,7 +310,7 @@
           await this.updateCurrentExamRequest(data)
             .then(response => {
               this.shareRequestData = null
-              this.toast('Success', "Request has been saved.")
+              this.toast('Success', "Request has been shared.")
             })
             .catch(error => this.toast('Error', error.message, true))
         } catch (error) {
