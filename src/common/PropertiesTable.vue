@@ -3,9 +3,9 @@
     .card-header.d-flex.justify-content-between
       h3 {{ title }}
       slot
-    .card-body
+    .card-body.properties-table
       .row(v-for="(property, i) in propertiesList" :key="i")
-        .col-sm-3: span.text-muted {{ property.name }}
+        .col-sm-3: span.text-muted.table-keys {{ property.name }}
         .col-sm-9
           a.link(v-if="property.type ==='link'" :href="property.url") {{ property.valueFiltered }}
           span(v-else) {{ property.valueFiltered }}

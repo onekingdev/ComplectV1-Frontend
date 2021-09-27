@@ -5,17 +5,17 @@
     b-modal(:id="modalId" title="Edit Contract")
       .row
         .col-md-12
-          h3 Terms
+          h3.fs-20.fw-600 Terms
           .row
             .col-sm: InputDate(v-model="form.starts_on" :errors="errors.starts_on") Start Date
             .col-sm: InputDate(v-model="form.ends_on" :errors="errors.ends_on") Due Date
           InputText.m-t-1(v-if="form.hourly_rate == null" v-model="form.fixed_budget" :errors="errors.fixed_budget") Fixed Budget
           InputText.m-t-1(v-else v-model="form.hourly_rate" :errors="errors.hourly_rate") Hourly Rate
           hr
-          h3 Role
+          h3.fs-20.fw-600 Role
           InputTextarea.m-t-1(v-model="form.role_details" :errors="errors.role_details" :rows="4") Role Details
           InputTextarea.m-t-1(v-model="form.key_deliverables" :errors="errors.key_deliverables" :rows="4") Key Deliverables
-          h3.m-t-1 Attachments
+          h3.fs-20.fw-600.m-t-1 Attachments
           .card.m-b-1
             .card-body
               p

@@ -39,21 +39,21 @@
                     h3.m-y-0 Collaborators
                     a.link.btn(@click="viewContract()") View All
                   .card-body
-                    table.rating_table(v-if="getContracts(project.projects).length")
+                    table.rating_table.collaborators_table(v-if="getContracts(project.projects).length")
                       thead
                         tr
-                          th
+                          th.fw-400.p-b-05
                             | Name
                             b-icon.ml-2(icon='chevron-expand')
-                          th
+                          th.p-b-05
                       tbody
                         tr(v-for="contract in getContracts(project.projects)" :key="contract.specialist.id")
                           td
                             .d-flex.align-items-center.mb-3
                               div
                                 UserAvatar.userpic_small.mr-2(:user="contract.specialist")
-                              div.d-flex.flex-column
-                                b {{ contract.specialist.first_name }} {{ contract.specialist.last_name }}
+                              div.d-flex.flex-column.fw-600.fs-14
+                                span {{ contract.specialist.first_name }} {{ contract.specialist.last_name }}
                                 span {{ contract.specialist.seat_role }}
                           td
                             b-dropdown.float-right(text="..." variant="default" right)
@@ -97,22 +97,27 @@
                           Post(:action="'/api/local_projects/' + project.id + '/specialists'" :model="{id}" @saved="newEtag()")
                             button.btn.btn-dark Create
                   .card-body
-                    .card.p-20(v-for="contract in getContracts(project.projects)" :key="contract.specialist.id")
+                    .p-20.collaborator(v-for="contract in getContracts(project.projects)" :key="contract.specialist.id")
                       .d-flex.justify-content-between.align-items-center
                         .d-flex.align-items-center
                             div
                               UserAvatar.userpic_small.mr-2(:user="contract.specialist")
                             div.d-flex.flex-column
-                              b {{ contract.specialist.first_name }} {{ contract.specialist.last_name }}
+                              b.collaborator__name {{ contract.specialist.first_name }} {{ contract.specialist.last_name }}
                               span {{ contract.specialist.seat_role }}
                         .d-flex.justify-content-end
                           b-dropdown.bg-white.mr-2(variant="light", right)
                             template(#button-content)
                               | Actions
                               b-icon.ml-2(icon="chevron-down")
+                              //- p {{contract}}
+                            
+                            //- MessagesModal(v-bind="{ contract, modalId, confirmModalId, projectId }")
+                              b-dropdown-item Message
                             b-dropdown-item Message
-                            b-dropdown-item Edit Role
-                          button.btn.btn-default(@click="showingContract = contract") View Contract
+                            EditRoleModal(:specialist="contract.specialist" :inline="false" @saved="accepted")
+                              b-dropdown-item Edit Role
+                          button.btn.btn-primary(@click="showingContract = contract") View Contract
                     .applications(v-if="!getContracts(project.projects).length")
                       .applications__body.applications__body_center.applications__body_m-h-200
                         ion-icon.applications__icon.m-b-10(name="people-outline")
@@ -121,13 +126,15 @@
                   .row(v-if="!isContractComplete(showingContract)"): .col-sm-12
                     EndContractModal(:project="showingContract" @saved="contractEnded")
                       button.btn.btn-dark.float-right End Contract
-                    b-dropdown.m-x-1.float-right(text="Actions" variant="default")
-                      EditRoleModal(:specialist="showingContract.specialist" :inline="false" @saved="accepted")
-                        b-dropdown-item Back
+                    b-dropdown.m-x-1.float-right(variant="default")
+                      template(#button-content)
+                        | Actions
+                        b-icon.ml-2(icon="chevron-down")
+                      b-dropdown-item(@click="showingContract = null") Back
                       b-dropdown-item(v-b-modal="'IssueModal'") Report Issue
                       EditContractModal(:project="showingContract" :inline="true" @saved="newEtag(), tab = 0")
                         b-dropdown-item Edit Role
-                      b-dropdown-item(:to="`/business/projects/${showingContract.id}/timesheets`") View Timesheet
+                      b-dropdown-item(:to="`/business/projects/${showingContract.id}/timesheets`" target="_blank") View Timesheet
                     IssueModal(:project-id="showingContract.id" :token="token")
                     Breadcrumbs.m-y-1(:items="['Collaborators', `${showingContract.specialist.first_name} ${showingContract.specialist.last_name}`]")
                   .row(v-else): .col-sm-12
@@ -158,6 +165,7 @@ import TaskFormModal from '@/common/TaskFormModal'
 import TaskTableExtended from "@/common/TaskTableExtended";
 import IssueModal from './IssueModal'
 import EditRoleModal from './EditRoleModal'
+import MessagesModal from '@/common/Messages/MessagesModal'
 
 const TOKEN = localStorage.getItem('app.currentUser.token') ? JSON.parse(localStorage.getItem('app.currentUser.token')) : ''
 const isContractComplete = contract => contract.status === 'complete'
@@ -265,7 +273,8 @@ export default {
     IssueModal,
     EditRoleModal,
     TaskFormModal,
-    TaskTableExtended,
+    MessagesModal,
+    TaskTableExtended
   }
 }
 </script>
@@ -288,6 +297,15 @@ export default {
   }
   .card {
     height: 100%
+  }
+  .collaborator {
+    border-bottom: 1px solid #dee2e6;
+    &:last-child {
+      border: none;
+    }
+    &__name {
+      font-weight: 600
+    }
   }
 }
 </style>

@@ -1,7 +1,7 @@
 <template lang="pug">
   span
     img.img-avatar(v-if="src" :src="src")
-    span.avatar-placeholder(v-else :class="{ sm, bg, bgLight, size40, size100 } ") {{placeholderText}}
+    span.avatar-placeholder(v-else :class="{ sm, bg, bgLight, size40, size70, size100 } ") {{placeholderText}}
 </template>
 
 <script>
@@ -15,6 +15,7 @@ export default {
     bg: Boolean,
     bgLight: Boolean,
     size40: Boolean,
+    size70: Boolean,
     size100: Boolean,
   },
   computed: {
@@ -58,6 +59,13 @@ export default {
 .avatar-placeholder.size40{
   height: 2.5rem;
   width: 2.5rem;
+}
+
+.avatar-placeholder.size70{
+  height: 4.3rem;
+  width: 4.3rem;
+  font-size: 1.8em;
+  line-height: 4.3rem;
 }
 .avatar-placeholder.size100{
   height: 6.25rem;

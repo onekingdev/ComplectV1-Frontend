@@ -2560,9 +2560,13 @@ table.table {
       vertical-align: top;
     }
 
-    border-bottom: 2px solid #E4E6EB;
+    border-bottom: 1px solid #E4E6EB;
   }
 }
+
+// .collaborators_table {
+
+// }
 
 .borderless {
   border: 0px !important;
@@ -3021,6 +3025,14 @@ label.required:after {
 .text-muted {
   font-size: 0.75rem;
   color: #A2A3A9;
+}
+
+.properties-table {
+  .table-keys {
+    font-size: 0.875rem;
+    color: #A2A3A9;
+    line-height: 1.7
+  }
 }
 
 .form-control:focus,
