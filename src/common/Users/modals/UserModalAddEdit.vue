@@ -11,23 +11,23 @@
       .row
         .col-sm-6.m-b-1
           label.form-label.required First Name
-          input.form-control(v-model="form.first_name" type="text" placeholder="First Name" ref="input")
+          input.form-control(v-model="form.first_name" type="text" placeholder="First Name" ref="input" :disabled="isAccountOwner")
           Errors(:errors="errors.first_name")
         .col-sm-6.m-b-1
           label.form-label.required Last Name
-          input.form-control(v-model="form.last_name" type="text" placeholder="Last Name" ref="input")
+          input.form-control(v-model="form.last_name" type="text" placeholder="Last Name" ref="input" :disabled="isAccountOwner")
           Errors(:errors="errors.last_name")
       .row
         .col-12.m-b-1
           label.form-label.required Email
-          input.form-control(v-model="form.email" type="text" placeholder="Email" ref="input")
+          input.form-control(v-model="form.email" type="text" placeholder="Email" ref="input" :disabled="isAccountOwner")
           Errors(:errors="errors.email")
       .row
         .col-12.m-b-1
           label.form-label Role
             RoleTypesModalInfo
               b-icon.tooltip__icon(icon="info-circle-fill" v-b-tooltip.hover title="Role Information")
-          ComboBox(v-model="form.role" :options="roleOptions" placeholder="Select a role")
+          ComboBox(v-model="form.role" :options="roleOptions" placeholder="Select a role" :disabled="isAccountOwner")
           Errors(:errors="errors.role")
       .row
         .col-12.m-b-1
@@ -158,7 +158,10 @@
       }),
       roleOptions() {
         return ['', 'basic', 'trusted', 'admin'].map(toOption)
-      }
+      },
+      isAccountOwner() {
+        return this.user.isAccountOwner
+      },
     },
   }
 </script>
