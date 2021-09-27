@@ -1,12 +1,23 @@
 <template lang="pug">
-  .card-body.white-card-body.card-body_full-height
-    label
-      a.btn.btn-default Upload
-      input(type="file" name="file" @change="onFileChanged" style="display: none")
-    Get(:documents="url" :etag="etag"): template(v-slot="{documents}"): .row.p-x-1
-      .alert.alert-info.col-md-4(v-for="document in documents" :key="document.id")
-        p {{ document.file_data.metadata.filename }}
-        p: a(:href='getDocumentUrl(document)' target="_blank") Download
+  .documents-list-card
+    h3.policy-details__title Documents
+    .policy-actions
+      a.btn.btn-dark Upload
+    Get(:documents="url" :etag="etag"): template(v-slot="{documents}"): .policy-details__body
+      table.table
+        thead
+          tr
+            th(width="45%") Name
+            th Owner
+            th Size
+            th Last Modified
+        tbody.text-dark(v-if="documents.length")
+          tr(v-for="document in documents" :key="document.id")
+            td Filename
+            td Owner
+            td Size
+            td Date
+      EmptyState(v-if="!loading && !documents.length")
 </template>
 
 <script>
@@ -44,6 +55,9 @@ export default {
     }
   },
   computed: {
+    loading() {
+      return this.$store.getters.loading
+    },
     url() {
       return `/api/projects/${this.project.id}/documents`
     }
