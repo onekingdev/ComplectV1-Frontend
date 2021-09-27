@@ -9,7 +9,7 @@
             .row
               .col
                 b-form-group#inputB-group-4(
-                  label="Account type"
+                  label="Account Type"
                   label-class="required"
                   label-for="account_type"
                 )
@@ -47,7 +47,7 @@
                 b-form-group#inputB-group-3(
                   label-for="last_name"
                   label-class="required"
-                  label="Legal last name"
+                  label="Legal Last Name"
                 )
                   b-form-input#last_name(
                     type="text"
@@ -63,7 +63,7 @@
                 b-form-group#inputB-group-2(
                   label-for="business_name"
                   label-class="required"
-                  label="Legal business name"
+                  label="Legal Business Name"
                 )
                   b-form-input#business_name(
                     type="text"
@@ -188,7 +188,7 @@
             this.$emit("changeTab", "personal");
           }
         }).catch(error => {
-          this.toast("Error", `Something wrong! ${error.message}`, true);
+          this.toast("Error", `Action could not be completed. Please try again.`, true);
         });
       },
       onChangeInput(key) {
