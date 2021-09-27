@@ -111,24 +111,12 @@
         return this.$store.getters.staticCollection.PLAID_PUBLIC_KEY;
       },
       invoices() {
-        return [
-          {
-            date: '27/11/2020',
-            name: 'Plan - Compilance Command Center Subscription',
-            type: 'Plan',
-            price: '$50'
-          },
-          {
-            date: '28/12/2020',
-            name: 'Plan - Compilance Command Center Subscription',
-            type: 'Plan',
-            price: '$50'
-          }
-        ]
+        return []
       },
       pdfUrl: () => pdfUrl,
     },
     async mounted() {
+      this.$store.dispatch('getStaticCollection')
       try {
         const data = {
           userType: this.userType,
