@@ -133,7 +133,7 @@
         button.btn.btn-default(@click="toggleDone(task)") Mark as Incomplete
 
       template(v-else-if="taskId" slot="modal-footer")
-        TaskDeleteConfirmModal.mr-auto(v-if="null === occurenceId" :inline="false" @deleteConfirmed="deleteTask(task)")
+        TaskDeleteConfirmModal.mr-auto(v-if="!occurenceId" :inline="false" @deleteConfirmed="deleteTask(task)")
           button.btn.btn-outline-danger Delete Task
         b-dropdown.mr-auto(v-else-if="taskId" variant="outline-danger" text="Delete Task")
           TaskDeleteConfirmModal(:inline="false" @deleteConfirmed="deleteTask(task, true)")
@@ -142,7 +142,7 @@
             b-dropdown-item Delete Series
         button.btn.btn-default(@click="toggleDone(task)") Mark as Complete
         button.btn.btn-dark(v-if="!taskId" @click="submit()") Save
-        button.btn.btn-dark(v-else-if="null === occurenceId" @click="submit(true)") Save
+        button.btn.btn-dark(v-else-if="!occurenceId" @click="submit(true)") Save
         b-dropdown.font-weight-bold(v-else variant="dark" text="Save")
           b-dropdown-item(@click="submit(true)") Save Occurence
           b-dropdown-item(@click="submit()") Save Series
