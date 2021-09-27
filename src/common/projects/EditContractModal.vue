@@ -24,7 +24,7 @@
       template(#modal-footer="{ hide }")
         button.btn.btn-link.mr-2(@click="hide") Cancel
         Post(:action="`/api/projects/${project.id}/extension`" :model="form" @errors="errors = $event" @saved="saved")
-          button.btn.btn-dark Resubmit
+          button.btn.btn-dark Submit
 </template>
 
 <script>
