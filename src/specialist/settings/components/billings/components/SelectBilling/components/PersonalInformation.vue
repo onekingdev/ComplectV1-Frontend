@@ -31,7 +31,7 @@
               b-form-input#personal_id_number.form-control(
                 type="text"
                 v-model="personal_id_number"
-                placeholder="Enter last 4 digits of SSN"
+                placeholder="Social Security/Personal ID Number"
                 @input="onChangeInput('personal_id_number')"
                 :class="{'is-invalid': errors.personal_id_number}"
               )
@@ -88,7 +88,7 @@
             b-form-group#inputB-group-13(label="State" label-for="state" label-class="required")
               b-form-input#state(
                 v-model="state"
-                placeholder="Select state"
+                placeholder="State"
                 @input="onChangeInput('state')"
                 :class="{'is-invalid': errors.state}"
               )
