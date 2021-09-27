@@ -29,7 +29,7 @@
               FileUpload(v-if="form.document" :file="fileObject" @delete="removeFile")
       template(#modal-footer="{ hide }")
         a.m-r-1.btn(@click="hide") Cancel
-        button.btn.btn-dark(@click="saved") Resubmit
+        button.btn.btn-dark(@click="saved") Submit
 </template>
 
 <script>
