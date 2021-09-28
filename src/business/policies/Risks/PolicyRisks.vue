@@ -10,15 +10,14 @@
         thead
           tr
             th(width="56%") Name
-              b-icon.ml-2(icon='chevron-expand')
-            th Impact
-              b-icon.ml-2(icon='chevron-expand')
-            th Likelihood
-              b-icon.ml-2(icon='chevron-expand')
-            th Risk Level
-              b-icon.ml-2(icon='chevron-expand')
-            th.text-right Date Created
-              b-icon.ml-2(icon='chevron-expand')
+            th
+              span.ml-2 Impact
+            th
+              span.ml-2 Likelihood
+            th
+              span.ml-2 Risk Level
+            th
+              span.text-right.ml-2 Date Created
             th(width="35px")
         tbody.text-dark(v-if="!loading && policyById.risks && policyById.risks.length")
           tr(v-for="risk in policyById.risks" :key="risk.id")
