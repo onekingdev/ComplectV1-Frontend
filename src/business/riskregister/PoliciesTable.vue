@@ -6,9 +6,9 @@
           th(width="55%") Policy
           th Status
             b-icon.ml-2(icon='chevron-expand')
-          th.text-right Last modified
+          th.text-right Last Modified
             b-icon.ml-2(icon='chevron-expand')
-          th.text-right Date created
+          th.text-right Date Created
             b-icon.ml-2(icon='chevron-expand')
           th(width="10%")
       tbody
