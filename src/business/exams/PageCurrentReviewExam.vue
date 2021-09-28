@@ -63,7 +63,7 @@
                                     b-icon.ml-2(icon="chevron-down")
                                   b-dropdown-item(@click="addTextEntry(i)") Text Entry
                                   ExamModalUpload(:currentExamId="currentExam.id"  :request="currentRequst" :inline="false")
-                                    b-dropdown-item Upload New
+                                    b-dropdown-item Upload Files
                                   ExamModalSelectFiles(:currentExamId="currentExam.id"  :request="currentRequst" :inline="false")
                                     b-dropdown-item Select Existing
                                 TaskFormModal(@saved="createTask(currentRequst.id)" :inline="false")

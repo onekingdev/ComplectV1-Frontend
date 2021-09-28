@@ -87,7 +87,7 @@
                               b Payment Method
                               span.float-right Transfer to Visa
                           .card-body
-                            p.text-right.text-muted *Invoice will be automatically deducted.
+                            p.text-right.text-muted *This total does not reflect processing fees.
                         template(slot="modal-footer")
                           button.btn(@click="$bvModal.hide('EndContractModal')") Cancel
                           Post(:action="completeUrl(showingContract)" :model="{}" @saved="completeSuccess" @errors="completeErrors")
