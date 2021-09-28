@@ -54,6 +54,7 @@ const SettingsNotifications = () => import ('@/business/notifications/Page')
 const SpecialistsMarketplace = () => import ('@/business/marketplace/Page')
 const PageAuditorPortalExternalAccess = () => import ('@/business/exams/PageAuditorPortalExternalAccess')
 const PageAuditorPortalInternalAccess = () => import ('@/business/exams/PageAuditorPortalInternalAccess')
+const PageSpecialistProfile = () => import ('@/business/specialist-profile/Page')
 // const PolicyCurrent = () => import ('@/business/policies/Details/PolicyCreate')
 
 // SPECIALISTS
@@ -130,6 +131,7 @@ const router = new VueRouter({
             { path: 'exam_management/:examId(\\d+)/portal', component: PageAuditorPortalInternalAccess, props: paramsToInts(['examId']) },
             { path: '/specialistmarketplace', name: 'specialists-marketplace', component: SpecialistsMarketplace },
             { path: 'notification-center', name: 'settings-notification-center', component: SettingsNotifications },
+            { path: 'specialist-profile/:specialistID', name: 'specialist-profile', component: PageSpecialistProfile },
             { path: 'settings/', name: 'settings', component: Settings,
               children:  [
                 { path: 'general', name: 'settings-general', component: Settings, },

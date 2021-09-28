@@ -77,3 +77,31 @@ ion-icon.close:hover {
 .page-link {
   color: #1b1c29;
 }
+
+.small-text {
+  font-size: 12px;
+}
+
+.font-14 {
+  font-size: 14px;
+}
+
+.standard-text {
+  font-size: 16px;
+}
+
+.middle-text {
+  font-size: 20px;
+}
+
+.grey-text {
+  color: #303132;
+}
+
+.intro-text {
+  color: #797B7E;
+}
+
+.semibold {
+  font-weight: 600;
+}

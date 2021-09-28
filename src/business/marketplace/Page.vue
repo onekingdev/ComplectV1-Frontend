@@ -1,5 +1,5 @@
 <template lang="pug">
-  .marketplace
+  .marketplace.pb-5
     .container-fluid
       .row
         .col-12.px-0.mb-4
@@ -15,12 +15,11 @@
             .card-header
               .col-md-12
                 h3.mb-0 Browse Specialist
-            .card-body
+            .card-body.pb-0
               MarketPlaceSearchInput(@searchCompleted="optionsForRequest.tags = $event")
-            .card-body
+            .card-body.pt-0
               SpecialistPanel(v-for="specialist in filteredSpecialists" :specialist="specialist" :key="specialist.id" @directMessage="isSidebarOpen = true")
               Loading
-              b-pagination(v-if="filteredSpecialists.length && !loading" v-model='currentPage' :total-rows='rows' :per-page='perPage' aria-controls='my-table' align="center" pills size="sm")
             .card-body(v-if="!filteredSpecialists.length && !loading")
               EmptyState
 
@@ -131,10 +130,6 @@
           ...this.sortOptions,
           ...newValue
         }
-
-        // this.$store.dispatch('marketplace/getSpecialistsByFilter', data)
-        //   .then((response) => console.log('response: ', response) )
-        //   .catch((error) => console.error(error) );
       },
       refetch() {
         const headers = { ...this.$store.getters.authHeaders }
@@ -174,16 +169,23 @@
 
         const filterTags = specialist => {
           if (!this.optionsForRequest.tags || !this.optionsForRequest.tags.length) return true
-          return this.optionsForRequest.tags.every(tag => {
-            const specialistString = JSON.stringify(Object.values(specialist)).toLowerCase()
-            return new RegExp(tag, 'ig').test(specialistString)
+          return this.optionsForRequest.tags.find(tag => {
+            const name =  `${specialist.first_name} ${specialist.last_name}`.includes(tag)
+            const description = specialist.includes(tag)
+            const skills = specialist.skills.map(item => item.name).join(' ').includes(tag)
+
+            return name || skills || description
           })
         }
 
         const filterExperience = specialist => {
           if (!this.optionsForRequest.experienceLevel || !this.optionsForRequest.experienceLevel.length) return true
-          const levels = ['Junior', 'Intermediate', 'Expert']
-          const specialistLevel = levels.indexOf(specialist.experience)
+          const specialistLevels = {
+            0: 'Junior',
+            1: 'Intermediate',
+            2: 'Expert'
+          }
+          const specialistLevel = specialistLevels[specialist.experience]
           return this.optionsForRequest.experienceLevel.includes(specialistLevel)
         }
 
@@ -192,12 +194,26 @@
           return specialist.min_hourly_rate >= min && specialist.min_hourly_rate <= max
         }
 
+        const filterFormerRegulator = specialist => {
+          if (!this.optionsForRequest.formerRegulator || !this.optionsForRequest.formerRegulator.length) return true
+          if (!specialist.specialist_other || !specialist.former_regulator) return false
+          const specialistOthers = specialist.specialist_other.split(',').map(item => item.trim().toLowerCase())
+          const formerRegulators = this.optionsForRequest.formerRegulator.map(item => item.name.trim().toLowerCase())
+          const index = specialistOthers.find(specialistOther => {
+            return formerRegulators.find(formerRegulator => specialistOther === formerRegulator)
+          })
+
+          return index
+        }
+
         return this.specialists
+          .filter(item => item.plan !== 'free')
           .filter(filterIndustries)
           .filter(filterJurisdictions)
           .filter(filterTags)
           .filter(filterExperience)
           .filter(filterHourlyRate)
+          .filter(filterFormerRegulator)
       },
       pricingTypeOptions: () => PRICING_TYPE_OPTIONS,
       experienceOptions: () => EXPERIENCE_OPTIONS,

@@ -161,7 +161,8 @@
           routeName === 'projects-marketpalce-specialist' ||
           routeName === 'projects-marketpalce-specialist-view' ||
           routeName === 'projects-marketplace-create-proposal' ||
-          routeName === 'my-project-timesheet-page'
+          routeName === 'my-project-timesheet-page' ||
+          routeName === 'specialist-profile'
         ) {
           this.$store.commit('changeSidebar', 'builder')
           // document.querySelector('.sidebar-menu').style.display = "none"

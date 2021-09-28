@@ -1,6 +1,6 @@
 <template lang="pug">
   span
-    img.img-avatar(v-if="src" :src="src")
+    img.img-avatar(v-if="src" :src="src" :class="customClass")
     span.avatar-placeholder(v-else :class="{ sm, bg, bgLight, size40, size70, size100 } ") {{placeholderText}}
 </template>
 
@@ -17,10 +17,14 @@ export default {
     size40: Boolean,
     size70: Boolean,
     size100: Boolean,
+    customClass: String,
   },
   computed: {
     src() {
-      if (this.user && this.user.photo) return this.user && this.user.photo
+      if (this.user && this.user.photo) {
+        return process.env.NODE_ENV === 'development' ? `${this.$store.getters.backendUrl}/${this.user.photo}` : this.user.photo
+      }
+      
       if (this.business && this.business.logo) {
         return process.env.NODE_ENV === 'development' ? `${this.$store.getters.backendUrl}/${this.business.logo}` : this.business.logo
       }
@@ -91,5 +95,9 @@ export default {
   font-size: 25px;
   letter-spacing: -1px;
   /*font-weight: 600;*/
+}
+
+.none-fit {
+  object-fit: none;
 }
 </style>
