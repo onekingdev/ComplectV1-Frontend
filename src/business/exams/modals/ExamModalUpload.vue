@@ -3,7 +3,7 @@
     div(v-b-modal="modalId" :class="{'d-inline-block':inline}")
       slot
 
-    b-modal.fade(:id="modalId" title="Upload File(s)")
+    b-modal.fade(:id="modalId" title="Upload Files")
       .row
         .col-12.m-y-1
           label.dropbox.w-100(for="files")
