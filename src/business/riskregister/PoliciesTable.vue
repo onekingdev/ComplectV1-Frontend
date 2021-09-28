@@ -1,6 +1,6 @@
 <template lang="pug">
   div
-    table.table(v-if="riskPolicies.length !== 0")
+    table.table
       thead
         tr
           th(width="55%") Policy
@@ -18,7 +18,7 @@
               img.icon-policy(src='@/assets/policy.svg')
               | {{ policy.name }}
           td
-            b-badge.status(:variant="statusVariant" :class="{ 'status__published': policy.status === 'published'}") {{ policy.status }}
+            b-badge.status(:variant="statusVariant" :class="`status__${policy.status}`") {{ policy.status }}
           td.text-right {{ dateToHuman(policy.updated_at) }}
           td.text-right {{ dateToHuman(policy.created_at) }}
           td.text-right
@@ -26,8 +26,10 @@
               b-dropdown(size="sm" variant="none" class="m-0 p-0" right)
                 template(#button-content)
                   b-icon.three-dots(icon="three-dots")
-                <!--b-dropdown-item-button Edit-->
                 b-dropdown-item-button.delete(@click="deleteControl(policy.id)") Delete
+    .row.h-100(v-if="riskPolicies && !riskPolicies.length")
+      .col.h-100.text-center
+        EmptyState
 </template>
 
 <script>

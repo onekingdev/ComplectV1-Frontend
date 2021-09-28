@@ -46,13 +46,6 @@
                 button.btn.btn-primary {{ !riskComputed.compliance_policies.length ? 'New' : 'Edit' }} Control
             b-card-text
               PoliciesTable(:riskPolicies="riskComputed.compliance_policies" @deleteControl="updateRisk")
-            b-card-text(v-if="!riskComputed.compliance_policies.length")
-              div.no-results.text-center
-                b-icon(icon="files" scale="5" variant="dark")
-                p.no-results__title: b No results found
-                p Add a policy as a control to get started
-                RiskContols(:riskId="riskComputed.id" :inline="false")
-                  button.btn.btn-dark Add Control
 </template>
 
 <script>
