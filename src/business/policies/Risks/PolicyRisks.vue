@@ -110,9 +110,10 @@
       },
       deleteRisk(riskId) {
         const riskById = this.$store.getters.riskById(riskId)
-        const index = riskById.compliance_policies.findIndex(risk => risk.id === riskId)
-        riskById.compliance_policies.splice(index, 1)
-        this.policyById.risks.splice(index, 1)
+        const policyIndex = riskById.compliance_policies.findIndex(policy => policy.id === this.policyId)
+        const riskIndex = this.policyById.risks.findIndex(risk => risk.id === riskId)
+        riskById.compliance_policies.splice(policyIndex, 1)
+        this.policyById.risks.splice(riskIndex, 1)
 
         const dataToSend = {
           id: riskId,
