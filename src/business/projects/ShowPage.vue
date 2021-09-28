@@ -132,7 +132,7 @@
                       b-dropdown-item(v-b-modal="'IssueModal'") Report Issue
                       EditRoleModal(:specialist="showingContract.specialist" :inline="false" @saved="accepted")
                         b-dropdown-item Edit Role
-                      b-dropdown-item(:to="`/business/projects/${showingContract.id}/timesheets`" target="_blank") View Timesheet
+                      b-dropdown-item(v-if="showTimeSheet(showingContract)" :to="`/business/projects/${showingContract.id}/timesheets`" target="_blank") View Timesheet
                     IssueModal(:project-id="showingContract.id" :token="token")
                     Breadcrumbs.m-y-1(:items="['Collaborators', `${showingContract.specialist.first_name} ${showingContract.specialist.last_name}`]")
                   .row(v-else): .col-sm-12
@@ -233,6 +233,10 @@ export default {
     backToList() {
       this.$router.push({ name: "projects" });
     },
+    showTimeSheet(contract) {
+      if (contract.fixed_budget) return false
+      return true
+    }
   },
   computed: {
     taskDefaults() {

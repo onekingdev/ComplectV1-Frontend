@@ -1,6 +1,7 @@
 <template lang="pug">
   div.container.pt-3
     Get(:project="projectUrl" :callback="setProject"): template(v-slot="{project}")
+    template(v-if="project")
       Breadcrumbs.my-2(:items="['Jobs', project.title, 'My Timesheet']")
       h4.mb-4.project-title {{ project.title }}
     Get(v-if="isTableVisible" :timesheets="timesheetsUrl" :callback="enrich"): template(v-slot="{timesheets}")

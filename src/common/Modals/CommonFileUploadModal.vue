@@ -3,7 +3,7 @@
     div(v-b-modal="modalId" :class="{'d-inline-block':inline}")
       slot
 
-    b-modal.fade(:id="modalId" title="Upload file")
+    b-modal.fade(:id="modalId" title="Upload file" @close="hideModal")
       .row
         .col-12.m-y-1
           div.dropbox.w-100(for="files" @drop="drop" @dragover="dragover")
@@ -26,7 +26,7 @@
                 b-icon(icon="x" font-scale="1")
 
       template(slot="modal-footer")
-        button.btn.btn-link(@click="$bvModal.hide(modalId)") Cancel
+        button.btn.btn-link(@click="hideModal") Cancel
         button.btn.btn-dark(@click="submit") Add
 </template>
 
@@ -56,14 +56,13 @@
         }
 
         this.$emit('add', this.files)
-        this.$bvModal.hide(this.modalId)
+        this.hideModal()
       },
       dragover(event) {
         event.preventDefault()
       },
       drop(event) {
         event.preventDefault()
-        console.log('aaaaa')
         this.$refs.inputFile.files = event.dataTransfer.files
         this.selectFile()
       },
@@ -79,6 +78,10 @@
       },
       removeFile(key){
         this.files.splice( key, 1 );
+      },
+      hideModal() {
+        this.files = []
+        this.$bvModal.hide(this.modalId)
       }
     },
   }
