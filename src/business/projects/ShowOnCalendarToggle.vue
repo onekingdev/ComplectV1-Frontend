@@ -20,7 +20,7 @@ export default {
     async saved(response) {
       const kek = await response.json()
       this.hide_on_calendar = kek.hide_on_calendar
-      this.toast('Saved', 'Saved')
+      this.toast('Saved', 'Project has been hidden from calendar view.')
     }
   },
   computed: {
