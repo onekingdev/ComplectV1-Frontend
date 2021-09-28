@@ -30,6 +30,7 @@
                       img.icon-policy(src='@/assets/policy.svg')
                       | {{ policy.name }}
                   td
+                    //- b-badge.status(:variant="statusVariant" :class="`status__${policy.status}`") {{ policy.status }}
                     b-badge.status(:variant="statusVariant" :class="{ 'status__published': policy.status === 'published' }") {{ policy.status }}
                   td.text-right {{ dateToHuman(policy.updated_at) }}
                   td.text-right {{ dateToHuman(policy.created_at) }}
