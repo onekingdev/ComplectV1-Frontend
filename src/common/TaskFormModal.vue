@@ -308,7 +308,7 @@ export default {
         ...this.$store.getters.authHeaders
       }).then(response => {
         if (response.status === 204 || response.status === 200) {
-          this.$emit('deleted')
+          this.$emit('saved')
           this.toast('Success', 'Task has been deleted.')
           this.$bvModal.hide(this.modalId)
         } else {

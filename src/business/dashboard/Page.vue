@@ -5,13 +5,6 @@
         h2.page-header__title
           b Welcome,&nbsp;
           | {{currentBusiness.contact_first_name}} {{currentBusiness.contact_last_name}}
-        //.page-header__actions
-        //  b-dropdown.mr-2(variant="default" right)
-        //    template(#button-content)
-        //      | Admin view
-        //      b-icon.ml-2(icon="chevron-down")
-        //    b-dropdown-item Other view
-        //  a.btn.btn-default.font-weight-bold Customize
       div.p-x-40.p-b-40
         .row
           .col
@@ -41,30 +34,21 @@ export default {
       this.etag = Math.random()
     },
     refetch() {
-      //const business_id = window.localStorage["app.business_id"]
-      //if(business_id) headers.business_id = JSON.parse(business_id)
-
       fetch(this.$store.getters.backendUrl + endpointProjectsUrl, this.$store.getters.authHeaders)
         .then(response => response.json())
         .then(result => this.projects = result)
     },
   },
-  created() {
-    this.refetch()
-
-    // const firstView = JSON.parse(localStorage.getItem('app.currentUser.firstEnter'))
-    // if (firstView) {
-    //   this.toast('Success', 'Account has been created.')
-    //   localStorage.removeItem('app.currentUser.firstEnter')
-    // }
-  },
   computed: {
     pdfUrl: () => pdfUrl,
-    // currentBusiness() {
-    //   // @TODO Must be fetched from API
-    //   const accountInfo = this.$store.getters.getUser
-    //   return accountInfo ? `${accountInfo.contact_first_name} ${accountInfo.contact_last_name}` : ''
-    // },
+  },
+  watch: {
+    etag: {
+      handler: function() {
+        this.refetch()
+      },
+      immediate: true
+    }
   },
   components: {
     Calendar,
