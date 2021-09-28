@@ -130,7 +130,7 @@
                         b-icon.ml-2(icon="chevron-down")
                       b-dropdown-item(@click="showingContract = null") Back
                       b-dropdown-item(v-b-modal="'IssueModal'") Report Issue
-                      EditContractModal(:project="showingContract" :inline="true" @saved="newEtag(), tab = 0")
+                      EditRoleModal(:specialist="showingContract.specialist" :inline="false" @saved="accepted")
                         b-dropdown-item Edit Role
                       b-dropdown-item(:to="`/business/projects/${showingContract.id}/timesheets`" target="_blank") View Timesheet
                     IssueModal(:project-id="showingContract.id" :token="token")
