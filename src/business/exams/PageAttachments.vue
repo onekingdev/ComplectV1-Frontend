@@ -3,7 +3,6 @@
     h3.policy-details__title Documents
     .policy-actions
       a.btn.btn-default.d-none Download
-      a.btn.m-l-1.btn-dark Create Documents
     .policy-details__body
       DocumentsTable(:currentExam="currentExam")
 
