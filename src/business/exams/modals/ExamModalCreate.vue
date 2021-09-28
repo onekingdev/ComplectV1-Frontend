@@ -6,7 +6,7 @@
     b-modal.fade(:id="modalId" title="New Exam")
       .row
         .col-12.m-b-2
-          label.form-label Name
+          label.form-label Exam Name
           input.form-control(v-model.trim="exam_management.name" type="text" ref="input" @keyup="onChange")
           Errors(:errors="errors.name")
       .row.m-t-1

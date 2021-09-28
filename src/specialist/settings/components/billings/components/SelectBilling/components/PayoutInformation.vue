@@ -20,7 +20,7 @@
                 )
                   b-form-input#routing_number.form-control(
                     type="text"
-                    placeholder="110000000"
+                    placeholder="Routing number"
                     v-model="routing_number"
                     @input="onChangeInput('routing_number')"
                     :class="{'is-invalid': errors.routing_number}"
@@ -37,7 +37,7 @@
                   b-form-input#account_number.form-control(
                     type='text'
                     v-model="account_number"
-                    placeholder='000123456789'
+                    placeholder='Account number'
                     @input="onChangeInput('account_number')"
                     :class="{'is-invalid': errors.account_number}"
                   )
@@ -52,7 +52,7 @@
                 )
                   b-form-input#account_number_confirmation.form-control(
                     type="text"
-                    placeholder="000123456789"
+                    placeholder="Account number"
                     v-model="account_number_confirmation"
                     @input="onChangeInput('account_number_confirmation')"
                     :class="{'is-invalid': errors.account_number_confirmation}"

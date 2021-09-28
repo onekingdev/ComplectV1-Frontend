@@ -3,7 +3,7 @@
     div(v-b-modal="modalId" :class="{'d-inline-block':inline}")
       slot
 
-    b-modal.fade(:id="modalId" title="Add request")
+    b-modal.fade(:id="modalId" title="New Request")
       .row
         .col-12.m-b-2
           label.form-label Requested Item
@@ -17,7 +17,7 @@
 
       template(slot="modal-footer")
         button.btn.btn-link(@click="$bvModal.hide(modalId)") Cancel
-        button.btn.btn-dark(@click="submit") Add
+        button.btn.btn-dark(@click="submit") Create
 </template>
 
 <script>
