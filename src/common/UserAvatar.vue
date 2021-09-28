@@ -1,7 +1,7 @@
 <template lang="pug">
   span
     img.img-avatar(v-if="src" :src="src" :class="customClass")
-    span.avatar-placeholder(v-else :class="{ sm, bg, bgLight, size40, size100 } ") {{placeholderText}}
+    span.avatar-placeholder(v-else :class="{ sm, bg, bgLight, size40, size70, size100 } ") {{placeholderText}}
 </template>
 
 <script>
