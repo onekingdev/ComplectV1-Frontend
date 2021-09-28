@@ -70,14 +70,14 @@
           .then(response => {
             if (response.errors) {
               for (const [key, value] of Object.entries(response.errors)) {
-                this.toast('Error', `Something wrong! ${key} ${value}`, true)
+                this.toast('Error', `User has not been disabled. Please try again.`, true)
               }
             }
             if (!response.errors) {
-              this.toast('Success', `Updated.`)
+              this.toast('Success', `User has been disabled.`)
             }
           })
-          .catch(error => this.toast('Error', `Something wrong! ${error.message}`, true))
+          .catch(error => this.toast('Error', `User has not been disabled. Please try again.`, true))
       },
       archiveUser(value){
         const dataToSend = {
@@ -91,30 +91,30 @@
           .then(response => {
             if (response.errors) {
               for (const [key, value] of Object.entries(response.errors)) {
-                this.toast('Error', `Something wrong! ${key} ${value}`, true)
+                this.toast('Error', `User has not been disabled. Please try again.`, true)
               }
             }
             if (!response.errors) {
-              this.toast('Success', `Updated.`)
+              this.toast('Success', `User has been disabled.`)
               this.$store.dispatch('settings/getAvailableSeatsCount')
             }
           })
-          .catch(error => this.toast('Error', `Something wrong! ${error.message}`, true))
+          .catch(error => this.toast('Error', `User has not been disabled. Please try again.`, true))
       },
       deleteUser(id){
         this.$store.dispatch('settings/deleteEmployee', { id })
           .then(response => {
             if (response.errors) {
               for (const [key, value] of Object.entries(response.errors)) {
-                this.toast('Error', `Something wrong! ${key} ${value}`, true)
+                this.toast('Error', `User has not been deleted. Please try again.`, true)
               }
             }
             if (!response.errors) {
-              this.toast('Success', `The user has been deleted.`)
+              this.toast('Success', `User has been deleted.`)
               this.$store.dispatch('settings/getAvailableSeatsCount')
             }
           })
-          .catch(error => this.toast('Error', `Something wrong! ${error.message}`, true))
+          .catch(error => this.toast('Error', `User has not been deleted. Please try again.`, true))
       }
     },
     filters: {
