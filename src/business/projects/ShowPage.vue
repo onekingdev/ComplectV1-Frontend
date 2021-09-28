@@ -1,5 +1,6 @@
 <template lang="pug">
   .page.custom-project-layout-style
+    Get(:applications="applicationsUrl" :callback="setApplications")
     Get.d-flex.flex-column.flex-grow-1(:etag="etag" :project="`/api/local_projects/${projectId}`" currentBusiness="/api/businesses/current"): template(v-slot="{project,currentBusiness}")
       CommonHeader(section="Projects" :title="project.title" :sub="currentBusiness.business_name")
         .d-flex.justify-content-end
@@ -110,11 +111,8 @@
                             template(#button-content)
                               | Actions
                               b-icon.ml-2(icon="chevron-down")
-                              //- p {{contract}}
-                            
-                            //- MessagesModal(v-bind="{ contract, modalId, confirmModalId, projectId }")
+                            MessagesModal(v-if="getApplication(contract)" v-bind="{ modalId, confirmModalId, projectId }" :application="getApplication(contract)")
                               b-dropdown-item Message
-                            b-dropdown-item Message
                             EditRoleModal(:specialist="contract.specialist" :inline="false" @saved="accepted")
                               b-dropdown-item Edit Role
                           button.btn.btn-primary(@click="showingContract = contract") View Contract
@@ -186,12 +184,22 @@ export default {
       id: null,
       modalId: null,
       completedTasksOpen: true,
+      applications: null,
+      applicationMessage: null,
     }
   },
   created() {
     this.modalId = 'modal_' + Math.random().toFixed(9) + Math.random().toFixed(7)
   },
   methods: {
+    setApplications(payload) {
+      this.applications = payload
+    },
+    getApplication(contract) {
+      if (!this.applications) return null
+      const application = this.applications.find(item => item.specialist_id === contract.specialist.id)
+      return application
+    },
     contractEnded() {
       this.newEtag()
       this.toast('Success', 'Contract early termination request has been submitted.')
