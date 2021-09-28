@@ -122,7 +122,6 @@
         this.$store
           .dispatch('updateRisk', {...dataToSend})
           .then(response => {
-            // console.log('response', response)
             this.toast('Success', 'Risk has been updated.')
           })
           .catch(error => {
