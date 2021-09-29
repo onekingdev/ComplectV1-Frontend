@@ -126,23 +126,23 @@
           div
             button.btn.btn-link.m-r-1(@click="$bvModal.hide(modalId)") Cancel
             button.btn.btn-dark(@click="submit()") Create
-      template(v-if="task.done_at && taskId" slot="modal-footer")
+      template(v-else-if="task.done_at" slot="modal-footer")
         span.mr-2
           b-icon.m-r-1.pointer(icon="check-circle-fill" class="done_task")
           b Completed on {{ task.done_at | asDate }}
         button.btn.btn-default(@click="toggleDone(task)") Mark as Incomplete
 
-      template(v-else-if="taskId" slot="modal-footer")
-        TaskDeleteConfirmModal.mr-auto(v-if="!occurenceId" :inline="false" @deleteConfirmed="deleteTask(task)")
+      template(v-else slot="modal-footer")
+        TaskDeleteConfirmModal.mr-auto(v-if="!isOccurence" :inline="false" @deleteConfirmed="deleteTask(task)")
           button.btn.btn-outline-danger Delete Task
-        b-dropdown.mr-auto(v-else-if="taskId" variant="outline-danger" text="Delete Task")
+        b-dropdown.mr-auto(v-else variant="outline-danger" text="Delete Task")
           TaskDeleteConfirmModal(:inline="false" @deleteConfirmed="deleteTask(task, true)")
             b-dropdown-item Delete Occurence
           TaskDeleteConfirmModal(:inline="false" @deleteConfirmed="deleteTask(task)")
             b-dropdown-item Delete Series
         button.btn.btn-default(@click="toggleDone(task)") Mark as Complete
         button.btn.btn-dark(v-if="!taskId" @click="submit()") Save
-        button.btn.btn-dark(v-else-if="!occurenceId" @click="submit(true)") Save
+        button.btn.btn-dark(v-else-if="!isOccurence" @click="submit(true)") Save
         b-dropdown.font-weight-bold(v-else variant="dark" text="Save")
           b-dropdown-item(@click="submit(true)") Save Occurence
           b-dropdown-item(@click="submit()") Save Series
@@ -415,6 +415,9 @@ export default {
       employees: 'settings/employees',
       employeesSpecialists: 'settings/employeesSpecialists'
     }),
+    isOccurence() {
+      return !isNaN(parseInt(this.occurenceId))
+    },
     linkToValue() {
       return this.task.linkable_type && this.task.linkable_id ? `${this.task.linkable_type}|${this.task.linkable_id}` : null
     },
