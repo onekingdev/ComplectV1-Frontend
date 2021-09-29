@@ -41,13 +41,14 @@ export default {
   data() {
     return {
       comment: { message: null },
-      commentErrors: null
+      commentErrors: null,
+      loopMessage: null,
     }
   },
-  created() {
-    setInterval(this.newEtag, DISCUSSION_UPDATE_PERIOD)
-  },
   methods: {
+    refreshMessage() {
+      this.loopMessage = setInterval(this.newEtag, DISCUSSION_UPDATE_PERIOD)
+    },
     commentSaved() {
       this.newEtag()
       this.comment.message = null
@@ -55,6 +56,18 @@ export default {
     handleSubmitComment() {
       this.$refs.postButton.submit()
     }
+  },
+  mounted() {
+    this.$nextTick(() => {
+      this.refreshMessage()
+      document.addEventListener('visibilitychange', () => {
+        if(document.hidden) {
+          clearInterval(this.loopMessage)
+        } else {
+          this.refreshMessage()
+        }
+      })
+    })
   },
   computed: {
     postCommentProps() {
@@ -67,6 +80,9 @@ export default {
     messagesUrl() {
       return `/api/local_projects/${this.projectId}/messages`
     },
+  },
+  destroyed() {
+    if (this.loopMessage) clearInterval(this.loopMessage)
   }
 }
 </script>
