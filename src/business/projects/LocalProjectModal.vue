@@ -3,7 +3,7 @@
     div(v-b-modal="modalId" :class="{'d-inline-block':inline}")
       slot
 
-    b-modal.fade(:id="modalId" :title="projectId ? 'Edit project' : 'New project'" @show="newEtag")
+    b-modal.fade(:id="modalId" :title="projectId ? 'Edit Project' : 'New Project'" @show="newEtag")
       ModelLoader(:url="projectId ? submitUrl : undefined" :default="initialProject" :etag="etag" @loaded="loadProject")
         label.form-label Project Name
         input.form-control(v-model="project.title" type=text placeholder="Name")
