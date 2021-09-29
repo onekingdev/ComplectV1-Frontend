@@ -21,10 +21,9 @@
           //.form-text.text-muted Project post information for the specialist
 
           InputSelect.m-t-1.form-control_no-icon(v-model="project.location_type" :errors="errors.location_type" :options="locationTypes") Location Type
-
           div.m-t-1(v-if="isLocationVisible")
             label.form-label Location
-            input.form-control(v-model="project.location" type="text" placeholder="Location" v-google-maps-autocomplete)
+            vue-google-autocomplete#map(ref="address" classname='form-control' :value="project.location" @inputChange="setLocation" placeholder='Location' v-on:placechanged='getAddressData')
             Errors(:errors="errors.location")
 
           label.m-t-1.form-label Industry
@@ -91,6 +90,7 @@
 <script>
 import WizardProgress from '@/common/WizardProgress'
 import { redirectWithToast } from '@/common/Toast'
+import VueGoogleAutocomplete from 'vue-google-autocomplete'
 import {
   PRICING_TYPES,
   LOCATION_TYPES,
@@ -161,6 +161,9 @@ export default {
     }
   },
   methods: {
+    setLocation() {
+      this.project.location = document.getElementById('map').value
+    },
     inputSkills() {
       const e = document.getElementsByClassName('vue-treeselect__input')[0]
       e && (e.value = '')
@@ -228,7 +231,11 @@ export default {
     handleSaveDraft() {
       const redirectUrl = `/business/projects/${this.project.local_project_id || ''}`
       redirectWithToast(redirectUrl, 'Job posting has been saved.', 'Success')
-    }
+    },
+    getAddressData (addressData, placeResultData, id) {
+      const input = document.getElementById(id)
+      this.project.location = input.value
+    },
   },
   computed: {
     draftProject() {
@@ -305,7 +312,8 @@ export default {
   },
   components: {
     ExitLocalProjectModal,
-    WizardProgress
+    WizardProgress,
+    VueGoogleAutocomplete
   }
 }
 </script>
