@@ -199,7 +199,6 @@ const REPEAT_NONE = null,
 
 export default {
   mixins: [
-    EtaggerMixin(),
     EtaggerMixin('etagMessages'),
   ],
   props: {
@@ -250,7 +249,7 @@ export default {
         const success = (await uploadFile(this.url, file)).ok
         if(success) this.toast('Success', 'Document has been uploaded.')
         else this.toast('Error', 'Document has not been uploaded.', true)
-        this.newEtag()
+        this.newEtagMessages()
       }
     },
     filterMessagesWithUploads(messages) {
@@ -413,7 +412,6 @@ export default {
         await this.$store.dispatch('reminders/deleteTaskMessageById', id)
         this.toast('Success', `File deleted`)
         this.newEtagMessages()
-        this.newEtag()
       } catch (error) {
         this.toast('Error', error.message, true)
       }
