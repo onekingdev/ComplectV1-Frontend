@@ -4,7 +4,13 @@
       slot
 
     b-modal.fade(:id="modalId" :title="taskId ? task.body : 'New task'" :size="taskId ? 'xl' : 'md'" @show="resetTask")
-      b-row
+      .loading(v-if="!isLoaded")
+        .lds-ring
+          div
+          div
+          div
+          div
+      b-row(v-else)
         div(:class="taskId ? 'col-lg-6 pr-2' : 'col'")
           InputText(v-model="task.body" :errors="errors.body" placeholder="Name") Task Name
 
@@ -220,6 +226,7 @@ export default {
         message: null
       },
       messageErrors: {},
+      isLoaded: false,
     }
   },
   methods: {
@@ -387,16 +394,19 @@ export default {
       }
       this.createNewTask(saveOccurence)
     },
-    resetTask() {
+    async resetTask() {
+      this.isLoaded = false
       if (this.taskId) {
-        fetch(`${this.$store.getters.backendUrl}/api/reminders/${this.taskId}`, {
+        const response = await fetch(`${this.$store.getters.backendUrl}/api/reminders/${this.taskId}`, {
           method: 'GET',
           ...this.$store.getters.authHeaders
-        }).then(response => response.json())
-          .then(result => this.task = result)
+        })
+        this.task = await response.json()
+        this.isLoaded = true
       } else {
         const withRemindAt = this.remindAt ? { remind_at: this.remindAt } : {}
         this.task = initialTask({ ...this.defaults, ...withRemindAt })
+        this.isLoaded = true
       }
     },
     async deleteFile(id) {
