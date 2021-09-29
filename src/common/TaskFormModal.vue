@@ -92,7 +92,7 @@
               b-tab(title="Comments" ref="comments" active)
                 b-row
                   .col.text-center
-                    Get(:messages="`/api/reminders/${taskId}/messages`" :etag="etagMessages"): template(v-slot="{ messages }"): .card-body.p-0
+                    Get(:messages="messagesUrl" :etag="etagMessages"): template(v-slot="{ messages }"): .card-body.p-0
                       Messages(:messages="messages" ref="Messages" @created="scrollMessages" @saved="newEtagMessages")
               b-tab(title="Files")
                 //- @todo restrict deletion for specialist/by condition
