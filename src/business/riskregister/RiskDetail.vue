@@ -4,33 +4,30 @@
       Loading
     .page-header(v-if="!loading && riskComputed && riskComputed.id")
       .page-header__title
-        h2
-          | {{ pageTitle }}
-          span.separator.mx-2 /
-          b {{ riskComputed.name }}
-        h2.mt-1
+        h2.fs-16 {{ pageTitle }}
+        .d-flex.mt-2
           b-badge.badge-risk.custom-badge.mr-1(:variant="badgeVariant(riskComputed.risk_level)")
             b-icon-exclamation-triangle-fill.mr-2
             | {{ showLevel(riskComputed.risk_level)  }}
-          b.risk-name {{ riskComputed.name }}
+          b.risk-name.fs-14.fw-400 {{ riskComputed.name }}
       .page-header__actions
         b-dropdown.actions__dropdown.actions__dropdown_tasks(variant="default", right)
           template(#button-content)
             | Actions
             ion-icon.ml-2(name="chevron-down-outline" size="small")
           RiskModalDelete(@deleteConfirmed="deleteRisk" :risk-id="riskComputed.id" :inline="false")
-            b-dropdown-item.delete Delete risk
-    .card-body.white-card-body.card-body_full-height(v-if="!loading && riskComputed && riskComputed.id")
+            b-dropdown-item.delete Delete
+    .card-body.card-body_full-height(v-if="!loading && riskComputed && riskComputed.id")
       div.mb-3
         b-card-group(deck)
           b-card(header-tag='header' header-class='d-flex')
             template(#header)
-              h3.mb-0.font-weight-bold Risk Details
+              h3.mb-0.fs-20.fw-400 Risk Details
               RisksAddEditModal.ml-auto(:riskId="riskComputed.id" :inline="false")
-                button.btn.btn-secondary Edit
+                button.btn.btn-primary Edit
             b-card-text
               .row
-                .col-lg-2.col-md-3.col-4.pr-0
+                .col-lg-2.col-md-3.col-3.pr-0.risk-details-column
                   b-list-group.text-secondary
                     b-list-group-item.border.border-white.pb-0.pt-0 Title
                     b-list-group-item.border.border-white.pb-0 Impact
@@ -44,18 +41,11 @@
         b-card-group(deck)
           b-card(header-tag='header' header-class='d-flex')
             template(#header)
-              h3.mb-0.font-weight-bold Controls
+              h3.mb-0.fs-20.fw-400 Controls
               RiskContols.ml-auto(:riskId="riskComputed.id" :inline="false")
-                button.btn.btn-secondary {{ !riskComputed.compliance_policies.length ? 'Add' : 'Edit' }} Control
+                button.btn.btn-primary {{ !riskComputed.compliance_policies.length ? 'New' : 'Edit' }} Control
             b-card-text
               PoliciesTable(:riskPolicies="riskComputed.compliance_policies" @deleteControl="updateRisk")
-            b-card-text(v-if="!riskComputed.compliance_policies.length")
-              div.no-results.text-center
-                b-icon(icon="files" scale="5" variant="dark")
-                p.no-results__title: b No results found
-                p Add a policy as a control to get started
-                RiskContols(:riskId="riskComputed.id" :inline="false")
-                  button.btn.btn-dark Add Control
 </template>
 
 <script>
@@ -166,8 +156,18 @@
 <style scoped>
   @import "./styles.css";
 
+  .page-header {
+    border-bottom: 1px solid #dee2e6;
+  }
   .custom-badge {
     display: inline-flex !important;
+  }
+
+  .risk-details-column {
+    padding-left: 5px;
+  }
+  .list-group-item {
+    padding-left: 0
   }
 
   .risk-name {

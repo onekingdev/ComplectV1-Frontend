@@ -17,6 +17,12 @@
   background-color:#D5FBEF;
 }
 
+.status__archived {
+  color: #ce1938;
+  background-color: #fddee3;
+  border-color: #fddee3;
+}
+
 .dropdown-items {
   display: none;
   margin: 0;
@@ -29,7 +35,7 @@
 }
 
 .icon-policy {
-  width: 25px;
+  width: 30px;
   margin-top: -3px;
   margin-right: 3px;
 }

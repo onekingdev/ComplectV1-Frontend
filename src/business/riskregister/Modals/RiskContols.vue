@@ -3,7 +3,7 @@
     div(v-b-modal="modalId" :class="{'d-inline-block':inline}")
       slot
 
-    b-modal.fade(:id="modalId" modal-class="modal-select-control" title="Select Control(s)" @show="newEtag")
+    b-modal.fade(:id="modalId" modal-class="modal-select-control" title="Select Control" @show="newEtag")
       ModelLoader(:url="riskId ? submitUrl : undefined" :default="initialrisk" :etag="etag" @loaded="loadrisk")
 
         b-row.m-t-1(no-gutters)
@@ -30,7 +30,7 @@
                       img.icon-policy(src='@/assets/policy.svg')
                       | {{ policy.name }}
                   td
-                    b-badge.status(:variant="statusVariant" :class="{ 'status__published': policy.status === 'published' }") {{ policy.status }}
+                    b-badge.status(:variant="statusVariant" :class="`status__${policy.status}`") {{ policy.status }}
                   td.text-right {{ dateToHuman(policy.updated_at) }}
                   td.text-right {{ dateToHuman(policy.created_at) }}
                   td
