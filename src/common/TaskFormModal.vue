@@ -88,11 +88,11 @@
 
         .col-lg-6.pl-2(v-if="taskId")
           .card-body.white-card-body.messages-border.h-100.p-0
-            b-tabs.special-navs-messages(content-class="m-20" class="p-0")
+            Get(:messages="messagesUrl" :etag="etagMessages"): template(v-slot="{ messages }"): b-tabs.special-navs-messages(content-class="m-20" class="p-0")
               b-tab(title="Comments" ref="comments" active)
                 b-row
                   .col.text-center
-                    Get(:messages="messagesUrl" :etag="etagMessages"): template(v-slot="{ messages }"): .card-body.p-0
+                    .card-body.p-0
                       Messages(:messages="messages" ref="Messages" @created="scrollMessages" @saved="newEtagMessages")
               b-tab(title="Files")
                 //- @todo restrict deletion for specialist/by condition
@@ -103,8 +103,7 @@
                         label
                           a.btn.btn-default Upload
                           input(type="file" name="file" @change="onFileChanged" style="display: none")
-                        Get(:documents="messagesUrl" :etag="etag" :callback="filterMessagesWithUploads"): template(v-slot="{documents}")
-                          .row(v-for="document in documents" :key="document.id"): .col-md-12.m-b-1
+                          .row(v-for="document in filterMessagesWithUploads(messages)" :key="document.id"): .col-md-12.m-b-1
                             .file-card
                               div
                                 b-icon.file-card__icon(icon="file-earmark-text-fill")
