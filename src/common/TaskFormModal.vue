@@ -29,7 +29,7 @@
               DatePicker(v-model="task.end_date" :options="datepickerOptions")
               Errors(:errors="errors.end_date")
 
-          b-row.m-t-1(no-gutters)
+          //- b-row.m-t-1(no-gutters)
             .col-sm
               label.form-label Repeats
               Dropdown(v-model="task.repeats" :options="repeatsOptions")
@@ -71,7 +71,7 @@
               Dropdown(v-model="task.repeat_on" v-else :options="daysOfWeek")
           Errors(:errors="errors.repeats || errors.repeat_every || errors.repeat_on || errors.on_type")
 
-          b-row(v-if="task.repeats" no-gutters)
+          //- b-row(v-if="task.repeats" no-gutters)
             .col-sm-6.m-r-1
               label.form-label End By Date
               DatePicker(v-model="task.end_by")
