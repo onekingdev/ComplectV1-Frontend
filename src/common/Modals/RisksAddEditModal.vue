@@ -13,7 +13,7 @@
         b-row(no-gutters)
           .col
             label.form-label Risk Name
-            input.form-control(v-model="risk.name" type=text)
+            input.form-control(v-model="risk.name" type=text placeholder="Name")
             Errors(:errors="errors.name")
 
         b-row.m-t-1(no-gutters)
