@@ -42,6 +42,14 @@
         role: Object.keys(SPECIALIST_ROLE_OPTIONS)[0]
       }
     },
+    created() {
+      const user = this.$store.getters.getUser
+      const roles = this.specialist.specialists_business_roles
+      const roleUser = roles.find(item => item.business_id === user.id)
+      if (roleUser) {
+        this.role = roleUser.role
+      }
+    },
     methods: {
       submit(e) {
         e.preventDefault();

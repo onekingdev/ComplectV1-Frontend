@@ -1,36 +1,39 @@
 <template lang="pug">
-  b-modal.fade(:id="modalId" :title="`Messages with ${application.specialist.first_name}`" size="xl" no-stacking)
-    .messages-modal
-      .info-box
-        .header
-          UserAvatar(:user="application.specialist" :bg="true")
-          .name {{ contact.meta.name }}
-          StarsRating(:rate="contact.meta.rating")
-        .details
-          .section(v-for="(content, title) in proposal ? contact.proposal : contact.details")
-            .title {{ title }}
-            .content {{ content }}
-        
-      .messages-box
-        .messages
-          Get(:messages="`/api/messages/${contact.meta.id}`"): template(v-slot="{ messages }"): .card-body.p-0
-            Messages(:messages="messages" ref="Messages" @created="scrollMessages" @saved="newEtagMessages")
-        .input-area
-          label.form-label Comment
-          textarea-autosize.w-100.form-control.d-block(v-model="message.message" :min-height="100")
-          Errors(:errors="messageErrors.message")
-          Post(:action="`/api/messages/${contact.meta.id}`" :model="{ message }" @errors="messageErrors = $event" @saved="messageSaved" alignRight)
-            button.btn.btn-primary.save-comment-btn Send
+  div
+    div(v-b-modal="modalId")
+      slot
+    b-modal.fade(:id="modalId" :title="`Messages with ${application.specialist.first_name}`" size="xl" no-stacking)
+      .messages-modal
+        .info-box
+          .header
+            UserAvatar(:user="application.specialist" :bg="true")
+            .name {{ contact.meta.name }}
+            StarsRating(:rate="contact.meta.rating")
+          .details
+            .section(v-for="(content, title) in proposal ? contact.proposal : contact.details")
+              .title {{ title }}
+              .content {{ content }}
+          
+        .messages-box
+          .messages
+            Get(:messages="`/api/messages/${contact.meta.id}`" :etag="etagMessages"): template(v-slot="{ messages }"): .card-body.p-0
+              Messages(:messages="messages" ref="Messages" @created="scrollMessages" @saved="newEtagMessages")
+          .input-area
+            label.form-label Comment
+            textarea-autosize.w-100.form-control.d-block(v-model="message.message" :min-height="100")
+            Errors(:errors="messageErrors.message")
+            Post(:action="`/api/messages/${contact.meta.id}`" :model="{ message }" @errors="messageErrors = $event" @saved="messageSaved" alignRight)
+              button.btn.btn-primary.save-comment-btn Send
 
-    
-    
-    template(v-if="proposal" #modal-footer="{ ok, cancel, hide }")
-      button.btn.btn-link(@click="hide") Cancel
-      button.btn.btn-outline-dark(v-if="!hasSpecialist(application.project)" v-b-modal="'DenyProposalConfirm'") Reject
-      button.btn.btn-dark(v-if="!hasSpecialist(application.project)" v-b-modal="confirmModalId") Accept
-    template(v-else #modal-footer="{ hide }")
-      button.btn.btn-link(@click="hide") Cancel
-      button.btn.btn-dark Add to Contacts
+      
+      
+      template(v-if="proposal" #modal-footer="{ ok, cancel, hide }")
+        button.btn.btn-link(@click="hide") Cancel
+        button.btn.btn-outline-dark(v-if="!hasSpecialist(application.project)" v-b-modal="'DenyProposalConfirm'") Reject
+        button.btn.btn-dark(v-if="!hasSpecialist(application.project)" v-b-modal="confirmModalId") Accept
+      template(v-else #modal-footer="{ hide }")
+        button.btn.btn-link(@click="hide") Cancel
+        button.btn.btn-dark Add to Contacts
 
 </template>
 
