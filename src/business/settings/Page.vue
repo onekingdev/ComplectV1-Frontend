@@ -74,30 +74,13 @@
         return this.$store.getters.loading;
       },
       menu() {
-        if (this.isFreeBussinessPlan) {
-          return [
-            { name: 'General', link: 'General' },
-            { name: 'Roles and Permissions', link: 'Roles' },
-            { name: 'Security', link: 'Security' },
-            { name: 'Subscriptions', link: 'Subscriptions' },
-            { name: 'Billings', link: 'Billings' },
-          ]
-        }
-
         return [
           { name: 'General', link: 'General' },
-          { name: 'Users', link: 'Users' },
           { name: 'Roles and Permissions', link: 'Roles' },
           { name: 'Security', link: 'Security' },
           { name: 'Subscriptions', link: 'Subscriptions' },
           { name: 'Billings', link: 'Billings' },
         ]
-      },
-      isFreeBussinessPlan() {
-        const plan = this.$store.getters['roles/currentPlan']
-        const appModule = this.$store.getters.appModule
-
-        return plan === 'free' && appModule === 'business'
       }
     },
     methods: {
