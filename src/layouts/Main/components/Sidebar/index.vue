@@ -14,7 +14,7 @@
           li.nav-item.sidebar-menu__item(v-for="(link, i) in menuLinksOverview" @click.stop="openLink('default')" :key="i")
             router-link.sidebar-menu__link(:to='link.to' active-class="active" :exact="link.exact || false")
               | {{ link.label }}
-      div(v-if="appModule !== 'specialist'")
+      div(v-if="appModule !== 'specialist' && !this.isBussinessFreePlan")
         h3.sidebar-menu__title(
         :class="program_management_collapse ? null : 'collapsed'"
         :aria-expanded="program_management_collapse ? 'true' : 'false'"
@@ -205,7 +205,9 @@
         plan: 'roles/currentPlan',
         appModule: 'appModule',
       }),
-      
+      isBussinessFreePlan() {
+        return this.plan === 'free' && this.appModule === 'business'
+      },
       menuLinksOverview() {
         return this.appModule === 'business' ? this.menuLinksOverviewBusiness : this.menuLinksOverviewSpecialist
       },
@@ -244,6 +246,7 @@
       },
 
       menuLinksProgramManagementBusiness() {
+        // if (this.isBussinessFreePlan) return []
         return [{
           to: '/business/compliance_policies',
           label: 'Policies and Procedures',
@@ -302,6 +305,15 @@
       },
 
       menuLinksReportsBusiness() {
+        if (this.plan === 'free' && this.appModule === 'business') {
+          return [
+            {
+              to: '/business/reports/financials',
+              label: 'Financials',
+              access: ['admin']
+            }
+          ]
+        }
         return [{
           to: '/business/reports/organizations',
           label: 'Organization',
