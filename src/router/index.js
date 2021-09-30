@@ -150,7 +150,7 @@ const router = new VueRouter({
         {
           path: 'specialist/',
           component: SpecialistLayout,
-          // beforeEnter: SpecialistGuard,
+          beforeEnter: SpecialistGuard,
           children: [
             { path: '', name: 'dashboard-specialist', component: DashboardS },
             { path: 'reminders', name: 'tasks-specialist', component: SpecialistTasksPage },

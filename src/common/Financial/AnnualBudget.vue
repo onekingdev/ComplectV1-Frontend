@@ -22,66 +22,66 @@
 </template>
 
 <script>
-  import Loading from '@/common/Loading/Loading'
-  import AnnualBudgetChart from './AnnualBudgetChart'
+import Loading from '@/common/Loading/Loading'
+import AnnualBudgetChart from './AnnualBudgetChart'
 
-  export default {
-    components: {
-      Loading,
-      AnnualBudgetChart,
-    },
-    data() {
-      return {
-        annualBudget: {
-          current: 0,
-          goal: 0
-        },
-        newAnnualBudget: '',
-        errors: {}
+export default {
+  components: {
+    Loading,
+    AnnualBudgetChart,
+  },
+  data() {
+    return {
+      annualBudget: {
+        current: 0,
+        goal: 0
+      },
+      newAnnualBudget: '',
+      errors: {}
+    }
+  },
+  created() {
+    this.getData()
+  },
+  methods: {
+    validate() {
+      this.errors = {}
+      if (!this.newAnnualBudget) this.errors['annualBudget'] = ['Required field']
+      if (this.newAnnualBudget > this.annualBudget.current) {
+        this.errors['annualBudget'] = ['Value must less than charges paid YTD value']
       }
     },
-    created() {
-      this.getData()
-    },
-    methods: {
-      validate() {
-        this.errors = {}
-        if (this.newAnnualBudget > this.annualBudget.processed_ytd) {
-          this.errors['annualBudget'] = ['Value must less than charges paid YTD value']
-        }
-      },
-      async getData() {
-        const endPoint = this.isSpecialist ? 'getRevenue' : 'getAnnualBudget'
-        const res = await this.$store.dispatch(endPoint)
-        if (res) {
-          this.annualBudget = {current: res.processed_ytd, goal: this.isSpecialist ? res.annual_revenue_goal : res.annual_budget}
-        }
-      },
-      async update() {
-        if (Object.keys(this.errors).length > 0) return
-        const endPoint = this.isSpecialist ? 'updateRevenue' : 'updateAnnualBudget'
-        const res = await this.$store.dispatch(endPoint, this.newAnnualBudget)
-        if (res) {
-          this.$refs.dropdown.hide(true)
-          this.newAnnualBudget = ''
-          this.annualBudget = {current: res.processed_ytd, goal: this.isSpecialist ? res.annual_revenue_goal : res.annual_budget}
-        }
+    async getData() {
+      const endPoint = this.isSpecialist ? 'getRevenue' : 'getAnnualBudget'
+      const res = await this.$store.dispatch(endPoint)
+
+      if (res) {
+        this.annualBudget = {current: res.processed_ytd, goal: this.isSpecialist ? res.annual_revenue_goal : res.annual_budget}
       }
     },
-    computed: {
-      isSpecialist() {
-        return this.userType === 'specialists'
-      },
-      userType() {
-        return this.$store.getters.userType
-      },
-      loading() {
-        return this.$store.getters.loading;
-      },
+    async update() {
+      this.validate()
+      if (Object.keys(this.errors).length > 0) return
+      const endPoint = this.isSpecialist ? 'updateRevenue' : 'updateAnnualBudget'
+      const res = await this.$store.dispatch(endPoint, this.newAnnualBudget)
+      if (res) {
+        this.$refs.dropdown.hide(true)
+        this.newAnnualBudget = ''
+        this.annualBudget = {current: res.processed_ytd, goal: this.isSpecialist ? res.annual_revenue_goal : res.annual_budget}
+      }
+    }
+  },
+  computed: {
+    isSpecialist() {
+      return this.userType === 'specialists'
     },
-  }
+    userType() {
+      return this.$store.getters.userType
+    },
+    loading() {
+      return this.$store.getters.loading
+    },
+  },
+}
 </script>
 
-<style scoped>
-
-</style>

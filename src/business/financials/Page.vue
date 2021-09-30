@@ -4,46 +4,24 @@
       .col-12.m-b-20
         Payments
     .row
-      .col-xl-7.col-12.m-b-20
-        ComplianceSpend
-      .col-xl-5.col-12.m-b-20
+      .col-xl-12.col-12.m-b-20
         AnnualBudget
 
 </template>
 
 <script>
-  import ComplianceSpend from "./components/ComplianceSpend";
-  import AnnualBudget from "@/common/Financial/AnnualBudget";
-  import Payments from "@/common/Financial/Payments";
+import AnnualBudget from "@/common/Financial/AnnualBudget"
+import Payments from "@/common/Financial/Payments"
 
-  export default {
-    components: {
-      Payments,
-      ComplianceSpend,
-      AnnualBudget,
-    },
-    data() {
-      return {
-
-      }
-    },
-    created() {
-      this.$store.dispatch('getPaymentInfor', {type: 'business'})
-      this.getPaymentInfor()
-    },
-    methods: {
-      async getPaymentInfor() {
-        const result = await this.$store.dispatch('getAllPaymentProcess')
-        console.log(result)
-      }
-    },
-    computed: {
-
-    },
-  };
+export default {
+  components: {
+    Payments,
+    AnnualBudget,
+  },
+  created() {
+    this.$store.dispatch('getPaymentInfor', {type: 'business'})
+  }
+}
 </script>
 
-<style module>
-
-</style>
 

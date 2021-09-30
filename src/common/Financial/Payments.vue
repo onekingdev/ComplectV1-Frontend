@@ -45,7 +45,6 @@
         return this.$store.getters.loading;
       },
       payments() {
-        console.log(this.userType)
         if (this.userType === 'specialists') return this.$store.getters.specialistPayments
         return this.$store.getters.businessPayments
       }
