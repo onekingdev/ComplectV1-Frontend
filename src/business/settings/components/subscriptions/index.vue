@@ -7,7 +7,7 @@
       .col
         .card.settings__card
           .card-title.px-3.px-xl-5.mb-0
-            h3.mb-0 Subscriptions
+            h3.mb-0.semibold-text Subscriptions
           .card-body.white-card-body.px-3.px-xl-5
             .settings___card--internal.p-y-1
               .row
@@ -19,45 +19,18 @@
 </template>
 
 <script>
-  import Loading from '@/common/Loading/Loading'
-  import AppsTable from "./components/AppsTable";
-  import Plan from "./components/Plan";
+import Loading from '@/common/Loading/Loading'
+import Plan from "./components/Plan";
 
-  export default {
-    components: {
-      Plan,
-      AppsTable,
-      Loading,
+export default {
+  components: {
+    Plan,
+    Loading,
+  },
+  methods: {
+    openComponent (value) {
+      this.$emit('openComponent', value)
     },
-    data() {
-      return {
-
-      };
-    },
-    methods: {
-      openComponent (value) {
-        this.$emit('openComponent', value)
-      }
-    },
-    computed: {
-      loading() {
-        return this.$store.getters.loading;
-      },
-      apps() {
-        return [
-          {
-          name: 'Redtail',
-          status: true,
-          },
-          {
-            name: 'Walthbox',
-            status: false,
-          }
-        ]
-      },
-    },
-    mounted() {
-
-    },
-  };
+  }
+}
 </script>
