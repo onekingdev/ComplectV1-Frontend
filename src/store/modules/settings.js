@@ -19,6 +19,7 @@ const mapAuthProviders = {
     deletePaymentMethod: jwt.deletePaymentMethod,
     makePrimaryPaymentMethod: jwt.makePrimaryPaymentMethod,
     applyCoupon: jwt.applyCoupon,
+    getSubscriptionInfor: jwt.getSubscriptionInfor,
     getEmployees: jwtEmployee.getEmployees,
     getEmployeesSpecialists: jwtEmployee.getEmployeesSpecialists,
     createEmployee: jwtEmployee.createEmployee,
@@ -953,6 +954,10 @@ export default {
         throw error;
       }
     },
+    getSubscriptionInfor({state, rootState}) {
+      const getSubscription = mapAuthProviders[rootState.shared.settings.authProvider].getSubscriptionInfor
+      return getSubscription()
+    }
   },
   getters: {
     settings: state => state.settings,

@@ -223,3 +223,7 @@ export async function applyCoupon(payload) {
     })
     .catch(err => err)
 }
+
+export function getSubscriptionInfor() {
+  return axios.get('/subscriptions')
+}
