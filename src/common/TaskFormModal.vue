@@ -450,7 +450,7 @@ export default {
     },
     repeatsOptions: () => REPEAT_OPTIONS.map(value => ({ value, text: REPEAT_LABELS[value] })),
     isBusiness() {
-      return 'business' === this.$store.getters.appModule
+      return 'business' === this.$store.getters['roles/domain']
     },
     datepickerOptions() {
       return {

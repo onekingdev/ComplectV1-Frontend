@@ -1,9 +1,10 @@
 import * as jwt from '@/services/common/roles-and-permissions'
 
 // import { RolesAndPermissions } from "../../models/RolesAndPermissions";
-
+const userTypeLocalStorage = localStorage.getItem('app.currentUser.userType') ? localStorage.getItem('app.currentUser.userType') : ''
 const plan = localStorage.getItem('app.currentUser.plan') ? localStorage.getItem('app.currentUser.plan') : ''
 const role = localStorage.getItem('app.currentUser.role') ? localStorage.getItem('app.currentUser.role') : ''
+const seatRole = localStorage.getItem('app.currentUser.seatRole') ? localStorage.getItem('app.currentUser.seatRole') : ''
 const businessIDLocalStorage = localStorage.getItem('app.business_id') ? localStorage.getItem('app.business_id') : ''
 
 const mapAuthProviders = {
@@ -15,9 +16,11 @@ const mapAuthProviders = {
 
 export default {
   state: {
+    domain: userTypeLocalStorage ? JSON.parse(userTypeLocalStorage) : '',
     currentPlan: plan,
     roles: [],
     currentRole: role,
+    seatRole: seatRole,
     businessID: null,
     currentAccount: businessIDLocalStorage,
   },
@@ -125,6 +128,11 @@ export default {
     },
   },
   getters: {
+    domain (state) {
+      const domain = state.domain
+      if(!domain) return ''
+      return (domain === 'businesses') || (domain === 'business') || (domain === 'specialist' && state.seatRole) || (domain === 'specialists' && state.seatRole) ? 'business' : 'specialist'
+    },
     roles (state) {
       return state.roles
     },

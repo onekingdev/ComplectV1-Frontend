@@ -1,6 +1,6 @@
 <template lang="pug">
   nav.sidebar-menu(v-if="leftSidebar !== 'settings' || leftSidebar !== 'builder'" :class="[{ menuClosed: toggleClosedMenu }, leftSidebar==='builder' ? 'd-none' : '']")
-    div.sidebar-menu__central(v-if="leftSidebar === 'default' || appModule === 'specialist'")
+    div.sidebar-menu__central(v-if="leftSidebar === 'default' || domain === 'specialist'")
       h3.sidebar-menu__title(
       :class="overview_collapse ? null : 'collapsed'"
       :aria-expanded="overview_collapse ? 'true' : 'false'"
@@ -14,7 +14,7 @@
           li.nav-item.sidebar-menu__item(v-for="(link, i) in menuLinksOverview" @click.stop="openLink('default')" :key="i")
             router-link.sidebar-menu__link(:to='link.to' active-class="active" :exact="link.exact || false")
               | {{ link.label }}
-      div(v-if="appModule !== 'specialist' && !this.isBussinessFreePlan")
+      div(v-if="domain !== 'specialist' && !this.isBussinessFreePlan")
         h3.sidebar-menu__title(
         :class="program_management_collapse ? null : 'collapsed'"
         :aria-expanded="program_management_collapse ? 'true' : 'false'"
@@ -30,11 +30,11 @@
               router-link.sidebar-menu__link(:to='link.to' active-class="active" :exact="link.exact || false")
                 | {{ link.label }}
       div(class="dropdown-divider")
-      router-link.sidebar-menu__link.sidebar-menu__link_settings(:to='`/${appModule}/settings`' active-class="active")
+      router-link.sidebar-menu__link.sidebar-menu__link_settings(:to='`/${domain}/settings`' active-class="active")
         h3.sidebar-menu__title.sidebar-menu__title_settings
           ion-icon(name='settings-outline' @click.stop="openLink('settings')")
           span Settings
-    div.sidebar-menu__central(v-if="appModule !== 'specialist' && leftSidebar === 'documents'")
+    div.sidebar-menu__central(v-if="domain !== 'specialist' && leftSidebar === 'documents'")
      h3.sidebar-menu__title(
      :class="files ? null : 'collapsed'"
      :aria-expanded="files ? 'true' : 'false'"
@@ -50,11 +50,11 @@
            router-link.sidebar-menu__link(:to='link.to' active-class="active" :exact="link.exact || false")
              | {{ link.label }}
      div(class="dropdown-divider")
-     router-link.sidebar-menu__link.sidebar-menu__link_settings(:to='`/${appModule}/settings`' active-class="active")
+     router-link.sidebar-menu__link.sidebar-menu__link_settings(:to='`/${domain}/settings`' active-class="active")
         h3.sidebar-menu__title.sidebar-menu__title_settings
           ion-icon(name='settings-outline' @click.stop="openLink('settings')")
           span Settings
-    div.sidebar-menu__central(v-if="appModule === 'business' && leftSidebar === 'reports'")
+    div.sidebar-menu__central(v-if="domain === 'business' && leftSidebar === 'reports'")
       h3.sidebar-menu__title(
       :class="reports ? null : 'collapsed'"
       :aria-expanded="reports ? 'true' : 'false'"
@@ -70,7 +70,7 @@
             router-link.sidebar-menu__link(:to='link.to' active-class="active" :exact="link.exact || false")
               | {{ link.label }}
       div(class="dropdown-divider")
-      router-link.sidebar-menu__link.sidebar-menu__link_settings(:to='`/${appModule}/settings`' active-class="active")
+      router-link.sidebar-menu__link.sidebar-menu__link_settings(:to='`/${domain}/settings`' active-class="active")
         h3.sidebar-menu__title.sidebar-menu__title_settings
           ion-icon(name='settings-outline' @click.stop="openLink('settings')")
           span Settings
@@ -203,13 +203,13 @@
         leftSidebar: 'leftSidebar',
         role: 'roles/currentRole',
         plan: 'roles/currentPlan',
-        appModule: 'appModule',
+        domain: 'roles/domain',
       }),
       isBussinessFreePlan() {
-        return this.plan === 'free' && this.appModule === 'business'
+        return this.plan === 'free' && this.domain === 'business'
       },
       menuLinksOverview() {
-        return this.appModule === 'business' ? this.menuLinksOverviewBusiness : this.menuLinksOverviewSpecialist
+        return this.domain === 'business' ? this.menuLinksOverviewBusiness : this.menuLinksOverviewSpecialist
       },
 
       menuLinksOverviewBusiness() {
@@ -241,7 +241,7 @@
       },
 
       menuLinksProgramManagement() {
-        const menu = this.appModule === 'business' ? this.menuLinksProgramManagementBusiness : this.menuLinksProgramManagementSpecialist
+        const menu = this.domain === 'business' ? this.menuLinksProgramManagementBusiness : this.menuLinksProgramManagementSpecialist
         return this.role ? menu.filter(item => item.access.indexOf( this.role ) !== -1) : menu
       },
 
@@ -278,7 +278,7 @@
       },
 
       menuLinksFiles() {
-        const menu = this.appModule === 'business' ? this.menuLinksFilesBusiness : this.menuLinksFilesSpecialist
+        const menu = this.domain === 'business' ? this.menuLinksFilesBusiness : this.menuLinksFilesSpecialist
         return this.role ? menu.filter(item => item.access.indexOf( this.role ) !== -1) : menu
       },
 
@@ -300,12 +300,12 @@
       },
 
       menuLinksReports() {
-        const menu = this.appModule === 'business' ? this.menuLinksReportsBusiness : this.menuLinksReportsSpecialist
+        const menu = this.domain === 'business' ? this.menuLinksReportsBusiness : this.menuLinksReportsSpecialist
         return this.role ? menu.filter(item => item.access.indexOf( this.role ) !== -1) : menu
       },
 
       menuLinksReportsBusiness() {
-        if (this.plan === 'free' && this.appModule === 'business') {
+        if (this.plan === 'free' && this.domain === 'business') {
           return [
             {
               to: '/business/reports/financials',
