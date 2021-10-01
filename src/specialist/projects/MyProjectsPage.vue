@@ -32,7 +32,7 @@
               tr(v-for="project in projects" :key="project.id")
                 td: router-link.link(:to='linkProjectUrl(project.id)') {{ project.title }}
                 td {{ project.business.business_name }}
-                td {{ (project.fixed_budget || project.est_budget) | usdWhole }}
+                td {{ project.processed_amount | usdWhole }}
                 td
                   span.badge(:class="badgeClass(project)") {{ project.status }}
                 td {{ project.starts_on | asDate }}
