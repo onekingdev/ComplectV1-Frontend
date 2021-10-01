@@ -48,8 +48,8 @@
     },
     created() {
       const plan = this.$store.getters['roles/currentPlan']
-      const appModule = this.$store.getters.appModule
-      if (appModule === 'business' && (plan === 'free' || plan === 'team')) {
+      const domain = this.$store.getters['roles/domain']
+      if (domain === 'business' && (plan === 'free' || plan === 'team')) {
         this.$router.push('/access-denied')
       }
     },
