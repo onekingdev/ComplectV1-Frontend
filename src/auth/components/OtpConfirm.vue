@@ -66,8 +66,7 @@
               this.$router.push({name: 'settings-security-specialist'})
             } else {
               this.$router.push({name: 'settings-security'})
-            }
-            
+            } 
           }, 2000)
         } else {
           this.toast('Error', 'Email has not been updated. Please try again.', true)
