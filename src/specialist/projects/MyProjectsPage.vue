@@ -44,27 +44,31 @@
               tr
                 th Name
                 th Location
-                th Status
+                //- th Status
                 th Rating
-                th
+                //- th
             tbody
               tr(v-for="contact in contacts" :key="contact.id")
                 td {{ contact.name }}
                 td {{ contact.location }}
-                td {{ contact.status }}
-                td: StarRating(:stars="contact.rating")
-                td &hellip;
+                //- td {{ contact.status }}
+                td: StarsRating(:rate="Math.floor(Math.random() * 5)")
+                //- td &hellip;
               tr(v-if="!contacts.length")
                 td(colspan=5) No contacts
       b-tab(title="Ratings and Reviews")
         .card-body.white-card-body.card-body_full-height
-          p Ratings and Reviews
+          EmptyState
 </template>
 
 <script>
 import { isOverdue, badgeClass } from '@/common/TaskHelper'
+import StarsRating from '../../business/marketplace/components/StarsRating'
 
 export default {
+  components: {
+    StarsRating
+  },
   computed: {
     apiProjectsUrl() {
       return '/api/specialist/projects/my'
