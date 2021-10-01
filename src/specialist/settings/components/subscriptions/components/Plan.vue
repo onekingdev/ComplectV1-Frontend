@@ -3,8 +3,7 @@
     .card-body
       .row
         .col
-          h5.mb-0 {{ plan.name }}
-          p {{ plan.users }} active users
+          h5.mb-0 All Access Membership
         .col
           .d-flex.justify-content-end
             PlanCancelModal(:date="plan.nextPaymentDate")
@@ -12,10 +11,6 @@
             // PlanModalEdit(:plan="plan")
             //   b-button.btn.mr-2(type='button' variant='default') Edit plan
             // b-button.btn(type='button' variant='dark') Upgrade
-      hr
-      .row
-        .col {{ plan.monthCoast }}, billed {{ plan.billinPeriod }} to {{ plan.paymentCardType }} {{ plan.paymentCard }}
-        .col.text-right Next payment date {{ plan.nextPaymentDate }}
 </template>
 
 <script>
