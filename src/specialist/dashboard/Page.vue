@@ -1,8 +1,8 @@
 <template lang="pug">
   .page
-    .page-header.p-x-40.p-t-30(v-if="plan === 'free'")
-      EmptyPlan
-    .page-header(:class="plan === 'free' ? 'p-t-10' : ''")
+    //- .page-header.p-x-40.p-t-30(v-if="plan === 'free'")
+    //-   EmptyPlan
+    .page-header
       h2.page-header__title
         b Welcome,&nbsp;
         | {{currentSpecialist}}
