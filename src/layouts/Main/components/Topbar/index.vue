@@ -11,7 +11,7 @@
         ul.topbar-menu__list
           li.nav-item.topbar-menu__item(@click="openLink('default')")
             router-link.topbar-menu__link(:to='`/${appModule}`' active-class="active" exact) Home
-          li.nav-item.topbar-menu__item(v-if="appModule === 'business'" @click="openLink('documents')")
+          li.nav-item.topbar-menu__item(v-if="appModule === 'business' && displayByPlan" @click="openLink('documents')")
             router-link.topbar-menu__link(:to='`/${appModule}/file_folders`' active-class="active") Documents
           li.nav-item.topbar-menu__item(v-if="role !=='basic'" @click="openLink('reports')")
             router-link.topbar-menu__link(:to='reportLink' active-class="active") Reports
@@ -26,7 +26,7 @@
       router-link.btn.btn-warning.btn-topbar.btn-topbar_find(v-if="appModule !== 'specialist' && role !=='basic'" :to='`/specialistmarketplace`' target="_blank") Find an Expert
       router-link.btn.btn-warning.btn-topbar.btn-topbar_find(v-if="appModule === 'specialist'" :to='`/specialist/job_board`') Browse Jobs
       //- router-link.btn.btn-topbar.btn-topbar_notify(:to='`/${appModule}/notification-center`')
-      //-   ion-icon(name='notifications-outline')
+        ion-icon(name='notifications-outline')
       b-nav-item-dropdown.topbar-right-dropdown.actions(right)
         // Using 'button-content' slot
         template(#button-content)
@@ -71,9 +71,21 @@
       currentUser() {
         return this.$store.getters.getUser
       },
+      currentPlan() {
+        return this.$store.getters['roles/currentPlan']
+      },
       reportLink() {
-        if (this.appModule === 'business') return `/${this.appModule}/reports/organizations`
-        return '/specialist/reports/financials'
+        if (this.currentPlan === 'free' && this.appModule === 'business') return `/${this.appModule}/reports/financials`
+        if (this.appModule === 'specialist') return '/specialist/reports/financials'
+        return `/${this.appModule}/reports/organizations`
+      },
+      displayByPlan() {
+        const plan = this.currentPlan
+        if (this.appModule === 'business') {
+          if (plan === 'free') return false
+        }
+
+        return true
       }
     },
 

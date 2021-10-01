@@ -84,19 +84,19 @@
                 .card(v-if="!showingContract")
                   .card-header.d-flex.justify-content-between
                     h3.m-y-0 Collaborators
-                    Get(:etag="etag" :collaborators="`/api/business/team_members`" :callback="getActiveCollaboratorOptions" ): template(v-slot="{collaborators}")
-                      button.btn.btn-primary.float-right(v-b-modal="'AddCollaboratorModal'") New Collaborator
-                      b-modal#AddCollaboratorModal(title="New Collaborator" :project="project")
-                        p.fs-14 Select a user to add.
-                        p.fs-14
-                          strong Note:&nbsp;
-                          | An unlimited amount of employees can be added to the project but only one specialist can be actively working on a project at a time.
-                        label.m-t-1.form-label Select User
-                        ComboBox(v-model="id" :options="collaborators")
-                        template(#modal-footer="{ hide }")
-                          button.btn.btn-link(@click="hide") Cancel
-                          Post(:action="'/api/local_projects/' + project.id + '/specialists'" :model="{id}" @saved="newEtag()")
-                            button.btn.btn-dark Create
+                    //- Get(:etag="etag" :collaborators="`/api/business/team_members`" :callback="getActiveCollaboratorOptions" ): template(v-slot="{collaborators}")
+                    //-   button.btn.btn-primary.float-right(v-b-modal="'AddCollaboratorModal'") New Collaborator
+                    //-   b-modal#AddCollaboratorModal(title="New Collaborator" :project="project")
+                    //-     p.fs-14 Select a user to add.
+                    //-     p.fs-14
+                    //-       strong Note:&nbsp;
+                    //-       | An unlimited amount of employees can be added to the project but only one specialist can be actively working on a project at a time.
+                    //-     label.m-t-1.form-label Select User
+                    //-     ComboBox(v-model="id" :options="collaborators")
+                    //-     template(#modal-footer="{ hide }")
+                    //-       button.btn.btn-link(@click="hide") Cancel
+                    //-       Post(:action="'/api/local_projects/' + project.id + '/specialists'" :model="{id}" @saved="newEtag()")
+                    //-         button.btn.btn-dark Create
                   .card-body
                     .p-20.collaborator(v-for="contract in getContracts(project.projects)" :key="contract.specialist.id")
                       .d-flex.justify-content-between.align-items-center

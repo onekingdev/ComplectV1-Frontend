@@ -46,6 +46,13 @@
         return `/business/exam_management/${this.examId}`
       }
     },
+    created() {
+      const plan = this.$store.getters['roles/currentPlan']
+      const appModule = this.$store.getters.appModule
+      if (appModule === 'business' && (plan === 'free' || plan === 'team')) {
+        this.$router.push('/access-denied')
+      }
+    },
     methods: {
       ...mapActions({
         getCurrentExam: 'exams/getExamById',
