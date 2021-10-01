@@ -23,7 +23,7 @@
     mounted() {
       setTimeout(() => {
         this.spinner = true
-      }, 3000)
+      }, 5000)
     }
   }
 </script>
