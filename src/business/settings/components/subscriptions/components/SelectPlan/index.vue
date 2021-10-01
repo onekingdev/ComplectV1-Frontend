@@ -3,7 +3,7 @@
     Overlay(v-if="overlay.active")
     .container-fluid(v-if="!isSidebarOpen")
       .row
-        .col-md-9.mx-auto.my-2
+        .col-md-12.mx-auto.my-2
           .card
             .card-body
               .row

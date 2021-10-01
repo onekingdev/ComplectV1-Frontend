@@ -6,12 +6,11 @@
     .row
       .col-xl-12.col-12.m-b-20
         AnnualBudget
-
 </template>
 
 <script>
-import AnnualBudget from "@/common/Financial/AnnualBudget"
 import Payments from "@/common/Financial/Payments"
+import AnnualBudget from "@/common/Financial/AnnualBudget"
 
 export default {
   components: {
@@ -19,9 +18,8 @@ export default {
     AnnualBudget,
   },
   created() {
-    this.$store.dispatch('getPaymentInfor', {type: 'business'})
-  }
-}
+    this.$store.dispatch('getPaymentInfor', {type: 'specialist'})
+  },
+};
 </script>
-
 

@@ -23,13 +23,13 @@
             b-card-text
               p.form-label.text-uppercase.mb-0 Users
               p
-                b ${{ summary.usersCoast }}
+                b ${{ cost }}
                 | /month
               p.form-label.text-uppercase.mb-0 Total
               p
                 b ${{ summary.total }}
-                | /month
-              p.text-success.mb-0(v-if="showDiscount") You saved ${{ summary.discount }}/month
+                | /{{ summary.type }}
+              p.text-success.mb-0(v-if="showDiscount") You saved ${{ summary.discount }}
       b-row
         b-col
           h5.mb-3 Payment method
@@ -42,115 +42,120 @@
 </template>
 
 <script>
-  import { mapGetters, mapActions } from "vuex"
+import { mapGetters, mapActions } from "vuex"
 
-  const toOption = id => ({ id, label: id })
-  const rnd = () => Math.random().toFixed(10).toString().replace('.', '')
-  export default {
-    props: {
-      inline: {
-        type: Boolean,
-        default: true
-      },
-      plan: {
-        type: Object,
-        required: true
-      }
+const toOption = id => ({ id, label: id })
+const rnd = () => Math.random().toFixed(10).toString().replace('.', '')
+export default {
+  props: {
+    inline: {
+      type: Boolean,
+      default: true
     },
-    data() {
-      return {
-        modalId: `modal_${rnd()}`,
-        errors: [],
-        selected: '',
-        showDiscount: false,
-        selectedPlan: '',
-        additionalUsers: 0,
-      }
+    plan: {
+      type: Object,
+      required: true
+    }
+  },
+  data() {
+    return {
+      modalId: `modal_${rnd()}`,
+      errors: [],
+      selected: '',
+      showDiscount: false,
+      selectedPlan: '',
+      additionalUsers: 0,
+    }
+  },
+  methods: {
+    ...mapActions({
+      getPaymentMethod: 'settings/getPaymentMethod'
+    }),
+    focusInput() {
+      this.$refs.input.focus();
     },
-    methods: {
-      ...mapActions({
-        getPaymentMethod: 'settings/getPaymentMethod'
-      }),
-      focusInput() {
-        this.$refs.input.focus();
-      },
-      async submit (e) {
-        e.preventDefault();
-        this.errors = [];
+    async submit (e) {
+      e.preventDefault();
+      this.errors = [];
 
-        try {
-          console.log(this.plan, this.selected, this.additionalUsers)
-        } catch (error) {
-          console.error(error)
-        }
-      },
-      selectPlan(value) {
-        if (value==='anually') {
-          this.showDiscount = true
-          this.selectedPlan = 'anually'
-          this.calcPrice(this.$refs.input.value)
-        }
-        if (value==='monthly' || value === '') {
-          this.showDiscount = false
-          this.selectedPlan = 'monthly'
-        }
-      },
-      calcPrice (event) {
-        const reqiredUsers = this.$refs.input.value;
-        if(this.showDiscount && reqiredUsers && reqiredUsers >= 1) console.log(reqiredUsers)
-      },
-      async getData () {
-        try {
-          const data = {
-            userType: 'business',
-          }
-          await this.getPaymentMethod(data)
-            .then(response => response)
-            .catch(error => console.error(error))
-        } catch (error) {
-          console.error(error)
-          this.toast('Error', error.message, true)
-        }
-      },
-    },
-    computed: {
-      ...mapGetters({
-        paymentMethods: 'settings/paymentMethods'
-      }),
-      linkToOptions() {
-        return [
-          {
-            id: 'monthly',
-            label: 'Billed monthly',
-          },
-          {
-            id: 'anually',
-            label: 'Billed annually',
-          }
-        ]
-      },
-      summary () {
-        const billingType = this.selectedPlan
-        let summary = {}
-        if (billingType === 'anually') {
-          const  usersCoast = this.additionalUsers * this.plan.additionalUserAnnually
-          summary = {
-            usersCoast,
-            total: this.plan.coastAnnually + usersCoast,
-            discount: Math.abs(this.plan.coastAnnually - this.plan.coastMonthly * 12)
-          }
-        }
-        if (billingType === 'monthly') {
-          const  usersCoast = this.additionalUsers * this.plan.additionalUserMonthly
-          summary = {
-            usersCoast,
-            total: this.plan.coastMonthly + usersCoast
-          }
-        }
-        return summary
+      try {
+        console.log(this.plan, this.selected, this.additionalUsers)
+      } catch (error) {
+        console.error(error)
       }
+    },
+    selectPlan(value) {
+      if (value==='anually') {
+        this.showDiscount = true
+        this.selectedPlan = 'anually'
+      }
+      if (value==='monthly' || value === '') {
+        this.showDiscount = false
+        this.selectedPlan = 'monthly'
+      }
+    },
+    async getData () {
+      try {
+        const data = {
+          userType: 'business',
+        }
+        await this.getPaymentMethod(data)
+          .then(response => response)
+          .catch(error => console.error(error))
+      } catch (error) {
+        console.error(error)
+        this.toast('Error', error.message, true)
+      }
+    },
+  },
+  computed: {
+    ...mapGetters({
+      paymentMethods: 'settings/paymentMethods'
+    }),
+    linkToOptions() {
+      return [
+        {
+          id: 'monthly',
+          label: 'Billed monthly',
+        },
+        {
+          id: 'anually',
+          label: 'Billed annually',
+        }
+      ]
+    },
+    coastAnnually() {
+      return 10
+    },
+    coastMonthly() {
+      return 15
+    },
+    cost() {
+      const billingType = this.selectedPlan
+      if (billingType === 'anually') return this.coastAnnually
+      if (billingType === 'monthly') return this.coastMonthly
+
+      return 0
+    },
+    summary() {
+      const billingType = this.selectedPlan
+      const usersCoast = this.additionalUsers * this.cost
+
+      const summary = {
+        total: usersCoast,
+        type: 'month'
+      }
+
+      if (billingType === 'anually') {
+        summary.total = usersCoast * 12
+        summary.discount = Math.abs((this.coastAnnually - this.coastMonthly) * 12) * this.additionalUsers
+        summary.type = 'year'
+      }
+
+      return summary
     }
   }
+}
 </script>
 
 <style scoped>

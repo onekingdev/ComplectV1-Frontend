@@ -1,7 +1,7 @@
 <template lang="pug">
   .page.custom-project-layout-style
-    Get(:applications="applicationsUrl" :callback="setApplications")
     Get.d-flex.flex-column.flex-grow-1(:etag="etag" :project="`/api/local_projects/${projectId}`" currentBusiness="/api/businesses/current"): template(v-slot="{project,currentBusiness}")
+      Get(v-if="project.visible_project" :applications="applicationsUrl(project.visible_project.id)" :callback="setApplications")
       CommonHeader(section="Projects" :title="project.title" :sub="currentBusiness.business_name")
         .d-flex.justify-content-end
           p.m-b-2: ShowOnCalendarToggle(:project="project")
@@ -236,7 +236,10 @@ export default {
     showTimeSheet(contract) {
       if (contract.fixed_budget) return false
       return true
-    }
+    },
+    applicationsUrl(projectId) {
+      return this.$store.getters.url('URL_API_PROJECT_APPLICATIONS', projectId)
+    },
   },
   computed: {
     taskDefaults() {
@@ -253,9 +256,6 @@ export default {
     },
     hireUrl() {
       return project => this.$store.getters.url('URL_API_PROJECT_HIRES', project.id)
-    },
-    applicationsUrl() {
-      return this.$store.getters.url('URL_API_PROJECT_APPLICATIONS', this.projectId)
     },
     confirmModalId() {
       return (this.modalId || '') + '_confirm'

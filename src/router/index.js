@@ -67,6 +67,7 @@ const SettingsS = () => import ('@/specialist/settings/Page')
 const SettingsNotificationsS = () => import ('@/specialist/notifications/Page')
 const ProjectsMarketplaceS = () => import ('@/specialist/projects/IndexPage')
 const ProfileS = () => import ('@/specialist/profile/Page')
+const ReportsFinancialsS = () => import ('@/specialist/financials/Page.vue')
 const SpecialistTasksPage = () => import ('@/specialist/tasks/Page')
 
 Vue.use(VueRouter)
@@ -158,6 +159,7 @@ const router = new VueRouter({
             { path: 'my-projects/:id(\\d+)/timesheets', name: 'my-project-timesheet-page', props: paramsToInts(['id']), component: ProjectTimesheetsPage },
             { path: 'profile', name: 'profile-specialist', component: ProfileS },
             { path: 'notification-center', name: 'settings-notification-center-specialist', component: SettingsNotificationsS },
+            { path: 'reports/financials', name: 'reports-financials-specialist', component: ReportsFinancialsS },
             { path: 'settings/', name: 'settings-specialist', component: SettingsS,
               children:  [
                 { path: 'general', name: 'settings-general-specialist', component: SettingsS, },

@@ -1,17 +1,22 @@
 <template lang="pug">
   div.chart-wrapper
     apexchart(width="100%" height="250px" type="bar" :options="options" :series="series")
-
 </template>
 
 <script>
   import VueApexCharts from 'vue-apexcharts'
 
   export default {
+    props: {
+      annualBudget: {
+        type: Object,
+        required: true
+      }
+    },
     components: {
       apexcharts: VueApexCharts,
     },
-    data: function() {
+    data() {
       return {
         options: {
           chart: {
@@ -36,12 +41,15 @@
             }
           },
           yaxis: {
-            // title: {
-            //   text: 'Growth',
-            // },
             labels: {
-              formatter: function (y) {
-                return  y.toFixed(0) > 1000 ? "$" + y.toFixed(0).replace(/0*$/,"") + "k": "$" + y.toFixed(0).replace(/0*$/,"")
+              formatter: function (number) {
+                const SI_SYMBOL = ["", "k", "M", "G", "T", "P", "E"]
+                const tier = Math.log10(Math.abs(number)) / 3 | 0
+                if(tier === 0) return number
+                const suffix = SI_SYMBOL[tier]
+                const scale = Math.pow(10, tier * 3)
+                const scaled = number / scale
+                return `${scaled.toFixed(1)}` + suffix
               },
               style: {
                 fontSize: '12px',
@@ -62,31 +70,22 @@
           dataLabels: {
             enabled: false,
           },
-          // title: {
-          //   text: 'Monthly Stock Pricing',
-          //   align: 'center',
-          //   style: {
-          //     fontSize:  '20px',
-          //   },
-          // },
           colors: ['#1AB27F', '#1F7055'],
-          // fill: {
-          //   colors: ['#1AB27F', '#1F7055']
-          // },
         },
         series: [{
           name: '',
-          data: [5000, 10000]
+          data: [this.annualBudget.current, this.annualBudget.goal]
         }],
       }
     },
+    watch: {
+      annualBudget: function(newVal, oldVal) {
+        this.series = [{
+          name: '',
+          data: [newVal.current, newVal.goal]
+        }]
+      }
+    }
   };
 </script>
 
-<style scoped>
-  div.chart-wrapper {
-    /*display: flex;*/
-    /*align-items: center;*/
-    /*justify-content: center;*/
-  }
-</style>

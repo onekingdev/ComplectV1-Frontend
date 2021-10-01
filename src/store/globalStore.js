@@ -19,6 +19,7 @@ import projects from "./modules/projects";
 import tasks from "./modules/tasks";
 import settings from "./modules/settings";
 import work_experiences from "./modules/work_experiences";
+import paymentInfor from "./modules/payment_infor";
 
 
 const URL_PROJECT_SHOW = "/business/projects/:id";
@@ -88,6 +89,7 @@ const store = new Vuex.Store({
 		auth,
 		shared,
 		work_experiences,
+		paymentInfor,
 		annual: {
 			namespaced: true,
 			...annual,
