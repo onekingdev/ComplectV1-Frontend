@@ -32,7 +32,7 @@
               tr(v-for="project in projects" :key="project.id")
                 td: router-link.link(:to='linkProjectUrl(project.id)') {{ project.title }}
                 td {{ project.business.business_name }}
-                td {{ (project.fixed_budget || project.est_budget) | usdWhole }}
+                td {{ project.processed_amount | usdWhole }}
                 td
                   span.badge(:class="badgeClass(project)") {{ project.status }}
                 td {{ project.starts_on | asDate }}
@@ -52,7 +52,7 @@
                 td {{ contact.name }}
                 td {{ contact.location }}
                 //- td {{ contact.status }}
-                td: StarsRating(:rate="Math.floor(Math.random() * 5)")
+                td: StarsRating(:rate="contact.rating")
                 //- td &hellip;
               tr(v-if="!contacts.length")
                 td(colspan=5) No contacts
@@ -85,7 +85,7 @@ export default {
             name: project.business.business_name,
             location: [project.business.city, project.business.country, project.business.state].filter(l => l).join(', '),
             status: null,
-            rating: 5
+            rating: project.business.ratings_average
           })
         }
         return contacts
