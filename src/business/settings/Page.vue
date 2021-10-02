@@ -76,6 +76,7 @@
       menu() {
         return [
           { name: 'General', link: 'General' },
+          { name: 'Users', link: 'Users' },
           { name: 'Roles and Permissions', link: 'Roles' },
           { name: 'Security', link: 'Security' },
           { name: 'Subscriptions', link: 'Subscriptions' },
