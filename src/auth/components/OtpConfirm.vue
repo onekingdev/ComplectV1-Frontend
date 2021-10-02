@@ -62,12 +62,11 @@
           user.user_email = this.form.newEmail
           localStorage.setItem('app.currentUser', JSON.stringify(user))
           setTimeout(() => {
-            if (this.$store.getters.appModule === 'specialist') {
+            if (this.$store.getters['roles/domain'] === 'specialist') {
               this.$router.push({name: 'settings-security-specialist'})
             } else {
               this.$router.push({name: 'settings-security'})
-            }
-            
+            } 
           }, 2000)
         } else {
           this.toast('Error', 'Email has not been updated. Please try again.', true)
@@ -105,6 +104,9 @@
                 window.location.href = `${dashboard}`;
                 return
               }
+
+              if(response.specialist && response.specialist.seat_role) localStorage.setItem('app.currentUser.seatRole', response.specialist.seat_role);
+
               if (!response.errors && response.token) {
                 // open step 3
                 // this.step2 = false
@@ -144,9 +146,12 @@
                 window.location.href = `${dashboard}`;
                 return
               }
+
+              if(response.specialist && response.specialist.seat_role) localStorage.setItem('app.currentUser.seatRole', response.specialist.seat_role);
+
               if (!response.errors && response.token) {
                 // open dashboard
-                const dashboard = response.business ? '/business' : '/specialist'
+                const dashboard = response.business || response.specialist.seat_role ? '/business' : '/specialist'
                 window.location.href = `${dashboard}`;
                 // this.$router.push(`${dashboard}/onboarding`)
                 // this.$router.push(`${dashboard}`)

@@ -15,13 +15,13 @@
   export default {
     components: {AccessDeniedModal},
     computed: {
-      appModule() {
-        return this.$store.getters.appModule
+      domain() {
+        return this.$store.getters['roles/domain']
       }
     },
     methods: {
       openPlans() {
-        this.$router.push(`${this.appModule}/settings/subscriptions`);
+        this.$router.push(`${this.domain}/settings/subscriptions`);
       }
     }
   }
