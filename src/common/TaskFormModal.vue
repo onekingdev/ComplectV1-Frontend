@@ -286,7 +286,7 @@ export default {
     assigneeOptions(specialists, team_members) {
       const specialistsOptions = specialists.map((item) => {
         return {
-          id: `Specialist|${item.id}`,
+          id: `Specialist|${item.specialist_id}`,
           label: `${item.first_name} ${item.last_name}`
         }
       })
@@ -343,7 +343,6 @@ export default {
     createNewTask(saveOccurence) {
       const toId = (!saveOccurence && this.taskId) ? `/${this.taskId}` : ''
       const occurenceParams = saveOccurence && this.occurenceId ? `?oid=${this.occurenceId}&src_id=${this.taskId}` : ''
-      
       fetch(this.$store.getters.backendUrl + '/api/reminders' + toId + occurenceParams, {
         method: 'POST',
         headers: { ...this.$store.getters.authHeaders.headers, 'Content-Type': 'application/json' },
