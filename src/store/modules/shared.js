@@ -68,7 +68,7 @@ export default {
     overlay (state) {
       return state.overlay
     },
-    // Still here for back compatibility
+    // Still here for back compatibility. For future changes use .getter["roles/domain"]
     appModule (state) {
       const userType = state.userType
       if(!userType) return ''
