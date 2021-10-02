@@ -121,9 +121,6 @@
         return this.filteredUsers.filter(user => user.active === false )
       }
     },
-    created() {
-      this.$router.push('/access-denied')
-    },
     async mounted() {
       try {
         await this.getEmployees()
