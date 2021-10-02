@@ -67,11 +67,12 @@ export default {
     },
     overlay (state) {
       return state.overlay
+    },
+    // Still here for back compatibility
+    appModule (state) {
+      const userType = state.userType
+      if(!userType) return ''
+      return (userType === 'businesses') || (userType === 'business') ? 'business' : 'specialist'
     }
-    // appModule (state) {
-    //   const userType = state.userType
-    //   if(!userType) return ''
-    //   return (userType === 'businesses') || (userType === 'business') ? 'business' : 'specialist'
-    // }
   }
 }
