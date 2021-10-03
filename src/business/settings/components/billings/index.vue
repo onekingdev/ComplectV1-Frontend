@@ -14,7 +14,7 @@
                   template(slot='button' slot-scope='props')
                     a.btn.btn-default.d-none(ref="bank" @click="props.onClick") Add Bank Account
                 BillingMethodModalAdd(@selected="addMethod")
-                  b-button.btn.mr-2.font-weight-bold(type='button' variant='default') Add Method
+                  b-button.btn.mr-2.font-weight-bold(type='button' variant='dark') New Method
                 BillingMethodCardModalAdd(:billingMethod="billingMethod" @complitedPaymentMethod="addPaymentMethod")
                   b-button.d-none(ref="special") Card add
             .row
@@ -60,6 +60,7 @@
       return {
         userType: 'business',
         billingMethod: '',
+        invoices: []
       };
     },
     methods: {
@@ -100,6 +101,10 @@
           .catch(error => {
             console.error(error)
           })
+      },
+      async getInvoices() {
+        const res = await this.$store.dispatch('getInvoices')
+        if (res) this.invoices = res
       }
     },
     computed: {
@@ -110,12 +115,10 @@
       plaidPK() {
         return this.$store.getters.staticCollection.PLAID_PUBLIC_KEY;
       },
-      invoices() {
-        return []
-      },
       pdfUrl: () => pdfUrl,
     },
     async mounted() {
+      this.getInvoices()
       this.$store.dispatch('getStaticCollection')
       try {
         const data = {

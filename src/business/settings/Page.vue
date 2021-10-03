@@ -80,7 +80,7 @@
           { name: 'Roles and Permissions', link: 'Roles' },
           { name: 'Security', link: 'Security' },
           { name: 'Subscriptions', link: 'Subscriptions' },
-          { name: 'Billings', link: 'Billings' },
+          { name: 'Billing', link: 'Billings' },
         ]
       }
     },
