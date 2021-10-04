@@ -8,7 +8,7 @@
               h2 Documents
               div
                 a.btn.btn-default.d-none Download
-                a.btn.m-l-1.btn-dark Create Documents
+                a.btn.m-l-1.btn-dark Upload
             .reviews__card--internal.borderless
               EmptyState
 
