@@ -33,7 +33,7 @@
                 b-form-group#inputB-group-2(
                   label-for="first_name"
                   label-class="required"
-                  label="Legal first name"
+                  label="Legal First Name"
                 )
                   b-form-input#first_name(
                     type="text"
