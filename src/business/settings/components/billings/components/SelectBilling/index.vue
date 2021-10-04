@@ -37,16 +37,16 @@
                         .invalid-feedback.d-block(v-if="errors.account_type") {{ errors.account_type[0] }}
                 .row(v-if="accountType === 'individual'")
                   .col-sm.pr-sm-2
-                    b-form-group#inputB-group-2(label='Legal first name' label-for='inputB-2')
+                    b-form-group#inputB-group-2(label='Legal First Name' label-for='inputB-2')
                       b-form-input#inputB-2(v-model='formStep1.business.first_name' type='text' placeholder='Legal first name' required :class="{'is-invalid': errors.first_name }")
                       .invalid-feedback.d-block(v-if="errors.first_name") {{ errors.first_name[0] }}
                   .col-sm.pl-sm-2
-                    b-form-group#inputB-group-3(label='Legal last name' label-for='inputB-3')
+                    b-form-group#inputB-group-3(label='Legal Last Name' label-for='inputB-3')
                       b-form-input#inputB-3(v-model='formStep1.business.last_name' type='text' placeholder='Legal last name' required :class="{'is-invalid': errors.last_name }")
                       .invalid-feedback.d-block(v-if="errors.last_name") {{ errors.last_name[0] }}
                 .row(v-if="accountType === 'business'")
                   .col
-                    b-form-group#inputB-group-2(label='Legal business name' label-for='inputB-2')
+                    b-form-group#inputB-group-2(label='Legal Business Name' label-for='inputB-2')
                       b-form-input#inputB-2(v-model='formStep1.business.legal_business_name' type='text' placeholder='Legal business name' required :class="{'is-invalid': errors.legal_business_name }")
                       .invalid-feedback.d-block(v-if="errors.legal_business_name") {{ errors.legal_business_name[0] }}
                 .row
