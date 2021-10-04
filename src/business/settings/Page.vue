@@ -74,13 +74,17 @@
         return this.$store.getters.loading;
       },
       menu() {
+        let userRole = this.$store.getters['roles/currentRole']
+        return this.menuSections.filter(item => item.access.indexOf( userRole ) !== -1)
+      },
+      menuSections() {
         return [
-          { name: 'General', link: 'General' },
-          { name: 'Users', link: 'Users' },
-          { name: 'Roles and Permissions', link: 'Roles' },
-          { name: 'Security', link: 'Security' },
-          { name: 'Subscriptions', link: 'Subscriptions' },
-          { name: 'Billings', link: 'Billings' },
+          { name: 'General', link: 'General', access: ['basic', 'trusted', 'admin']},
+          { name: 'Users', link: 'Users', access: ['trusted', 'admin']},
+          { name: 'Roles and Permissions', link: 'Roles', access: ['trusted', 'admin']},
+          { name: 'Security', link: 'Security', access: ['basic', 'trusted', 'admin']},
+          { name: 'Subscriptions', link: 'Subscriptions', access: ['trusted', 'admin']},
+          { name: 'Billings', link: 'Billings', access: ['admin']}
         ]
       }
     },

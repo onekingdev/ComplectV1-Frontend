@@ -25,7 +25,7 @@
             //  b-dropdown-item 2020
           Get(projects="/api/local_projects/" :etag="etag"): template(v-slot="{projects}")
             ProjectTable(:projects="filterProjects(projects)")
-      b-tab(title="Contacts")
+      b-tab(title="Contacts" v-if="role !== 'basic'")
         .card-body.white-card-body.card-body_full-height
           Get(contacts="/api/local_projects/" :etag="etag" :callback="getContacts"): template(v-slot="{contacts}"): div
             table.table
@@ -59,7 +59,7 @@
             .row.h-100(v-if="contacts && !contacts.length && !loading")
               .col.h-100.text-center
                 EmptyState(name="Tasks")
-      b-tab.h-100(title="Ratings and Reviews")
+      b-tab.h-100(title="Ratings and Reviews" v-if="role !== 'basic'")
         .card-body.white-card-body.card-body_full-height.h-100
           Get.h-100(ratings='/api/project_ratings'): template(v-slot="{ratings}")
             table.rating_table(v-if="ratings.length")
@@ -135,9 +135,7 @@ export default {
   },
   computed: {
     ...mapGetters({
-      roles: 'roles/roles',
-      role: 'roles/currentRole',
-      plan: 'roles/currentPlan',
+      role: 'roles/currentRole'
     }),
     filterStatuses: () => FILTER_STATUSES,
     filteredStatusBusiness() {
