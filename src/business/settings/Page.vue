@@ -75,7 +75,7 @@
       },
       menu() {
         let userRole = this.$store.getters['roles/currentRole']
-        return this.menuSections.filter(item => item.access.indexOf( userRole ) !== -1)
+        return userRole ? this.menuSections.filter(item => item.access.indexOf( userRole ) !== -1) : this.menuSections
       },
       menuSections() {
         return [

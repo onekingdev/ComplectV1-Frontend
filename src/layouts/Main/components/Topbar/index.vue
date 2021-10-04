@@ -1,5 +1,18 @@
 <template lang="pug">
   .topbar
+    
+    // Debugging
+    .debug
+      p Domain: 
+        b {{domain}}
+      p Business ID: 
+        b {{businessID}}
+      p Plan: 
+        b {{plan}}
+      p Role: 
+        b {{role}}
+    
+    
     .logo(@click="openLink('default')")
       router-link.logo__link(:to='`/${domain}`')
         img.logo__img.logo__img_small(src='@/assets/primary.svg' width="24" height="24")
@@ -33,10 +46,11 @@
           UserAvatar.topbar-right-dropdown__avatar(:user="account" :sm="true")
           span.topbar-right-dropdown__name {{ account.first_name }} {{ account.last_name }}
           ion-icon.topbar-right-dropdown__icon(name='chevron-down-outline')
-        li(v-if="activeContracts && activeContracts.length")
-          .dropdown-item(@click="openSelectedBusiness(null)") Back
-        li(v-if="activeContracts" v-for="(contract, idx) in  activeContracts" :key="idx")
-          .dropdown-item(@click="openSelectedBusiness(contract)") {{ contract.business_name }}
+        template(v-if="domain === 'specialist'")
+          li(v-if="activeContracts && activeContracts.length")
+            .dropdown-item(@click="openSelectedBusiness(null)") Back
+          li(v-if="activeContracts" v-for="(contract, idx) in  activeContracts" :key="idx")
+            .dropdown-item(@click="openSelectedBusiness(contract)") {{ contract.business_name }}
         li(@click="openLink('documents')")
           router-link.dropdown-item(:to='`/${domain}/profile`' active-class="active") Profile
         b-dropdown-item(@click="signOut") Sign Out
@@ -61,8 +75,10 @@
     computed: {
       ...mapGetters({
         domain: 'roles/domain',
+        businessID: 'roles/businessID',
         roles: 'roles/roles',
         role: 'roles/currentRole',
+        plan: 'roles/currentPlan'
       }),
       // It's current active roles (employee attached to Business account and has Roles
       activeContracts () {
@@ -155,3 +171,14 @@
     }
   }
 </script>
+
+<style lang="scss" scoped>
+.debug {
+  font-size: 12px;
+  padding: 0 5px;
+  p {
+    line-height: 1.2;
+    margin: 0;
+  }
+}
+</style>

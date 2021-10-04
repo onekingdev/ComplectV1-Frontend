@@ -104,7 +104,7 @@
                 window.location.href = `${dashboard}`;
                 return
               }
-
+            
               if(response.specialist && response.specialist.seat_role) localStorage.setItem('app.currentUser.seatRole', response.specialist.seat_role);
 
               if (!response.errors && response.token) {
