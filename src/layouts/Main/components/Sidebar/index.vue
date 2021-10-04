@@ -163,7 +163,8 @@
           routeName === 'projects-marketplace-create-proposal' ||
           routeName === 'my-project-timesheet-page' ||
           routeName === 'specialist-profile' ||
-          routeName === 'project-timesheets'
+          routeName === 'project-timesheets' ||
+          routeName === 'project-review-specialist'
         ) {
           this.$store.commit('changeSidebar', 'builder')
           // document.querySelector('.sidebar-menu').style.display = "none"

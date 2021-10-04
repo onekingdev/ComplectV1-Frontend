@@ -42,7 +42,8 @@
                 DiscussionCard(:project-id="project.local_project_id" :token="accessToken")
       b-tab(title="Tasks")
       b-tab(title="Documents")
-        DocumentList(:project="project")
+        .card-body.card-body_full-height.h-100: .card
+          DocumentList(:project="localProject")
       b-tab(title="Collaborators")
         .white-card-body.p-y-1
           .container
@@ -244,6 +245,11 @@ export default {
         }
       }
       return newProps
+    },
+    localProject() {
+      return {
+        id: this.project.local_project_id
+      }
     }
   },
   components: {

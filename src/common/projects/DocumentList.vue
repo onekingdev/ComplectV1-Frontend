@@ -1,10 +1,10 @@
 <template lang="pug">
   .documents-list-card
-    h3.policy-details__title Documents
-    .policy-actions
+    h3.document-heading Documents
+    .upload-actions
       CommonFileUploadModal(@add="onFileChanged")
         a.btn.btn-dark Upload
-    Get(:documents="url" :etag="etag"): template(v-slot="{documents}"): .policy-details__body
+    Get(:documents="url" :etag="etag"): template(v-slot="{documents}"): .document-body
       table.table
         thead
           tr
@@ -20,13 +20,19 @@
             td {{ document.file_data.metadata.size ? document.file_data.metadata.size : 0 | formatBytes }}
             td {{ formatDate(document) }}
             td
-              a.link(:href="documentUrl(document)") Download
+              b-dropdown(size="sm" variant="none" class="m-0 p-0" right)
+                template(#button-content)
+                  b-icon(icon="three-dots")
+                b-dropdown-item(@click="downloadDocument(document)") Download
+                CommonDeleteModal.ml-auto(v-if="canDelete(document)" title="Delete Document" content="This will remove the document from this project and all of its associated content." @deleteConfirmed="deleteDocument(document)", :inline="false")
+                  b-dropdown-item Delete
       EmptyState(v-if="!loading && !documents.length")
 </template>
 
 <script>
 import EtaggerMixin from '@/mixins/EtaggerMixin'
 import CommonFileUploadModal from '@/common/Modals/CommonFileUploadModal'
+import CommonDeleteModal from '@/common/Modals/CommonDeleteModal'
 import { DateTime } from 'luxon'
 const uploadFile = async function(store, url, file) {
   const formData  = new FormData()
@@ -47,7 +53,8 @@ export default {
     }
   },
   components: {
-    CommonFileUploadModal
+    CommonFileUploadModal,
+    CommonDeleteModal
   },
   filters: {
     formatBytes(bytes,decimals) {
@@ -70,10 +77,16 @@ export default {
         this.newEtag()
       }
     },
+    canDelete(document) {
+      return this.currentUser.id === document.owner_id
+    },
     documentUrl(document) {
       const isDevEnv = this.$store.getters.isDevEnv
       if (isDevEnv) return `${this.$store.getters.backendUrl}/${document.url}`
       return document.url
+    },
+    downloadDocument(document) {
+      window.open(this.documentUrl(document), 'self')
     },
     getDocumentUrl(document) {
       return `/uploads/${document.file_data.storage}/${document.file_data.id}`
@@ -81,10 +94,19 @@ export default {
     formatDate(document) {
       const date = DateTime.fromISO(document.created_at)
       if (!date.invalid) {
-        return date.toFormat('dd/MM/yyyy')
+        return date.toFormat('MM/dd/yyyy')
       }
       
       return ''
+    },
+    async deleteDocument(document) {
+      const res = await this.$store.dispatch('projects/deleteDocument', { localProjectId: this.project.id, documentId: document.id })
+      if (res.data.id) {
+        this.toast('Success', 'Document has been deleted.')
+        this.newEtag()
+      } else {
+        this.toast('Error', 'Document has not been deleted. Please try again.')
+      }
     }
   },
   computed: {
@@ -93,7 +115,32 @@ export default {
     },
     url() {
       return `/api/projects/${this.project.id}/documents`
+    },
+    currentUser() {
+      return this.$store.getters.getUser
     }
   }
 }
 </script>
+<style scoped>
+.upload-actions {
+  position: absolute;
+  top: 1rem;
+  right: 1.25rem;
+}
+
+.document-body {
+  display: flex;
+  flex-direction: column;
+  flex-grow: 1;
+  padding: 1.25rem;
+}
+
+.document-heading {
+  margin-bottom: 0;
+  padding: 1.25rem;
+  font-size: 1.25rem;
+  color: #303132;
+  border-bottom: solid 1px #e9ebee;
+}
+</style>
