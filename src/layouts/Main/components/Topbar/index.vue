@@ -26,7 +26,7 @@
             router-link.topbar-menu__link(:to='`/${domain}`' active-class="active" exact) Home
           li.nav-item.topbar-menu__item(v-if="domain === 'business' && displayByPlan" @click="openLink('documents')")
             router-link.topbar-menu__link(:to='`/${domain}/file_folders`' active-class="active") Documents
-          li.nav-item.topbar-menu__item(v-if="role !=='basic'" @click="openLink('reports')")
+          li.nav-item.topbar-menu__item(@click="openLink('reports')")
             router-link.topbar-menu__link(:to='reportLink' active-class="active") Reports
           li.nav-item.topbar-menu__item.d-none
             a.topbar-menu__link(aria-current='page' href='#') Community
