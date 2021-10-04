@@ -4,7 +4,13 @@
       slot
 
     b-modal.fade(:id="modalId" :title="taskId ? task.body : 'New task'" :size="taskId ? 'xl' : 'md'" @show="resetTask")
-      b-row
+      .loading(v-if="!isLoaded")
+        .lds-ring
+          div
+          div
+          div
+          div
+      b-row(v-else)
         div(:class="taskId ? 'col-lg-6 pr-2' : 'col'")
           InputText(v-model="task.body" :errors="errors.body" placeholder="Name") Task Name
 
@@ -82,11 +88,11 @@
 
         .col-lg-6.pl-2(v-if="taskId")
           .card-body.white-card-body.messages-border.h-100.p-0
-            b-tabs.special-navs-messages(content-class="m-20" class="p-0")
+            Get(:messages="messagesUrl" :etag="etagMessages"): template(v-slot="{ messages }"): b-tabs.special-navs-messages(content-class="m-20" class="p-0")
               b-tab(title="Comments" ref="comments" active)
                 b-row
                   .col.text-center
-                    Get(:messages="`/api/reminders/${taskId}/messages`" :etag="etagMessages"): template(v-slot="{ messages }"): .card-body.p-0
+                    .card-body.p-0
                       Messages(:messages="messages" ref="Messages" @created="scrollMessages" @saved="newEtagMessages")
               b-tab(title="Files")
                 //- @todo restrict deletion for specialist/by condition
@@ -97,8 +103,7 @@
                         label
                           a.btn.btn-default Upload
                           input(type="file" name="file" @change="onFileChanged" style="display: none")
-                        Get(:documents="url" :etag="etag" :callback="filterMessagesWithUploads"): template(v-slot="{documents}")
-                          .row(v-for="document in documents" :key="document.id"): .col-md-12.m-b-1
+                          .row(v-for="document in filterMessagesWithUploads(messages)" :key="document.id"): .col-md-12.m-b-1
                             .file-card
                               div
                                 b-icon.file-card__icon(icon="file-earmark-text-fill")
@@ -194,7 +199,6 @@ const REPEAT_NONE = null,
 
 export default {
   mixins: [
-    EtaggerMixin(),
     EtaggerMixin('etagMessages'),
   ],
   props: {
@@ -220,6 +224,7 @@ export default {
         message: null
       },
       messageErrors: {},
+      isLoaded: false,
     }
   },
   methods: {
@@ -244,7 +249,7 @@ export default {
         const success = (await uploadFile(this.url, file)).ok
         if(success) this.toast('Success', 'Document has been uploaded.')
         else this.toast('Error', 'Document has not been uploaded.', true)
-        this.newEtag()
+        this.newEtagMessages()
       }
     },
     filterMessagesWithUploads(messages) {
@@ -387,16 +392,19 @@ export default {
       }
       this.createNewTask(saveOccurence)
     },
-    resetTask() {
+    async resetTask() {
+      this.isLoaded = false
       if (this.taskId) {
-        fetch(`${this.$store.getters.backendUrl}/api/reminders/${this.taskId}`, {
+        const response = await fetch(`${this.$store.getters.backendUrl}/api/reminders/${this.taskId}`, {
           method: 'GET',
           ...this.$store.getters.authHeaders
-        }).then(response => response.json())
-          .then(result => this.task = result)
+        })
+        this.task = await response.json()
+        this.isLoaded = true
       } else {
         const withRemindAt = this.remindAt ? { remind_at: this.remindAt } : {}
         this.task = initialTask({ ...this.defaults, ...withRemindAt })
+        this.isLoaded = true
       }
     },
     async deleteFile(id) {
@@ -404,7 +412,6 @@ export default {
         await this.$store.dispatch('reminders/deleteTaskMessageById', id)
         this.toast('Success', `File deleted`)
         this.newEtagMessages()
-        this.newEtag()
       } catch (error) {
         this.toast('Error', error.message, true)
       }
@@ -424,7 +431,7 @@ export default {
     assigneeValue() {
       return this.task.assignee_type && this.task.assignee_id ? `${this.task.assignee_type}|${this.task.assignee_id}` : null
     },
-    url() {
+    messagesUrl() {
       return `/api/reminders/${this.taskId || ''}/messages`
     },
     optionsToFetch() {
