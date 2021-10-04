@@ -1,42 +1,36 @@
 <template lang="pug">
   tr
     td.text-right {{ item.date }}
-    td: a.link(:href="item.url") {{ item.name }}
-    td {{ item.type }}
+    td: span.link {{ item.name }}
+    td {{ planName }}
     td.text-right {{ item.price }}
     td.text-right
       b-dropdown.actions(size="sm" variant="none" class="m-0 p-0" right)
         template(#button-content)
           b-icon(icon="three-dots")
-        b-dropdown-item Edit
-        b-dropdown-item.delete Delete
+        b-dropdown-item(@click="dowloadInvoice") Download
 </template>
 
 <script>
   export default {
     name: "appItem",
     props: ['item'],
-    components: {
-
-    },
     data() {
       return {
         statusVariant: 'light',
       }
     },
     computed: {
-
+      planName() {
+        if (this.item.invoice_type === 'plan') return 'Plan'
+        return 'Project'
+      }
     },
     methods: {
-      deleteInvoice(userId){
-        this.$store.dispatch('users/deleteInvoice', { id: userId })
-          .then(response => this.toast('Success', `The app has been deleted! ${response.id}`))
-          .catch(error => this.toast('Error', `Something wrong! ${error.message}`))
+      dowloadInvoice() {
+        window.open(this.item.invoice_pdf, "_self")
       }
     }
   }
 </script>
 
-<style scoped>
-
-</style>

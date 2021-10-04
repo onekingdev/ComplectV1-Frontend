@@ -66,6 +66,15 @@ export default {
           return response.data
         })
         .catch(err => err)
+    },
+    getInvoices() {
+      const url = '/invoices'
+      return axios
+        .get(`${url}`)
+        .then(response => {
+          return response.data
+        })
+        .catch(err => err)
     }
   },
   getters: {
