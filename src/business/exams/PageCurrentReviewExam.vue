@@ -49,7 +49,7 @@
                         .row.m-b-1.align-items-center
                           .col-md-1
                             .reviews__checkbox.d-flex.justify-content-between.m-t-0
-                              .reviews__checkbox-item.reviews__checkbox-item--true.m-t-0(@click="markCompleteReqeust(currentRequst.id, true, currentExam.complete)" :class="{ 'checked': currentRequst.complete, 'disabled': currentExam.complete }")
+                              .reviews__checkbox-item.reviews__checkbox-item--true.m-t-0(@click="markCompleteReqeust(currentRequst.id, currentRequst.complete)" :class="{ 'checked': currentRequst.complete, 'disabled': currentExam.complete }")
                                 b-icon(icon="check2")
                           .col-md-11
                             .d-flex.justify-content-between.align-items-center
@@ -280,18 +280,20 @@
           this.toast('Error', error.message, true)
         }
       },
-      async markCompleteReqeust(id, status, examStatus) {
-        if (examStatus) return
+      async markCompleteReqeust(id, complete) {
         const data = {
           id: this.currentExam.id,
           request: {
             id,
-            complete: status,
+            complete: !complete,
           }
         }
         try {
           await this.updateCurrentExamRequest(data)
-            .then(response => this.toast('Success', "Request has been marked as complete."))
+            .then(response => {
+              const text = complete ? 'Request has been marked as incomplete.' : 'Request has been marked as complete.'
+              this.toast('Success', text)
+            })
             .catch(error => this.toast('Error', 'Request has not been marked as complete. Please try again.', true))
         } catch (error) {
           this.toast('Error', error.message, true)
