@@ -80,10 +80,10 @@ export default {
     async deleteTask({ id }) {
       try {
         await axios.delete(`/reminders/${id}`)
-        this.toast('Success', 'Task Deleted')
+        this.toast('Success', 'Task has been deleted.')
         this.$emit('saved')
       } catch (e) {
-        this.toast('Error', 'Cannot delete task', true)
+        this.toast('Error', 'Task has not been deleted. Please try again.', true)
       }
     },
     taskFormModalId: task => `TaskFormModal_${task.id}`,
