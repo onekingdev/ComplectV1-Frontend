@@ -28,7 +28,7 @@ export default {
         notify = {
           show: 'show',
           mainText: `${applications.length} ${ applicationsText } received.`,
-          subText: `There ${ isAre } currently ${applicationsText} for your project.`,
+          subText: `Review the ${applicationsText} and select a specialist for your project.`,
           variant: 'warning',
           dismissible: true,
           icon: null,
