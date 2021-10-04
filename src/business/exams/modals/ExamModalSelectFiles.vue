@@ -3,7 +3,7 @@
     div(v-b-modal="modalId" :class="{'d-inline-block':inline}")
       slot
 
-    b-modal.fade(:id="modalId" size="xl" title="Select Files(s)" @show="newEtag" @shown="getData")
+    b-modal.fade(:id="modalId" size="xl" title="Select Files" @show="newEtag" @shown="getData")
       div.select-container
         b-tabs(content-class="mt-0 px-0")
           b-tab(title="Book and Records" title-item-class="font-weight-bold" active)
