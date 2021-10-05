@@ -9,7 +9,7 @@
           button.btn.btn-default.float-right.m-r-1 Deny
         | {{ counterpartyName }} has requested to extend the contract.
     .alert.alert-warning.m-b-20(v-else-if="hasChanges && !isMyChange")
-      h4.alert-heading Modification to contract terms requested
+      h4.alert-heading Modification to contract terms requested.
       p.mb-0
         | {{ counterpartyName }} has requested to modify the terms of the contract.
         ApproveContractChangesModal(:project="project" @saved="$emit('saved')")
@@ -22,7 +22,7 @@
             Post(:action="submitUrl" :model="form" @errors="errors = $event" @saved="saved('Contract extension has been requested.')")
               button.btn.btn-dark.float-right Confirm
     //.alert.alert-warning.m-b-20(v-else-if="isSuggestionVisible")
-    //  h4.alert-heading Contract deadline is tomorrow
+    //  h4.alert-heading Contract deadline is tomorrow.
     //  p.mb-0
     //    button.btn.btn-default.float-right(v-b-modal="'ExtendDeadlineModal'") Extend
     //    | Contract ends tomorrow and outstanding invoices will automatically be processed. Do you need to extend the deadline?
@@ -62,7 +62,7 @@ export default {
       errors: {},
       notifyDueDate: {
         show: 'show',
-        mainText: `Contract deadline is tomorrow`,
+        mainText: `Contract deadline is tomorrow.`,
         subText: 'Contract ends tomorrow and outstanding invoices will automatically be processed. Do you need to extend the deadline?',
         variant: 'warning',
         dismissible: true,
