@@ -13,7 +13,7 @@
             router-link.topbar-menu__link(:to='`/${domain}`' active-class="active" exact) Home
           li.nav-item.topbar-menu__item(v-if="domain === 'business' && displayByPlan" @click="openLink('documents')")
             router-link.topbar-menu__link(:to='`/${domain}/file_folders`' active-class="active") Documents
-          li.nav-item.topbar-menu__item(v-if="role !=='basic'" @click="openLink('reports')")
+          li.nav-item.topbar-menu__item(@click="openLink('reports')")
             router-link.topbar-menu__link(:to='reportLink' active-class="active") Reports
           li.nav-item.topbar-menu__item.d-none
             a.topbar-menu__link(aria-current='page' href='#') Community
@@ -33,10 +33,11 @@
           UserAvatar.topbar-right-dropdown__avatar(:user="account" :sm="true")
           span.topbar-right-dropdown__name {{ account.first_name }} {{ account.last_name }}
           ion-icon.topbar-right-dropdown__icon(name='chevron-down-outline')
-        li(v-if="activeContracts && activeContracts.length")
-          .dropdown-item(@click="openSelectedBusiness(null)") Back
-        li(v-if="activeContracts" v-for="(contract, idx) in  activeContracts" :key="idx")
-          .dropdown-item(@click="openSelectedBusiness(contract)") {{ contract.business_name }}
+        template(v-if="domain === 'specialist'")
+          li(v-if="activeContracts && activeContracts.length")
+            .dropdown-item(@click="openSelectedBusiness(null)") Back
+          li(v-if="activeContracts" v-for="(contract, idx) in  activeContracts" :key="idx")
+            .dropdown-item(@click="openSelectedBusiness(contract)") {{ contract.business_name }}
         li(@click="openLink('documents')")
           router-link.dropdown-item(:to='`/${domain}/profile`' active-class="active") Profile
         b-dropdown-item(@click="signOut") Sign Out

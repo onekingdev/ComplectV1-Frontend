@@ -7,8 +7,9 @@
           p.m-b-2: ShowOnCalendarToggle(:project="project")
         .page-header__actions
           div
-            router-link.m-r-1.btn.btn-default(v-if="project.visible_project" :to='viewHref(project.visible_project)' target="_blank") View Post
-            router-link.m-r-1.btn.btn-default(v-else :to='postHref(project)') Post Project
+            template(v-if="currentRole !== 'basic'")
+              router-link.m-r-1.btn.btn-default(v-if="project.visible_project" :to='viewHref(project.visible_project)' target="_blank") View Post
+              router-link.m-r-1.btn.btn-default(v-else :to='postHref(project)') Post Project
             CompleteLocalProjectModal.m-r-1(:project="project" @saved="newEtag")
             button.btn.btn__close(@click="backToList")
               b-icon(icon="x")
@@ -242,6 +243,9 @@ export default {
     },
   },
   computed: {
+    currentRole() {
+      return this.$store.getters['roles/currentRole']
+    },
     taskDefaults() {
       return project => ({
         linkable_id: project.id,

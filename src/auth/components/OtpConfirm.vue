@@ -97,23 +97,22 @@
             .then((response) => {
               this.error = response.message
               if(response.message === 'Invalid 6 digits code')
-              // this.toast('Error', 'Verification code failed. Try again.', true)
               if (response.errors) { }
+
               if (!response.errors && response.specialist && response.token && this.inviteToken) {
-                const dashboard = '/specialist'
+                let seatRole = response.specialist.seat_role
+                if(seatRole) {
+                  localStorage.setItem('app.currentUser.seatRole', seatRole);
+                  localStorage.setItem('app.currentUser.userType', JSON.stringify('businesses'));
+                } 
+                const dashboard = seatRole ? '/business' : '/specialist'
                 window.location.href = `${dashboard}`;
                 return
               }
-
-              if(response.specialist && response.specialist.seat_role) localStorage.setItem('app.currentUser.seatRole', response.specialist.seat_role);
+            
 
               if (!response.errors && response.token) {
-                // open step 3
-                // this.step2 = false
-                // this.step3 = true
-
                 const dashboard = response.business ? '/business' : '/specialist'
-                // window.location.href = `${dashboard}`;
                 this.$router.push(`${dashboard}/onboarding`)
               }
             })

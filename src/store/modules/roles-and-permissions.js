@@ -22,6 +22,7 @@ export default {
     currentRole: role,
     seatRole: seatRole,
     businessID: null,
+    businessPlan: null,
     currentAccount: businessIDLocalStorage,
   },
   mutations: {
@@ -60,7 +61,7 @@ export default {
                 if (data[0]) {
                   const businessID = data[0].business_id
                   commit('SET_BUSINESS_ID', businessID)
-                  // window.localStorage["app.business_id"] = JSON.stringify(businessID)
+                  window.localStorage["app.business_id"] = JSON.stringify(businessID)
                   if (data[0].role) {
                     commit('SET_CURRENT_ROLE', data[0].role)
                     localStorage.setItem('app.currentUser.role', data[0].role)
@@ -70,8 +71,8 @@ export default {
                     localStorage.setItem('app.currentUser.plan', data[0].plan)
                   }
                 } else {
-                  //ommit('SET_BUSINESS_ID', '')
-                  //localStorage.removeItem('app.business_id')
+                  commit('SET_BUSINESS_ID', '')
+                  localStorage.removeItem('app.business_id')
                 }
               }
               return data
@@ -104,9 +105,13 @@ export default {
             if (success) {
               const data = success.data
               commit('SET_CURRENT_ACCOUNT', data)
-              if (data.plan && !state.plan) {
+              if (data.plan && !state.currentPlan) {
                 commit('SET_CURRENT_PLAN', data.plan)
                 localStorage.setItem('app.currentUser.plan', data.plan)
+              }
+              if (data.business_name && !state.businessID) {
+                commit('SET_BUSINESS_ID', data.id)
+                localStorage.setItem('app.business_id', data.id)
               }
               return data
             }

@@ -74,13 +74,20 @@
         return this.$store.getters.loading;
       },
       menu() {
+        let userPlan = this.$store.getters['roles/currentPlan']
+        let userRole = this.$store.getters['roles/currentRole']
+        let filterByPlan = userPlan ? this.menuSections.filter(item => item.plan.indexOf( userPlan ) !== -1) : this.menuSections
+        let filterByRole = userRole ? filterByPlan.filter(item => item.access.indexOf( userRole ) !== -1) : filterByPlan
+        return filterByRole
+      },
+      menuSections() {
         return [
-          { name: 'General', link: 'General' },
-          { name: 'Users', link: 'Users' },
-          { name: 'Roles and Permissions', link: 'Roles' },
-          { name: 'Security', link: 'Security' },
-          { name: 'Subscriptions', link: 'Subscriptions' },
-          { name: 'Billing', link: 'Billings' },
+          { name: 'General', link: 'General', access: ['basic', 'trusted', 'admin'], plan: ['free', 'team', 'business']},
+          { name: 'Users', link: 'Users', access: ['trusted', 'admin'], plan: ['team', 'business']},
+          { name: 'Roles and Permissions', link: 'Roles', access: ['trusted', 'admin'], plan: ['free', 'team', 'business']},
+          { name: 'Security', link: 'Security', access: ['basic', 'trusted', 'admin'], plan: ['free', 'team', 'business']},
+          { name: 'Subscriptions', link: 'Subscriptions', access: ['trusted', 'admin'], plan: ['free', 'team', 'business']},
+          { name: 'Billings', link: 'Billings', access: ['admin'], plan: ['free', 'team', 'business']}
         ]
       }
     },

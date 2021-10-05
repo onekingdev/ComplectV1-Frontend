@@ -307,8 +307,7 @@
 
       menuLinksReportsBusiness() {
         if (this.plan === 'free' && this.domain === 'business') {
-          return [
-            {
+          return [{
               to: '/business/reports/financials',
               label: 'Financials',
               access: ['admin']
@@ -319,11 +318,11 @@
           to: '/business/reports/organizations',
           label: 'Organization',
           exact: true,
-          access: ['basic', 'trusted', 'admin']
+          access: ['trusted', 'admin']
         }, {
           to: '/business/reports/risks',
           label: 'Risks',
-          access: ['trusted', 'admin']
+          access: ['basic', 'trusted', 'admin']
         }, {
           to: '/business/reports/financials',
           label: 'Financials',
