@@ -18,15 +18,13 @@
         dd.col-sm-9 {{ project.description }}
         dt.col-sm-3 Role Details
         dd.col-sm-9 {{ project.role_details }}
-        dt.col-sm-3
-        dd.col-sm-9
-          ProjectFigures(:project="project")
+      ProjectFigures(:project="project")
     hr(v-if="project.skills && project.skills.length > 0")
     .card-body(v-if="project.skills && project.skills.length > 0")
       h4.m-t-1.semibold-text.py-2 Skills
       p
         .badge.badge-default.m-r-1(v-for="skill in project.skills") {{ skill.name }}
-    hr.mt-5
+    hr.mt-4
     .card-body
       h4.m-t-1.semibold-text.py-2 Client Details
       ClientDetails(:business="project.business")
@@ -57,7 +55,8 @@ export default {
   computed: {
     location() {
       if (!this.project) return ''
-      return `${LOCATION_TYPES[this.project.location_type]}, ${this.project.location}`
+      let location = [LOCATION_TYPES[this.project.location_type], this.project.location]
+      return location.filter(str => str).join(', ')
     },
     experience() {
       if (!this.project) return ''

@@ -1,23 +1,24 @@
 <template lang="pug">
-  ul.list-group.list-group-horizontal.w-100.project-figures.mt-3
-    li.list-group-item(v-if="project.pricing_type === 'fixed'")
-      ion-icon.custom-icon.float-left.mt-3.mr-3(name="cash-outline")
-      span.small-text Estimated Budget
-      div.font-weight-bold.d-flex {{ project.est_budget | usdWhole }}, Fixed
-    li.list-group-item(v-else)
-      ion-icon.custom-icon.float-left.mt-3.mr-3(name="cash-outline")
-      span.small-text Hourly
-      br
-      b.d-flex {{ project.hourly_rate | usdWhole }} - {{ project.upper_hourly_rate | usdWhole }}
-    li.list-group-item
-      ion-icon.custom-icon.float-left.mt-3.mr-3(name="cash-outline")
-      span.small-text Payment Schedule
-      div.font-weight-bold.d-flex {{ paymentScheduleReadable }}
-    li.list-group-item.jurisdictions
-      ion-icon.custom-icon.float-left.mt-3.mr-3(name="earth-outline")
-      span.small-text Jurisdiction
-      br
-      b.d-flex {{ project.jurisdictions | names }}
+.project-figures.mt-3
+  .figure
+    .head
+      ion-icon.icon(name="cash-outline")
+      .label
+        template(v-if="project.pricing_type === 'fixed'") Estimated Budget
+        template(v-else) Hourly
+    .content
+      template(v-if="project.pricing_type === 'fixed'") {{ project.est_budget | usdWhole }}, Fixed
+      template(v-else) {{ project.hourly_rate | usdWhole }} - {{ project.upper_hourly_rate | usdWhole }}
+  .figure
+    .head
+      ion-icon.icon(name="cash-outline")
+      .label Payment Schedule
+    .content {{ paymentScheduleReadable }}
+  .figure
+    .head
+      ion-icon.icon(name="earth-outline")
+      .label Jurisdiction
+    .content {{ project.jurisdictions | names }}
 </template>
 
 <script>
@@ -37,24 +38,38 @@ export default {
   }
 }
 </script>
-<style scoped>
-.small-text {
-  font-size: 12px;
-  text-transform: uppercase;
-  color: #797B7E;
-}
-
-.jurisdictions {
-  width: 40%;
-}
-
-.custom-icon {
-  margin-right: 10px !important;
-}
-
-@media screen and (max-width: 786px) {
-  .custom-icon {
-    display: none;
+<style lang="scss" scoped>
+.project-figures {
+  width: 100%;
+  display: flex;
+  // gap: 1rem;
+  .figure {
+    flex: 1 0 0;
+    padding: 1rem 0;
+    padding-right: 1rem;
+    + .figure {
+      padding-left: 1rem;
+      border-left: 1px solid #eee;
+    }
+    .head {
+      display: flex;
+      // flex-wrap: wrap;
+      align-items: center;
+      .icon {
+        flex-shrink: 0;
+        margin-right: 0.7rem;
+      }
+      .label {
+        font-size: 12px;
+        color: #797b7e;
+        line-height: 1.3;
+        text-transform: uppercase;
+      }
+    }
+    .content {
+      margin-top: 0.5rem;
+      font-weight: bold;
+    }
   }
 }
 </style>

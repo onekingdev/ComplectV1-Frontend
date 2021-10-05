@@ -7,7 +7,7 @@
       .card-body
         Get(:project='`/api/specialist/projects/${projectId}`' :callback="projectLoaded"): template(v-slot="{project}"): div.row.pl-3
           .col-md-12.col-lg-6
-            h3 Terms
+            h3.fs-20.fw-600 Terms
             .row
               .col-sm: InputDate(v-model="form.starts_on" :errors="errors.starts_on" labelKlass="required") Start Date
               .col-sm: InputDate(v-model="form.ends_on" :errors="errors.ends_on" labelKlass="required") Due Date
@@ -19,20 +19,19 @@
               InputText.m-t-1(v-model="form.hourly_rate" :errors="errors.hourly_rate" :required="true") Hourly Rate
               InputText.m-t-1(v-model="form.estimated_hours" :errors="errors.estimated_hours" :required="true") Estimated Hours
               InputSelect.m-t-1(v-model="form.hourly_payment_schedule" :errors="errors.hourly_payment_schedule" :options="hourlyPaymentScheduleOptions" :required="true") Payment Schedule
-            hr
-            h3 Role
+            h3.fs-20.fw-600.m-t-2 Role
             InputTextarea.m-t-1(v-model="form.role_details" :errors="errors.role_details" :rows="4" :required="true") Role Details
             InputTextarea.m-t-1(v-model="form.key_deliverables" :errors="errors.key_deliverables" :rows="4" :required="true") Key Deliverables
-            h3.m-t-1 Attachments
-            .card.m-b-1
-              .card-body
-                p Attach a cover letter, resume, or other document here. Limited to only one file.
+            h3.fs-20.fw-600.m-t-2 Attachments
+            .card.card-upload.m-b-1
+              .card-body.text-center
+                p Attach a cover letter, resume, or other document here.<br>Limited to only one file.
                 label
-                  a.btn.btn-light Upload
+                  a.btn.btn-secondary Upload
                   input.d-none(type="file" accept="application/pdf" @change="pickFile")
                 FileUpload(v-if="form.document" :file="fileObject" @delete="removeFile")
-            .text-right.mb-2
-              button.m-r-1.btn(@click="back") Cancel
+            .text-right.mb-5
+              button.m-r-1.btn.btn-link(@click="back") Cancel
               button.m-r-1.btn.btn-default(@click="submit(true)") Save as Draft
               button.btn.btn-dark(@click="submit()") Submit
           .col-md-12.col-lg-6
@@ -56,7 +55,7 @@ const initialForm = (project) => ({
   starts_on: (project && project.starts_on) || null,
   ends_on: (project && project.ends_on ) || null,
   pricing_type: (project && calcPricingType(project)) || null,
-  fixed_budget: (project && project.est_budget) || null,
+  fixed_budget: (project && Math.round(project.est_budget)) || null,
   fixed_payment_schedule: (project && project.pricing_type == "fixed" && project.payment_schedule) || null,
   hourly_rate: (project && project.hourly_rate) || null,
   hourly_payment_schedule: (project && project.pricing_type == "hourly" && project.payment_schedule) || null,
@@ -115,6 +114,10 @@ export default {
 }
 </script>
 <style>
+.card-upload {
+  border: solid 2px #0479FF;
+  fill: #f6f6f8;
+}
 .details-infor dd {
   position: relative;
   left: 12px;
