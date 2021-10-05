@@ -99,13 +99,21 @@
               if(response.message === 'Invalid 6 digits code')
               // this.toast('Error', 'Verification code failed. Try again.', true)
               if (response.errors) { }
+              // if (!response.errors && response.specialist && response.token && this.inviteToken) {
+              //   const dashboard = '/specialist'
+              //   window.location.href = `${dashboard}`;
+              //   return
+              // }
+
               if (!response.errors && response.specialist && response.token && this.inviteToken) {
-                const dashboard = '/specialist'
+                let seatRole = response.specialist.seat_role
+                if(seatRole) localStorage.setItem('app.currentUser.seatRole', seatRole);
+                const dashboard = seatRole ? '/business' : '/specialist'
                 window.location.href = `${dashboard}`;
                 return
               }
             
-              if(response.specialist && response.specialist.seat_role) localStorage.setItem('app.currentUser.seatRole', response.specialist.seat_role);
+              // if(response.specialist && response.specialist.seat_role) localStorage.setItem('app.currentUser.seatRole', response.specialist.seat_role);
 
               if (!response.errors && response.token) {
                 // open step 3
