@@ -18,7 +18,7 @@
           .col
             .d-flex.justify-content-end.align-items-center.h-100
               b-button.btn.mr-2.font-weight-bold(v-if="!payment.primary" type='button' variant='default' @click="makePrimary(payment.id)") Make Primary
-              b-button.btn.mr-2.font-weight-bold(type='button' variant='default' @click="deletePaymentMethod(payment.id)") Remove
+              b-button.btn.mr-2.font-weight-bold(type='button' variant='default' @click="deletePaymentMethod(payment.id)") Delete
 </template>
 
 <script>

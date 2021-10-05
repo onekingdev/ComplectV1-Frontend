@@ -67,18 +67,22 @@
       return {
         component: '',
         componentUpgrade: '',
-        menu: [
+      };
+    },
+    computed: {
+      loading() {
+        return this.$store.getters.loading;
+      },
+      menu() {
+        return [
           { name: 'General', link: 'General' },
           { name: 'Users', link: 'Users' },
           { name: 'Roles and Permissions', link: 'Roles' },
           { name: 'Security', link: 'Security' },
           { name: 'Subscriptions', link: 'Subscriptions' },
-          { name: 'Billings', link: 'Billings' },
-          //{ name: 'Notifications', link: 'Notifications' },
-          //{ name: 'Access Denied', link: 'AccessDenied' },
-          //{ name: 'Payment Required', link: 'PaymentRequired' },
+          { name: 'Billing', link: 'Billings' },
         ]
-      };
+      }
     },
     methods: {
       openSetting (name, event) {
@@ -105,15 +109,7 @@
         const baseUrl = new URL(window.location.origin);
         window.history.pushState({}, name, `${baseUrl}business/settings/${name.toLowerCase()}`);
       }
-    },
-    computed: {
-      loading() {
-        return this.$store.getters.loading;
-      },
-    },
-    mounted() {
-
-    },
+    }
   };
 </script>
 

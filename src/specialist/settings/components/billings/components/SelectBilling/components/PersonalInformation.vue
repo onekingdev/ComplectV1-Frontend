@@ -26,7 +26,7 @@
             b-form-group#inputB-group-7(
               label-class="required"
               label-for="personal_id_number"
-              label="Last 4 digits of Security Social Number"
+              label="Full SSN/Personal ID"
             )
               b-form-input#personal_id_number.form-control(
                 type="text"

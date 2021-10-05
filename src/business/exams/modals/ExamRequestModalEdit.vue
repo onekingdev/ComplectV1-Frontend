@@ -3,7 +3,7 @@
     div(v-b-modal="modalId" :class="{'d-inline-block':inline}")
       slot
 
-    b-modal.fade(:id="modalId" title="Edit request" @shown="getData")
+    b-modal.fade(:id="modalId" title="Edit Request" @shown="getData")
       .row
         .col-12.m-b-2
           label.form-label Requested Item

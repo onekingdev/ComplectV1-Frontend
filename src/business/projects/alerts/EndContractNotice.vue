@@ -1,6 +1,6 @@
 <template lang="pug">
   .alert.alert-info(v-if="project.end_request")
-    h4.alert-heading Contract completion confirmation requested
+    h4.alert-heading Contract completion confirmation requested.
     div(v-if="project.end_request.requester.startsWith('Specialist')")
       p Specialist has requested to complete the contract early.
       EndContractModal(:project="project" @saved="$emit('saved')" @errors="$emit('errors', $event)" :right="false")

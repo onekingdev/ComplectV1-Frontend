@@ -1,4 +1,2 @@
-// const backendUrl = 'http://localhost:3000'
-const backendUrl = 'https://api.complect.com'
-
+const backendUrl = process.env.VUE_APP_API
 export default backendUrl

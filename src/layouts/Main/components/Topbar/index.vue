@@ -1,7 +1,7 @@
 <template lang="pug">
   .topbar
     .logo(@click="openLink('default')")
-      router-link.logo__link(:to='`/${appModule}`')
+      router-link.logo__link(:to='`/${domain}`')
         img.logo__img.logo__img_small(src='@/assets/primary.svg' width="24" height="24")
     b-navbar.p-0(toggleable='lg')
       b-navbar-toggle.justify-content-center(target='nav-collapse')
@@ -10,23 +10,23 @@
       b-collapse#nav-collapse.topbar-menu(v-model="visible")
         ul.topbar-menu__list
           li.nav-item.topbar-menu__item(@click="openLink('default')")
-            router-link.topbar-menu__link(:to='`/${appModule}`' active-class="active" exact) Home
-          li.nav-item.topbar-menu__item(v-if="appModule === 'business'" @click="openLink('documents')")
-            router-link.topbar-menu__link(:to='`/${appModule}/file_folders`' active-class="active") Documents
+            router-link.topbar-menu__link(:to='`/${domain}`' active-class="active" exact) Home
+          li.nav-item.topbar-menu__item(v-if="domain === 'business' && displayByPlan" @click="openLink('documents')")
+            router-link.topbar-menu__link(:to='`/${domain}/file_folders`' active-class="active") Documents
           li.nav-item.topbar-menu__item(v-if="role !=='basic'" @click="openLink('reports')")
             router-link.topbar-menu__link(:to='reportLink' active-class="active") Reports
           li.nav-item.topbar-menu__item.d-none
             a.topbar-menu__link(aria-current='page' href='#') Community
-          li.nav-item.topbar-menu__item.d-sm-none(v-if="appModule !== 'specialist' && role !=='basic'" @click="openLink('default')")
+          li.nav-item.topbar-menu__item.d-sm-none(v-if="domain !== 'specialist' && role !=='basic'" @click="openLink('default')")
             router-link.topbar-menu__link(:to='`/specialistmarketplace`' active-class="active") Find an Expert
-          li.nav-item.topbar-menu__item.d-sm-none(v-if="appModule === 'specialist'" @click="openLink('default')")
+          li.nav-item.topbar-menu__item.d-sm-none(v-if="domain === 'specialist'" @click="openLink('default')")
             router-link.topbar-menu__link(to='/job_board' active-class="active") Browse Projects
     // Right aligned nav items
     b-navbar-nav.flex-row.align-items-center.ml-auto
-      router-link.btn.btn-warning.btn-topbar.btn-topbar_find(v-if="appModule !== 'specialist' && role !=='basic'" :to='`/specialistmarketplace`' target="_blank") Find an Expert
-      router-link.btn.btn-warning.btn-topbar.btn-topbar_find(v-if="appModule === 'specialist'" :to='`/specialist/job_board`') Browse Jobs
-      //- router-link.btn.btn-topbar.btn-topbar_notify(:to='`/${appModule}/notification-center`')
-      //-   ion-icon(name='notifications-outline')
+      router-link.btn.btn-warning.btn-topbar.btn-topbar_find(v-if="domain !== 'specialist' && role !=='basic'" :to='`/specialistmarketplace`' target="_blank") Find an Expert
+      router-link.btn.btn-warning.btn-topbar.btn-topbar_find(v-if="domain === 'specialist'" :to='`/specialist/job_board`') Browse Jobs
+      //- router-link.btn.btn-topbar.btn-topbar_notify(:to='`/${domain}/notification-center`')
+        ion-icon(name='notifications-outline')
       b-nav-item-dropdown.topbar-right-dropdown.actions(right)
         // Using 'button-content' slot
         template(#button-content)
@@ -38,7 +38,7 @@
         li(v-if="activeContracts" v-for="(contract, idx) in  activeContracts" :key="idx")
           .dropdown-item(@click="openSelectedBusiness(contract)") {{ contract.business_name }}
         li(@click="openLink('documents')")
-          router-link.dropdown-item(:to='`/${appModule}/profile`' active-class="active") Profile
+          router-link.dropdown-item(:to='`/${domain}/profile`' active-class="active") Profile
         b-dropdown-item(@click="signOut") Sign Out
 </template>
 
@@ -60,7 +60,7 @@
     },
     computed: {
       ...mapGetters({
-        appModule: 'appModule',
+        domain: 'roles/domain',
         roles: 'roles/roles',
         role: 'roles/currentRole',
       }),
@@ -71,9 +71,21 @@
       currentUser() {
         return this.$store.getters.getUser
       },
+      currentPlan() {
+        return this.$store.getters['roles/currentPlan']
+      },
       reportLink() {
-        if (this.appModule === 'business') return `/${this.appModule}/reports/organizations`
-        return '/specialist/reports/financials'
+        if (this.currentPlan === 'free' && this.domain === 'business') return `/${this.domain}/reports/financials`
+        if (this.domain === 'specialist') return '/specialist/reports/financials'
+        return `/${this.domain}/reports/organizations`
+      },
+      displayByPlan() {
+        const plan = this.currentPlan
+        if (this.domain === 'business') {
+          if (plan === 'free') return false
+        }
+
+        return true
       }
     },
 

@@ -1,6 +1,6 @@
 <template lang="pug">
   .alert.alert-warning(v-if="hasSubmittedTimesheets")
-    h4.alert-heading Timesheet approval requested
+    h4.alert-heading Timesheet approval requested.
     p Specialist has submitted a timesheet for your approval.
     router-link.btn.btn-light(:to="url('URL_PROJECT_TIMESHEETS', project.id)") View
 </template>

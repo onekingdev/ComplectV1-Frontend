@@ -129,7 +129,7 @@ const router = new VueRouter({
             { path: 'reports/organizations', name: 'reports-organizations', component: ReportsOrganizations, beforeEnter: AccessGuard },
             { path: 'reports/financials', name: 'reports-financials', component: ReportsFinancials, beforeEnter: AccessGuard },
             { path: 'profile', name: 'profile', component: Profile},
-            { path: 'exam_management/:examId(\\d+)/portal', component: PageAuditorPortalInternalAccess, props: paramsToInts(['examId']) },
+            { path: 'exam_management/:examId(\\d+)/portal', name: 'exam-portal', component: PageAuditorPortalInternalAccess, props: paramsToInts(['examId']) },
             { path: '/specialistmarketplace', name: 'specialists-marketplace', component: SpecialistsMarketplace },
             { path: 'notification-center', name: 'settings-notification-center', component: SettingsNotifications },
             { path: 'specialist-profile/:specialistID', name: 'specialist-profile', component: PageSpecialistProfile },

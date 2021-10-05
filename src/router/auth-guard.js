@@ -1,6 +1,8 @@
 import store from '@/store/globalStore'
 import loadLocalStorageToken from './loadLocalStorageToken'
-const appModule = store.getters.appModule
+import isDenyRoute from './filterByPlan'
+const plan = store.getters['roles/currentPlan']
+const domain = store.getters['roles/domain']
 
 const getDashboardPath = store => store.getters.userType.indexOf('business') === 0 ? '/business' : '/specialist'
 
@@ -13,13 +15,14 @@ const AccessGuard = (to, from, next) => {
 }
 
 const BusinessGuard = (to, from, next) => {
-  return next()
-  if (appModule !== 'business') next(`/unauthorized`)
+  // return next()
+  if (domain !== 'business') next(`/unauthorized`)
+  if (isDenyRoute(to.name, plan)) next(`/access-denied`)
   else next()
 }
 
 const SpecialistGuard = (to, from, next) => {
-  if (appModule !== 'specialist') next(`/unauthorized`)
+  if (domain !== 'specialist') next(`/unauthorized`)
   else next()
 }
 
