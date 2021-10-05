@@ -2,8 +2,8 @@
   .documents-list-card
     h3.document-heading Documents
     .upload-actions
-      CommonFileUploadModal(@add="onFileChanged")
-        a.btn.btn-dark Upload
+      input.input-file(type="file" id="files" ref="inputFile" hidden multiple @change="selectFile")
+      a.btn.btn-dark(@click="uploadFile") Upload
     Get(:documents="url" :etag="etag"): template(v-slot="{documents}"): .document-body
       table.table
         thead
@@ -31,7 +31,6 @@
 
 <script>
 import EtaggerMixin from '@/mixins/EtaggerMixin'
-import CommonFileUploadModal from '@/common/Modals/CommonFileUploadModal'
 import CommonDeleteModal from '@/common/Modals/CommonDeleteModal'
 import { DateTime } from 'luxon'
 const uploadFile = async function(store, url, file) {
@@ -52,8 +51,12 @@ export default {
       required: true
     }
   },
+  data() {
+    return {
+      files: []
+    }
+  },
   components: {
-    CommonFileUploadModal,
     CommonDeleteModal
   },
   filters: {
@@ -73,9 +76,24 @@ export default {
         const success = (await uploadFile(this.$store, this.url, file)).ok
         const message = success ? 'Document has been uploaded.' : 'Document has not been uploaded. Please try again.'
 
-        if (i === files.length - 1) this.toast('Document Upload', message, !success)
+        if (i === files.length - 1) {
+          this.toast('Document Upload', message, !success)
+          this.files = []
+        }
         this.newEtag()
       }
+    },
+    selectFile(event) {
+      let uploadedFiles = this.$refs.inputFile.files;
+      for( var i = 0; i < uploadedFiles.length; i++ ){
+        this.files.push(uploadedFiles[i]);
+      }
+
+      this.onFileChanged(this.files)
+    },
+    uploadFile() {
+      let fileInputElement = this.$refs.inputFile
+      fileInputElement.click()
     },
     canDelete(document) {
       return this.currentUser.id === document.owner_id
