@@ -3,7 +3,8 @@ import * as jwt from '@/services/common/projects'
 const mapAuthProviders = {
   jwt: {
     getProjects: jwt.getProjects,
-    createProject: jwt.createProject
+    createProject: jwt.createProject,
+    deleteDocument: jwt.deleteDocument,
   },
 }
 
@@ -145,6 +146,10 @@ export default {
     },
     deleteTimeSheet({commit}, payload) {
       return deleteTimeSheet(payload)
+    },
+    deleteDocument({commit, rootState}, payload) {
+      const removeDocument = mapAuthProviders[rootState.shared.settings.authProvider].deleteDocument
+      return removeDocument(payload)
     }
   },
   getters: {
