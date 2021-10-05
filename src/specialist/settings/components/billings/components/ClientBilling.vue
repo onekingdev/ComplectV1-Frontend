@@ -2,39 +2,30 @@
   div
     div
       p Choose how you want to get paid
-      .card.mb-2
+      .card.mb-2(v-if="!stripeAccount.id")
         .card-body
           .row
             .col
               .d-flex.align-items-center
                 .d-block
                   h5.mb-0 You have no client billing methods yet.
-                  p.mb-0 Add how you would like to receive your funds by clicking "Add Method"
+                  p.mb-0 Add how you would like to receive your funds.
             .col
               .d-flex.justify-content-end.align-items-center.h-100
                 b-button(
                   type="button"
                   variant="dark"
-                  v-if="!stripeAccount.id"
                   @click="$emit('openComponent', 'SelectBilling')"
-                ) Add Methhod
-
-                b-button(
-                  type="button"
-                  :disabled="true"
-                  v-if="stripeAccount.id"
-                ) Edit Methhod
-    .card.mb-2(v-for="billing in clientBilling" :key="billing.id")
+                ) Add Method
+    .card.mb-2(v-if="stripeAccount.id" v-for="billing in clientBilling" :key="billing.id")
       .card-body
         .row
           .col
             .d-flex.align-items-center
-              img(src='https://e7.pngegg.com/pngimages/368/337/png-clipart-chase-bank-jpmorgan-chase-car-finance-loan-chase-blue-angle.png' width='70px' alt="chase bank")
-              //b-icon(v-if="billing.billingCardType === 'Visa'" icon='credit-card2-back-fill' variant="dark" font-scale="2")
-              //ion-icon.billing(v-if="!billing.billingCardType" name="logo-paypal")
+              img.bank-icon(src='@/assets/bank-connected-grey.svg')
               .d-block.ml-4
                 h5: strong {{ billing.name }}
-                p.mb-0 {{ billing.billingCard }} {{ billing.billingCardType }} {{ billing.email }}
+                p.mb-0 {{ billing.billingCard }} {{ billing.email }}
           .col
             .d-flex.justify-content-end.align-items-center
               b-button.btn.mr-2(type='button' variant='default') Edit
@@ -67,7 +58,11 @@
 </script>
 
 <style>
-  ion-icon.billing {
-    font-size: 2rem;
-  }
+.bank-icon {
+  width: 28px;
+  height: 28px;
+}
+ion-icon.billing {
+  font-size: 2rem;
+}
 </style>

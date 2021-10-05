@@ -57,7 +57,7 @@
           { name: 'Client Permissions', link: 'roles', component: ClientPermisssions },
           { name: 'Security', link: 'security', component: Security },
           { name: 'Subscriptions', link: 'subscriptions', component: Subscriptions },
-          { name: 'Billings', link: 'billings', component: Billings },
+          { name: 'Billing', link: 'billings', component: Billings },
           //{ name: 'Notifications', link: 'notifications', component: Notifications },
         ]
       };
