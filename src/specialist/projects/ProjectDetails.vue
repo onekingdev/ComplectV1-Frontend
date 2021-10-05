@@ -24,7 +24,7 @@
       h4.m-t-1.semibold-text.py-2 Skills
       p
         .badge.badge-default.m-r-1(v-for="skill in project.skills") {{ skill.name }}
-    hr.mt-5
+    hr.mt-4
     .card-body
       h4.m-t-1.semibold-text.py-2 Client Details
       ClientDetails(:business="project.business")
