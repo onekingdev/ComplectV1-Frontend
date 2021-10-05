@@ -1,18 +1,5 @@
 <template lang="pug">
   .topbar
-    
-    // Debugging
-    .debug
-      p Domain: 
-        b {{domain}}
-      p Business ID: 
-        b {{businessID}}
-      p Plan: 
-        b {{plan}}
-      p Role: 
-        b {{role}}
-    
-    
     .logo(@click="openLink('default')")
       router-link.logo__link(:to='`/${domain}`')
         img.logo__img.logo__img_small(src='@/assets/primary.svg' width="24" height="24")
@@ -75,10 +62,8 @@
     computed: {
       ...mapGetters({
         domain: 'roles/domain',
-        businessID: 'roles/businessID',
         roles: 'roles/roles',
         role: 'roles/currentRole',
-        plan: 'roles/currentPlan'
       }),
       // It's current active roles (employee attached to Business account and has Roles
       activeContracts () {
@@ -171,14 +156,3 @@
     }
   }
 </script>
-
-<style lang="scss" scoped>
-.debug {
-  font-size: 12px;
-  padding: 0 5px;
-  p {
-    line-height: 1.2;
-    margin: 0;
-  }
-}
-</style>
