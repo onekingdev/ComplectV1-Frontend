@@ -55,7 +55,8 @@ export default {
   computed: {
     location() {
       if (!this.project) return ''
-      return `${LOCATION_TYPES[this.project.location_type]}, ${this.project.location}`
+      let location = [LOCATION_TYPES[this.project.location_type], this.project.location]
+      return location.filter(str => str).join(', ')
     },
     experience() {
       if (!this.project) return ''
