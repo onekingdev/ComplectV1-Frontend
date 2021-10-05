@@ -7,7 +7,7 @@
       .card-body
         Get(:project='`/api/specialist/projects/${projectId}`' :callback="projectLoaded"): template(v-slot="{project}"): div.row.pl-3
           .col-md-12.col-lg-6
-            h3 Terms
+            h3.fs-20.fw-600 Terms
             .row
               .col-sm: InputDate(v-model="form.starts_on" :errors="errors.starts_on" labelKlass="required") Start Date
               .col-sm: InputDate(v-model="form.ends_on" :errors="errors.ends_on" labelKlass="required") Due Date
@@ -20,7 +20,7 @@
               InputText.m-t-1(v-model="form.estimated_hours" :errors="errors.estimated_hours" :required="true") Estimated Hours
               InputSelect.m-t-1(v-model="form.hourly_payment_schedule" :errors="errors.hourly_payment_schedule" :options="hourlyPaymentScheduleOptions" :required="true") Payment Schedule
             hr
-            h3 Role
+            h3.fs-20.fw-600 Role
             InputTextarea.m-t-1(v-model="form.role_details" :errors="errors.role_details" :rows="4" :required="true") Role Details
             InputTextarea.m-t-1(v-model="form.key_deliverables" :errors="errors.key_deliverables" :rows="4" :required="true") Key Deliverables
             h3.m-t-1 Attachments
@@ -56,7 +56,7 @@ const initialForm = (project) => ({
   starts_on: (project && project.starts_on) || null,
   ends_on: (project && project.ends_on ) || null,
   pricing_type: (project && calcPricingType(project)) || null,
-  fixed_budget: (project && project.est_budget) || null,
+  fixed_budget: (project && Math.round(project.est_budget)) || null,
   fixed_payment_schedule: (project && project.pricing_type == "fixed" && project.payment_schedule) || null,
   hourly_rate: (project && project.hourly_rate) || null,
   hourly_payment_schedule: (project && project.pricing_type == "hourly" && project.payment_schedule) || null,
