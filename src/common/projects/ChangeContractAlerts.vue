@@ -22,7 +22,7 @@
             Post(:action="submitUrl" :model="form" @errors="errors = $event" @saved="saved('Contract extension has been requested.')")
               button.btn.btn-dark.float-right Confirm
     //.alert.alert-warning.m-b-20(v-else-if="isSuggestionVisible")
-    //  h4.alert-heading Contract deadline is tomorrow
+    //  h4.alert-heading Contract deadline is tomorrow.
     //  p.mb-0
     //    button.btn.btn-default.float-right(v-b-modal="'ExtendDeadlineModal'") Extend
     //    | Contract ends tomorrow and outstanding invoices will automatically be processed. Do you need to extend the deadline?
@@ -62,7 +62,7 @@ export default {
       errors: {},
       notifyDueDate: {
         show: 'show',
-        mainText: `Contract deadline is tomorrow`,
+        mainText: `Contract deadline is tomorrow.`,
         subText: 'Contract ends tomorrow and outstanding invoices will automatically be processed. Do you need to extend the deadline?',
         variant: 'warning',
         dismissible: true,
