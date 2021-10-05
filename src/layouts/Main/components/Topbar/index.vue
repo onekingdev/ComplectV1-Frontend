@@ -78,6 +78,7 @@
       reportLink() {
         if (this.currentPlan === 'free' && this.domain === 'business') return `/${this.domain}/reports/financials`
         if (this.domain === 'specialist') return '/specialist/reports/financials'
+        if (this.role === 'basic') return '/business/reports/risks'
         return `/${this.domain}/reports/organizations`
       },
       displayByPlan() {

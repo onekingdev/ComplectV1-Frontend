@@ -3,8 +3,7 @@
     .page-header
       h2.page-header__title {{ pageTitle }}
       .page-header__actions
-        //a.btn.btn-default.mr-3(href='#') Download
-        RisksAddEditModal
+        RisksAddEditModal(v-if="!basicRole")
           button.btn.btn-dark New  Risk
     .card-body.white-card-body.card-body_full-height
       RisksTable
@@ -34,6 +33,9 @@
       loading() {
         return this.$store.getters.loading;
       },
+      basicRole() {
+        return this.$store.getters['roles/currentRole'] == 'basic'
+      }
       // risksComputed() {
       //   return this.$store.getters.risksList
       // }
