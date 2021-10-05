@@ -11,7 +11,7 @@
         .col-md-3
           .panel-default
             ul.settings-nav
-              li.settings-nav__item(v-for='(item, idx) in menu' :key="idx" @click="openSetting(item.component)" :class="{ active: item.link === component }")
+              li.settings-nav__item(v-for='(item, idx) in menu' :key="idx" @click.prevent="openSetting(item.link, $event)" :class="{ active: item.link === component }")
                 a.settings-nav__link(:href='item.link' @click.prevent) {{ item.name }}
         .col-md-9
           component(v-bind:is="component" :states="states", :timezones="timezones", :contries="contries", :userId="userId" @openComponent="openComponent")
@@ -23,18 +23,19 @@
   import General from "./components/general";
   import Security from "./components/security";
   import Subscriptions from "./components/subscriptions";
-  import ClientPermisssions from "./components/roles";
+  import Roles from "./components/roles";
   import Billings from "./components/billings";
   import Notifications from "./components/notifications";
   import SelectBilling from './components/billings/components/SelectBilling'
 
   export default {
+    props: ['states', 'timezones', 'contries', 'userId'],
     components: {
       Loading,
       General,
       Security,
       Subscriptions,
-      ClientPermisssions,
+      Roles,
       Billings,
       Notifications,
       SelectBilling,
@@ -54,7 +55,7 @@
         componentUpgrade: '',
         menu: [
           { name: 'General', link: 'general', component: General },
-          { name: 'Client Permissions', link: 'roles', component: ClientPermisssions },
+          { name: 'Client Permissions', link: 'roles', component: Roles },
           { name: 'Security', link: 'security', component: Security },
           { name: 'Subscriptions', link: 'subscriptions', component: Subscriptions },
           { name: 'Billing', link: 'billings', component: Billings },
