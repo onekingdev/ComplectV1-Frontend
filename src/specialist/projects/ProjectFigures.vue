@@ -77,9 +77,6 @@ export default {
       .icon {
         margin-right: 0.5rem;
       }
-      .label {
-
-      }
     }
   }
 }
