@@ -86,6 +86,7 @@ export default {
       return true
     },
     contact() {
+      const bidPrice = this.application.pricing_type === 'hourly' ? this.application.hourly_rate : this.application.fixed_budget
       return {
         meta: {
           id: this.application.specialist_id,
@@ -101,7 +102,7 @@ export default {
         proposal: {
           "Start Date": this.formattedDate(this.application.starts_on),
           "Due Date": this.formattedDate(this.application.ends_on),
-          "Bid Price": '$'+this.application.fixed_budget,
+          "Bid Price": '$' + bidPrice,
           "Payment Schedule": this.formattedPaymentType(this.application.payment_schedule),
           "Role Details": this.application.key_deliverables,
           "Key Deliverables": this.application.role_details,
