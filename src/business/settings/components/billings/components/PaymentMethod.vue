@@ -63,7 +63,7 @@
           }
           await this.$store.dispatch('settings/deletePaymentMethod', dataToSend)
             .then(response => {
-              if (response.status === "ok") this.toast('Success', `${response.message.message}`)
+              if (response.status === "ok") this.toast('Success', `Payment method has been deleted.`)
             })
             .catch(error => {
               console.error(error)
