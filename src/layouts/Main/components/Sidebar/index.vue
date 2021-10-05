@@ -192,7 +192,7 @@
           || routeName === "settings-notification-center"
         ) this.$store.commit('changeSidebar', 'documents')
 
-        if (routeName === 'dashboard' || routeName === 'dashboard-specialist' || routeName === 'policies' || routeName === 'annual-reviews' || routeName === 'projects') this.$store.commit('changeSidebar', 'default')
+        if (routeName === 'dashboard' || routeName === 'dashboard-specialist' || routeName === 'policies' || routeName === 'annual-reviews' || routeName === 'projects' || routeName === 'projects-specialist') this.$store.commit('changeSidebar', 'default')
 
         // if(routeName !== "file-folders") this.$store.commit('changeSidebar', 'default')
 
