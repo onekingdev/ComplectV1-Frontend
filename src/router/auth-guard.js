@@ -19,7 +19,7 @@ const AccessGuard = (to, from, next) => {
 const BusinessGuard = (to, from, next) => {
   if (domain !== 'business') next(`/unauthorized`)
   if (isDenyRouteByPlan(to.name, plan)) next({name: 'access-denied'})
-  if (isDenyRouteByRole(to.name, role)) next({name: 'access-denied'})
+  if (isDenyRouteByRole(to.name, role)) next({name: 'unauthorized'})
   else next()
 }
 
