@@ -46,59 +46,59 @@
         .card-body.card-body_full-height.h-100: .card
           DocumentList(:project="localProject" :disabled="project.status == 'Complete'")
       b-tab(title="Collaborators")
-        .white-card-body.p-y-1
-          .container
-            .row.p-x-1
-              .col-sm-12
-                .card(v-if="!showingContract")
-                  .card-header.d-flex.justify-content-between
-                    h3.m-y-0 Collaborators
-                  .card-body
-                    table.rating_table
-                      tbody
-                        tr(v-for="contract in getContractsByLocalProject(localProject)" :key="contract._key")
-                          td
-                            button.btn.btn-default.float-right(@click="showingContract = contract") View Contract
-                            img.m-r-1.userpic_small(v-if="contract.specialist.photo" :src="contract.specialist.photo")
-                            b {{ contract.specialist.first_name }} {{contract.specialist.last_name }},
-                            |  Specialist
-                          td
-                div(v-else)
-                  .row: .col-sm-12
-                    button.btn.btn-dark.float-right(v-if="!isContractComplete(showingContract)" v-b-modal.EndContractModal) End Contract
-                      b-modal.fade(id="EndContractModal" title="End Contract")
-                        p ℹ️ Ending this contract will remove you as a collaborator to the project, revoke any permissions granted due to the project, and payout the full contract price.
-                        p: b Do you want to continue?
-                        .card
-                          .card-body
-                            .row
-                              .col-sm
-                                img.m-r-1.userpic_small(v-if="showingContract.specialist.photo" :src="showingContract.specialist.photo")
-                                h3 {{ showingContract.specialist.first_name }} {{showingContract.specialist.last_name }}
-                                p Specialist
-                              .col-sm
-                                span.float-right Outstanding Due <br> {{ 500 | usdWhole }}
-                          .card-body
-                            p
-                              b Job Name
-                              span.float-right {{ showingContract.title }}
-                            p
-                              b Payment Schedule
-                              span.float-right {{ readablePaymentSchedule(showingContract.payment_schedule) }}
-                            p
-                              b Payment Method
-                              span.float-right Transfer to Visa
-                          .card-body
-                            p.text-right.text-muted *This total does not reflect processing fees.
-                        template(slot="modal-footer")
-                          button.btn(@click="$bvModal.hide('EndContractModal')") Cancel
-                          Post(:action="completeUrl(showingContract)" :model="{}" @saved="completeSuccess" @errors="completeErrors")
-                            button.btn.btn-dark.m-r-1 Confirm
-                    Breadcrumbs.m-y-1(:items="['Collaborators', `${showingContract.specialist.first_name} ${showingContract.specialist.last_name}`]")
-                  .row
-                    .col-sm-12
-                      PropertiesTable(title="Contract Details" :properties="proposalProps(showingContract)")
-                        EditContractModal(v-if="!isContractComplete(showingContract)" :project="showingContract" @saved="newEtag(), tab = 0")
+        .card-body.card-body_full-height
+          .row
+            .col-sm-12
+              .card(v-if="!showingContract")
+                .card-header.d-flex.justify-content-between
+                  h3.m-y-0 Collaborators
+                .card-body
+                  .p-20.collaborator(v-for="contract in getContractsByLocalProject(localProject)" :key="contract._key")
+                    .d-flex.justify-content-between.align-items-center
+                      .d-flex.align-items-center
+                        div
+                          UserAvatar.userpic_small.mr-2(:user="contract.specialist")
+                        div.d-flex.flex-column
+                          b.collaborator__name {{ contract.specialist.first_name }} {{ contract.specialist.last_name }}
+                          span {{ contract.specialist.seat_role }}
+                      .d-flex.justify-content-end
+                        button.btn.btn-primary(@click="showingContract = contract") View Contract
+              div(v-else)
+                .row: .col-sm-12
+                  button.btn.btn-dark.float-right(v-if="!isContractComplete(showingContract)" v-b-modal.EndContractModal) End Contract
+                    b-modal.fade(id="EndContractModal" title="End Contract")
+                      p ℹ️ Ending this contract will remove you as a collaborator to the project, revoke any permissions granted due to the project, and payout the full contract price.
+                      p: b Do you want to continue?
+                      .card
+                        .card-body
+                          .row
+                            .col-sm
+                              img.m-r-1.userpic_small(v-if="showingContract.specialist.photo" :src="showingContract.specialist.photo")
+                              h3 {{ showingContract.specialist.first_name }} {{showingContract.specialist.last_name }}
+                              p Specialist
+                            .col-sm
+                              span.float-right Outstanding Due <br> {{ 500 | usdWhole }}
+                        .card-body
+                          p
+                            b Job Name
+                            span.float-right {{ showingContract.title }}
+                          p
+                            b Payment Schedule
+                            span.float-right {{ readablePaymentSchedule(showingContract.payment_schedule) }}
+                          p
+                            b Payment Method
+                            span.float-right Transfer to Visa
+                        .card-body
+                          p.text-right.text-muted *This total does not reflect processing fees.
+                      template(slot="modal-footer")
+                        button.btn(@click="$bvModal.hide('EndContractModal')") Cancel
+                        Post(:action="completeUrl(showingContract)" :model="{}" @saved="completeSuccess" @errors="completeErrors")
+                          button.btn.btn-dark.m-r-1 Confirm
+                  Breadcrumbs.m-y-1(:items="['Collaborators', `${showingContract.specialist.first_name} ${showingContract.specialist.last_name}`]")
+                .row
+                  .col-sm-12
+                    PropertiesTable(title="Contract Details" :properties="proposalProps(showingContract)")
+                      EditContractModal(v-if="!isContractComplete(showingContract)" :project="showingContract" @saved="newEtag(), tab = 0")
     b-tabs(v-else)
       b-tab(title="Overview")
         .white-card-body.p-y-1
@@ -278,6 +278,15 @@ export default {
   }
   .card {
     height: 100%
+  }
+  .collaborator {
+    border-bottom: 1px solid #dee2e6;
+    &:last-child {
+      border: none;
+    }
+    &__name {
+      font-weight: 600
+    }
   }
 }
 </style>
