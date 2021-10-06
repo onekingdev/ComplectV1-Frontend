@@ -8,7 +8,7 @@
         .col-md-1.text-center.px-0
           img.mt-1.ml-3(src='@/assets/error_20.svg' width="25" height="25")
         .col
-          div
+          div.fs-14
             p You are deleting this posting from our job board.
             p.mb-0: strong Do you want to continue?
 
