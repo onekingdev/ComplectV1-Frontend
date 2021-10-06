@@ -62,7 +62,7 @@
                           b.collaborator__name {{ contract.specialist.first_name }} {{ contract.specialist.last_name }}
                           span {{ contract.specialist.seat_role }}
                       .d-flex.justify-content-end
-                        button.btn.btn-primary(@click="showingContract = contract") View Contract
+                        button.btn.btn-primary(v-if="project.status !== 'Complete'" @click="showingContract = contract") View Contract
               div(v-else)
                 .row: .col-sm-12
                   button.btn.btn-dark.float-right(v-if="!isContractComplete(showingContract)" v-b-modal.EndContractModal) End Contract
