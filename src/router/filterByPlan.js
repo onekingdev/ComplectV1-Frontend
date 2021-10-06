@@ -15,7 +15,7 @@ const DENY_FOR_TEAM_PLAN = [
   'exam-portal'
 ]
 
-export default function isDenyRoute(routeName, plan) {
+export default function isDenyRouteByPlan(routeName, plan) {
   if (plan === 'free') return DENY_FOR_FREE_PLAN.includes(routeName)
   if (plan === 'team') return DENY_FOR_TEAM_PLAN.includes(routeName)
 
