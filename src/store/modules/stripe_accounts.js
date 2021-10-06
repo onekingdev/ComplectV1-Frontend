@@ -36,6 +36,7 @@ const actions = {
                   id: data.id,
                   dob: data.dob,
                   city: data.city,
+                  last4: data.last4,
                   state: data.state,
                   country: data.country,
                   zipcode: data.zipcode,
@@ -48,7 +49,6 @@ const actions = {
                   personal_id_number: data.personal_id_number
                 }
               ));
-
               return data;
             }
 
