@@ -16,9 +16,6 @@
               b-dropdown-item Pending
               b-dropdown-item Overdue
               b-dropdown-item Complete
-            //b-dropdown.m-r-1(text='Year: All')
-            //  b-dropdown-item 2021
-            //  b-dropdown-item 2020
           Get(:projects="apiProjectsUrl"): template(v-slot="{projects}"): table.table.task_table
             thead
               tr
@@ -34,7 +31,7 @@
                 td {{ project.business.business_name }}
                 td {{ project.processed_amount | usdWhole }}
                 td
-                  span.badge(:class="badgeClass(project)") {{ project.status }}
+                  span.badge(:class="specialistProjectBadgeClass(project)") {{ project.status }}
                 td {{ project.starts_on | asDate }}
                 td {{ project.ends_on | asDate }}
       b-tab(title="Contacts")
@@ -62,7 +59,7 @@
 </template>
 
 <script>
-import { isOverdue, badgeClass } from '@/common/TaskHelper'
+import { isOverdue, specialistProjectBadgeClass } from '@/common/TaskHelper'
 import StarsRating from '../../business/marketplace/components/StarsRating'
 
 export default {
@@ -94,7 +91,7 @@ export default {
   },
   methods: {
     isOverdue,
-    badgeClass
+    specialistProjectBadgeClass
   }
 }
 </script>
