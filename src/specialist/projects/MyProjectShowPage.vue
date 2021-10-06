@@ -1,45 +1,46 @@
 <template lang="pug">
-  Get(:project="projectUrl" :etag="etag"): template(v-slot="{project}")
-    CommonHeader(:title="project.title" :sub="project.business.business_name" :breadcrumbs="['Projects', project.title]")
+.page.custom-project-layout-style
+  Get.d-flex.flex-column.flex-grow-1(:project="projectUrl" :etag="etag"): template(v-slot="{project}")
+    CommonHeader(section="Jobs" :title="project.title" :sub="project.business.business_name")
       router-link.btn.btn-outline-dark.align-self-end(v-if="showTimesheetBtn(project)" :to="timesheetUrl" target="_blank") My Timesheet
-    Get(v-if="isApproved(project)" :localProject="projectUrl + '/local'"): template(v-slot="{localProject}"): b-tabs(v-model="tab" content-class="mt-0")
-      b-tab(title="Overview")
-        .white-card-body.p-y-1
-          .container
-            .row.p-x-1
-              .col-sm-12
-                ChangeContractAlerts(:project="project" @saved="newEtag" for="Specialist")
-              .col-md-8.col-sm-12
-                PropertiesTable(title="Project Details" :properties="acceptedOverviewProps(localProject)")
-              .col-md-4.col-sm-12.pl-0
-                .card
-                  .card-header.d-flex.justify-content-between
-                    h3.m-y-0 Collaborators
-                    a.link.btn(@click="viewContract()") View All
-                  .card-body
-                    table.rating_table
-                      thead
-                        tr
-                          th
-                            | Name
-                            b-icon.ml-2(icon='chevron-expand')
-                          th
-                      tbody
-                        tr(v-for="contract in getContractsByLocalProject(localProject)" :key="contract._key")
-                          td
-                            .d-flex.align-items-center.mb-3
-                              div
-                                UserAvatar.userpic_small.mr-2(:user="contract.specialist")
-                              div.d-flex.flex-column
-                                b {{ contract.specialist.first_name }} {{ contract.specialist.last_name }}
-                                span {{ contract.specialist.seat_role }}
-                          td
-                            b-dropdown.float-right(text="..." variant="default" right)
-                              b-dropdown-item(@click="viewContract(contract)") View Contract
-          .container.m-t-1
-            .row.p-x-1
-              .col-md-12
-                DiscussionCard(:project-id="project.local_project_id" :token="accessToken")
+    Get(v-if="isApproved(project)" :localProject="projectUrl + '/local'"): template(v-slot="{localProject}"): b-tabs.special-navs(content-class="mt-0 h-100" v-model="tab")
+      b-tab(title="Detail")
+        .card-body.card-body_full-height
+          .row
+            .col-sm-12
+              ChangeContractAlerts(:project="project" @saved="newEtag" for="Specialist")
+          .row
+            .col-md-8.col-sm-12.m-b-2
+              PropertiesTable(title="Project Details" :properties="acceptedOverviewProps(localProject)")
+            .col-md-4.col-sm-12.m-b-2
+              .card
+                .card-header.d-flex.justify-content-between
+                  h3.m-y-0 Collaborators
+                  a.link.btn(@click="viewContract()") View All
+                .card-body
+                  table.rating_table.collaborators_table
+                    thead
+                      tr
+                        th.fw-400.p-b-05
+                          | Name
+                          b-icon.ml-2(icon='chevron-expand')
+                        th.p-b-05
+                    tbody
+                      tr(v-for="contract in getContractsByLocalProject(localProject)" :key="contract._key")
+                        td
+                          .d-flex.align-items-center.mb-3
+                            div
+                              UserAvatar.userpic_small.mr-2(:user="contract.specialist")
+                            div.d-flex.flex-column.fw-600.fs-14
+                              span {{ contract.specialist.first_name }} {{ contract.specialist.last_name }}
+                              span {{ contract.specialist.seat_role }}
+                        td
+                          b-dropdown.float-right(text="..." variant="default" right)
+                            b-dropdown-item(@click="viewContract(contract)") View Contract
+          .row
+            .col-md-12
+              DiscussionCard(:project-id="project.local_project_id" :token="accessToken")
+      
       b-tab(title="Tasks")
       b-tab(title="Documents")
         .card-body.card-body_full-height.h-100: .card
@@ -261,3 +262,22 @@ export default {
   }
 }
 </script>
+
+<style lang="scss">
+.custom-project-layout-style {
+  .page-header, .special-navs .nav-tabs {
+    background: #fff;
+  }
+  .special-navs .nav-tabs {
+    border-top: 1px solid #dee2e6;
+    border-bottom: 1px solid #dee2e6;
+    display: flex;
+    .btn-group {
+      margin: auto 2.5rem auto auto;
+    }
+  }
+  .card {
+    height: 100%
+  }
+}
+</style>
