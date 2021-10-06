@@ -1,7 +1,7 @@
 <template lang="pug">
   .documents-list-card
     h3.document-heading Documents
-    .upload-actions
+    .upload-actions(v-if="!disabled")
       input.input-file(type="file" id="files" ref="inputFile" hidden multiple @change="selectFile")
       a.btn.btn-dark(@click="uploadFile") Upload
     Get(:documents="url" :etag="etag"): template(v-slot="{documents}"): .document-body
@@ -49,6 +49,9 @@ export default {
     project: {
       type: Object,
       required: true
+    },
+    disabled: {
+      type: Boolean
     }
   },
   data() {

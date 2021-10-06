@@ -15,7 +15,7 @@
               p.message__comment(v-html="message.message")
             .d-block.text-right.ml-auto
               p.message__date {{ message.created_at | asDate }}
-      .card-body
+      .card-body(v-if="!disabled")
         InputTextarea(v-model="comment.message" placeholder="Make a comment or leave a note..." :errors="commentErrors && commentErrors.message" @submit="handleSubmitComment") Comment
         Post(ref="postButton" v-bind="postCommentProps" @saved="commentSaved" @errors="commentErrors = $event" alignRight)
           button.btn.btn-primary.save-comment-btn Send
@@ -36,6 +36,9 @@ export default {
     token: {
       type: String,
       required: true
+    },
+    disabled: {
+      type: Boolean
     }
   },
   data() {

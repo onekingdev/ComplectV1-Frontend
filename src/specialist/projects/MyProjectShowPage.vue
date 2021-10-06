@@ -29,8 +29,8 @@
                       tr(v-for="contract in getContractsByLocalProject(localProject)" :key="contract._key")
                         td
                           .d-flex.align-items-center.mb-3
-                            div
-                              UserAvatar.userpic_small.mr-2(:user="contract.specialist")
+                            div.mr-2
+                              UserAvatar.userpic_small(:user="contract.specialist")
                             div.d-flex.flex-column.fw-600.fs-14
                               span {{ contract.specialist.first_name }} {{ contract.specialist.last_name }}
                               span {{ contract.specialist.seat_role }}
@@ -39,12 +39,12 @@
                             b-dropdown-item(@click="viewContract(contract)") View Contract
           .row
             .col-md-12
-              DiscussionCard(:project-id="project.local_project_id" :token="accessToken")
+              DiscussionCard(:project-id="project.local_project_id" :token="accessToken" :disabled="project.status == 'Complete'")
       
       b-tab(title="Tasks")
       b-tab(title="Documents")
         .card-body.card-body_full-height.h-100: .card
-          DocumentList(:project="localProject")
+          DocumentList(:project="localProject" :disabled="project.status == 'Complete'")
       b-tab(title="Collaborators")
         .white-card-body.p-y-1
           .container

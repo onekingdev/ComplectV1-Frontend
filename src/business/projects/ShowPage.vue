@@ -52,8 +52,8 @@
                         tr(v-for="contract in getContracts(project.projects)" :key="contract.specialist.id")
                           td
                             .d-flex.align-items-center.mb-3
-                              div
-                                UserAvatar.userpic_small.mr-2(:user="contract.specialist")
+                              div.mr-2
+                                UserAvatar.userpic_small(:user="contract.specialist")
                               div.d-flex.flex-column.fw-600.fs-14
                                 span {{ contract.specialist.first_name }} {{ contract.specialist.last_name }}
                                 span {{ contract.specialist.seat_role }}
