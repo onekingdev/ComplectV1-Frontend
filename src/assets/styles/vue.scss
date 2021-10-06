@@ -1941,6 +1941,28 @@ table.table {
   }
 }
 
+
+/* ---------- BADGE SPecialist's Projects ---------- */
+.badge-specialist {
+  &-not-started {
+    background-color: #fff;
+    border: 1px black solid;
+  }
+  &-progress {
+    background-color: #ECF4FF;
+  }
+  &-complete {
+    background-color: #D5FBEF;
+  }
+  &-draft {
+    background-color: #fff;
+    border: 1px black solid;
+  }
+  &-pending {
+    background-color: #F6F6F8;
+  }
+}
+
 .exam .badge {
   padding: 5px 15px;
 }

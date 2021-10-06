@@ -106,6 +106,7 @@ const router = new VueRouter({
           beforeEnter: BusinessGuard,
           children: [
             { path: "access-denied", name: "access-denied", component: AccessDenied },
+            { path: "unauthorized", name: "unauthorized", component: PageUnauthorized },
             { path: '', name: 'dashboard', component: Dashboard },
             { path: 'projects', name: 'projects', component: Projects },
             { path: 'projects/:id(\\d+)', name: 'project-review', props: route => ({ projectId: +route.params.id }), component: ProjectReview },
@@ -154,6 +155,7 @@ const router = new VueRouter({
           beforeEnter: SpecialistGuard,
           children: [
             { path: "access-denied", name: "access-denied-specialist", component: AccessDenied },
+            { path: "unauthorized", name: "unauthorized-specialist", component: PageUnauthorized },
             { path: '', name: 'dashboard-specialist', component: DashboardS },
             { path: 'reminders', name: 'tasks-specialist', component: SpecialistTasksPage },
             { path: 'my-projects', name: 'projects-specialist', component: ProjectsS },
