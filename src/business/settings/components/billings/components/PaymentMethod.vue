@@ -46,10 +46,10 @@
             id: cardId,
           }
           await this.$store.dispatch('settings/makePrimaryPaymentMethod', dataToSend)
-            .then(response => this.toast('Success', `The primary card successfully changed!`) )
+            .then(response => this.toast('Success', `Primary payment method has been changed.`) )
             .catch(error => {
               console.error(error)
-              this.toast('Error', `Something wrong! ${error}`, true)
+              this.toast('Error', `Primary payment method has not been changed. Please try again.`, true)
             })
         } catch (e) {
           console.error(error)
@@ -63,11 +63,11 @@
           }
           await this.$store.dispatch('settings/deletePaymentMethod', dataToSend)
             .then(response => {
-              if (response.status === "ok") this.toast('Success', `${response.message.message}`)
+              if (response.status === "ok") this.toast('Success', `Payment method has been deleted.`)
             })
             .catch(error => {
               console.error(error)
-              this.toast('Error', `Something wrong! ${error}`, true)
+              this.toast('Error', `Payment method has not been deleted. Please try again.`, true)
             })
         } catch (e) {
           console.error(error)
