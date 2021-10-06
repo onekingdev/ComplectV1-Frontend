@@ -144,6 +144,9 @@ export default {
     currentRole (state) {
       return state.currentRole
     },
+    seatRole (state) {
+      return state.seatRole
+    },
     businessID (state) {
       return state.businessID
     },

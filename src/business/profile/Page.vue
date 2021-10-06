@@ -8,8 +8,8 @@
               h2.heading Profile
             .card-body.white-card-body
               MyProfile
-              hr.border-custom
-            .card-body.white-card-body
+              hr.border-custom(v-if="!basicRole")
+            .card-body.white-card-body.company-details(v-if="!basicRole")
               CompanyDetails
 </template>
 
@@ -20,6 +20,11 @@
     components: {
       MyProfile,
       CompanyDetails,
+    },
+    computed: {
+      basicRole() {
+        return this.$store.getters['roles/currentRole'] == 'basic'
+      }
     }
   }
 </script>

@@ -11,17 +11,10 @@
 </template>
 
 <script>
-  import AccessDeniedModal from "@/common/AccessDenied/modals/AccessDeniedModal";
   export default {
-    components: {AccessDeniedModal},
-    computed: {
-      domain() {
-        return this.$store.getters['roles/domain']
-      }
-    },
     methods: {
       openPlans() {
-        this.$router.push(`${this.domain}/settings/subscriptions`);
+        this.$router.push(`settings/subscriptions`);
       }
     }
   }

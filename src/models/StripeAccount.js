@@ -3,6 +3,7 @@ export class StripeAccount {
     this.id = options.id,
     this.dob = options.dob,
     this.city = options.city,
+    this.last4 = options.last4,
     this.state = options.state,
     this.country = options.country,
     this.zipcode = options.zipcode,

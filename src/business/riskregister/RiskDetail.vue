@@ -10,7 +10,7 @@
             b-icon-exclamation-triangle-fill.mr-2
             | {{ showLevel(riskComputed.risk_level)  }}
           b.risk-name.fs-14.fw-400 {{ riskComputed.name }}
-      .page-header__actions
+      .page-header__actions(v-if="!basicRole")
         b-dropdown.actions__dropdown.actions__dropdown_tasks(variant="default", right)
           template(#button-content)
             | Actions
@@ -23,7 +23,7 @@
           b-card(header-tag='header' header-class='d-flex')
             template(#header)
               h3.mb-0.fs-20.fw-400 Risk Details
-              RisksAddEditModal.ml-auto(:riskId="riskComputed.id" :inline="false")
+              RisksAddEditModal.ml-auto(v-if="!basicRole" :riskId="riskComputed.id" :inline="false")
                 button.btn.btn-primary Edit
             b-card-text
               .row
@@ -42,7 +42,7 @@
           b-card(header-tag='header' header-class='d-flex')
             template(#header)
               h3.mb-0.fs-20.fw-400 Controls
-              RiskContols.ml-auto(:riskId="riskComputed.id" :inline="false")
+              RiskContols.ml-auto(v-if="!basicRole" :riskId="riskComputed.id" :inline="false")
                 button.btn.btn-primary {{ !riskComputed.compliance_policies.length ? 'New' : 'Edit' }} Control
             b-card-text
               PoliciesTable(:riskPolicies="riskComputed.compliance_policies" @deleteControl="updateRisk")
@@ -112,6 +112,9 @@
       }
     },
     computed: {
+      basicRole() {
+        return this.$store.getters['roles/currentRole'] == 'basic'
+      },
       loading() {
         return this.$store.getters.loading;
       },
@@ -128,10 +131,10 @@
       // console.log(this.riskId)
       this.$store
         .dispatch("getRiskById", { riskId: this.riskId })
-        .then((response) => {
-          // this.risk = response;
-          console.log('response mounted getRiskById', response);
-        })
+        // .then((response) => {
+        //   // this.risk = response;
+        //   console.log('response mounted getRiskById', response);
+        // })
         .catch((err) => {
           console.error(err);
           this.toast('Error', err.message)
@@ -140,9 +143,9 @@
           // AFTER PREV REQUEST SEND NEW
           this.$store
             .dispatch("getPolicies")
-            .then((response) => {
-              console.log('response mounted getPolicies', response);
-            })
+            // .then((response) => {
+            //   console.log('response mounted getPolicies', response);
+            // })
             .catch((err) => {
               console.error(err);
               this.toast('Error', err.message)
