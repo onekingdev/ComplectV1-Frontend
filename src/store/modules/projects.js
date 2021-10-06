@@ -9,7 +9,7 @@ const mapAuthProviders = {
 }
 
 import LocalProject from "../../models/LocalProject";
-import { createProposal, updateProposal, deleteTimeSheet } from '../../services/specialist/projects';
+import { createProposal, updateProposal, deleteTimeSheet, denyEndContract } from '../../services/specialist/projects';
 
 export default {
   state: {
@@ -150,6 +150,9 @@ export default {
     deleteDocument({commit, rootState}, payload) {
       const removeDocument = mapAuthProviders[rootState.shared.settings.authProvider].deleteDocument
       return removeDocument(payload)
+    },
+    denyContract({commit}, payload) {
+      return denyEndContract(payload)
     }
   },
   getters: {
