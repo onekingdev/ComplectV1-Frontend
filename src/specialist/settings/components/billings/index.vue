@@ -89,7 +89,7 @@
       ...mapGetters({
         loading: 'loading',
         paymentMethods: 'settings/paymentMethods',
-        stripeAccount: "stripe_accounts/stripeAccount"
+        stripeAccount: 'stripe_accounts/stripeAccount'
       }),
       invoices() {
         return [

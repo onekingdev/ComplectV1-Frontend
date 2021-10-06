@@ -3,7 +3,7 @@
     div(v-b-modal="modalId" :class="{'d-inline-block':inline}")
       slot
 
-    b-modal.fade(:id="modalId" :title="taskId ? task.body : 'New task'" :size="taskId ? 'xl' : 'md'" @show="resetTask")
+    b-modal.fade(:id="modalId" :title="taskId ? task.body : 'New Task'" :size="taskId ? 'xl' : 'md'" @show="resetTask")
       .loading(v-if="!isLoaded")
         .lds-ring
           div

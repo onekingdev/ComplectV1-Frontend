@@ -33,7 +33,7 @@
           UserAvatar.topbar-right-dropdown__avatar(:user="account" :sm="true")
           span.topbar-right-dropdown__name {{ account.first_name }} {{ account.last_name }}
           ion-icon.topbar-right-dropdown__icon(name='chevron-down-outline')
-        template(v-if="domain === 'specialist'")
+        template(v-if="!seatRole")
           li(v-if="activeContracts && activeContracts.length")
             .dropdown-item(@click="openSelectedBusiness(null)") Back
           li(v-if="activeContracts" v-for="(contract, idx) in  activeContracts" :key="idx")
@@ -64,6 +64,7 @@
         domain: 'roles/domain',
         roles: 'roles/roles',
         role: 'roles/currentRole',
+        seatRole: 'roles/seatRole',
       }),
       // It's current active roles (employee attached to Business account and has Roles
       activeContracts () {
@@ -78,6 +79,7 @@
       reportLink() {
         if (this.currentPlan === 'free' && this.domain === 'business') return `/${this.domain}/reports/financials`
         if (this.domain === 'specialist') return '/specialist/reports/financials'
+        if (this.role === 'basic') return '/business/reports/risks'
         return `/${this.domain}/reports/organizations`
       },
       displayByPlan() {
@@ -131,11 +133,13 @@
         if (business) {
           localStorage.setItem('app.business_id', business.business_id)
           localStorage.setItem('app.currentUser.role', business.role)
+          localStorage.setItem('app.currentUser.userType', JSON.stringify('businesses'))
           window.location.href = `/business`
         }
         if (!business) {
           localStorage.removeItem('app.business_id')
           localStorage.removeItem('app.currentUser.role')
+          localStorage.setItem('app.currentUser.userType', JSON.stringify('specialists'))
           window.location.href = `/specialist`
         }
       },

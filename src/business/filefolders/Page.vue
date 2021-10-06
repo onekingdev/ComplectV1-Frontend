@@ -2,7 +2,7 @@
   .page(@mouseover="mouseOver")
     .page-header.grey-border-bottom
       h2.page-header__title {{ pageTitle }}
-      .page-header__actions
+      .page-header__actions(v-if="!basicRole")
         button.btn.btn-default(@click="zipping" :disabled="disabled")
           b-icon.m-r-1(v-if="disabled" icon="arrow-counterclockwise" animation="spin-reverse-pulse" font-scale="1")
           | Download
@@ -206,6 +206,9 @@
       }
     },
     computed: {
+      basicRole() {
+        return this.$store.getters['roles/currentRole'] == 'basic'
+      },
       loading() {
         return this.$store.getters.loading;
       },

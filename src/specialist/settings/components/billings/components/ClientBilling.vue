@@ -1,8 +1,8 @@
 <template lang="pug">
   div
-    div
+    div(v-if="!stripeAccount.id")
       p Choose how you want to get paid
-      .card.mb-2(v-if="!stripeAccount.id")
+      .card.mb-2
         .card-body
           .row
             .col
@@ -17,43 +17,26 @@
                   variant="dark"
                   @click="$emit('openComponent', 'SelectBilling')"
                 ) Add Method
-    .card.mb-2(v-if="stripeAccount.id" v-for="billing in clientBilling" :key="billing.id")
+    .card.mb-2(v-if="stripeAccount.id")
       .card-body
         .row
           .col
             .d-flex.align-items-center
               img.bank-icon(src='@/assets/bank-connected-grey.svg')
               .d-block.ml-4
-                h5: strong {{ billing.name }}
-                p.mb-0 {{ billing.billingCard }} {{ billing.email }}
+                h5: strong Bank account
+                p.mb-0 ******** {{ stripeAccount.last4 }}
           .col
             .d-flex.justify-content-end.align-items-center
               b-button.btn.mr-2(type='button' variant='default') Edit
               b-button.btn.font-weight-bold(type='button' variant='default') Remove
+    
 </template>
 
 <script>
   export default {
     name: "billingMethod",
-    props: ["stripeAccount"],
-    components: {},
-    data() {
-      return {
-        clientBilling: [
-          {
-            id: 1,
-            name: 'Bank account',
-            users: '10',
-            billinPeriod: 'monthly',
-            monthCoast: '100$/month',
-            billingCardType: 'Visa',
-            billingCard: '**** **** **** 4242',
-            nextbillingDate: 'October 25, 2021',
-            primary: true
-          },
-        ]
-      }
-    }
+    props: ["stripeAccount"]
   }
 </script>
 
