@@ -36,27 +36,27 @@ export default {
         scale: 2,
       }
     },
-    modifyNotice() {
-      const isAccept = this.project.modify_contract.status === 'confirmed'
-      const title = isAccept ? 'accepted' : 'rejected'
-      const name = this.for === 'Specialist' ? this.project.business.business_name : `${this.project.specialist.first_name} ${this.project.specialist.last_name}`
-      return {
-        show: true,
-        mainText: `Contraction modification ${title}.`,
-        subText: `${name} has ${title} your contract modification request.`,
-        variant: 'primary',
-        dismissible: true,
-        icon: null,
-        scale: 2,
-      }
-    },
-    hasModifyNotice() {
-      const modifyContract = this.project.modify_contract
-      return modifyContract && this.for === modifyContract.requester && (modifyContract.requester === 'Specialist' || modifyContract.requester === 'Business') && modifyContract.status !== null
-    },
+    // modifyNotice() {
+    //   const isAccept = this.project.modify_contract.status === 'confirmed'
+    //   const title = isAccept ? 'accepted' : 'rejected'
+    //   const name = this.for === 'Specialist' ? this.project.business.business_name : `${this.project.specialist.first_name} ${this.project.specialist.last_name}`
+    //   return {
+    //     show: true,
+    //     mainText: `Contraction modification ${title}.`,
+    //     subText: `${name} has ${title} your contract modification request.`,
+    //     variant: 'primary',
+    //     dismissible: true,
+    //     icon: null,
+    //     scale: 2,
+    //   }
+    // },
+    // hasModifyNotice() {
+    //   const modifyContract = this.project.modify_contract
+    //   return modifyContract && this.for === modifyContract.requester && (modifyContract.requester === 'Specialist' || modifyContract.requester === 'Business') && modifyContract.status !== null
+    // },
     notify() {
       if (this.isBusinessDenyContractAccept) return this.businessDenyContractAcceptNotify
-      if (this.hasModifyNotice) return this.modifyNotice
+      // if (this.hasModifyNotice) return this.modifyNotice
 
       return null
     }
