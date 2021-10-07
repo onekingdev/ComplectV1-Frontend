@@ -114,11 +114,11 @@ export default {
       this.$bvModal.hide(this.confirmModalId)
     },
     deleted() {
-      redirectWithToast('/business/projects', 'Project post deleted')
+      redirectWithToast('/business/projects', 'Job posting has been deleted.')
       this.$bvModal.hide('DeletePostModal')
     },
     denied(id) {
-      redirectWithToast(this.$store.getters.url('URL_PROJECT_SHOW', id), 'Proposal denied.')
+      redirectWithToast(this.$store.getters.url('URL_PROJECT_SHOW', id), 'Proposal has been denied.', 'Success')
       this.$bvModal.hide(this.confirmModalId)
     },
     goBack() {
