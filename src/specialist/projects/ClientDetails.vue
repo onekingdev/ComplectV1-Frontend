@@ -1,10 +1,11 @@
 <template lang="pug">
   .card.m-t-1
+    DirectMessageModal(:targetUser="targetUser" customModalId="ChatModal")
     .card-body
       div.d-flex.align-items-center.mt-3
         UserAvatar.mr-3(:business="business")
         span.mr-auto
-          span.business-name {{ business.business_name }}
+          span.business-name(@click="openChatModal") {{ business.business_name }}
           br
           span.location {{ [business.city, business.state, business.country] | commas }}
     hr
@@ -23,11 +24,28 @@
 </template>
 
 <script>
+import DirectMessageModal from '@/common/Messages/DirectMessageModal'
 export default {
+  components: {
+    DirectMessageModal
+  },
   props: {
     business: {
       type: Object,
       required: true
+    }
+  },
+  computed: {
+    targetUser() {
+      return {
+        name: this.business.business_name,
+        id: this.business.id
+      }
+    }
+  },
+  methods: {
+    openChatModal() {
+      this.$bvModal.show('ChatModal')
     }
   }
 }

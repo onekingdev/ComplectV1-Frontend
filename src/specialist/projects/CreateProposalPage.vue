@@ -115,7 +115,7 @@ export default {
 </script>
 <style>
 .card-upload {
-  border: solid 2px #0479FF;
+  border: dotted 2px #0479FF;
   fill: #f6f6f8;
 }
 .details-infor dd {

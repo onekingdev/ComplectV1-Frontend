@@ -14,11 +14,13 @@
             Errors(:errors="messageErrors.message")
             Post(:action="`/api/messages/${targetUser.id}`" :model="{ message }" @errors="messageErrors = $event" @saved="messageSaved" alignRight)
               button.btn.btn-primary.save-comment-btn Send
+      template(#modal-footer="{ cancel }")
+        button.btn.btn-dark(@click="hide()") Close
 </template>
 <script>
 import Messages from '@/common/Messages'
 import EtaggerMixin from '@/mixins/EtaggerMixin'
-
+const TIME_REFRESH = 20000
 export default {
   components: {
     Messages
@@ -28,6 +30,10 @@ export default {
     EtaggerMixin('etagMessages'),
   ],
   props: {
+    customModalId: {
+      type: String,
+      required: false
+    },
     targetUser: {
       type: Object,
       required: true
@@ -40,10 +46,38 @@ export default {
       },
       messageErrors: {},
       errors: {},
-      modalId: 'modal_' + Math.random().toFixed(9) + Math.random().toFixed(7)
+      modalId: null,
+      loopMessage: null,
     }
   },
+  created() {
+    this.modalId = this.customModalId ? this.customModalId : 'modal_' + Math.random().toFixed(9) + Math.random().toFixed(7)
+  },
+  mounted() {
+    this.$root.$on('bv::modal::show', (bvEvent, modalId) => {
+      this.refreshMessage()
+      document.addEventListener('visibilitychange', () => {
+        if(document.hidden) {
+          clearInterval(this.loopMessage)
+        } else {
+          this.refreshMessage()
+        }
+      })
+    })
+
+    this.$root.$on('bv::modal::hide', (bvEvent, modalId) => {
+      clearInterval(this.loopMessage)
+    })
+  },
   methods: {
+    refreshMessage() {
+      this.loopMessage = setInterval(() => {
+        this.newEtagMessages()
+      }, TIME_REFRESH)
+    },
+    hide() {
+      this.$bvModal.hide(this.modalId)
+    },
     scrollMessages() {
       this.$nextTick(() => {
         const messagesContainer = this.$refs.Messages.$refs.MessagesContainer
@@ -56,6 +90,9 @@ export default {
       this.messageErrors = {}
       this.scrollMessages()
     },
+  },
+  destroyed() {
+    if (this.loopMessage) clearInterval(this.loopMessage)
   }
 }
 </script>

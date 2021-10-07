@@ -43,14 +43,19 @@
                 th Location
                 //- th Status
                 th Rating
-                //- th
+                th
             tbody
               tr(v-for="contact in contacts" :key="contact.id")
                 td {{ contact.name }}
                 td {{ contact.location }}
                 //- td {{ contact.status }}
                 td: StarsRating(:rate="contact.rating")
-                //- td &hellip;
+                td(width="40px").text-right
+                  b-dropdown(size="xs" variant="none" class="m-0 p-0" right)
+                    template(#button-content)
+                      b-icon(icon="three-dots")
+                    DirectMessageModal(:targetUser="contact")
+                      b-dropdown-item Message
               tr(v-if="!contacts.length")
                 td(colspan=5) No contacts
       b-tab(title="Ratings and Reviews")
@@ -61,10 +66,11 @@
 <script>
 import { isOverdue, specialistProjectBadgeClass } from '@/common/TaskHelper'
 import StarsRating from '../../business/marketplace/components/StarsRating'
-
+import DirectMessageModal from '@/common/Messages/DirectMessageModal'
 export default {
   components: {
-    StarsRating
+    StarsRating,
+    DirectMessageModal,
   },
   computed: {
     apiProjectsUrl() {

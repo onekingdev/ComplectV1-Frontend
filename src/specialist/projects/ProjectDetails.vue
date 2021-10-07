@@ -28,7 +28,7 @@
     .card-body
       h4.m-t-1.semibold-text.py-2 Client Details
       ClientDetails(:business="project.business")
-    hr.mt-3.mb-5
+    div.mt-3.mb-5
 </template>
 
 <script>
