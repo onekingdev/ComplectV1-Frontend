@@ -2,6 +2,14 @@
   Notifications.m-b-20(:show="show" :notify="notify")
     ExtendDeadlineModal.m-r-2(@saved="$emit('saved')" :project="project" :project-id="project.id")
       button.btn.btn-default Extend
+  //b-alert(:show="show" variant="primary")
+  //  .d-flex.align-items-center
+  //    b-icon.m-r-2.m-l-1(icon="exclamation-triangle-fill" scale="2" variant="warning")
+  //    .d-block.mr-auto
+  //      h4: b Contract deadline is tommorow
+  //      p.mb-0 Do you need to extend the contract deadline?
+  //    ExtendDeadlineModal(@saved="$emit('saved')" :project="project" :project-id="project.id")
+  //      button.btn.btn-default Extend
 
 </template>
 
