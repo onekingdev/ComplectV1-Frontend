@@ -18,6 +18,18 @@
             button.btn.btn-link.float-right(@click="hide") Cancel
             Post(:action="submitUrl" :model="form" @errors="errors = $event" @saved="saved('Contract extension has been requested.')")
               button.btn.btn-dark.float-right Confirm
+    
+    //.alert.alert-warning.m-b-20(v-else-if="isSuggestionVisible")
+    //  h4.alert-heading Contract deadline is tomorrow.
+    //  p.mb-0
+    //    button.btn.btn-default.float-right(v-b-modal="'ExtendDeadlineModal'") Extend
+    //    | Contract ends tomorrow and outstanding invoices will automatically be processed. Do you need to extend the deadline?
+    //    b-modal(id="ExtendDeadlineModal" title="Extend Deadline")
+    //      InputDate(v-model="form.ends_on" :errors="errors.ends_on" :options="datepickerOptions") New Due Date
+    //      template(#modal-footer="{ hide }")
+    //        button.btn.btn-link.float-right(@click="hide") Cancel
+    //        Post(:action="submitUrl" :model="form" @errors="errors = $event" @saved="saved('Contract extension has been requested.')")
+    //          button.btn.btn-dark.float-right Confirm
 
 </template>
 
