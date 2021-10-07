@@ -13,7 +13,7 @@
         .col-6.col-sm-6
           InputDate(v-model="row.date" :errors="errors['time_logs.date']") Date
         .col-5.col-sm-5
-          InputNumber(v-model.number="row.hours" :errors="errors['time_logs.hours']") Hours
+          InputText(v-model="row.hours" :errors="errors['time_logs.hours']") Hours
         .col-md-12(v-if="i !== entry.time_logs_attributes.length - 1")
           hr
       hr
@@ -110,7 +110,7 @@ export default {
     },
     totalDue() {
       const totalHours = this.entry.time_logs_attributes
-                            .map(item => (parseInt(item.hours) || 0))
+                            .map(item => (parseFloat(item.hours) || 0))
                             .reduce((previousValue, currentValue) => previousValue + currentValue )
       return (totalHours * this.project.hourly_rate) || 0
     }
