@@ -3,88 +3,91 @@
   Get.d-flex.flex-column.flex-grow-1(:project="projectUrl" :etag="etag"): template(v-slot="{project}")
     CommonHeader(section="Jobs" :title="project.title" :sub="project.business.business_name")
       router-link.btn.btn-outline-dark.align-self-end(v-if="showTimesheetBtn(project)" :to="timesheetUrl" target="_blank") My Timesheet
-    Get(v-if="isApproved(project)" :localProject="projectUrl + '/local'"): template(v-slot="{localProject}"): b-tabs(v-model="tab" content-class="mt-0")
-      b-tab(title="Overview")
-        .white-card-body.p-y-1
-          .container
-            .row.p-x-1
-              .col-sm-12
-                ChangeContractAlerts(:project="project" @saved="newEtag" for="Specialist")
-                CommonContractAlerts(:project="project" for="Specialist")
-              .col-md-8.col-sm-12
-                PropertiesTable(title="Project Details" :properties="acceptedOverviewProps(localProject)")
-              .col-md-4.col-sm-12.pl-0
-                .card
-                  .card-header.d-flex.justify-content-between
-                    h3.m-y-0 Collaborators
-                    a.link.btn(@click="viewContract()") View All
-                  .card-body
-                    table.rating_table
-                      thead
-                        tr
-                          th
-                            | Name
-                            b-icon.ml-2(icon='chevron-expand')
-                          th
-                      tbody
-                        tr
-                          td
-                            .d-flex.align-items-center.mb-3
-                              div
-                                UserAvatar.userpic_small.mr-2(:user="ownerObject(localProject.owner)")
-                              div.d-flex.flex-column
-                                b {{ ownerName(localProject.owner) }}
-                        tr(v-for="contract in getContractsByLocalProject(localProject)" :key="contract._key")
-                          td
-                            .d-flex.align-items-center.mb-3
-                              div
-                                UserAvatar.userpic_small.mr-2(:user="contract.specialist")
-                              div.d-flex.flex-column
-                                b {{ contract.specialist.first_name }} {{ contract.specialist.last_name }}
-                                span {{ contract.specialist.seat_role }}
-                          td
-                            b-dropdown.float-right(text="..." variant="default" right)
-                              b-dropdown-item(@click="viewContract(contract)") View Contract
-          .container.m-t-1
-            .row.p-x-1
-              .col-md-12
-                DiscussionCard(:project-id="project.local_project_id" :token="accessToken")
+    
+    Get(v-if="isApproved(project)" :localProject="projectUrl + '/local'"): template(v-slot="{localProject}"): b-tabs.special-navs(content-class="mt-0 h-100" v-model="tab")
+      b-tab(title="Detail")
+        .card-body.card-body_full-height
+          .row
+            .col-sm-12
+              ChangeContractAlerts(:project="project" @saved="newEtag" for="Specialist")
+              CommonContractAlerts(:project="project" for="Specialist")
+          .row
+            .col-md-8.col-sm-12.m-b-2
+              PropertiesTable(title="Project Details" :properties="acceptedOverviewProps(localProject)")
+            .col-md-4.col-sm-12.m-b-2
+              .card
+                .card-header.d-flex.justify-content-between
+                  h3.m-y-0 Collaborators
+                  a.link.btn(@click="viewContract()") View All
+                .card-body
+                  table.rating_table.collaborators_table
+                    thead
+                      tr
+                        th.fw-400.p-b-05
+                          | Name
+                          b-icon.ml-2(icon='chevron-expand')
+                        th.p-b-05
+                    tbody
+                      tr
+                        td
+                          .d-flex.align-items-center.mb-3
+                            div.mr-2
+                              UserAvatar.userpic_small(:user="ownerObject(localProject.owner)")
+                            div.d-flex.flex-column.fs-14
+                              b {{ ownerName(localProject.owner) }}
+                        td
+                          b-dropdown.float-right(text="..." variant="default" right)
+                            b-dropdown-item(@click="viewContract(contract)") View Contract
+                      tr(v-for="contract in getContractsByLocalProject(localProject)" :key="contract._key")
+                        td
+                          .d-flex.align-items-center.mb-3
+                            div.mr-2
+                              UserAvatar.userpic_small(:user="contract.specialist")
+                            div.d-flex.flex-column.fs-14
+                              b {{ contract.specialist.first_name }} {{ contract.specialist.last_name }}
+                              span {{ contract.specialist.seat_role }}
+                        td
+                          b-dropdown.float-right(text="..." variant="default" right)
+                            b-dropdown-item(@click="viewContract(contract)") View Contract
+
+          .row
+            .col-md-12
+              DiscussionCard(:project-id="project.local_project_id" :token="accessToken" :disabled="project.status == 'Complete'")
       b-tab(title="Tasks")
       b-tab(title="Documents")
         .card-body.card-body_full-height.h-100: .card
           DocumentList(:project="localProject" :disabled="project.status == 'Complete'")
       b-tab(title="Collaborators")
-        .white-card-body.p-y-1
-          .container
-            .row.p-x-1
-              .col-sm-12
-                .card(v-if="!showingContract")
-                  .card-header.d-flex.justify-content-between
-                    h3.m-y-0 Collaborators
-                  .card-body
-                    table.table
-                      tbody
-                        tr
-                          td.pb-3
-                            UserAvatar.userpic_small.mr-2(:user="ownerObject(localProject.owner)")
-                            b {{ ownerName(localProject.owner) }}
-                          td
-                        tr(v-for="contract in getContractsByLocalProject(localProject)" :key="contract._key")
-                          td.pb-3
-                            button.btn.btn-default.float-right(@click="showingContract = contract") View Contract
-                            UserAvatar.userpic_small.mr-2(:user="contract.specialist")
-                            b {{ contract.specialist.first_name }} {{contract.specialist.last_name }},
-                            |  Specialist
-                          td
-                div(v-else)
-                  .row: .col-sm-12
-                    EndContractModal(:project="showingContract" @saved="completeSuccess")
-                      button.btn.btn-dark.float-right(v-if="!isContractComplete(showingContract)") End Contract
-                    Breadcrumbs.m-y-1(:items="['Collaborators', `${showingContract.specialist.first_name} ${showingContract.specialist.last_name}`]")
-                  .row
-                    .col-sm-12
-                      PropertiesTable(title="Contract Details" :properties="proposalProps(showingContract)")
-                        EditContractModal(v-if="!isContractComplete(showingContract)" :project="showingContract" @saved="newEtag(), tab = 0")
+        .card-body.card-body_full-height
+          .row
+            .col-sm-12
+              .card(v-if="!showingContract")
+                .card-header.d-flex.justify-content-between
+                  h3.m-y-0 Collaborators
+                .card-body
+                  table.table
+                    tbody
+                      tr
+                        td.pb-3
+                          UserAvatar.userpic_small.mr-2(:user="ownerObject(localProject.owner)")
+                          b {{ ownerName(localProject.owner) }}
+                        td
+                      tr(v-for="contract in getContractsByLocalProject(localProject)" :key="contract._key")
+                        td.pb-3
+                          button.btn.btn-default.float-right(v-if="project.status !== 'Complete'" @click="showingContract = contract") View Contract
+                          UserAvatar.userpic_small.mr-2(:user="contract.specialist")
+                          b {{ contract.specialist.first_name }} {{contract.specialist.last_name }},
+                          |  Specialist
+                        td
+              div(v-else)
+                .row: .col-sm-12
+                  EndContractModal(:project="showingContract" @saved="completeSuccess")
+                    button.btn.btn-dark.float-right(v-if="!isContractComplete(showingContract)") End Contract
+                  Breadcrumbs.m-y-1(:items="['Collaborators', `${showingContract.specialist.first_name} ${showingContract.specialist.last_name}`]")
+                .row
+                  .col-sm-12
+                    PropertiesTable(title="Contract Details" :properties="proposalProps(showingContract)")
+                      EditContractModal(v-if="!isContractComplete(showingContract)" :project="showingContract" @saved="newEtag(), tab = 0")
     b-tabs(v-else)
       b-tab(title="Overview")
         .white-card-body.p-y-1
