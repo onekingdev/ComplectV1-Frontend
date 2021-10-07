@@ -137,14 +137,12 @@ div
           localStorage.setItem('app.business_id', business.business_id)
           localStorage.setItem('app.currentUser.role', business.role)
           localStorage.setItem('app.currentUser.userType', JSON.stringify('businesses'))
-          localStorage.setItem('app.mirroring', true)
           window.location.href = `/business`
         }
         if (!business) {
           localStorage.removeItem('app.business_id')
           localStorage.removeItem('app.currentUser.role')
           localStorage.setItem('app.currentUser.userType', JSON.stringify('specialists'))
-          localStorage.setItem('app.mirroring', false)
           window.location.href = `/specialist`
         }
       },
