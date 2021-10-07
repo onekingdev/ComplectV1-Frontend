@@ -1,37 +1,24 @@
 <template lang="pug">
   div(v-if="hasChanges || isSuggestionVisible")
-    .alert.alert-warning.m-b-20(v-if="hasChanges && !isMyChange && project.extension.ends_on_only")
-      h4.alert-heading Contract extension till {{ project.extension.ends_on | asDate }} requested
-      p.mb-0
-        Post(:action="`${submitUrl}/1`" method="PUT" :model="{confirm:true}" @saved="saved('Deadline extended')")
-          button.btn.btn-default.float-right Accept
-        Post(:action="`${submitUrl}/1`" method="PUT" :model="{deny:true}" @saved="saved('Deadline extension denied')")
-          button.btn.btn-default.float-right.m-r-1 Deny
-        | {{ counterpartyName }} has requested to extend the contract.
-    .alert.alert-warning.m-b-20(v-else-if="hasChanges && !isMyChange")
-      h4.alert-heading Modification to contract terms requested.
-      p.mb-0
-        | {{ counterpartyName }} has requested to modify the terms of the contract.
-        ApproveContractChangesModal(:project="project" @saved="$emit('saved')")
-    Notifications.m-b-20(v-else-if="isSuggestionVisible" :notify="notifyDueDate")
+  
+    Notifications.m-b-20(v-if="hasChanges && !isMyChange && project.extension.ends_on_only" :notify="contractExtension")
+      Post(:action="`${submitUrl}/1`" method="PUT" :model="{confirm:true}" @saved="saved('Deadline extended')")
+        button.btn.btn-default.float-right Accept
+      Post(:action="`${submitUrl}/1`" method="PUT" :model="{deny:true}" @saved="saved('Deadline extension denied')")
+        button.btn.btn-default.float-right.m-r-1 Deny
+    
+    Notifications.m-b-20(v-else-if="hasChanges && !isMyChange" :notify="contractModification")
+      ApproveContractChangesModal(:project="project" @saved="$emit('saved')")
+
+    Notifications.m-b-20(v-else-if="isSuggestionVisible" :notify="contractDueDate")
       button.btn.btn-default.m-r-2(v-b-modal="'ExtendDeadlineModal'") Extend
-        b-modal(id="ExtendDeadlineModal" title="Extend Deadline")
+        b-modal(id="ExtendDeadlineModal" title="Extends Deadline")
           InputDate(v-model="form.ends_on" :errors="errors.ends_on" :options="datepickerOptions") New Due Date
           template(#modal-footer="{ hide }")
             button.btn.btn-link.float-right(@click="hide") Cancel
             Post(:action="submitUrl" :model="form" @errors="errors = $event" @saved="saved('Contract extension has been requested.')")
               button.btn.btn-dark.float-right Confirm
-    //.alert.alert-warning.m-b-20(v-else-if="isSuggestionVisible")
-    //  h4.alert-heading Contract deadline is tomorrow.
-    //  p.mb-0
-    //    button.btn.btn-default.float-right(v-b-modal="'ExtendDeadlineModal'") Extend
-    //    | Contract ends tomorrow and outstanding invoices will automatically be processed. Do you need to extend the deadline?
-    //    b-modal(id="ExtendDeadlineModal" title="Extend Deadline")
-    //      InputDate(v-model="form.ends_on" :errors="errors.ends_on" :options="datepickerOptions") New Due Date
-    //      template(#modal-footer="{ hide }")
-    //        button.btn.btn-link.float-right(@click="hide") Cancel
-    //        Post(:action="submitUrl" :model="form" @errors="errors = $event" @saved="saved('Contract extension has been requested.')")
-    //          button.btn.btn-dark.float-right Confirm
+
 </template>
 
 <script>
@@ -60,15 +47,11 @@ export default {
         ends_on: null
       },
       errors: {},
-      notifyDueDate: {
+      notifyBase: {
         show: 'show',
-        mainText: `Contract deadline is tomorrow.`,
-        subText: 'Contract ends tomorrow and outstanding invoices will automatically be processed. Do you need to extend the deadline?',
         variant: 'warning',
-        dismissible: true,
-        icon: null,
         scale: 2,
-      },
+      }
     }
   },
   methods: {
@@ -78,12 +61,44 @@ export default {
     }
   },
   computed: {
+    counterpartyName() {
+      const i = TYPES.indexOf(this.for), { business, specialist } = this.project
+      return [business.business_name, `${specialist.first_name} ${specialist.last_name}`][i]
+    },
+    contractExtension() {
+      return {
+        ...this.notifyBase,
+        mainText: `Contract extension till ${this.$options.filters.asDate(this.project.extension.ends_on) } requested`,
+        subText: `${this.counterpartyName } has requested to extend the contract.`
+      }
+    },
+    contractModification() {
+      return {
+        ...this.notifyBase,
+        mainText: 'Modification to contract terms requested.',
+        subText: `${this.counterpartyName} has requested to modify the terms of the contract.`
+      }
+    },
+    contractDueDate() {
+      return {
+        ...this.notifyBase,
+        mainText: `Contract deadline is tomorrow.`,
+        subText: 'Contract ends tomorrow and outstanding invoices will automatically be processed. Do you need to extend the deadline?',
+        dismissible: true,
+      }
+    },
+
     counterpartyType() {
       return TYPES.find(type => type !== this.for).toLowerCase()
     },
     counterpartyName() {
       const i = TYPES.indexOf(this.for), { business, specialist } = this.project
       return [business.business_name, `${specialist.first_name} ${specialist.last_name}`][i]
+    },
+    notifyExtend() {
+      const i = TYPES.indexOf(this.for), { business, specialist } = this.project
+      const counterpartyName = [business.business_name, `${specialist.first_name} ${specialist.last_name}`][i]
+      return {...this.notifyExtendBase, subText: `${counterpartyName} has requested to modify the terms of the contract.`,}
     },
     hasChanges() {
       return this.project.extension && this.project.extension.requester
