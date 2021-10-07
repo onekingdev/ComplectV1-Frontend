@@ -4,28 +4,28 @@
       .col
         .d-flex.align-items-center
           .d-flex.align-items-center.justify-content-center.icon_width
-            b-icon(v-if="item.type !== 'message'" icon="exclamation-triangle-fill" scale="2" variant="warning")
-            UserAvatar(v-if="item.type === 'message'" :user="item.specialist")
+            //- b-icon(v-if="item.type !== 'message'" icon="exclamation-triangle-fill" scale="2" variant="warning")
+            UserAvatar(v-if="item.type === 'message'" :user="{photo: item.photo, first_name: item.first_name, last_name: item.last_name}")
           .d-block.ml-4.message-info
-            h5 {{ item.specialist.first_name + ' ' + item.specialist.last_name }}
-            p.mb-0 {{ item.message }}
+            h5.username {{ item.name }}
+            p.mb-0.message-content {{ item.message }}
             p.mb-0.time {{ item.created_at | dateToHuman }}
           .d-flex.justify-content-end.align-items-center.h-100.ml-auto
-            b-badge.mr-2(v-if="todayMessage(item.created_at)" variant="default") 1 New Message
-            MessagesModalCreate(v-if="item.type === 'message'" :item="item" )
+            b-badge.mr-2(v-if="item.newMessage > 0" variant="default") {{ item.newMessage }} New Message
+            DirectMessageModal(:targetUser="item")
               b-button.btn.mr-2.font-weight-bold(type='button' variant='default') View
-            .actions
-              b-dropdown(size="sm" variant="none" class="m-0 p-0" right)
-                template(#button-content)
-                  b-icon(icon="three-dots")
-                b-dropdown-item-button Edit
-                b-dropdown-item-button.delete Delete
+            //- .actions
+            //-   b-dropdown(size="sm" variant="none" class="m-0 p-0" right)
+            //-     template(#button-content)
+            //-       b-icon(icon="three-dots")
+            //-     b-dropdown-item-button Edit
+            //-     b-dropdown-item-button.delete Delete
 </template>
 
 <script>
   import { DateTime } from 'luxon'
   import UserAvatar from '@/common/UserAvatar'
-  import MessagesModalCreate from "../../center/modals/MessagesModalCreate";
+  import DirectMessageModal from '@/common/Messages/DirectMessageModal'
 
   var today = DateTime.now().toLocaleString(DateTime.DATE_FULL)
   var yesterday = DateTime.now().plus({ days: -1 }).toLocaleString(DateTime.DATE_FULL)
@@ -34,7 +34,7 @@
     name: "notifyItem",
     props: ['item'],
     components: {
-      MessagesModalCreate,
+      DirectMessageModal,
       UserAvatar
     },
     data() {
@@ -77,13 +77,27 @@
 </script>
 
 <style scoped>
-  .icon_width {
-    width: 40px;
-  }
-  .time{
-    color: #a4a5ab;
-  }
-  .message-info {
-    max-width: 69.5rem;
-  }
+.username {
+  font-size: 14px;
+  color: #303132;
+  font-weight: 600;
+}
+
+.message-content {
+  font-size: 12px;
+  color: #797B7E;
+}
+
+.icon_width {
+  width: 40px;
+}
+
+.time{
+  color: #A2A3A9;
+  font-size: 12px;
+}
+
+.message-info {
+  max-width: 69.5rem;
+}
 </style>

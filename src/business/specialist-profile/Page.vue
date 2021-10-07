@@ -22,13 +22,14 @@
                 .row
                   .col-md-7.col
                     h3.standard-text
-                      span.link.middle-text {{ specialist.first_name }} {{ specialist.last_name }}
+                      span.link.middle-text {{ userName }}
                     .d-inline.intro-text(v-if="userLocationAndIndustries") {{ userLocationAndIndustries }}
                     .d-flex.py-2
                       StarsRating(:rate="Math.floor(Math.random() * 5)")
                   .col-md-5.col.justify-content-end
                     .d-flex.align-items-center.justify-content-lg-end
-                      b-button(variant="dark" @click="$emit('directMessage')") Message
+                      DirectMessageModal(:targetUser="{id: specialist.id, name: userName}")
+                        b-button(variant="dark" @click="$emit('directMessage')") Message
               .offset-lg-2.col-lg-10.col
                 b-card-text.m-t-1.grey-text(v-if="specialist.description") {{specialist.description}}
                 .d-flex.justify-content-between
@@ -56,10 +57,14 @@
 
 </template>
 <script>
+import DirectMessageModal from '@/common/Messages/DirectMessageModal'
 import SpecialistMixin from '@/mixins/SpecialistMixin'
 import { DateTime } from 'luxon'
 export default {
   mixins: [SpecialistMixin],
+  components: {
+    DirectMessageModal
+  },
   computed: {
     specialist() {
       return this.$store.getters['marketplace/currentSpecialist']

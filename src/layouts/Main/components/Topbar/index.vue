@@ -25,7 +25,8 @@
     b-navbar-nav.flex-row.align-items-center.ml-auto
       router-link.btn.btn-warning.btn-topbar.btn-topbar_find(v-if="domain !== 'specialist' && role !=='basic'" :to='`/specialistmarketplace`' target="_blank") Find an Expert
       router-link.btn.btn-warning.btn-topbar.btn-topbar_find(v-if="domain === 'specialist'" :to='`/specialist/job_board`') Browse Jobs
-      //- router-link.btn.btn-topbar.btn-topbar_notify(:to='`/${domain}/notification-center`')
+      router-link.btn.btn-topbar.btn-topbar_notify(:to='`/${domain}/notification-center`')
+        span.notice(v-if="hasNewMessage")
         ion-icon(name='notifications-outline')
       b-nav-item-dropdown.topbar-right-dropdown.actions(right)
         // Using 'button-content' slot
@@ -56,7 +57,7 @@
         account: {
           first_name: '',
           last_name: ''
-        }
+        },
       }
     },
     computed: {
@@ -89,6 +90,9 @@
         }
 
         return true
+      },
+      hasNewMessage() {
+        return this.$store.getters.unreadMessageCount > 0
       }
     },
 
@@ -154,6 +158,7 @@
     watch: {
       '$route' () {
         if(window.innerWidth < 992) this.visible = false
+        this.$store.dispatch('getNotificationMessages')
       },
       'currentUser' (newVal) {
         this.setAccount(newVal)
@@ -164,5 +169,21 @@
 <style scoped>
 .font-16 {
   font-size: 16px;
+}
+
+.btn-topbar_notify {
+  position: relative;
+}
+
+.notice {
+  display: block;
+  width: 9px;
+  height: 9px;
+  background: #FFC900;
+  border-radius: 50%;
+  position: absolute;
+  top: 12px;
+  right: 17px;
+  z-index: 1000;
 }
 </style>
