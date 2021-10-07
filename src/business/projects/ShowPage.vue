@@ -230,7 +230,7 @@ export default {
       this.toast('Success', 'Contract early termination request has been denied.')
     },
     taskSaved() {
-      this.toast('Success', 'Task created')
+      this.toast('Success', 'Task has been updated.')
     },
     getContracts(projects) {
       return projects.filter(project => !!project.specialist)
