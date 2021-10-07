@@ -360,7 +360,8 @@ export default {
             data.address_2,
             data.contact_phone,
             data.website,
-            data.zipcode
+            data.zipcode,
+            data.photo
           ))
           if (!payload.business) commit('UPDATE_USER', new AccountInfoSpecialist(
             data.experience,
@@ -371,7 +372,8 @@ export default {
             data.last_name,
             data.resume_url,
             data.skills,
-            data.username
+            data.username,
+            data.photo_url
           ))
           if(!data.errors) localStorage.setItem('app.currentUser', JSON.stringify(data));
         }

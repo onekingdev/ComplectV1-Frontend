@@ -30,8 +30,8 @@
       b-nav-item-dropdown.topbar-right-dropdown.actions(right)
         // Using 'button-content' slot
         template(#button-content)
-          UserAvatar.topbar-right-dropdown__avatar(:user="account" :sm="true")
-          span.topbar-right-dropdown__name {{ account.first_name }} {{ account.last_name }}
+          UserAvatar.topbar-right-dropdown__avatar(:user="account" :sm="true" customClass="small")
+          span.topbar-right-dropdown__name.font-16 {{ account.first_name }} {{ account.last_name }}
           ion-icon.topbar-right-dropdown__icon(name='chevron-down-outline')
         template(v-if="!seatRole")
           li(v-if="activeContracts && activeContracts.length")
@@ -145,6 +145,7 @@
       },
       setAccount(user) {
         this.account = {
+          photo: this.currentUser.photo ? this.currentUser.photo : this.currentUser.photo_url,
           first_name: user.contact_first_name ? `${user.contact_first_name}` : `${user.first_name}`,
           last_name: user.contact_last_name ? `${user.contact_last_name}` : `${user.last_name}`,
         }
@@ -160,3 +161,8 @@
     }
   }
 </script>
+<style scoped>
+.font-16 {
+  font-size: 16px;
+}
+</style>
