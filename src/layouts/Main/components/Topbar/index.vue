@@ -1,4 +1,7 @@
 <template lang="pug">
+div
+  .topbar-banner(v-if="role") Viewing Business Max.
+    .exit-mirroring(@click="openSelectedBusiness(null)") Exit
   .topbar
     .logo(@click="openLink('default')")
       router-link.logo__link(:to='`/${domain}`')
@@ -35,7 +38,7 @@
           span.topbar-right-dropdown__name.font-16 {{ account.first_name }} {{ account.last_name }}
           ion-icon.topbar-right-dropdown__icon(name='chevron-down-outline')
         template(v-if="!seatRole")
-          li(v-if="activeContracts && activeContracts.length")
+          //- li(v-if="activeContracts && activeContracts.length")
             .dropdown-item(@click="openSelectedBusiness(null)") Back
           li(v-if="activeContracts" v-for="(contract, idx) in  activeContracts" :key="idx")
             .dropdown-item(@click="openSelectedBusiness(contract)") {{ contract.business_name }}

@@ -171,6 +171,24 @@ input, button, select, optgroup, textarea {
   @include border-bottom-gray-1;
 }
 
+.topbar-banner {
+  background: #FFEFB8;
+  width: 100%;
+  text-align: center;
+  padding: 1rem;
+  line-height: 1.2;
+  font-size: 14px;
+  font-weight: 600;
+  color: #303132;
+  .exit-mirroring {
+    display: inline-block;
+    color: #0479FF;
+    font-weight: 400;
+    cursor: pointer;
+    margin-left: 0.5rem;
+  }
+}
+
 .topbar-menu {
   margin-left: 2.5rem;
   //margin: 1.875rem auto 1.875rem 2.5rem; // 30px auto 30px 40px;
