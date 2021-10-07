@@ -118,7 +118,7 @@ export default {
       this.$bvModal.hide('DeletePostModal')
     },
     denied(id) {
-      redirectWithToast(this.$store.getters.url('URL_PROJECT_SHOW', id), 'Proposal has been denied.')
+      redirectWithToast(this.$store.getters.url('URL_PROJECT_SHOW', id), 'Proposal has been denied.', 'Success')
       this.$bvModal.hide(this.confirmModalId)
     },
     goBack() {
