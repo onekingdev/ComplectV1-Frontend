@@ -1,5 +1,5 @@
 export class AccountInfoBusiness {
-  constructor(apartment, aum, business_name, city, client_account_cnt, contact_first_name, contact_last_name, crd_number, id, industries, jurisdictions, state, sub_industries, username, address_1, address_2, contact_phone, website, zipcode) {
+  constructor(apartment, aum, business_name, city, client_account_cnt, contact_first_name, contact_last_name, crd_number, id, industries, jurisdictions, state, sub_industries, username, address_1, address_2, contact_phone, website, zipcode, photo) {
     this.apartment = apartment,
     this.aum = aum,
     this.business_name = business_name,
@@ -19,11 +19,12 @@ export class AccountInfoBusiness {
     this.contact_phone = contact_phone,
     this.website = website,
     this.zipcode = zipcode
+    this.photo = photo
   }
 }
 
 export class AccountInfoSpecialist {
-  constructor(experience, first_name, former_regulator, id, industries, last_name, resume_url, skills, username) {
+  constructor(experience, first_name, former_regulator, id, industries, last_name, resume_url, skills, username, photo) {
     this.experience = experience,
     this.first_name = first_name,
     this.former_regulator = former_regulator,
@@ -33,5 +34,6 @@ export class AccountInfoSpecialist {
     this.resume_url = resume_url,
     this.skills = skills,
     this.username = username
+    this.photo_url = photo
   }
 }
