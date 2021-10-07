@@ -69,7 +69,9 @@ export default {
   },
   methods: {
     saved(timesheet, message) {
-      this.toast(message, message)
+      // this.toast(message, message)
+      const text = message === 'Approved' ? 'Timesheet has been approved.' : 'Timesheet has been disputed.'
+      this.toast('Success', text)
       this.$bvModal.hide(`TimesheetModal${timesheet.id}`)
       this.newEtag()
     },

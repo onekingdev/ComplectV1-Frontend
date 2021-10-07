@@ -54,8 +54,8 @@
                     b-dropdown(size="xs" variant="none" class="m-0 p-0" right)
                       template(#button-content)
                         b-icon(icon="three-dots")
-                      b-dropdown-item Message
-                      b-dropdown-item Remove Contact
+                      DirectMessageModal(:targetUser="contact")
+                        b-dropdown-item Message
             .row.h-100(v-if="contacts && !contacts.length && !loading")
               .col.h-100.text-center
                 EmptyState(name="Tasks")
@@ -70,8 +70,8 @@
                   td
                     h3 {{rating.project_title}}
                     p {{rating.rater_name}} | {{rating.created_at | asDate}}
-                    p: i "{{rating.review}}"
-                  td: StarRating(:stars="rating.value")
+                    p(v-if="rating.review"): div.font-italic.review "{{rating.review}}"
+                  td: StarsRating(:rate="rating.value")
                 //tr(v-if="!ratings.length")
                 //  td.text-center
                 //    h3.text-dark.p-y-2 No ratings
@@ -82,6 +82,7 @@
 <script>
 import { mapGetters } from "vuex"
 import EmptyState from '@/common/EmptyState'
+import DirectMessageModal from '@/common/Messages/DirectMessageModal'
 import ProjectTable from './ProjectTable'
 import LocalProjectModal from './LocalProjectModal'
 import EtaggerMixin from '@/mixins/EtaggerMixin'
@@ -108,7 +109,8 @@ export default {
     ProjectTable,
     LocalProjectModal,
     StarsRating,
-    EmptyState
+    EmptyState,
+    DirectMessageModal
   },
   methods: {
     getContacts(projects) {
@@ -147,3 +149,8 @@ export default {
   }
 }
 </script>
+<style scoped>
+.review {
+  width: 84%;
+}
+</style>

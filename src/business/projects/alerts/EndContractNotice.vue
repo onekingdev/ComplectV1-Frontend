@@ -5,7 +5,7 @@
       p Specialist has requested to complete the contract early.
       EndContractModal(:project="project" @saved="$emit('saved')" @errors="$emit('errors', $event)" :right="false")
         button.btn.btn-light Approve
-      button.btn.btn-light.m-l-1 Deny
+      button.btn.btn-light.m-l-1(@click="denyEndcontract()") Deny
     div(v-else)
       p You have requested to complete the contract early.
 </template>
@@ -23,6 +23,20 @@ export default {
   computed: {
     url() {
       return '/api/business/projects/' + this.project.id + '/ends/' + this.project.end_request.id
+    }
+  },
+  methods: {
+    async denyEndcontract() {
+      const payload = {
+        projectId: this.project.id,
+        endRequestId: this.project.end_request.id
+      }
+      const res = await this.$store.dispatch('projects/denyContract', payload)
+      if (res && res.success) {
+        this.$emit('deny')
+      } else {
+        this.toast('Error', 'Contract early termination request has not been denied. Please try again.')
+      }
     }
   },
   components: {

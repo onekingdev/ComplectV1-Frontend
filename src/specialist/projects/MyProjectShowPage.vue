@@ -1,6 +1,7 @@
 <template lang="pug">
-  Get(:project="projectUrl" :etag="etag"): template(v-slot="{project}")
-    CommonHeader(:title="project.title" :sub="project.business.business_name" :breadcrumbs="['Projects', project.title]")
+.page.custom-project-layout-style
+  Get.d-flex.flex-column.flex-grow-1(:project="projectUrl" :etag="etag"): template(v-slot="{project}")
+    CommonHeader(section="Jobs" :title="project.title" :sub="project.business.business_name")
       router-link.btn.btn-outline-dark.align-self-end(v-if="showTimesheetBtn(project)" :to="timesheetUrl" target="_blank") My Timesheet
     Get(v-if="isApproved(project)" :localProject="projectUrl + '/local'"): template(v-slot="{localProject}"): b-tabs(v-model="tab" content-class="mt-0")
       b-tab(title="Overview")
@@ -9,6 +10,7 @@
             .row.p-x-1
               .col-sm-12
                 ChangeContractAlerts(:project="project" @saved="newEtag" for="Specialist")
+                CommonContractAlerts(:project="project" for="Specialist")
               .col-md-8.col-sm-12
                 PropertiesTable(title="Project Details" :properties="acceptedOverviewProps(localProject)")
               .col-md-4.col-sm-12.pl-0
@@ -25,6 +27,13 @@
                             b-icon.ml-2(icon='chevron-expand')
                           th
                       tbody
+                        tr
+                          td
+                            .d-flex.align-items-center.mb-3
+                              div
+                                UserAvatar.userpic_small.mr-2(:user="ownerObject(localProject.owner)")
+                              div.d-flex.flex-column
+                                b {{ ownerName(localProject.owner) }}
                         tr(v-for="contract in getContractsByLocalProject(localProject)" :key="contract._key")
                           td
                             .d-flex.align-items-center.mb-3
@@ -43,7 +52,7 @@
       b-tab(title="Tasks")
       b-tab(title="Documents")
         .card-body.card-body_full-height.h-100: .card
-          DocumentList(:project="localProject")
+          DocumentList(:project="localProject" :disabled="project.status == 'Complete'")
       b-tab(title="Collaborators")
         .white-card-body.p-y-1
           .container
@@ -53,46 +62,24 @@
                   .card-header.d-flex.justify-content-between
                     h3.m-y-0 Collaborators
                   .card-body
-                    table.rating_table
+                    table.table
                       tbody
-                        tr(v-for="contract in getContractsByLocalProject(localProject)" :key="contract._key")
+                        tr
+                          td.pb-3
+                            UserAvatar.userpic_small.mr-2(:user="ownerObject(localProject.owner)")
+                            b {{ ownerName(localProject.owner) }}
                           td
+                        tr(v-for="contract in getContractsByLocalProject(localProject)" :key="contract._key")
+                          td.pb-3
                             button.btn.btn-default.float-right(@click="showingContract = contract") View Contract
-                            img.m-r-1.userpic_small(v-if="contract.specialist.photo" :src="contract.specialist.photo")
+                            UserAvatar.userpic_small.mr-2(:user="contract.specialist")
                             b {{ contract.specialist.first_name }} {{contract.specialist.last_name }},
                             |  Specialist
                           td
                 div(v-else)
                   .row: .col-sm-12
-                    button.btn.btn-dark.float-right(v-if="!isContractComplete(showingContract)" v-b-modal.EndContractModal) End Contract
-                      b-modal.fade(id="EndContractModal" title="End Contract")
-                        p ℹ️ Ending this contract will remove you as a collaborator to the project, revoke any permissions granted due to the project, and payout the full contract price.
-                        p: b Do you want to continue?
-                        .card
-                          .card-body
-                            .row
-                              .col-sm
-                                img.m-r-1.userpic_small(v-if="showingContract.specialist.photo" :src="showingContract.specialist.photo")
-                                h3 {{ showingContract.specialist.first_name }} {{showingContract.specialist.last_name }}
-                                p Specialist
-                              .col-sm
-                                span.float-right Outstanding Due <br> {{ 500 | usdWhole }}
-                          .card-body
-                            p
-                              b Job Name
-                              span.float-right {{ showingContract.title }}
-                            p
-                              b Payment Schedule
-                              span.float-right {{ readablePaymentSchedule(showingContract.payment_schedule) }}
-                            p
-                              b Payment Method
-                              span.float-right Transfer to Visa
-                          .card-body
-                            p.text-right.text-muted *This total does not reflect processing fees.
-                        template(slot="modal-footer")
-                          button.btn(@click="$bvModal.hide('EndContractModal')") Cancel
-                          Post(:action="completeUrl(showingContract)" :model="{}" @saved="completeSuccess" @errors="completeErrors")
-                            button.btn.btn-dark.m-r-1 Confirm
+                    EndContractModal(:project="showingContract" @saved="completeSuccess")
+                      button.btn.btn-dark.float-right(v-if="!isContractComplete(showingContract)") End Contract
                     Breadcrumbs.m-y-1(:items="['Collaborators', `${showingContract.specialist.first_name} ${showingContract.specialist.last_name}`]")
                   .row
                     .col-sm-12
@@ -119,8 +106,10 @@
 <script>
 import { readablePaymentSchedule, fields } from '@/common/ProposalFields'
 import ChangeContractAlerts from '@/common/projects/ChangeContractAlerts'
+import CommonContractAlerts from '@/common/projects/CommonContractAlerts'
 import DiscussionCard from '@/common/projects/DiscussionCard'
 import EditContractModal from '@/common/projects/EditContractModal'
+import EndContractModal from '@/business/projects/EndContractModal'
 import DocumentList from '@/common/projects/DocumentList'
 import EditProposalModal from '@/specialist/projects/EditProposalModal'
 import EtaggerMixin from '@/mixins/EtaggerMixin'
@@ -155,7 +144,7 @@ const acceptedOverviewProps = project => [
 ]
 
 const isContractComplete = contract => contract.status === 'complete'
-
+const TOKEN = localStorage.getItem('app.currentUser.token') ? JSON.parse(localStorage.getItem('app.currentUser.token')) : ''
 export default {
   mixins: [EtaggerMixin()],
   props: {
@@ -171,6 +160,18 @@ export default {
     }
   },
   methods: {
+    ownerName(owner) {
+      if (owner.contact_first_name) return `${owner.contact_first_name} ${owner.contact_last_name}`
+      if (owner.first_name) return `${owner.first_name} ${owner.last_name}`
+      return ''
+    },
+    ownerObject(owner) {
+      return {
+        photo: owner.photo,
+        first_name: owner.contact_first_name ? owner.contact_first_name : owner.first_name,
+        last_name: owner.contact_last_name ? owner.contact_last_name : owner.last_name,
+      }
+    },
     isApproved(project) {
       return this.getUser.id === project.specialist_id
     },
@@ -208,7 +209,10 @@ export default {
     }
   },
   computed: {
-    ...mapGetters(['accessToken', 'getUser']),
+    ...mapGetters(['getUser']),
+    accessToken() {
+      return TOKEN
+    },
     application() {
       return this.$store.getters['projects/currentProposal']
     },
@@ -254,10 +258,40 @@ export default {
   },
   components: {
     ChangeContractAlerts,
+    CommonContractAlerts,
     DiscussionCard,
     DocumentList,
     EditContractModal,
-    EditProposalModal
+    EditProposalModal,
+    EndContractModal
   }
 }
 </script>
+
+<style lang="scss">
+.custom-project-layout-style {
+  .page-header, .special-navs .nav-tabs {
+    background: #fff;
+  }
+  .special-navs .nav-tabs {
+    border-top: 1px solid #dee2e6;
+    border-bottom: 1px solid #dee2e6;
+    display: flex;
+    .btn-group {
+      margin: auto 2.5rem auto auto;
+    }
+  }
+  .card {
+    height: 100%
+  }
+  .collaborator {
+    border-bottom: 1px solid #dee2e6;
+    &:last-child {
+      border: none;
+    }
+    &__name {
+      font-weight: 600
+    }
+  }
+}
+</style>

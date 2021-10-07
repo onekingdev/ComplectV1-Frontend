@@ -44,6 +44,10 @@ export default {
   max-width: 3em;
   border-radius: 50%;
 }
+.img-avatar.small {
+  max-height: 1.5625rem;
+  max-width: 1.5625rem;
+}
 .avatar-placeholder {
   display: inline-block;
   border-radius: 50%;

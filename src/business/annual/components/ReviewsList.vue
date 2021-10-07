@@ -15,7 +15,7 @@
         :current-id="currentId"
         :key="index"
       )
-    .review__category-add
+    .review__category-add.m-b-2
       button.btn.btn-default(v-if="!category.visible" @click="category.visible = true")
         b-icon.mr-2(icon='plus-circle-fill')
         | New Category

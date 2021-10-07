@@ -29,8 +29,9 @@
                 ApplicationsNotice(:project="project.visible_project" v-if="project.visible_project")
                 Get(v-for="marketProject in project.projects" :etag="etag" :marketProject="`/api/business/projects/${marketProject.id}`" :key="marketProject.id"): template(v-slot="{marketProject}")
                   TimesheetsNotice(:project="marketProject")
-                  EndContractNotice(:project="marketProject" @saved="contractEnded")
+                  EndContractNotice(:project="marketProject" @saved="contractEnded" @deny="denyContract")
                   ChangeContractAlerts(:project="marketProject" @saved="newEtag" for="Business")
+                  CommonContractAlerts(:project="marketProject" for="Business")
             .row
               .col-md-8.col-sm-12.m-b-2
                 .card
@@ -41,7 +42,7 @@
                     h3.m-y-0 Collaborators
                     a.link.btn(@click="viewContract()") View All
                   .card-body
-                    table.rating_table.collaborators_table(v-if="getContracts(project.projects).length")
+                    table.rating_table.collaborators_table
                       thead
                         tr
                           th.fw-400.p-b-05
@@ -49,21 +50,25 @@
                             b-icon.ml-2(icon='chevron-expand')
                           th.p-b-05
                       tbody
-                        tr(v-for="contract in getContracts(project.projects)" :key="contract.specialist.id")
+                        tr
                           td
                             .d-flex.align-items-center.mb-3
                               div
-                                UserAvatar.userpic_small.mr-2(:user="contract.specialist")
+                                UserAvatar.userpic_small.mr-2(:user="ownerObject(project.owner)")
+                              div.d-flex.flex-column.fw-600.fs-14
+                                span {{ ownerName(project.owner) }}
+                          td
+                        tr(v-for="contract in getContracts(project.projects)" :key="contract.specialist.id")
+                          td
+                            .d-flex.align-items-center.mb-3
+                              div.mr-2
+                                UserAvatar.userpic_small(:user="contract.specialist")
                               div.d-flex.flex-column.fw-600.fs-14
                                 span {{ contract.specialist.first_name }} {{ contract.specialist.last_name }}
                                 span {{ contract.specialist.seat_role }}
                           td
                             b-dropdown.float-right(text="..." variant="default" right)
                               b-dropdown-item(@click="viewContract(contract)") View Contract
-                    .applications(v-if="!getContracts(project.projects).length")
-                      .applications__body.applications__body_center.applications__body_m-h-200
-                        ion-icon.applications__icon.m-b-10(name="people-outline")
-                        p.empty-state__text.mb-0 No collaborators
             .row
               .col-md-12
                 DiscussionCard(:project-id="project.id" :token="token")
@@ -99,14 +104,20 @@
                           Post(:action="'/api/local_projects/' + project.id + '/specialists'" :model="{id}" @saved="newEtag()")
                             button.btn.btn-dark Create
                   .card-body
-                    .p-20.collaborator(v-for="contract in getContracts(project.projects)" :key="contract.specialist.id")
-                      .d-flex.justify-content-between.align-items-center
+                    .p-20.collaborator
+                      .d-flex.justify-content-between.align-items-center.mb-3
                         .d-flex.align-items-center
-                            div
-                              UserAvatar.userpic_small.mr-2(:user="contract.specialist")
-                            div.d-flex.flex-column
-                              b.collaborator__name {{ contract.specialist.first_name }} {{ contract.specialist.last_name }}
-                              span {{ contract.specialist.seat_role }}
+                          div
+                            UserAvatar.userpic_small.mr-2(:user="ownerObject(project.owner)")
+                          div.d-flex.flex-column
+                            b.collaborator__name {{ ownerName(project.owner) }}
+                      .d-flex.justify-content-between.align-items-center.mb-3(v-for="contract in getContracts(project.projects)" :key="contract.specialist.id")
+                        .d-flex.align-items-center
+                          div
+                            UserAvatar.userpic_small.mr-2(:user="contract.specialist")
+                          div.d-flex.flex-column
+                            b.collaborator__name {{ contract.specialist.first_name }} {{ contract.specialist.last_name }}
+                            span {{ contract.specialist.seat_role }}
                         .d-flex.justify-content-end
                           b-dropdown.bg-white.mr-2(variant="light", right)
                             template(#button-content)
@@ -117,10 +128,6 @@
                             EditRoleModal(:specialist="contract.specialist" :inline="false" @saved="accepted")
                               b-dropdown-item Edit Role
                           button.btn.btn-primary(@click="showingContract = contract") View Contract
-                    .applications(v-if="!getContracts(project.projects).length")
-                      .applications__body.applications__body_center.applications__body_m-h-200
-                        ion-icon.applications__icon.m-b-10(name="people-outline")
-                        p.empty-state__text.mb-0 No collaborators
                 div(v-else)
                   .row(v-if="!isContractComplete(showingContract)"): .col-sm-12
                     EndContractModal(:project="showingContract" @saved="contractEnded")
@@ -165,6 +172,7 @@ import TaskTableExtended from "@/common/TaskTableExtended";
 import IssueModal from './IssueModal'
 import EditRoleModal from './EditRoleModal'
 import MessagesModal from '@/common/Messages/MessagesModal'
+import CommonContractAlerts from '@/common/projects/CommonContractAlerts'
 
 const TOKEN = localStorage.getItem('app.currentUser.token') ? JSON.parse(localStorage.getItem('app.currentUser.token')) : ''
 const isContractComplete = contract => contract.status === 'complete'
@@ -193,6 +201,18 @@ export default {
     this.modalId = 'modal_' + Math.random().toFixed(9) + Math.random().toFixed(7)
   },
   methods: {
+    ownerName(owner) {
+      if (owner.contact_first_name) return `${owner.contact_first_name} ${owner.contact_last_name}`
+      if (owner.first_name) return `${owner.first_name} ${owner.last_name}`
+      return ''
+    },
+    ownerObject(owner) {
+      return {
+        photo: owner.photo,
+        first_name: owner.contact_first_name ? owner.contact_first_name : owner.first_name,
+        last_name: owner.contact_last_name ? owner.contact_last_name : owner.last_name,
+      }
+    },
     setApplications(payload) {
       this.applications = payload
     },
@@ -204,6 +224,10 @@ export default {
     contractEnded() {
       this.newEtag()
       this.toast('Success', 'Contract early termination request has been submitted.')
+    },
+    denyContract() {
+      this.newEtag()
+      this.toast('Success', 'Contract early termination request has been denied.')
     },
     taskSaved() {
       this.toast('Success', 'Task created')
@@ -290,7 +314,8 @@ export default {
     EditRoleModal,
     TaskFormModal,
     MessagesModal,
-    TaskTableExtended
+    TaskTableExtended,
+    CommonContractAlerts
   }
 }
 </script>

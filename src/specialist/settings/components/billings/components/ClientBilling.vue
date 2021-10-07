@@ -1,6 +1,6 @@
 <template lang="pug">
   div
-    div(v-if="!stripeAccount.id")
+    div(v-if="!stripeAccount.last4")
       p Choose how you want to get paid
       .card.mb-2
         .card-body
@@ -17,7 +17,7 @@
                   variant="dark"
                   @click="$emit('openComponent', 'SelectBilling')"
                 ) Add Method
-    .card.mb-2(v-if="stripeAccount.id")
+    .card.mb-2(v-if="stripeAccount.last4")
       .card-body
         .row
           .col
