@@ -14,7 +14,7 @@
         div(:class="taskId ? 'col-lg-6 pr-2' : 'col'")
           InputText(v-model="task.body" :errors="errors.body" placeholder="Name") Task Name
 
-          Get(v-if="isBusiness" v-bind="optionsToFetch"): template(v-slot="{projects,reviews,policies,exams, specialists, team_members}")
+          Get(v-bind="optionsToFetch"): template(v-slot="{projects,reviews,policies,exams, specialists, team_members}")
             label.m-t-1.form-label Link to
             ComboBox(:value="linkToValue" @input="inputLinkTo" :options="linkToOptions(projects, reviews, policies, exams)" placeholder="Select projects, internal reviews, or policies to link the task to" :tree-props="{ disableBranchNodes: true }")
             .form-text.text-muted Optional
@@ -213,6 +213,10 @@ export default {
     defaults: {
       type: Object,
       default: () => ({})
+    },
+    businessId: {
+      type: Number,
+      required: false
     }
   },
   data() {
@@ -271,12 +275,20 @@ export default {
     linkToOptions(projects, reviews, policies, exams) {
       const mapLinkProperty = (property, type) => ({ [property]: label, id }) => ({ id: `${type}|${id}`, label }),
         optionsBranch = (label, items, type, property) => ({ ...toOption(label), children: items.map(mapLinkProperty(property, type)) })
-      return [
+      if (this.isBusiness) {
+        return [
+          optionsBranch('Projects', projects || [], 'LocalProject', 'title'),
+          optionsBranch('Internal Reviews', reviews || [], 'AnnualReport', 'name'),
+          optionsBranch('Policies', policies || [], 'CompliancePolicy', 'name'),
+          optionsBranch('Exams', exams || [], 'Exam', 'name'),
+        ]
+      }
+
+      if (this.businessId) return [
         optionsBranch('Projects', projects || [], 'LocalProject', 'title'),
-        optionsBranch('Internal Reviews', reviews || [], 'AnnualReport', 'name'),
-        optionsBranch('Policies', policies || [], 'CompliancePolicy', 'name'),
-        optionsBranch('Exams', exams || [], 'Exam', 'name'),
       ]
+
+      return []
     },
     inputLinkTo(value) {
       const [type, id] = value.split('|')
@@ -333,6 +345,7 @@ export default {
           .then(response => {
             this.$bvModal.hide(this.modalId)
             this.toast('Success', this.task.done_at && this.taskId ? 'Task has been marked as incomplete.' : 'Task has been marked as complete.')
+            this.$emit('saved')
           })
           .catch(error => this.toast('Error', this.task.done_at && this.taskId ? 'Task has not been marked as incomplete. Please try again.' : 'Task has not been marked as complete. Please try again.', true ))
       } catch (error) {
@@ -443,7 +456,11 @@ export default {
             specialists: '/api/business/team_members/specialists',
             team_members: '/api/business/team_members'
           }
-        : {}
+        : {
+            projects: '/api/local_projects',
+            specialists: `/api/business/team_members/specialists?business_id=${this.businessId}`,
+            team_members: `/api/business/team_members?business_id=${this.businessId}`
+          }
     },
     daysOfWeek() {
       return ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'].map(index)
