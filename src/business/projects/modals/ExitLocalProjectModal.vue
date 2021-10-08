@@ -9,8 +9,8 @@
           b-icon.mt-1.ml-3(icon="exclamation-triangle-fill" variant="warning" width="25" height="25")
         .col
           div
-            p.m-b-10 Exiting will remove any unsaved changes.
-            p.mb-0: strong Do you want to continue?
+            p.m-b-10.font-14 Exiting will remove any unsaved changes.
+            p.mb-0.font-14: strong Do you want to continue?
 
       template(#modal-footer="{ hide }")
         button.btn.btn-link(@click="hide") Cancel
@@ -40,3 +40,8 @@ export default {
   }
 }
 </script>
+<style scoped>
+.font-14 {
+  font-size: 14px;
+}
+</style>

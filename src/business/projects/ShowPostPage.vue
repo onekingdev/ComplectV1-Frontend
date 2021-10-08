@@ -5,7 +5,7 @@
         Breadcrumbs.m-b-20(:items="['Project', project.title, 'Job Post']")
         .d-flex.w-100
           h2.page-header__title {{ project.title }}
-          PostProjectModalDelete.ml-auto
+          PostProjectModalDelete(@deleteConfirmed="deleted(project)").ml-auto
             button.btn.btn-primary Delete Post
       .card-body.card-body_full-height
         .row
@@ -113,9 +113,13 @@ export default {
       redirectWithToast(this.$store.getters.url('URL_PROJECT_SHOW', id), 'Specialist has been hired.', 'Success')
       this.$bvModal.hide(this.confirmModalId)
     },
-    deleted() {
-      redirectWithToast('/business/projects', 'Job posting has been deleted.')
-      this.$bvModal.hide('DeletePostModal')
+    async deleted(project) {
+      const res = await this.$store.dispatch('projects/deletePostProject', { id: this.projectId })
+      if (res.data && res.data.id) {
+        redirectWithToast(`/business/projects/${project.local_project_id}`, 'Job posting has been deleted.', 'Success')
+      } else {
+        this.toast('Error', 'Job posting has not been deleted. Please try again.')
+      }
     },
     denied(id) {
       redirectWithToast(this.$store.getters.url('URL_PROJECT_SHOW', id), 'Proposal has been denied.', 'Success')

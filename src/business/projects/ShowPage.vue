@@ -73,7 +73,7 @@
               .col-md-12
                 DiscussionCard(:project-id="project.id" :token="token")
         b-tab.h-100(title="Tasks")
-          .card-body.card-body_full-height.h-100: .card
+          .card-body.card-body_full-height.h-100.px-5: .card
             TaskTableExtended(:tasks="incompleteTasks(project)" :task-defaults="taskDefaults(project)" @saved="newEtag")
             h3.pointer(v-if="completedTasks(project).length" @click="completedTasksOpen = !completedTasksOpen")
               span.caret(:class="{caret_rotated:!completedTasksOpen}")
@@ -81,7 +81,7 @@
             b-collapse.m-t-1(v-if="completedTasks(project).length" v-model="completedTasksOpen")
               TaskTableExtended(:tasks="completedTasks(project)" :task-defaults="taskDefaults(project)" :create-button="false" @saved="newEtag")
         b-tab.h-100(title="Documents")
-          .card-body.card-body_full-height.h-100: .card
+          .card-body.card-body_full-height.h-100.px-5: .card
             DocumentList(:project="project")
         b-tab.h-100(title="Collaborators")
           .card-body.card-body_full-height

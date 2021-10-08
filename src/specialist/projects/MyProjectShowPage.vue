@@ -3,7 +3,8 @@
   Get.d-flex.flex-column.flex-grow-1(:project="projectUrl" :etag="etag"): template(v-slot="{project}")
     CommonHeader(section="Jobs" :title="project.title" :sub="project.business.business_name")
       router-link.btn.btn-outline-dark.align-self-end(v-if="showTimesheetBtn(project)" :to="timesheetUrl" target="_blank") My Timesheet
-    
+      a.btn.btn__close(href="/specialist/my-projects")
+        b-icon(icon="x")
     Get(v-if="isApproved(project)" :localProject="projectUrl + '/local'"): template(v-slot="{localProject}"): b-tabs.special-navs(content-class="mt-0 h-100" v-model="tab")
       b-tab(title="Detail")
         .card-body.card-body_full-height
@@ -88,22 +89,24 @@
                   .col-sm-12
                     PropertiesTable(title="Contract Details" :properties="proposalProps(showingContract)")
                       EditContractModal(v-if="!isContractComplete(showingContract)" :project="showingContract" @saved="newEtag(), tab = 0")
-    b-tabs(v-else)
-      b-tab(title="Overview")
-        .white-card-body.p-y-1
-          .container
-            .row.p-x-1
-              .col-md-12
-                PropertiesTable(title="Post Details" :properties="overviewProps(project)")
-      b-tab(title="Proposal")
-        .white-card-body.p-y-1
-          .container
-            .row.p-x-1
-              .col-md-12
-                Get(:application="applicationUrl(project.id)" :callback="setApplication"): template(v-slot="{application}")
-                PropertiesTable(v-if="application" title="Proposal" :properties="proposalPropsData")
-                  EditProposalModal(v-if="application" :project-id="project.id" :application-id="application.id" :proposal="application" :project="project")
-                    button.btn.btn-outline-dark.float-right Edit
+    template(v-else)
+      div.gray-border
+      b-tabs
+        b-tab(title="Detail")
+          .p-y-1
+            .container
+              .row.p-x-1
+                .col-md-12
+                  PropertiesTable(title="Post Details" :properties="overviewProps(project)")
+        b-tab(title="Proposal")
+          .p-y-1
+            .container
+              .row.p-x-1
+                .col-md-12
+                  Get(:application="applicationUrl(project.id)" :callback="setApplication"): template(v-slot="{application}")
+                  PropertiesTable(v-if="application" title="Proposal" :properties="proposalPropsData")
+                    EditProposalModal(v-if="application" :project-id="project.id" :application-id="application.id" :proposal="application" :project="project")
+                      button.btn.btn-dark.float-right Edit
 </template>
 
 <script>
@@ -296,5 +299,9 @@ export default {
       font-weight: 600
     }
   }
+}
+
+.gray-border {
+  border-bottom: 1px solid #dee2e6;
 }
 </style>
