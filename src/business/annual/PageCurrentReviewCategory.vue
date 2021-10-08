@@ -234,11 +234,11 @@ export default {
     deleteCategory(id) {
       this.$store.dispatch('annual/deleteReviewCategory', { annualId: this.review.id, id: id })
         .then(response => {
-          this.toast('Success', `The annual review category has been deleted! ${response.id}`)
+          this.toast('Success', `Internal review category has been deleted.`)
           //window.location.href = `${window.location.origin}/business/annual_reviews/${response.annual_report_id}`
           this.$router.push(`/business/annual_reviews/${response.annual_report_id}`)
         })
-        .catch(error => this.toast('Error', `Something wrong! ${error.message}`, true))
+        .catch(error => this.toast('Error', `Internal review category has not been deleted. Please try again.`, true))
     },
     saveAndExit() {
       this.saveCategory()
@@ -249,11 +249,11 @@ export default {
     deleteReview(reviewId){
       this.$store.dispatch('annual/deleteReview', { id: reviewId })
         .then(response => {
-          this.toast('Success', `The annual review has been deleted! ${response.id}, true`)
+          this.toast('Success', `Internal review has been deleted., true`)
           //window.location.href = `${window.location.origin}/business/annual_reviews`
           this.$router.push(`/business/annual_reviews`)
         })
-        .catch(error => this.toast('Error', `Something wrong! ${error.message}`, true))
+        .catch(error => this.toast('Error', `Internal review has not been deleted. Please try again.`, true))
     },
     backToList() {
       this.$router.push({ name: 'annual-reviews' })
