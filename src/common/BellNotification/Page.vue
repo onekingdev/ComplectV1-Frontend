@@ -30,7 +30,7 @@ export default {
     return {
       component: '',
       menu: [
-        { name: 'NotificationCenter', link: '#' },
+        { name: 'Notification Center', link: '#' },
         { name: 'Messages', link: '#' },
       ]
     };
