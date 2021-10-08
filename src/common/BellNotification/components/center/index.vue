@@ -16,7 +16,7 @@
               .row
                 .col
                   NotificationsList(:notifications="notificationsToday")
-                  div(v-if="notificationsToday && !notificationsToday.length") Notifications for today not exist
+                  div(v-if="notificationsToday && !notificationsToday.length") No notifications for today
             .settings___card--internal.p-y-1
               .row.m-b-1
                 .col
@@ -24,7 +24,7 @@
               .row
                 .col
                   NotificationsList(:notifications="notificationsNotToday")
-                   div(v-if="notificationsNotToday && !notificationsNotToday.length") Notifications not exist
+                   div(v-if="notificationsNotToday && !notificationsNotToday.length") No notifications
 </template>
 
 <script>
