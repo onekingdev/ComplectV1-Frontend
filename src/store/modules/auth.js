@@ -393,12 +393,17 @@ export default {
 
         const { userType, paymentSourceId, planName, additionalUsers, coupon_id } = { ...payload }
 
-        const endPoint = userType === 'business' ? 'business' : 'specialist'
+        // business will have the same path as specialist in future
+        // line below will be used in future
+        // const endPoint = userType === 'business' ? 'business' : 'specialist'
+        const endPoint = userType === 'business'
+          ? '/business/upgrade/subscribe'
+          : '/specialist/upgrades'
+
         // WAIT LONGER
         axios.defaults.timeout = 10000;
-        const response = await axios.post(`/${endPoint}/upgrade/subscribe`, {
+        const response = await axios.post(endPoint, {
           plan: planName,
-          payment_source_id: paymentSourceId,
           seats_count: additionalUsers,
           coupon_id: coupon_id
         })
