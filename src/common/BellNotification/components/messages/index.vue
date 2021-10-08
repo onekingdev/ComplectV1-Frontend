@@ -13,7 +13,7 @@
               .row
                 .col
                   MessagesList(:messages="messages")
-                  div(v-if="messages && !messages.length") Messages for today not exist
+                  div(v-if="messages && !messages.length") No messages for today
 </template>
 
 <script>
