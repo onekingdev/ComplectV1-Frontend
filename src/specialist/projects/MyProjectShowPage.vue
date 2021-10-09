@@ -5,7 +5,7 @@
       router-link.btn.btn-outline-dark.align-self-end(v-if="showTimesheetBtn(project)" :to="timesheetUrl" target="_blank") My Timesheet
       a.btn.btn__close(href="/specialist/my-projects")
         b-icon(icon="x")
-    Get(v-if="isApproved(project)" :localProject="projectUrl + '/local'"): template(v-slot="{localProject}"): b-tabs.special-navs(content-class="mt-0 h-100" v-model="tab")
+    Get(v-if="isApproved(project)" :localProject="projectUrl + '/local'" :etag="etag"): template(v-slot="{localProject}"): b-tabs.special-navs(content-class="mt-0 h-100" v-model="tab")
       b-tab(title="Detail")
         .card-body.card-body_full-height
           .row
@@ -55,6 +55,8 @@
             .col-md-12
               DiscussionCard(:project-id="project.local_project_id" :token="accessToken" :disabled="project.status == 'Complete'")
       b-tab(title="Tasks")
+        .card-body.card-body_full-height.h-100: .card
+          TaskTableExtended(:tasks="localProject.reminders" :task-defaults="taskDefaults(localProject)" :businessId="localProject.business_id" @saved="newEtag")
       b-tab(title="Documents")
         .card-body.card-body_full-height.h-100: .card
           DocumentList(:project="localProject" :disabled="project.status == 'Complete'")
@@ -118,6 +120,7 @@ import EditContractModal from '@/common/projects/EditContractModal'
 import EndContractModal from '@/business/projects/EndContractModal'
 import DocumentList from '@/common/projects/DocumentList'
 import EditProposalModal from '@/specialist/projects/EditProposalModal'
+import TaskTableExtended from "@/common/TaskTableExtended";
 import EtaggerMixin from '@/mixins/EtaggerMixin'
 import { mapGetters } from 'vuex'
 
@@ -212,6 +215,12 @@ export default {
     viewContract(collaborator) {
       this.tab = 3
       this.showingContract = collaborator || null
+    },
+    taskDefaults(localProject) {
+      return {
+        linkable_id: localProject.id,
+        linkable_type: 'LocalProject'
+      }
     }
   },
   computed: {
@@ -269,7 +278,8 @@ export default {
     DocumentList,
     EditContractModal,
     EditProposalModal,
-    EndContractModal
+    EndContractModal,
+    TaskTableExtended
   }
 }
 </script>
