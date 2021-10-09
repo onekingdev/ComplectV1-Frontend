@@ -451,6 +451,17 @@ export default {
           root: true
         })
       }
+    },
+    async deleteDocumentReview({commit}, payload) {
+      return await axios
+        .delete(`/business/annual_reports/${payload.reviewId}/documents/${payload.documentId}`)
+        .then(response => {
+          if (response) {
+            return response
+          }
+          return false
+        })
+        .catch(err => err)
     }
   },
   getters: {

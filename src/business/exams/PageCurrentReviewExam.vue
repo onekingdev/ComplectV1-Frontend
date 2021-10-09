@@ -66,7 +66,7 @@
                                     b-dropdown-item Upload Files
                                   ExamModalSelectFiles(:currentExamId="currentExam.id"  :request="currentRequst" :inline="false")
                                     b-dropdown-item Select Existing
-                                TaskFormModal(@saved="createTask(currentRequst.id)" :inline="false")
+                                TaskFormModal(:defaults="taskDefaults" @saved="refetchExam" :inline="false")
                                   button.btn.btn-primary.btn-dark.m-x-1 New Task
                                 b-dropdown(size="sm" variant="none" class="m-0 p-0" right)
                                   template(#button-content)

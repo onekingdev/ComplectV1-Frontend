@@ -59,7 +59,7 @@
                               | Actions
                               b-icon.ml-2(icon="chevron-down")
                             b-dropdown-item(@click="addTopicItem(i)") New Item
-                            TaskFormModal(@saved="createTask(i)" :inline="false")
+                            TaskFormModal(@saved="newTasksEtag" :defaults="{ linkable_type: 'AnnualReport', linkable_id: review.id }" :inline="false")
                               b-dropdown-item New Task
                             CommonDeleteModal.ml-auto(title="Delete Topic" content="This will remove the topic from this internal review and all of its associated content." @deleteConfirmed="deleteTopic(i)", :inline="false")
                               b-dropdown-item.delete Delete
@@ -98,10 +98,12 @@
                       AnnualModalComplite(v-else @compliteConfirmed="markComplete", :completedStatus="currentCategory.complete" :name="currentCategory.name" :inline="false")
                         button.btn(:class="'btn-dark'") Mark as Complete
       b-tab(title="Tasks")
-        .container: .row.p-x-1: .col: .card
-          TaskTableExtended(:tasks="review.reminders" :task-defaults="{ linkable_type: 'AnnualReport', linkable_id: review.id }")
+        Get(:reviewModel="`/api/business/annual_reports/${review.id}`" :etag="tasksEtag"): template(v-slot="{ reviewModel }")
+          .container: .row.p-x-1: .col: .card
+            TaskTableExtended(:tasks="reviewModel.reminders" :task-defaults="{ linkable_type: 'AnnualReport', linkable_id: reviewModel.id }" @saved="newTasksEtag")
       b-tab(title="Documents")
-        PageDocuments
+        .card-body.card-body_full-height.h-100: .card
+            DocumentList(v-if="review" :review="review")
 </template>
 
 <script>
@@ -113,10 +115,12 @@ import AnnualModalDelete from './modals/AnnualModalDelete'
 import CommonDeleteModal from '@/common/Modals/CommonDeleteModal'
 import TaskFormModal from '@/common/TaskFormModal'
 import TaskTableExtended from '@/common/TaskTableExtended'
-import PageDocuments from './PageDocuments'
+import EtaggerMixin from '@/mixins/EtaggerMixin'
+import DocumentList from '@/common/projects/DocumentList'
 
 export default {
   props: ['annualId', 'revcatId'],
+  mixins: [EtaggerMixin("tasksEtag")],
   components: {
     ReviewsList,
     AnnualModalComplite,
@@ -125,7 +129,7 @@ export default {
     CommonDeleteModal,
     TaskFormModal,
     TaskTableExtended,
-    PageDocuments
+    DocumentList
   },
   data () {
     return {
