@@ -1,6 +1,6 @@
 <template lang="pug">
 div
-  .topbar-banner(v-if="role && !seatRole") Viewing Business Max.
+  .topbar-banner(v-if="role && !seatRole && currentBusinessName") Viewing {{currentBusinessName}}.
     .exit-mirroring(@click="openSelectedBusiness(null)") Exit
   .topbar
     .logo(@click="openLink('default')")
@@ -79,6 +79,12 @@ div
       },
       currentPlan() {
         return this.$store.getters['roles/currentPlan']
+      },
+      currentBusinessName() {
+        const currentBusinessId = localStorage.getItem('app.business_id')
+        let currentBusiness = this.roles.filter(business => business.business_id == currentBusinessId)
+        if(currentBusiness[0]) return currentBusiness[0].business_name
+        return ''
       },
       reportLink() {
         if (this.currentPlan === 'free' && this.domain === 'business') return `/${this.domain}/reports/financials`

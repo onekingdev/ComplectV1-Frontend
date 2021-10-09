@@ -16,7 +16,8 @@
         | Projects
         ion-icon(name="chevron-down-outline")
       b-collapse#upcoming_projects_collapse(:visible="true")
-        ProjectTable(:projects="projects")
+        Get(:projects="apiProjectsUrl"): template(v-slot="{projects}")
+          ProjectTable(:projects="projects")
         .d-flex.justify-content-end(v-if="projects.length")
           router-link.link.upcoming__more(:to='`/specialist/projects`') More
 </template>
@@ -46,6 +47,11 @@ export default {
   created() {
     this.refetch()
   },
+  computed: {
+    apiProjectsUrl() {
+      return '/api/specialist/projects/my'
+    },
+  },
   methods: {
     refetch() {
       const fromTo = DateTime.local().toSQLDate() + '/' + DateTime.local().plus({days: 7}).toSQLDate()
@@ -61,11 +67,9 @@ export default {
         .then(response => response.json())
         .then(result => {
           tasks = tasks.concat(result.tasks)
-          projects = result.projects
-
-          // this.tasks = tasks.slice(0, LIMIT_OF_ARRAY_TASKS).filter(task => !task.done_at)
+          // projects = result.projects
           this.tasks = tasks.filter(task => !task.done_at)
-          this.projects = projects.slice(0, LIMIT_OF_ARRAY_PROJECTS)
+          // this.projects = projects.slice(0, LIMIT_OF_ARRAY_PROJECTS)
         })
       )
       // .catch(errorCallback)
