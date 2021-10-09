@@ -46,13 +46,8 @@
       submit(e) {
         e.preventDefault();
         this.errors = [];
-
         this.$emit('deleteConfirmed')
         this.$bvModal.hide(this.modalId)
-
-        if (window.location.href === `${window.location.origin}/business/risks/${this.riskId}`) {
-          window.location.href = `${window.location.origin}/business/risks/`
-        }
       },
     },
     computed: {
