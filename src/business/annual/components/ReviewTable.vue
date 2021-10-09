@@ -9,9 +9,9 @@
         th
           span.ml-2 Last Modified
         th
-          span.ml-2 Date Create
+          span.ml-2 Date Created
         th
-          span.ml-2 Date Completed
+          span.ml-2 Review Period End Date
         th(width="35px")
     tbody
       ReviewItem(v-for="item in sortedReview" :key="item.id" :item="item")
