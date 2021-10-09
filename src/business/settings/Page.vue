@@ -87,7 +87,7 @@
           { name: 'Roles and Permissions', link: 'Roles', access: ['trusted', 'admin'], plan: ['free', 'team', 'business']},
           { name: 'Security', link: 'Security', access: ['basic', 'trusted', 'admin'], plan: ['free', 'team', 'business']},
           { name: 'Subscriptions', link: 'Subscriptions', access: ['trusted', 'admin'], plan: ['free', 'team', 'business']},
-          { name: 'Billings', link: 'Billings', access: ['admin'], plan: ['free', 'team', 'business']}
+          { name: 'Billing', link: 'Billings', access: ['admin'], plan: ['free', 'team', 'business']}
         ]
       }
     },
