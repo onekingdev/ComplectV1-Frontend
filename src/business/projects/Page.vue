@@ -45,8 +45,6 @@
                   td {{ contact.name }}
                   td {{ contact.location }}
                   td: .badge.badge-success {{ contact.status }}
-                  //td: StarRating(:stars="contact.rating")
-                  //td &hellip;
                   td.text-right
                     .d-flex.justify-content-end
                       StarsRating(:rate="contact.rating")

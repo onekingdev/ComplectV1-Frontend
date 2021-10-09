@@ -64,7 +64,9 @@ export default {
           .then(response => response.json())
           .then(result => {
             tasks = tasks.concat(result.tasks)
-            projects = result.projects
+            const currentBusinessId = localStorage.getItem('app.business_id')
+            const businessProjects = result.projects.filter(project => project.business_id == currentBusinessId)
+            projects = businessProjects
 
             // this.tasks = tasks.slice(0, LIMIT_OF_ARRAY_TASKS).filter(task => !task.done_at)
             this.tasks = tasks.filter(task => !task.done_at)

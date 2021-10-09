@@ -100,9 +100,11 @@ export default {
       return this.projectsPrepared
     },
     projectsPrepared() {
+      const currentBusinessId = localStorage.getItem('app.business_id')
+      const businessProjects = this.projects.filter(project => project.business_id == currentBusinessId)
       // unset values should be considered "less" than zeroes, and are replaced with -1
       const asSortableNonNeg = val => val ? +val.replace(/\-/g, '') : -1
-      return this.projects.map(p => ({
+      return businessProjects.map(p => ({
         ...p,
         href: this.$store.getters.url('URL_PROJECT_SHOW', p.id),
         tasks_left: tasks_left(p),
