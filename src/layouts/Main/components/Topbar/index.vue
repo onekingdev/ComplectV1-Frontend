@@ -1,6 +1,6 @@
 <template lang="pug">
 div
-  .topbar-banner(v-if="role") Viewing Business Max.
+  .topbar-banner(v-if="role && !seatRole") Viewing Business Max.
     .exit-mirroring(@click="openSelectedBusiness(null)") Exit
   .topbar
     .logo(@click="openLink('default')")
