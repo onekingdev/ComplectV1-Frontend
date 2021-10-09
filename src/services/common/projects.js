@@ -24,6 +24,17 @@ export async function createProject(endpointUrl, payload) {
     .catch(err => err)
 }
 
+export async function deletePostProject(endpointUrl, payload) {
+  return await axios.delete(endpointUrl, payload)
+    .then(response => {
+      if (response) {
+        return response
+      }
+      return false
+    })
+    .catch(err => err)
+}
+
 export async function deleteDocument(payload) {
   const endpointUrl = `/projects/${payload.localProjectId}/documents/${payload.documentId}`
   return await axios.delete(endpointUrl, payload)

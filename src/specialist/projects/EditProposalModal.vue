@@ -1,6 +1,6 @@
 <template lang="pug">
   div
-    button.btn.btn-outline-dark(v-b-modal="'EditProposalModal'") Edit
+    button.btn.btn-dark(v-b-modal="'EditProposalModal'") Edit
     b-modal(id="EditProposalModal" title="Edit Proposal")
       ModelLoader(:url='`/api/specialist/projects/${projectId}/applications/${applicationId}`' :default="initialForm" @loaded="loaded"): div.row
         .col-md-12

@@ -5,6 +5,7 @@ const mapAuthProviders = {
     getProjects: jwt.getProjects,
     createProject: jwt.createProject,
     deleteDocument: jwt.deleteDocument,
+    deletePostProject: jwt.deletePostProject
   },
 }
 
@@ -137,6 +138,11 @@ export default {
         throw error;
       }
       // } finally { commit("setLoading", false, { root: true }) }
+    },
+    deletePostProject({commit, rootState}, payload) {
+      const deletePost = mapAuthProviders[rootState.shared.settings.authProvider].deletePostProject
+      const endpointUrl = `/business/projects/${payload.id}`
+      return deletePost(endpointUrl, {})
     },
     submitProposal({commit}, payload) {
       return createProposal(payload)
