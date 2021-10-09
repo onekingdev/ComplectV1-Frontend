@@ -104,8 +104,8 @@ export default {
           "Due Date": this.formattedDate(this.application.ends_on),
           "Bid Price": '$' + bidPrice,
           "Payment Schedule": this.formattedPaymentType(this.application.payment_schedule),
-          "Role Details": this.application.key_deliverables,
-          "Key Deliverables": this.application.role_details,
+          "Role Details": this.application.role_details,
+          "Key Deliverables": this.application.key_deliverables,
         }
       }
     }
