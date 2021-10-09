@@ -9,7 +9,7 @@
             template(#button-content)
               span.fw-700 Edit
             b-dropdown-form(style="width: 240px;")
-              b-form-input.mb-2#dropdown-form-annual-budget(v-model="newAnnualBudget" type="number" size='sm' placeholder='Annual Budget value')
+              b-form-input.mb-2#dropdown-form-annual-budget(v-model="newAnnualBudget" type="number" size='sm' placeholder='Annual budget')
               Errors(:errors="errors.annualBudget")
               b-button(variant='primary' size='sm' @click='update') Save
       .card-body.white-card-body.financial-card__body(v-if="annualBudget")
