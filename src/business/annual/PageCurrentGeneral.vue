@@ -197,7 +197,8 @@
           .container: .row.p-x-1: .col: .card
             TaskTableExtended(:tasks="reviewModel.reminders" :task-defaults="{ linkable_type: 'AnnualReport', linkable_id: reviewModel.id }" @saved="newTasksEtag")
       b-tab(title="Documents")
-        PageDocuments
+        .card-body.card-body_full-height.h-100: .card
+            DocumentList(v-if="review" :review="review")
 </template>
 
 <script>
@@ -207,9 +208,9 @@ import AnnualModalComplite from "./modals/AnnualModalComplite";
 import AnnualModalEdit from "./modals/AnnualModalEdit";
 import AnnualModalDelete from "./modals/AnnualModalDelete";
 import TaskTableExtended from "@/common/TaskTableExtended";
-import PageDocuments from "./PageDocuments";
 import PageActivity from "./PageActivity";
 import EtaggerMixin from "@/mixins/EtaggerMixin";
+import DocumentList from '@/common/projects/DocumentList'
 
 export default {
   mixins: [EtaggerMixin("tasksEtag")],
@@ -220,8 +221,8 @@ export default {
     AnnualModalEdit,
     AnnualModalDelete,
     TaskTableExtended,
-    PageDocuments,
     PageActivity,
+    DocumentList
   },
   data() {
     return {

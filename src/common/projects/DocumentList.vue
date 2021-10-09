@@ -24,7 +24,7 @@
                 template(#button-content)
                   b-icon(icon="three-dots")
                 b-dropdown-item(@click="downloadDocument(document)") Download
-                CommonDeleteModal.ml-auto(v-if="canDelete(document)" title="Delete Document" content="This will remove the document from this project and all of its associated content." @deleteConfirmed="deleteDocument(document)", :inline="false")
+                CommonDeleteModal.ml-auto(v-if="canDelete(document)" title="Delete Document" :content="deleteModalContent" @deleteConfirmed="deleteDocument(document)", :inline="false")
                   b-dropdown-item Delete
       EmptyState(v-if="!loading && !documents.length")
 </template>
@@ -48,10 +48,14 @@ export default {
   props: {
     project: {
       type: Object,
-      required: true
+      required: false
     },
     disabled: {
       type: Boolean
+    },
+    review: {
+      type: Object,
+      required: false
     }
   },
   data() {
@@ -102,9 +106,8 @@ export default {
       return this.currentUser.id === document.owner_id
     },
     documentUrl(document) {
-      const isDevEnv = this.$store.getters.isDevEnv
-      if (isDevEnv) return `${this.$store.getters.backendUrl}/${document.url}`
-      return document.url
+      if (document.url.includes('https://')) return document.url
+      return `${this.$store.getters.backendUrl}/${document.url}`
     },
     downloadDocument(document) {
       window.open(this.documentUrl(document), 'self')
@@ -120,8 +123,15 @@ export default {
       
       return ''
     },
+    payloadDelete(document) {
+      const payload = { documentId: document.id }
+      if (this.review) payload.reviewId = this.review.id
+      if (this.project) payload.localProjectId = this.project.id
+      return payload
+    },
     async deleteDocument(document) {
-      const res = await this.$store.dispatch('projects/deleteDocument', { localProjectId: this.project.id, documentId: document.id })
+      const data = this.payloadDelete(document)
+      const res = await this.$store.dispatch(this.deletePatch, data)
       if (res.data.id) {
         this.toast('Success', 'Document has been deleted.')
         this.newEtag()
@@ -131,14 +141,26 @@ export default {
     }
   },
   computed: {
+    deleteModalContent() {
+      if (this.review) return 'This will remove the document from this internal review and all of its associated content.'
+      if (this.project) return 'This will remove the document from this project and all of its associated content.'
+      return ''
+    },
     loading() {
       return this.$store.getters.loading
     },
     url() {
-      return `/api/projects/${this.project.id}/documents`
+      if (this.review) return `/api/business/annual_reports/${this.review.id}/documents`
+      if (this.project) return `/api/projects/${this.project.id}/documents`
+      return ''
     },
     currentUser() {
       return this.$store.getters.getUser
+    },
+    deletePatch() {
+      if (this.review) return 'annual/deleteDocumentReview'
+      if (this.project) return 'projects/deleteDocument'
+      return ''
     }
   }
 }
