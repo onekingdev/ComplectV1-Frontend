@@ -15,7 +15,7 @@
           template(#button-content)
             | Actions
             ion-icon.ml-2(name="chevron-down-outline" size="small")
-          RiskModalDelete(@deleteConfirmed="deleteRisk" :risk-id="riskComputed.id" :inline="false")
+          RiskModalDelete(@deleteConfirmed="deleteRisk(riskComputed.id)" :risk-id="riskComputed.id" :inline="false")
             b-dropdown-item.delete Delete
     .card-body.card-body_full-height(v-if="!loading && riskComputed && riskComputed.id")
       div.mb-3
@@ -54,7 +54,7 @@
   import RisksAddEditModal from '@/common/Modals/RisksAddEditModal'
   import RiskContols from './Modals/RiskContols'
   import PoliciesTable from './PoliciesTable'
-
+  import { redirectWithToast } from '@/common/Toast'
   export default {
     props: ['riskId'],
     components: {
@@ -81,8 +81,15 @@
       }
     },
     methods: {
-      deleteRisk() {
-        console.log('delete risk', this.riskId)
+      deleteRisk(riskId) {
+        this.$store
+          .dispatch('deleteRisk', { id: riskId })
+          .then(response => {
+            redirectWithToast(`/business/risks`, 'Risk has been deleted.', 'Success')
+          })
+          .catch(error => {
+            this.toast('Error', 'Risk has not been deleted. Please try again.')
+          })
       },
       badgeVariant(num) {
         if (num === 0) return 'success'
