@@ -7,9 +7,9 @@
         .card-title__actions
           b-dropdown#dropdown-form.m-2(ref='dropdown' variant="dark" right)
             template(#button-content)
-                | Edit
+              span.fw-700 Edit
             b-dropdown-form(style="width: 240px;")
-              b-form-input.mb-2#dropdown-form-annual-budget(v-model="newAnnualBudget" type="number" size='sm' placeholder='Annual Budget value')
+              b-form-input.mb-2#dropdown-form-annual-budget(v-model="newAnnualBudget" type="number" size='sm' placeholder='Annual budget')
               Errors(:errors="errors.annualBudget")
               b-button(variant='primary' size='sm' @click='update') Save
       .card-body.white-card-body.financial-card__body(v-if="annualBudget")
@@ -47,9 +47,9 @@ export default {
     validate() {
       this.errors = {}
       if (!this.newAnnualBudget) this.errors['annualBudget'] = ['Required field']
-      if (this.newAnnualBudget > this.annualBudget.current) {
-        this.errors['annualBudget'] = ['Value must less than charges paid YTD value']
-      }
+      // if (this.newAnnualBudget > this.annualBudget.current) {
+      //   this.errors['annualBudget'] = ['Value must less than charges paid YTD value']
+      // }
     },
     async getData() {
       const endPoint = this.isSpecialist ? 'getRevenue' : 'getAnnualBudget'
