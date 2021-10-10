@@ -97,8 +97,15 @@ export default {
       } else {
         if (forDraft) this.toast('Error', 'Proposal has not been saved. Please try again.', true)
         const firstField = Object.keys(res)[0]
-        const text = res[firstField]
-        this.toast('Error', text, true)
+        if (Array.isArray(res[firstField])) {
+          const errors = res[firstField]
+          for(let i = 0; i < errors.length; i++) {
+            this.toast('Error', errors[i], true)
+          }
+        } else {
+          const text = res[firstField]
+          this.toast('Error', text, true)
+        }
       }
     },
     projectLoaded(payload) {
