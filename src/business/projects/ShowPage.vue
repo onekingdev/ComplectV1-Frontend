@@ -58,6 +58,14 @@
                               div.d-flex.flex-column.fw-600.fs-14
                                 span {{ ownerName(project.owner) }}
                           td
+                        tr(v-for="specialist in project.collaborators" :key="specialist.id")
+                          td
+                            .d-flex.align-items-center.mb-3
+                              div
+                                UserAvatar.userpic_small.mr-2(:user="specialist")
+                              div.d-flex.flex-column.fw-600.fs-14
+                                span {{ specialist.first_name }} {{ specialist.last_name }}
+                          td
                         tr(v-for="contract in getContracts(project.projects)" :key="contract.specialist.id")
                           td
                             .d-flex.align-items-center.mb-3
@@ -85,7 +93,7 @@
                 .card(v-if="!showingContract")
                   .card-header.d-flex.justify-content-between
                     h3.m-y-0 Collaborators
-                    Get(:etag="etag" :collaborators="`/api/business/team_members`" :callback="getActiveCollaboratorOptions" ): template(v-slot="{collaborators}")
+                    Get(:etag="etag" :collaborators="`/api/business/team_members/specialists`" :callback="getActiveCollaboratorOptions" ): template(v-slot="{collaborators}")
                       button.btn.btn-primary.float-right(v-b-modal="'AddCollaboratorModal'") New Collaborator
                       b-modal#AddCollaboratorModal(title="New Collaborator" :project="project")
                         p.fs-14 Select a user to add.
@@ -96,7 +104,8 @@
                         ComboBox(v-model="id" :options="collaborators")
                         template(#modal-footer="{ hide }")
                           button.btn.btn-link(@click="hide") Cancel
-                          Post(:action="'/api/local_projects/' + project.id + '/specialists'" :model="{id}" @saved="newEtag()")
+                          button.btn.btn-dark(@click="addNewCollaborator(id)") Create
+                          //- Post(:action="'/api/local_projects/' + project.id + '/specialists'" :model="{id}" @saved="addNewCollaborator()" @errors="addNewCollaborator()")
                             button.btn.btn-dark Create
                   .card-body
                     .p-20.collaborator
@@ -106,6 +115,12 @@
                             UserAvatar.userpic_small.mr-2(:user="ownerObject(project.owner)")
                           div.d-flex.flex-column
                             b.collaborator__name {{ ownerName(project.owner) }}
+                      .d-flex.justify-content-between.align-items-center.mb-3(v-for="specialist in project.collaborators" :key="specialist.id")
+                        .d-flex.align-items-center
+                          div
+                            UserAvatar.userpic_small.mr-2(:user="specialist")
+                          div.d-flex.flex-column
+                            b.collaborator__name {{ specialist.first_name }} {{ specialist.last_name }}
                       .d-flex.justify-content-between.align-items-center.mb-3(v-for="contract in getContracts(project.projects)" :key="contract.specialist.id")
                         .d-flex.align-items-center
                           div
@@ -239,7 +254,7 @@ export default {
     readablePaymentSchedule,
     isContractComplete,
     getActiveCollaboratorOptions(collaborators) {
-      return collaborators.filter(item => item.active).map(({ id, first_name, last_name }) => ({ id: id, label: `${first_name} ${last_name}`}))
+      return collaborators.filter(item => item.status === 'active').map(({ specialist_id, first_name, last_name }) => ({ id: specialist_id, label: `${first_name} ${last_name}`}))
     },
     accepted(id, role) {
       fetch(`${this.$store.getters.backendUrl}/api/business/specialist_roles/${id}`, {
@@ -266,6 +281,19 @@ export default {
         this.toast('Error', 'Job posting cannot be created. Please add a payment method in order to post a job.', true)
       } else {
         this.$router.push(this.postHref(project))
+      }
+    },
+    async addNewCollaborator(id) {
+      const res = await this.$store.dispatch('projects/addLocalProjectCollaborator', { id: id, localProjectId: this.projectId })
+      if (res && res.id) {
+        this.$bvModal.hide('AddCollaboratorModal')
+        this.toast('Success', 'A collaborator has added.')
+        this.newEtag()
+        this.id = null
+      } else {
+        if (res.errors && res.errors.local_projects_specialist) {
+          this.toast('Errors', 'Collaborator is existed.', true)
+        }
       }
     }
   },
