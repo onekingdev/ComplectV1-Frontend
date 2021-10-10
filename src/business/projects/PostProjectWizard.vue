@@ -222,12 +222,8 @@ export default {
       return !Object.keys(this.errors).length
     },
     saved() {
-      if (this.currentPlan === 'free') {
-        this.toast('Error', 'Job posting cannot be created. Please add a payment method in order to post a job.', true)
-      } else {
-        const redirectUrl = `/business/projects/${this.project.local_project_id || ''}`
-        redirectWithToast(redirectUrl, 'Job has been posted.', 'Success')
-      }
+      const redirectUrl = `/business/projects/${this.project.local_project_id || ''}`
+      redirectWithToast(redirectUrl, 'Job has been posted.', 'Success')
     },
     getSkillOptions(skills) {
       return skills.map(({ name }) => ({ id: name, label: name }))
@@ -242,9 +238,6 @@ export default {
     },
   },
   computed: {
-    currentPlan() {
-      return this.$store.getters['roles/currentPlan']
-    },
     draftProject() {
       return { ...this.project, status: 'draft' }
     },
