@@ -46,7 +46,6 @@
       if(pathName) {
         const pathNameFixed = pathName.charAt(0).toUpperCase() + pathName.slice(1);
         this.openSetting(pathNameFixed)
-        console.log(pathNameFixed)
       }
       if(!pathName) this.openSetting('General')
     },
