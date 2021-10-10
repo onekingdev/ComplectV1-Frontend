@@ -8,8 +8,8 @@
             h3.info-board__title Get hired for your next big job
             p.info-board__subtitle.mb-0 Sign up for our All Access Membership and unlock the compliance job board, enjoy automated billing, and access to client compliance program management tools.
         .d-flex.ml-auto.align-items-center
-          //button.btn.btn-default.mr-2 More information
-          router-link.btn.btn-dark.no-wrap(:to='`/${userType}/settings`')
+          //- button.btn.btn-default.mr-2 More information
+          router-link.btn.btn-dark.no-wrap(:to='`/${domain}/settings/billings`')
             | Upgrade Now
             b-icon.ml-2(icon="chevron-right")
 </template>
@@ -18,17 +18,13 @@
   export default {
     name: "Plan",
     components: {},
-    data() {
-      return {
-        userType: localStorage.getItem('app.currentUser.userType') ? JSON.parse(localStorage.getItem('app.currentUser.userType')) : ''
+    computed: {
+      domain() {
+        return this.$store.getters['roles/domain']
       }
     }
   }
 </script>
-
-<style scoped>
-
-</style>
 
 <style >
   ion-icon.plan__icon {

@@ -46,6 +46,7 @@
       if(pathName) {
         const pathNameFixed = pathName.charAt(0).toUpperCase() + pathName.slice(1);
         this.openSetting(pathNameFixed)
+        console.log(pathNameFixed)
       }
       if(!pathName) this.openSetting('General')
     },
@@ -60,9 +61,7 @@
         return this.$store.getters.loading;
       },
       menu() {
-        
         let userPlan = this.$store.getters['roles/currentPlan']
-        console.log(userPlan)
         let filterByPlan = userPlan ? this.menuSections.filter(item => item.plan.indexOf( userPlan ) !== -1) : this.menuSections
         return filterByPlan
       },
