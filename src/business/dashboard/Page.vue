@@ -4,10 +4,10 @@
       .page-header
         h2.page-header__title
           b Welcome,&nbsp;
-          template(v-if="currentAccount.first_name")
-            | {{currentAccount.first_name}} {{currentAccount.last_name}}
+          template(v-if="currentUser.first_name")
+            | {{currentUser.first_name}} {{currentUser.last_name}}
           template(v-else)
-            | {{currentBusiness.contact_first_name}} {{currentBusiness.contact_last_name}}
+            | {{currentUser.contact_first_name}} {{currentUser.contact_last_name}}
       div.p-x-40.p-b-40
         .row
           .col
@@ -47,6 +47,7 @@ export default {
     pdfUrl: () => pdfUrl,
     ...mapGetters({
       currentAccount: 'roles/currentAccount',
+      currentUser: 'getUser'
     }),
   },
   watch: {

@@ -71,10 +71,11 @@ export default {
                     commit('SET_CURRENT_PLAN', data[0].plan)
                     localStorage.setItem('app.currentUser.plan', data[0].plan)
                   }
-                } else {
-                  commit('SET_BUSINESS_ID', '')
-                  localStorage.removeItem('app.business_id')
                 }
+                // else {
+                //   commit('SET_BUSINESS_ID', '')
+                //   localStorage.removeItem('app.business_id')
+                // }
               }
               return data
             }
