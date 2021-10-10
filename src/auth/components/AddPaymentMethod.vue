@@ -103,11 +103,11 @@
             localStorage.setItem('app.currentUser.paymentMethod', JSON.stringify(data));
 
             this.$emit('complitedPaymentMethod', response)
-            // this.toast('Success', `Payment method successfully added!`)
+            // this.toast('Success', `Payment method has been added.`)
           })
           .catch(error => {
             console.error(error)
-            // this.toast('Error', 'Payment method could not be added.', true)
+            // this.toast('Error', 'Payment method has not been added. Please try again.', true)
           })
       },
       deletePaymentMethod(cardId) {
@@ -163,12 +163,12 @@
             localStorage.setItem('app.currentUser.paymentMethod', JSON.stringify(data));
 
             this.$emit('complitedPaymentMethod', response)
-            // this.toast('Success', `Payment method successfully added!`)
+            // this.toast('Success', `Payment method has been added.`)
           })
           .catch(error => {
             console.error(error)
-            // this.toast('Error', `Something wrong! ${error}`)
-            // this.toast('Error', 'Payment method could not be added.')
+            // this.toast('Error', `Action could not be completed.`)
+            // this.toast('Error', 'Payment method has not been added. Please try again.')
           })
       }
     },
