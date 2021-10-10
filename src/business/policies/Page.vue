@@ -11,17 +11,17 @@
               div
               div
           button.btn.btn.btn-default.mr-3(v-else @click="download") Download
-        PoliciesModalCreate(@savedConfirmed="updateList")
+        PoliciesModalCreate(@savedConfirmed="updateList" v-if="role !== 'basic'")
           button.btn.btn-dark.float-end New Policy
     b-tabs.special-navs(content-class="mt-0")
       b-tab(title="Policies" active)
         .card-body.white-card-body.card-body_full-height.p-x-40
           PoliciesTable.m-b-20(:policies="filteredUnArchivedListLimited", @searching="searching")
           b-pagination(v-if="!loading && filteredUnArchivedList.length" v-model='currentPage' :total-rows='filteredUnArchivedList.length' :per-page='perPage' aria-controls='PoliciesTable')
-      b-tab(title="Archive")
+      b-tab(title="Archive" v-if="role !== 'basic'")
         .card-body.white-card-body.card-body_full-height.p-x-40
           PoliciesTable(:policies="filteredArchivedList", @searching="searchingArchived")
-      b-tab(title="Setup" lazy)
+      b-tab(title="Setup" v-if="role !== 'basic'" lazy)
         .card-body.white-card-body.card-body_full-height.p-x-40
           PoliciesSetup
 </template>
@@ -31,7 +31,7 @@
   import PoliciesSetup from "./PoliciesSetup";
   import EtaggerMixin from '@/mixins/EtaggerMixin'
   import PoliciesModalCreate from "./Modals/PoliciesModalCreate"
-  // import { mapGetters } from 'vuex'
+  import { mapGetters } from 'vuex'
 
   function paginate(array, page_size, page_number) {
     return array.slice((page_number - 1) * page_size, page_number * page_size);
@@ -94,6 +94,9 @@
       //   archivedList: 'policies/policiesListArchived',
       //   unArchivedList: 'policies/policiesListUnArchived',
       // }),
+      ...mapGetters({
+        role: 'roles/currentRole'
+      }),
       loading() {
         return this.$store.getters.loading;
       },
