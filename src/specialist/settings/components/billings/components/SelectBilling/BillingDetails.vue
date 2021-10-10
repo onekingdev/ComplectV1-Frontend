@@ -179,14 +179,14 @@
         this.generatePaymentMethod(dataToSend)
           .then(response => {
             this.$emit('complitedPaymentMethod', response)
-            this.toast('Success', `Payment Method successfully added!`)
+            this.toast('Success', `Payment method has been added.`)
             this.isActive = false
             this.cardOptions.push({ text: `Credit Card${this.cardOptions.length===0 ? ' (primary)' : ''}`, value: response.id, number: `**** **** **** ${response.last4}`, type: response.brand, id: response.id })
             this.cardSelected = response.id
           })
           .catch(error => {
             console.error(error)
-            this.toast('Error', `Something wrong! ${error}`, true)
+            this.toast('Error', `Payment method has not been added. Please try again.`, true)
           })
       },
       // addCardDetail() {
@@ -209,11 +209,11 @@
             const index = this.cardOptions.findIndex(record => record.id === payload.id);
             this.cardOptions.splice(index, 1)
             if (response.message)
-              this.toast('Success', `${response.message}`)
+              this.toast('Success', `Payment method has been deleted.`)
           })
           .catch(error => {
             console.error(error)
-            this.toast('Error', `Something wrong! ${error}`, true)
+            this.toast('Error', `Payment method has not been deleted. Please try again.`, true)
           })
       },
       addBankAccount() {
