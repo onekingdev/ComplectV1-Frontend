@@ -52,16 +52,29 @@
     data() {
       return {
         component: '',
-        componentUpgrade: '',
-        menu: [
-          { name: 'General', link: 'general', component: General },
-          { name: 'Client Permissions', link: 'roles', component: Roles },
-          { name: 'Security', link: 'security', component: Security },
-          { name: 'Subscriptions', link: 'subscriptions', component: Subscriptions },
-          { name: 'Billing', link: 'billings', component: Billings },
-          //{ name: 'Notifications', link: 'notifications', component: Notifications },
-        ]
+        componentUpgrade: ''
       };
+    },
+    computed: {
+      loading() {
+        return this.$store.getters.loading;
+      },
+      menu() {
+        
+        let userPlan = this.$store.getters['roles/currentPlan']
+        console.log(userPlan)
+        let filterByPlan = userPlan ? this.menuSections.filter(item => item.plan.indexOf( userPlan ) !== -1) : this.menuSections
+        return filterByPlan
+      },
+      menuSections() {
+        return [
+          { name: 'General', link: 'general', component: General, plan: ['free', 'specialist_pro'] },
+          { name: 'Client Permissions', link: 'roles', component: Roles, plan: ['specialist_pro'] },
+          { name: 'Security', link: 'security', component: Security, plan: ['free', 'specialist_pro'] },
+          { name: 'Subscriptions', link: 'subscriptions', component: Subscriptions, plan: ['free', 'specialist_pro'] },
+          { name: 'Billing', link: 'billings', component: Billings, plan: ['free', 'specialist_pro'] }
+        ]
+      }
     },
     methods: {
       openSetting (name, event) {
@@ -88,11 +101,6 @@
         const baseUrl = new URL(window.location.origin);
         window.history.pushState({}, name, `${baseUrl}specialist/settings/${name.toLowerCase()}`);
       }
-    },
-    computed: {
-      loading() {
-        return this.$store.getters.loading;
-      },
-    },
+    }
   };
 </script>
