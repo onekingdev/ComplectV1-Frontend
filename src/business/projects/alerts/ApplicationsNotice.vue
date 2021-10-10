@@ -28,7 +28,7 @@ export default {
         notify = {
           show: 'show',
           mainText: `${applications.length} ${ applicationsText } received.`,
-          subText: `There ${ isAre } currently ${applicationsText} for your project.`,
+          subText: `You have applicant(s) for your project. Approve a proposal today!`,
           variant: 'primary',
           dismissible: true,
           icon: null,
