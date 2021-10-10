@@ -42,8 +42,8 @@
           td.project-table__status
             span.badge(:class="businessProjectBadgeClass(project)") {{ project.status_business | underscoreToCapitalized }}
           td.project-table__start-date {{ project.starts_on | asDate }}
-          td.project-table__end-date.text-right(class="due-date" :class="{ overdue: isOverdue(project) }")
-            b-icon.mr-2(v-if="isOverdue(project)" icon="exclamation-triangle-fill" variant="warning")
+          td.project-table__end-date.text-right(class="due-date" :class="{ overdue: isOverdue(project) && project.status_business !== 'Complete' }")
+            b-icon.mr-2(v-if="isOverdue(project) && project.status_business !== 'Complete'" icon="exclamation-triangle-fill" variant="warning")
             span.end-date {{ project.ends_on | asDate }}
     .row.h-100(v-if="!projectsSorted.length")
         .col.h-100.text-center
