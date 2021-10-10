@@ -145,6 +145,10 @@ export default {
         .then(result => this.projects = result.map(parse))
     },
     openDetails(id) {
+      if(this.freePlan) {
+        this.toast("Error", "You must upgrade your plan to access further details and apply to the job.", true);
+        return
+      }
       this.openId = id
       history.pushState({}, '', `${frontendUrl}/${id}`)
       fetch(this.$store.getters.backendUrl+endpointUrl + '/' + this.openId, { headers: {'Accept': 'application/json', 'Authorization': JSON.parse(localStorage.getItem('app.currentUser.token'))}})
@@ -165,6 +169,9 @@ export default {
     }
   },
   computed: {
+    freePlan() {
+      return this.$store.getters['roles/currentPlan'] === 'free'
+    },
     pricingTypeOptions: () => PRICING_TYPE_OPTIONS,
     experienceOptions: () => EXPERIENCE_OPTIONS,
     budgetOptions: () => BUDGET_OPTIONS,
