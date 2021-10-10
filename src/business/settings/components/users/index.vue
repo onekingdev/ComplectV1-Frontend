@@ -20,7 +20,7 @@
                         button.btn.btn-default.mr-2.d-none Download
                         UserModalAddEdit(@editPlan="showModal")
                           button.btn.btn-dark New User
-                        PlanModalEdit(:plan="plan")
+                        PlanModalEdit(:plan="{ users: filteredUsersActive.length }")
                           button.d-none(ref="editPlanModal") New User
 
                 UsersTable(:users="filteredUsersActive")
@@ -64,22 +64,6 @@
     data() {
       return {
         searchInput: '',
-        plan: {
-          id: 1,
-          name: 'Team Plan',
-          users: '10',
-          billinPeriod: 'monthly',
-          monthCoast: '100$/month',
-          paymentCardType: 'Visa',
-          paymentCard: '**** **** **** 4242',
-          nextPaymentDate: 'October 25, 2021',
-
-          coastMonthly: 145,
-          coastAnnually: 1500,
-          usersCount: 10,
-          additionalUserMonthly: 15,
-          additionalUserAnnually: 120,
-        }
       };
     },
     methods: {

@@ -2,8 +2,8 @@
 .page.custom-project-layout-style
   Get.d-flex.flex-column.flex-grow-1(:project="projectUrl" :etag="etag"): template(v-slot="{project}")
     CommonHeader(section="Jobs" :title="project.title" :sub="project.business.business_name")
-      router-link.btn.btn-outline-dark.align-self-end(v-if="showTimesheetBtn(project)" :to="timesheetUrl" target="_blank") My Timesheet
-      a.btn.btn__close(href="/specialist/my-projects")
+      router-link.btn.btn-dark.align-self-end.my-timesheet(v-if="showTimesheetBtn(project)" :to="timesheetUrl" target="_blank") My Timesheet
+      a.btn.btn__close.back-to-projects(href="/specialist/my-projects")
         b-icon(icon="x")
     Get(v-if="isApproved(project)" :localProject="projectUrl + '/local'" :etag="etag"): template(v-slot="{localProject}"): b-tabs.special-navs(content-class="mt-0 h-100" v-model="tab")
       b-tab(title="Detail")
@@ -238,7 +238,7 @@ export default {
       return this.$store.getters.url('URL_PROJECT_TIMESHEET', this.id)
     },
     showTimesheetBtn() {
-      return project => 'hourly' === project.pricing_type
+      return project => 'hourly' === project.pricing_type && this.isApproved(project)
     },
     proposalPropsData() {
       if (!this.application) return []
@@ -313,5 +313,16 @@ export default {
 
 .gray-border {
   border-bottom: 1px solid #dee2e6;
+}
+
+.my-timesheet {
+  position: relative;
+  top: 27px;
+  left: -72%;
+}
+
+.back-to-projects {
+  position: relative;
+  top: -8px;
 }
 </style>

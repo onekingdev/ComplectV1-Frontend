@@ -9,7 +9,7 @@
             a.link.middle-text(:href="`/business/specialist-profile/${specialist.id}`") {{ userName }}
           .d-inline(v-if="userLocationAndIndustries") {{ userLocationAndIndustries }}
           .d-flex.py-2
-            StarsRating(:rate="Math.floor(Math.random() * 5)")
+            StarsRating(:rate="specialist.ratings_average || 0")
           .d-flex.pt-2(v-if="specialist.skills.length > 0")
           .badge.badge-default.m-r-1.mb-1(v-for="(skill, index) in specialist.skills" :key="index") {{ skill.name }}
         .col-md-3.col.justify-content-end
