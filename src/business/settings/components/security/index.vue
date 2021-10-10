@@ -36,23 +36,24 @@
                     b-form-group.d-flex.justify-content-end.m-t-20
                       b-button.btn.btn-link.mr-2(type='reset') Cancel
                       b-button.btn(type='submit' variant='dark') Save
-            hr
-            .settings___card--internal.p-y-1
-              .row
-                .col-md-12
-                  h4.semibold-text Delete Account
-              .row.mt-3
-                .col-md-6
-                  p By deleting your account, you will purge all information and saved&nbsp;
-                    | documents associated with this account. This deletion cannot be reversed.&nbsp;
-                    | Please take appropriate steps to save down to your own storage devices&nbsp;
-                    | any records you need to access after the deletion of this account.
-                  DeleteAccountModal(@deleteConfirmed="deleteAccount")
-                    button.btn.btn-danger.font-weight-bold Delete
+            template(v-if="role !== 'basic'")
+              hr
+              .settings___card--internal.p-y-1
+                .row
+                  .col-md-12
+                    h4.semibold-text Delete Account
+                .row.mt-3
+                  .col-md-6
+                    p By deleting your account, you will purge all information and saved&nbsp;
+                      | documents associated with this account. This deletion cannot be reversed.&nbsp;
+                      | Please take appropriate steps to save down to your own storage devices&nbsp;
+                      | any records you need to access after the deletion of this account.
+                    DeleteAccountModal(@deleteConfirmed="deleteAccount")
+                      button.btn.btn-danger.font-weight-bold Delete
 </template>
 
 <script>
-  import { mapActions } from 'vuex'
+  import { mapActions, mapGetters } from 'vuex'
   import Loading from '@/common/Loading/Loading'
   import DeleteAccountModal from './modals/AccountModalDelete'
 
@@ -80,6 +81,11 @@
         errors: {},
         user: this.$store.getters.getUser
       };
+    },
+    computed: {
+      ...mapGetters({
+        role: 'roles/currentRole'
+      }),
     },
     methods: {
       ...mapActions({
