@@ -1,6 +1,6 @@
 <template lang="pug">
   nav.sidebar-menu(v-if="leftSidebar !== 'settings' || leftSidebar !== 'builder'" :class="[{ menuClosed: toggleClosedMenu }, leftSidebar==='builder' ? 'd-none' : '']")
-    div.sidebar-menu__central(v-if="leftSidebar === 'default' || domain === 'specialist'")
+    div.sidebar-menu__central(v-if="leftSidebar === 'default'")
       h3.sidebar-menu__title(
       :class="overview_collapse ? null : 'collapsed'"
       :aria-expanded="overview_collapse ? 'true' : 'false'"
@@ -34,7 +34,7 @@
         h3.sidebar-menu__title.sidebar-menu__title_settings
           ion-icon(name='settings-outline' @click.stop="openLink('settings')")
           span Settings
-    div.sidebar-menu__central(v-if="domain !== 'specialist' && leftSidebar === 'documents'")
+    div.sidebar-menu__central(v-if="leftSidebar === 'documents' && domain !== 'specialist'")
      h3.sidebar-menu__title(
      :class="files ? null : 'collapsed'"
      :aria-expanded="files ? 'true' : 'false'"
@@ -54,7 +54,7 @@
         h3.sidebar-menu__title.sidebar-menu__title_settings
           ion-icon(name='settings-outline' @click.stop="openLink('settings')")
           span Settings
-    div.sidebar-menu__central(v-if="domain === 'business' && leftSidebar === 'reports'")
+    div.sidebar-menu__central(v-if="leftSidebar === 'reports'")
       h3.sidebar-menu__title(
       :class="reports ? null : 'collapsed'"
       :aria-expanded="reports ? 'true' : 'false'"
@@ -177,7 +177,7 @@
           return
         }
 
-        if(routeName === "reports"|| routeName === "reports-risks" || routeName === "reports-organizations" || routeName === "reports-financials") {
+        if(routeName === "reports"|| routeName === "reports-risks" || routeName === "reports-organizations" || routeName === "reports-financials" || routeName === "reports-financials-specialist") {
           this.$store.commit('changeSidebar', 'reports')
           // document.querySelector('.sidebar-menu').style.display = "none"
           return
@@ -331,7 +331,11 @@
       },
 
       menuLinksReportsSpecialist() {
-        return []
+        return [{
+          to: '/specialist/reports/financials',
+          label: 'Financials',
+          access: ['basic', 'trusted', 'admin']
+        }]
       }
     },
     mounted() {

@@ -134,10 +134,7 @@ div
           .catch(error => console.error(error))
       },
       openLink (value) {
-        if(value === 'reports') {
-          this.$store.commit('changeSidebar', 'reports')
-          return
-        }
+        if(value === 'reports') this.$store.commit('changeSidebar', 'reports')
         if(value === 'documents') this.$store.commit('changeSidebar', 'documents')
         if(value !== 'documents') this.$store.commit('changeSidebar', 'default')
       },
