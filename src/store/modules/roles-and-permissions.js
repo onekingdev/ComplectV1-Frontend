@@ -57,23 +57,24 @@ export default {
               const data = success.data
               if(Array.isArray(data)) {
                 commit('SET_ROLES', data)
-
-                // if (data[0]) {
-                //   const businessID = data[0].business_id
-                //   commit('SET_BUSINESS_ID', businessID)
-                //   window.localStorage["app.business_id"] = JSON.stringify(businessID)
-                //   if (data[0].role) {
-                //     commit('SET_CURRENT_ROLE', data[0].role)
-                //     localStorage.setItem('app.currentUser.role', data[0].role)
-                //   }
-                //   if (data[0].plan) {
-                //     commit('SET_CURRENT_PLAN', data[0].plan)
-                //     localStorage.setItem('app.currentUser.plan', data[0].plan)
-                //   }
-                // } else {
-                //   commit('SET_BUSINESS_ID', '')
-                //   localStorage.removeItem('app.business_id')
-                // }
+               
+                // Get business ID for Employee
+                if (data[0] && seatRole) {
+                  const businessID = data[0].business_id
+                  commit('SET_BUSINESS_ID', businessID)
+                  window.localStorage["app.business_id"] = JSON.stringify(businessID)
+                  if (data[0].role) {
+                    commit('SET_CURRENT_ROLE', data[0].role)
+                    localStorage.setItem('app.currentUser.role', data[0].role)
+                  }
+                  if (data[0].plan) {
+                    commit('SET_CURRENT_PLAN', data[0].plan)
+                    localStorage.setItem('app.currentUser.plan', data[0].plan)
+                  }
+                } else {
+                  commit('SET_BUSINESS_ID', '')
+                  localStorage.removeItem('app.business_id')
+                }
               }
               return data
             }
