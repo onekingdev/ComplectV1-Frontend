@@ -94,6 +94,7 @@ export default {
   filters: {
     linkableTypeCorrector: function (value) {
       if (value === 'AnnualReport') value = 'Internal Review'
+      if (value === 'LocalProject') value = 'Project'
       return value.replace(/[A-Z]/g, ' $&')
     }
   },

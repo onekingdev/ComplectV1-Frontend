@@ -250,7 +250,7 @@ export default {
         })
       }
       if (file) {
-        const success = (await uploadFile(this.url, file)).ok
+        const success = (await uploadFile(this.messagesUrl, file)).ok
         if(success) this.toast('Success', 'Document has been uploaded.')
         else this.toast('Error', 'Document has not been uploaded.', true)
         this.newEtagMessages()
