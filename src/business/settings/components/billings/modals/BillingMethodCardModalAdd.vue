@@ -70,11 +70,11 @@
           await this.$store.dispatch('settings/generatePaymentMethod', dataToSend)
             .then(response => {
               this.$emit('complitedPaymentMethod', response)
-              this.toast('Success', `Payment Method successfully added!`)
+              this.toast('Success', `Payment method has been added.`)
             })
             .catch(error => {
               console.error(error)
-              this.toast('Error', `Something wrong! ${error}`, true)
+              this.toast('Error', `Payment method has not been added. Please try again.`, true)
             })
         } catch (error) {
           console.error(error)
