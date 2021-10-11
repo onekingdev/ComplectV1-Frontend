@@ -48,7 +48,7 @@
                     | {{ showLevel(risk.risk_level)  }}
                 td.text-right {{ dateToHuman(risk.created_at) }}
                 td.text-right
-                  .actions
+                  .actions(v-if="!basicRole")
                     b-dropdown(size="xs" variant="none" class="m-0 p-0" right)
                       template(#button-content)
                         b-icon.three-dots(icon="three-dots")
@@ -182,6 +182,9 @@
         return this.risksComputed.filter(risk => {
           return risk.name?.toLowerCase().includes(this.searchInput.toLowerCase())
         })
+      },
+      basicRole() {
+        return this.$store.getters['roles/currentRole'] == 'basic'
       },
     },
     mounted() {

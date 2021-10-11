@@ -5,8 +5,8 @@
         .col-md-3
           .panel-default
             ul.settings-nav
-              li.settings-nav__item(v-for='(item, idx) in menu' :key="idx" @click="openSetting(item.name, $event)" :class="{ active: idx === 0 }")
-                a.settings-nav__link(:href='item.link') {{ item.name }}
+              li.settings-nav__item(v-for='(item, idx) in menu' :key="idx" @click="openSetting(item.component, $event)" :class="{ active: idx === 0 }")
+                .settings-nav__link {{ item.name }}
         .col-md-9
           component(v-bind:is="component")
 
@@ -30,8 +30,8 @@ export default {
     return {
       component: '',
       menu: [
-        { name: 'Notification Center', link: '#' },
-        { name: 'Messages', link: '#' },
+        { name: 'Notification Center', component: 'NotificationCenter' },
+        { name: 'Messages', component: 'Messages' },
       ]
     };
   },

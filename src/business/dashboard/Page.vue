@@ -5,7 +5,10 @@
       .page-header
         h2.page-header__title
           b Welcome,&nbsp;
-          | {{currentBusiness.contact_first_name}} {{currentBusiness.contact_last_name}}
+          template(v-if="currentUser.first_name")
+            | {{currentUser.first_name}} {{currentUser.last_name}}
+          template(v-else)
+            | {{currentUser.contact_first_name}} {{currentUser.contact_last_name}}
       div.p-x-40.p-b-40
         .row
           .col
@@ -17,6 +20,7 @@
 </template>
 
 <script>
+import { mapGetters } from "vuex"
 import Calendar from './Calendar'
 import UpcomingTasks from '@/business/dashboard/UpcomingTasks'
 import SpecialistPage from '@/specialist/dashboard/Page'
@@ -43,6 +47,10 @@ export default {
   },
   computed: {
     pdfUrl: () => pdfUrl,
+    ...mapGetters({
+      currentAccount: 'roles/currentAccount',
+      currentUser: 'getUser'
+    }),
     isTeamMemberUser() {
       const userType = localStorage.getItem('app.currentUser.seatRole')
       return !!userType

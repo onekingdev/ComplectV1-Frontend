@@ -15,7 +15,8 @@
                   h4.m-b-20 Plan
               .row
                 .col
-                  Plan
+                  EmptyPlan(v-if="freePlan")
+                  Plan(v-else)
 </template>
 
 <script>
@@ -26,6 +27,7 @@
   export default {
     components: {
       Plan,
+      EmptyPlan,
       Loading,
     },
     data() {
@@ -40,21 +42,9 @@
       loading() {
         return this.$store.getters.loading;
       },
-      // apps() {
-      //   return [
-      //     {
-      //     name: 'Redtail',
-      //     status: true,
-      //     },
-      //     {
-      //       name: 'Walthbox',
-      //       status: false,
-      //     }
-      //   ]
-      // },
-    },
-    mounted() {
-
+      freePlan() {
+        return this.$store.getters['roles/currentPlan'] === 'free'
+      }
     },
   };
 </script>

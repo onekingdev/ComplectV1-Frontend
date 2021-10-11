@@ -3,14 +3,15 @@
     .card-body
       .row
         .col
-          h5.mb-0 {{ subscription.title }}
+          h5.mb-0 {{ subscription.title == 'Free Plan' ? 'Starter Plan' : subscription.title }}
           p {{ activeUserMember.length }} active users
         .col
           .d-flex.justify-content-end
-            PlanCancelModal.mr-2(:date="subscription.next_payment_date")
-              b-button.btn.btn-link(type='button') Cancel Plan
-            PlanModalEdit(:plan="usePlan")
-              b-button.btn.mr-2(type='button' variant='default') Edit Plan
+            template(v-if="!isFreePlan")
+              PlanCancelModal.mr-2(:date="subscription.next_payment_date")
+                b-button.btn.btn-link(type='button') Cancel Plan
+              PlanModalEdit(:plan="usePlan")
+                b-button.btn.mr-2(type='button' variant='default') Edit Plan
             b-button.btn(type='button' variant='dark' @click="$emit('openComponent', 'SelectPlan')") Upgrade
       template(v-if="!isFreePlan")
         hr(v-if="!isFreePlan")
@@ -70,13 +71,10 @@
           const res = await this.getSubscriptionInfor()
           if (res && res.data) {
             const length = res.data.length
+            console.log(res.data)
             this.subscription = res.data[length - 1]
           }
         }
       },
     }
 </script>
-
-<style scoped>
-
-</style>
