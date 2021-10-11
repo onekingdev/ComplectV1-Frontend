@@ -138,8 +138,8 @@
             .then((response) => {
               if (response.errors) {
                 this.error = response.message
-                // this.toast('Error', 'Verification code failed. Try again.', true)
               }
+
               if (!response.errors && response.specialist && response.token && this.inviteToken) {
                 const dashboard = '/specialist'
                 window.location.href = `${dashboard}`;
