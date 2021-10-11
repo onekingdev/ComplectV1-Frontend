@@ -4,7 +4,7 @@
       .row
         .col-12.col-lg-3.px-0(v-if="leftMenu")
           .card-body.white-card-body.p-20.left-tree
-            PoliciesModalCreate(@saved="updateList")
+            PoliciesModalCreate(@saved="updateList" v-if="!basicRole")
               button.btn.btn-dark.mb-3.mr-3 New Policy
             .table
               nested-draggable(v-model='policiesComputed', :policiesList="policiesListNested" :shortTable="true")
@@ -16,7 +16,7 @@
               b-badge.mr-3(:variant="statusVariant(policy.status)") {{ policy.status }}
               h3.policy__main-title.m-y-0 {{ policy.title }}
             .d-flex.justify-content-end.align-items-center
-              template(v-if="!policy.archived")
+              template(v-if="!policy.archived && !basicRole")
                 a.link.btn.mr-3(@click="saveDraft") Save Draft
                 span.dowloading(v-if="isDowloading")
                   .lds-ring.lds-ring-small
@@ -31,7 +31,7 @@
                 b-icon(icon='x')
           
           b-tabs.policy-tabs(content-class="mt-0")
-            template(#tabs-end)
+            template(v-if="!basicRole" #tabs-end)
               b-dropdown.actions(text='Actions', variant="default", right)
                 template(#button-content)
                   | Actions
@@ -309,6 +309,9 @@ import Tiptap from '@/common/Tiptap'
           createButton: !this.currentUserBasic && !this.policy.archived,
           taskDefaults: { linkable_type: 'CompliancePolicy', linkable_id: this.policy.id }
         }
+      },
+      basicRole() {
+        return this.$store.getters['roles/currentRole'] == 'basic'
       },
       loading() {
         return this.$store.getters.loading;

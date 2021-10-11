@@ -35,12 +35,8 @@
                     template(#button-content)
                       | Actions
                       b-icon.m-l-1(icon="chevron-down" font-scale="1")
-                    //- PoliciesModalArchive(:archiveStatus="!policy.archived" @archiveConfirmed="archivePolicy(policy.id, !policy.archived)" :inline="false")
-                      //- b-dropdown-item {{ !policy.archived ? 'Archive' : 'Unarchive' }} Policy
-                    //- PoliciesModalDelete(v-if="policy.archived" @deleteConfirmed="deletePolicy(policy.id)", :policyId="policy.id",  :inline="false")
-                      //- b-dropdown-item.delete Delete Policy
                 b-tab(title="Details" active)
-                  .row(v-if="loading", :loading="loading")
+                  .row(v-if="loading" :loading="loading")
                     .col-12
                       .card-body.white-card-body.p-0.position-relative
                         .policy-details
@@ -52,7 +48,6 @@
                     .col-12
                       .card-body.white-card-body.p-0.position-relative
                         .policy-details
-                          // h3.policy-details__title Policy Details
                           .policy-details__body
                             .policy-details-section
                               .policy-details__name Name
@@ -62,12 +57,6 @@
                               .policy-details__text-editor(@click="toggleVueEditorHandler", v-if="!toggleVueEditor", v-b-tooltip.hover.left title="Click to edit text", v-html="policy.description ? policy.description : description")
                               Tiptap.policy-details__text-editor(v-if="toggleVueEditor", v-model="policy.description", @blur="handleBlur")
                         HistoryPolicy(:policy="policy")
-                      // b-tab(title="Risks")
-                      //   PolicyRisks(:policyId="policy.id")
-                      // b-tab(title="Tasks")
-                      //   .policy-details
-                      //     h3.policy-details__title Tasks
-                      //     .policy-details__body Tasks
 </template>
 
 <script>

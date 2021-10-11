@@ -16,7 +16,7 @@
           .table__cell.text-right(v-if="!shortTable && el.updated_at") {{ dateToHuman(el.updated_at) }}
           .table__cell.text-right(v-if="!shortTable && el.created_at") {{ dateToHuman(el.created_at) }}
           .table__cell(v-if="!shortTable && el.created_at")
-            .actions
+            .actions(v-if="!basicRole")
               b-dropdown(size="sm" variant="none" class="m-0 p-0" right)
                 template(#button-content)
                   b-icon(icon="three-dots")
@@ -202,7 +202,10 @@
           disabled: false,
           ghostClass: "ghost"
         };
-      }
+      },
+      basicRole() {
+        return this.$store.getters['roles/currentRole'] == 'basic'
+      },
     },
     mounted() {
       this.randomNum = Math.floor(Math.random() * 100)
