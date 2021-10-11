@@ -123,7 +123,7 @@
                   label.form-label Comment
                   textarea-autosize.w-100.form-control.d-block(v-model="message.message" :min-height="100")
                   Errors(:errors="messageErrors.message")
-                  Post(:action="`/api/reminders/${taskId}/messages`" :model="{ message }" @errors="messageErrors = $event" @saved="messageSaved" alignRight)
+                  Post(:action="sendMessageUrl" :model="{ message }" @errors="messageErrors = $event" @saved="messageSaved" alignRight)
                     button.btn.btn-primary.save-comment-btn Send
 
       template(v-if="!taskId" slot="modal-footer")
@@ -355,10 +355,13 @@ export default {
     createNewTask(saveOccurence) {
       const toId = (!saveOccurence && this.taskId) ? `/${this.taskId}` : ''
       const occurenceParams = saveOccurence && this.occurenceId ? `?oid=${this.occurenceId}&src_id=${this.taskId}` : ''
+      const ownerBusinessId = this.businessId || localStorage.getItem('app.business_id') || 0
+      const taskData = {...this.task}
+      if (ownerBusinessId) taskData.business_id = ownerBusinessId
       fetch(this.$store.getters.backendUrl + '/api/reminders' + toId + occurenceParams, {
         method: 'POST',
         headers: { ...this.$store.getters.authHeaders.headers, 'Content-Type': 'application/json' },
-        body: JSON.stringify(this.task)
+        body: JSON.stringify(taskData)
       }).then(response => {
         if (response.status === 422) {
           response.json().then(errors => this.errors = errors.errors)
@@ -428,6 +431,11 @@ export default {
       employees: 'settings/employees',
       employeesSpecialists: 'settings/employeesSpecialists'
     }),
+    sendMessageUrl() {
+      const isTeamMember = localStorage.getItem('app.currentUser.seatRole')
+      if (isTeamMember) return `/api/reminders/${this.taskId}/messages?team_member=true`
+      return `/api/reminders/${this.taskId}/messages`
+    },
     isOccurence() {
       return !isNaN(parseInt(this.occurenceId))
     },
@@ -441,6 +449,7 @@ export default {
       return `/api/reminders/${this.taskId || ''}/messages`
     },
     optionsToFetch() {
+      const businessId = this.businessId || localStorage.getItem('app.business_id') || 0
       const forBusiness = {
         projects: '/api/linkto_resources?type=local_projects',
         reviews: '/api/linkto_resources?type=reviews',
@@ -451,12 +460,12 @@ export default {
       }
 
       const specialist = {
-        projects: `/api/linkto_resources?type=local_projects&business_id=${this.businessId}`,
-        reviews: `/api/linkto_resources?type=reviews&business_id=${this.businessId}`,
-        policies: `/api/linkto_resources?type=compliance_policies&business_id=${this.businessId}`,
-        exams: `/api/linkto_resources?type=exams&business_id=${this.businessId}`,
-        specialists: `/api/assignee_specialist?business_id=${this.businessId}`,
-        team_members: `/api/assignee_team_member?business_id=${this.businessId}`
+        projects: `/api/linkto_resources?type=local_projects&business_id=${businessId}`,
+        reviews: `/api/linkto_resources?type=reviews&business_id=${businessId}`,
+        policies: `/api/linkto_resources?type=compliance_policies&business_id=${businessId}`,
+        exams: `/api/linkto_resources?type=exams&business_id=${businessId}`,
+        specialists: `/api/assignee_specialist?business_id=${businessId}`,
+        team_members: `/api/assignee_team_member?business_id=${businessId}`
       }
 
       return this.isBusiness ? forBusiness : specialist
