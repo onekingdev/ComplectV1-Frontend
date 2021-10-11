@@ -4,7 +4,7 @@
       .name
         b-icon.pointer.m-r-1(font-scale="1" :icon="item.done_at ? 'check-circle-fill' : 'check-circle'" @click="toggleDone(item)" v-bind:class="{ done_task: item.done_at }")
         //- ion-icon.m-r-1.pointer(@click="toggleDone(item)" v-bind:class="{ done_task: item.done_at }" name='checkmark-circle-outline')
-        TaskFormModal.link(:task-id="item.id" @saved="$emit('saved')")
+        TaskFormModal.link(:task-id="item.id" @saved="$emit('saved')" :businessId="getBusinessId(item)")
           span(v-if="!item.done_at") {{ item.body }}
           s(v-else) {{ item.body }}
     td(v-if="!shortTable")
@@ -12,7 +12,7 @@
         ion-icon.mr-1(v-if="linkedTo(item)" :name="linkedTo(item)" :class="linkedToClass(item)")
         .link(v-if="item.linkable_type") {{ item.linkable_type | linkableTypeCorrector }}
         span(v-else) ---
-    td(v-if="!shortTable") {{ item.assignee ? item.assignee : '---' }}
+    td(v-if="!shortTable") {{ item.assignee_name ? item.assignee_name : '---' }}
     td.text-right(v-if="!shortTable")
       | {{ item.remind_at | asDate }}
     td.text-right(:class="{ overdue: isOverdue(item) }")
@@ -26,7 +26,7 @@
         template(#button-content)
           b-icon(icon="three-dots")
         //- b-dropdown-item(:href="`/business/reminders/${item.id}`") Edit
-        TaskFormModal(:task-id="item.id" @saved="$emit('saved')")
+        TaskFormModal(:task-id="item.id" @saved="$emit('saved')" :businessId="getBusinessId(item)")
           b-dropdown-item Edit
         //- b-dropdown-item {{ item.done_at ? 'Incomplite' : 'Complete' }}
         TaskDeleteConfirmModal(@deleteConfirmed="deleteTask(item)" :inline="false")
@@ -68,7 +68,10 @@ export default {
 
       try {
         await this.$store.dispatch('reminders/updateTaskStatus', { id: taskId, done: target_state, oidParam, src_id_params })
-          .then(response => this.toast('Success', `Updated!`))
+          .then(response => {
+            const text = task.done_at ? 'Task has been marked as incomplete.' : 'Task has been marked as complete.'
+            this.toast('Success', text)
+          })
           .catch(error => this.toast('Error', `Something wrong! ${error.message}`, true))
       } catch (error) {
         console.error('error catch in task Item', error)
@@ -79,6 +82,9 @@ export default {
         .then(response => this.toast('Success', `The task deleted!`))
         .catch(error => this.toast('Error', `Something wrong! ${error.message}`, true))
     },
+    getBusinessId(item) {
+      return item.business_id || 0
+    }
   },
   filters: {
     linkableTypeCorrector: function (value) {
