@@ -275,20 +275,13 @@ export default {
     linkToOptions(projects, reviews, policies, exams) {
       const mapLinkProperty = (property, type) => ({ [property]: label, id }) => ({ id: `${type}|${id}`, label }),
         optionsBranch = (label, items, type, property) => ({ ...toOption(label), children: items.map(mapLinkProperty(property, type)) })
-      if (this.isBusiness) {
-        return [
-          optionsBranch('Projects', projects || [], 'LocalProject', 'title'),
-          optionsBranch('Internal Reviews', reviews || [], 'AnnualReport', 'name'),
-          optionsBranch('Policies', policies || [], 'CompliancePolicy', 'name'),
-          optionsBranch('Exams', exams || [], 'Exam', 'name'),
-        ]
-      }
 
-      if (this.businessId) return [
+      return [
         optionsBranch('Projects', projects || [], 'LocalProject', 'title'),
+        optionsBranch('Internal Reviews', reviews || [], 'AnnualReport', 'name'),
+        optionsBranch('Policies', policies || [], 'CompliancePolicy', 'name'),
+        optionsBranch('Exams', exams || [], 'Exam', 'name'),
       ]
-
-      return []
     },
     inputLinkTo(value) {
       const [type, id] = value.split('|')
@@ -300,16 +293,17 @@ export default {
       this.task.assignee_type = type
       this.task.assignee_id = id
     },
-    assigneeOptions(specialists, team_members) {
-      const specialistsOptions = specialists.map((item) => {
+    assigneeOptions(hiredSpecialist, team_members) {
+      const specialistsOptions = hiredSpecialist.map((item) => {
         return {
-          id: `Specialist|${item.specialist_id}`,
+          id: `Specialist|${item.id}`,
           label: `${item.first_name} ${item.last_name}`
         }
       })
-      const teamMemberOptions = team_members.filter(item => item.active).map((item) => {
+
+      const teamMemberOptions = team_members.map((item) => {
         return {
-          id: `TeamMember|${item.id}`,
+          id: `Specialist|${item.id}`,
           label: `${item.first_name} ${item.last_name}`
         }
       })
@@ -447,20 +441,25 @@ export default {
       return `/api/reminders/${this.taskId || ''}/messages`
     },
     optionsToFetch() {
-      return this.isBusiness
-        ? {
-            projects: '/api/local_projects',
-            reviews: '/api/business/annual_reports',
-            policies: '/api/business/compliance_policies',
-            exams: '/api/business/exams',
-            specialists: '/api/business/team_members/specialists',
-            team_members: '/api/business/team_members'
-          }
-        : {
-            projects: '/api/local_projects',
-            specialists: `/api/business/team_members/specialists?business_id=${this.businessId}`,
-            team_members: `/api/business/team_members?business_id=${this.businessId}`
-          }
+      const forBusiness = {
+        projects: '/api/linkto_resources?type=local_projects',
+        reviews: '/api/linkto_resources?type=reviews',
+        policies: '/api/linkto_resources?type=compliance_policies',
+        exams: '/api/linkto_resources?type=exams',
+        specialists: '/api/assignee_specialist',
+        team_members: '/api/assignee_team_member'
+      }
+
+      const specialist = {
+        projects: `/api/linkto_resources?type=local_projects&business_id=${this.businessId}`,
+        reviews: `/api/linkto_resources?type=reviews&business_id=${this.businessId}`,
+        policies: `/api/linkto_resources?type=compliance_policies&business_id=${this.businessId}`,
+        exams: `/api/linkto_resources?type=exams&business_id=${this.businessId}`,
+        specialists: `/api/assignee_specialist?business_id=${this.businessId}`,
+        team_members: `/api/assignee_team_member?business_id=${this.businessId}`
+      }
+
+      return this.isBusiness ? forBusiness : specialist
     },
     daysOfWeek() {
       return ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'].map(index)
@@ -473,7 +472,8 @@ export default {
     },
     repeatsOptions: () => REPEAT_OPTIONS.map(value => ({ value, text: REPEAT_LABELS[value] })),
     isBusiness() {
-      return 'business' === this.$store.getters['roles/domain']
+      const isSpecialistMember = localStorage.getItem('app.currentUser.seatRole')
+      return 'business' === this.$store.getters['roles/domain'] && !isSpecialistMember
     },
     datepickerOptions() {
       return {

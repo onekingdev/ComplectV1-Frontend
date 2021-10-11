@@ -100,7 +100,6 @@ export default {
         events: (info, successCallback, errorCallback) => {
           //const business_id = window.localStorage["app.business_id"]
           //if(business_id) headers.business_id = JSON.parse(business_id)
-
           const fromTo = jsToSql(info.start) + '/' + jsToSql(info.end)
           fetch(`${this.$store.getters.backendUrl}${endpointUrl}${fromTo}`, this.$store.getters.authHeaders)
             .then(response => response.json())
