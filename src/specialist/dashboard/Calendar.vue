@@ -22,7 +22,7 @@
                 span(v-for="icon in arg.event.extendedProps.icons")
                   ion-icon(:name="icon")
                   | &nbsp;
-                span.pointer(@click="openModal(arg.event.extendedProps.taskId, arg.event.extendedProps.oid)" v-if="arg.event.extendedProps.remind_at") {{arg.event.title}}
+                span.pointer(@click="openModal(arg.event.extendedProps.taskId, arg.event.extendedProps.oid, arg.event)" v-if="arg.event.extendedProps.remind_at") {{arg.event.title}}
                 //- a(v-else :href="arg.event.extendedProps.href" target="_blank") {{arg.event.title}}
                 router-link(v-else :to='arg.event.extendedProps.href') {{arg.event.title}}
 </template>
@@ -57,7 +57,8 @@ export default {
       currentMonth: '',
       nowEditingTask: {
         taskId: null,
-        occurenceId: null
+        occurenceId: null,
+        businessId: 0
       },
       download: {
         start_date: '',
@@ -67,8 +68,9 @@ export default {
     }
   },
   methods: {
-    openModal(taskId, occurenceId) {
-      Object.assign(this.nowEditingTask, { taskId, occurenceId })
+    openModal(taskId, occurenceId, task) {
+      const businessId = task.extendedProps.business_id
+      Object.assign(this.nowEditingTask, { taskId, occurenceId, businessId })
       this.$nextTick(() => this.$bvModal.show('CalendarTaskFormModal'))
     },
     dayContent(arg) {

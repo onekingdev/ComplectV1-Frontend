@@ -4,7 +4,7 @@
       .name
         b-icon.pointer.m-r-1(font-scale="1" :icon="item.done_at ? 'check-circle-fill' : 'check-circle'" @click="toggleDone(item)" v-bind:class="{ done_task: item.done_at }")
         //ion-icon.m-r-1.pointer(@click="toggleDone(item)" v-bind:class="{ done_task: item.done_at }" name='checkmark-circle-outline')
-        TaskFormModal.link(:taskProp="item" :task-id="item.taskId" :occurence-id="item.oid" @saved="$emit('saved')" @deleted="deleteTask(item)")
+        TaskFormModal.link(:taskProp="item" :task-id="item.taskId" :occurence-id="item.oid" @saved="$emit('saved')" @deleted="deleteTask(item)" :businessId="getBusinessId(item)")
           span(v-if="!item.done_at" ) {{ item.body }}
           s(v-else) {{ item.body }}
     td(v-if="!shortTable")
@@ -26,7 +26,7 @@
         template(#button-content)
           b-icon(icon="three-dots")
         //b-dropdown-item(:href="`/reminders/${item.id}`") Edit
-        TaskFormModal(:task-id="item.id" :inline="false")
+        TaskFormModal(:task-id="item.id" :inline="false" :businessId="getBusinessId(item)")
           b-dropdown-item Edit
         //b-dropdown-item {{ item.done_at ? 'Incomplite' : 'Complete' }}
         TaskDeleteConfirmModal(@deleteConfirmed="deleteTask(item)", :linkedTo="{ linkable_type: item.linkable_type, linkable_name: item.linkable_name }" :inline="false")
@@ -90,6 +90,9 @@ export default {
         .then(response => this.toast('Success', this.toastMessages.success.deleted))
         .catch(error => this.toast('Error', this.toastMessages.errors.deleted, true))
     },
+    getBusinessId(item) {
+      return item.business_id || 0
+    }
   },
   filters: {
     linkableTypeCorrector: function (value) {

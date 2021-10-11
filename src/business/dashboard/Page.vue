@@ -1,5 +1,6 @@
 <template lang="pug">
-  .page
+  SpecialistPage(v-if="isTeamMemberUser")
+  .page(v-else)
     Get(currentBusiness="/api/businesses/current"): template(v-slot="{ currentBusiness }")
       .page-header
         h2.page-header__title
@@ -22,6 +23,7 @@
 import { mapGetters } from "vuex"
 import Calendar from './Calendar'
 import UpcomingTasks from '@/business/dashboard/UpcomingTasks'
+import SpecialistPage from '@/specialist/dashboard/Page'
 
 const endpointProjectsUrl = '/api/local_projects/'
 const pdfUrl = '/reminders.csv'
@@ -49,6 +51,10 @@ export default {
       currentAccount: 'roles/currentAccount',
       currentUser: 'getUser'
     }),
+    isTeamMemberUser() {
+      const userType = localStorage.getItem('app.currentUser.seatRole')
+      return !!userType
+    }
   },
   watch: {
     etag: {
@@ -61,6 +67,7 @@ export default {
   components: {
     Calendar,
     UpcomingTasks,
+    SpecialistPage
   }
 }
 </script>

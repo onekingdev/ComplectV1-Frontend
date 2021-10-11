@@ -120,33 +120,7 @@ export default {
             commit("setLoading", false, { root: true });
             if (success) {
               const data = success.data
-              const tasks = []
-              for (const taskItem of data.tasks) {
-                tasks.push(new Task(
-                  taskItem.body,
-                  taskItem.created_at,
-                  taskItem.description,
-                  taskItem.done_at,
-                  taskItem.done_occurencies,
-                  taskItem.end_by,
-                  taskItem.end_date,
-                  taskItem.id,
-                  taskItem.linkable_id,
-                  taskItem.linkable_type,
-                  taskItem.note,
-                  taskItem.on_type,
-                  taskItem.remind_at,
-                  taskItem.remindable_id,
-                  taskItem.remindable_type,
-                  taskItem.repeat_every,
-                  taskItem.repeat_on,
-                  taskItem.repeats,
-                  taskItem.skip_occurencies,
-                  taskItem.updated_at,
-                  taskItem.assignee_name
-                ))
-              }
-              commit('SET_TASKS', tasks)
+              commit('SET_TASKS', data.tasks)
               return data
             }
             if (!success) {
@@ -379,50 +353,8 @@ export default {
 
             if (success) {
               const data = success.data
-              commit('UPDATE_TASK', new Task(
-                data.body,
-                data.created_at,
-                data.description,
-                data.done_at,
-                data.done_occurencies,
-                data.end_by,
-                data.end_date,
-                data.id,
-                data.linkable_id,
-                data.linkable_type,
-                data.note,
-                data.on_type,
-                data.remind_at,
-                data.remindable_id,
-                data.remindable_type,
-                data.repeat_every,
-                data.repeat_on,
-                data.repeats,
-                data.skip_occurencies,
-                data.updated_at,
-              ))
-              commit('UPDATE_CURRENT_TASK', new Task(
-                data.body,
-                data.created_at,
-                data.description,
-                data.done_at,
-                data.done_occurencies,
-                data.end_by,
-                data.end_date,
-                data.id,
-                data.linkable_id,
-                data.linkable_type,
-                data.note,
-                data.on_type,
-                data.remind_at,
-                data.remindable_id,
-                data.remindable_type,
-                data.repeat_every,
-                data.repeat_on,
-                data.repeats,
-                data.skip_occurencies,
-                data.updated_at,
-              ))
+              commit('UPDATE_TASK', data)
+              commit('UPDATE_CURRENT_TASK', data)
               return data
             }
             if (!success) {

@@ -9,7 +9,7 @@
           div
             template(v-if="currentRole !== 'basic'")
               router-link.m-r-1.btn.btn-default(v-if="project.visible_project" :to='viewHref(project.visible_project)' target="_blank") View Post
-              router-link.m-r-1.btn.btn-default(v-else :to='postHref(project)') Post Project
+              button.m-r-1.btn.btn-default(v-else @click="postProject(project)") Post Project
             CompleteLocalProjectModal.m-r-1(:project="project" @saved="newEtag")
             button.btn.btn__close(@click="backToList")
               b-icon(icon="x")
@@ -168,12 +168,13 @@ import IssueModal from './IssueModal'
 import EditRoleModal from './EditRoleModal'
 import MessagesModal from '@/common/Messages/MessagesModal'
 import CommonContractAlerts from '@/common/projects/CommonContractAlerts'
+import FreeBusinessMixin from '@/mixins/FreeBusinessMixin'
 
 const TOKEN = localStorage.getItem('app.currentUser.token') ? JSON.parse(localStorage.getItem('app.currentUser.token')) : ''
 const isContractComplete = contract => contract.status === 'complete'
 
 export default {
-  mixins: [EtaggerMixin()],
+  mixins: [EtaggerMixin(), FreeBusinessMixin],
   props: {
     projectId: {
       type: Number,
@@ -192,7 +193,7 @@ export default {
       applicationMessage: null,
     }
   },
-  created() {
+  async created() {
     this.modalId = 'modal_' + Math.random().toFixed(9) + Math.random().toFixed(7)
   },
   methods: {
@@ -260,6 +261,13 @@ export default {
     applicationsUrl(projectId) {
       return this.$store.getters.url('URL_API_PROJECT_APPLICATIONS', projectId)
     },
+    postProject(project) {
+      if (this.isBusinessFreeWithoutPayment) {
+        this.toast('Error', 'Job posting cannot be created. Please add a payment method in order to post a job.', true)
+      } else {
+        this.$router.push(this.postHref(project))
+      }
+    }
   },
   computed: {
     currentRole() {
