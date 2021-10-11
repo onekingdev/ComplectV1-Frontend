@@ -61,11 +61,11 @@ export default {
       roles: 'roles/roles',
       role: 'roles/currentRole',
       plan: 'roles/currentPlan',
-      currentAccount: 'roles/currentAccount',
+      currentUser: 'getUser'
     }),
     pdfUrl: () => pdfUrl,
     currentSpecialist() {
-      const accountInfo = this.currentAccount
+      const accountInfo = this.currentUser
       return accountInfo ? `${accountInfo.first_name} ${accountInfo.last_name}` : ''
     }
   }

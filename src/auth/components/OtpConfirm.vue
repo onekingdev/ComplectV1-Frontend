@@ -140,20 +140,21 @@
                 this.error = response.message
                 // this.toast('Error', 'Verification code failed. Try again.', true)
               }
+              
               if (!response.errors && response.specialist && response.token && this.inviteToken) {
+                let seatRole = response.specialist.seat_role
+                if(seatRole) {
+                  localStorage.setItem('app.currentUser.seatRole', seatRole);
+                  localStorage.setItem('app.currentUser.userType', JSON.stringify('businesses'));
+                }
                 const dashboard = '/specialist'
                 window.location.href = `${dashboard}`;
                 return
               }
 
-              if(response.specialist && response.specialist.seat_role) localStorage.setItem('app.currentUser.seatRole', response.specialist.seat_role);
-
               if (!response.errors && response.token) {
-                // open dashboard
                 const dashboard = response.business || response.specialist.seat_role ? '/business' : '/specialist'
                 window.location.href = `${dashboard}`;
-                // this.$router.push(`${dashboard}/onboarding`)
-                // this.$router.push(`${dashboard}`)
               }
             })
             .catch((error) => {
