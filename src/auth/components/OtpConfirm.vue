@@ -138,9 +138,8 @@
             .then((response) => {
               if (response.errors) {
                 this.error = response.message
-                // this.toast('Error', 'Verification code failed. Try again.', true)
               }
-              
+
               if (!response.errors && response.specialist && response.token && this.inviteToken) {
                 let seatRole = response.specialist.seat_role
                 if(seatRole) {
