@@ -6,7 +6,8 @@ const mapAuthProviders = {
     createProject: jwt.createProject,
     deleteDocument: jwt.deleteDocument,
     deletePostProject: jwt.deletePostProject,
-    addCollaborator: jwt.addCollaborator
+    addCollaborator: jwt.addCollaborator,
+    removeCollaborator: jwt.removeCollaborator
   },
 }
 
@@ -164,6 +165,10 @@ export default {
     addLocalProjectCollaborator({commit, rootState}, payload) {
       const addCollaborator = mapAuthProviders[rootState.shared.settings.authProvider].addCollaborator
       return addCollaborator(payload)
+    },
+    removeLocalProjectCollaborator({commit, rootState}, payload) {
+      const removeCollaborator = mapAuthProviders[rootState.shared.settings.authProvider].removeCollaborator
+      return removeCollaborator(payload)
     }
   },
   getters: {
