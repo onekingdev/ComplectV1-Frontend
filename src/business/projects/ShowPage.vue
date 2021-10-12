@@ -58,6 +58,17 @@
                               div.d-flex.flex-column.fw-600.fs-14
                                 span {{ ownerName(project.owner) }}
                           td
+                        tr(v-for="specialist in filterCollaborators(project)" :key="specialist.id")
+                          td
+                            .d-flex.align-items-center.mb-3
+                              div
+                                UserAvatar.userpic_small.mr-2(:user="specialist")
+                              div.d-flex.flex-column.fw-600.fs-14
+                                span {{ specialist.first_name }} {{ specialist.last_name }}
+                          td
+                            b-dropdown.float-right(text="..." variant="default" right)
+                              CommonDeleteModal(title="Delete Collaborator" content="This will remove the collaborator from this project and all of its associated content." @deleteConfirmed="deleteColaborator(project, specialist)", :inline="false")
+                                b-dropdown-item Delete
                         tr(v-for="contract in getContracts(project.projects)" :key="contract.specialist.id")
                           td
                             .d-flex.align-items-center.mb-3
@@ -85,7 +96,7 @@
                 .card(v-if="!showingContract")
                   .card-header.d-flex.justify-content-between
                     h3.m-y-0 Collaborators
-                    Get(:etag="etag" :collaborators="`/api/business/team_members`" :callback="getActiveCollaboratorOptions" ): template(v-slot="{collaborators}")
+                    Get(:etag="etag" :collaborators="`/api/assignee_team_member`" :callback="getActiveCollaboratorOptions" ): template(v-slot="{collaborators}")
                       button.btn.btn-primary.float-right(v-b-modal="'AddCollaboratorModal'") New Collaborator
                       b-modal#AddCollaboratorModal(title="New Collaborator" :project="project")
                         p.fs-14 Select a user to add.
@@ -96,7 +107,8 @@
                         ComboBox(v-model="id" :options="collaborators")
                         template(#modal-footer="{ hide }")
                           button.btn.btn-link(@click="hide") Cancel
-                          Post(:action="'/api/local_projects/' + project.id + '/specialists'" :model="{id}" @saved="newEtag()")
+                          button.btn.btn-dark(@click="addNewCollaborator(id)") Create
+                          //- Post(:action="'/api/local_projects/' + project.id + '/specialists'" :model="{id}" @saved="addNewCollaborator()" @errors="addNewCollaborator()")
                             button.btn.btn-dark Create
                   .card-body
                     .p-20.collaborator
@@ -106,6 +118,15 @@
                             UserAvatar.userpic_small.mr-2(:user="ownerObject(project.owner)")
                           div.d-flex.flex-column
                             b.collaborator__name {{ ownerName(project.owner) }}
+                      .d-flex.justify-content-between.align-items-center.mb-3(v-for="specialist in filterCollaborators(project)" :key="specialist.id")
+                        .d-flex.align-items-center
+                          div
+                            UserAvatar.userpic_small.mr-2(:user="specialist")
+                          div.d-flex.flex-column
+                            b.collaborator__name {{ specialist.first_name }} {{ specialist.last_name }}
+                        .d-flex.justify-content-end
+                          CommonDeleteModal(title="Delete Collaborator" content="This will remove the collaborator from this project and all of its associated content." @deleteConfirmed="deleteColaborator(project, specialist)", :inline="false")
+                            button.btn.btn-primary(@click="showingContract = contract") Delete
                       .d-flex.justify-content-between.align-items-center.mb-3(v-for="contract in getContracts(project.projects)" :key="contract.specialist.id")
                         .d-flex.align-items-center
                           div
@@ -169,6 +190,7 @@ import EditRoleModal from './EditRoleModal'
 import MessagesModal from '@/common/Messages/MessagesModal'
 import CommonContractAlerts from '@/common/projects/CommonContractAlerts'
 import FreeBusinessMixin from '@/mixins/FreeBusinessMixin'
+import CommonDeleteModal from '@/common/Modals/CommonDeleteModal'
 
 const TOKEN = localStorage.getItem('app.currentUser.token') ? JSON.parse(localStorage.getItem('app.currentUser.token')) : ''
 const isContractComplete = contract => contract.status === 'complete'
@@ -197,6 +219,15 @@ export default {
     this.modalId = 'modal_' + Math.random().toFixed(9) + Math.random().toFixed(7)
   },
   methods: {
+    filterCollaborators(project) {
+      const collaborators = project.collaborators
+      const contracts = this.getContracts(project.projects)
+      const specialistIds = contracts.map(item => {
+        if (item.specialist) return item.specialist.id
+      })
+
+      return collaborators.filter(item => !specialistIds.includes(item.id))
+    },
     ownerName(owner) {
       if (owner.contact_first_name) return `${owner.contact_first_name} ${owner.contact_last_name}`
       if (owner.first_name) return `${owner.first_name} ${owner.last_name}`
@@ -239,7 +270,7 @@ export default {
     readablePaymentSchedule,
     isContractComplete,
     getActiveCollaboratorOptions(collaborators) {
-      return collaborators.filter(item => item.active).map(({ id, first_name, last_name }) => ({ id: id, label: `${first_name} ${last_name}`}))
+      return collaborators.map(({ id, first_name, last_name }) => ({ id: id, label: `${first_name} ${last_name}`}))
     },
     accepted(id, role) {
       fetch(`${this.$store.getters.backendUrl}/api/business/specialist_roles/${id}`, {
@@ -266,6 +297,32 @@ export default {
         this.toast('Error', 'Job posting cannot be created. Please add a payment method in order to post a job.', true)
       } else {
         this.$router.push(this.postHref(project))
+      }
+    },
+    async addNewCollaborator(id) {
+      const res = await this.$store.dispatch('projects/addLocalProjectCollaborator', { id: id, localProjectId: this.projectId })
+      if (res && res.id) {
+        this.$bvModal.hide('AddCollaboratorModal')
+        this.toast('Success', 'A collaborator has added.')
+        this.newEtag()
+        this.id = null
+      } else {
+        if (res.errors && res.errors.local_projects_specialist) {
+          this.toast('Errors', 'Collaborator is existed.', true)
+        }
+      }
+    },
+    async deleteColaborator(project, specialist) {
+      const payload = {
+        localProjectId: project.id,
+        specialistId: specialist.id
+      }
+      const res = await this.$store.dispatch('projects/removeLocalProjectCollaborator', payload)
+      if (res && res.status === 'ok') {
+        this.toast('Success', 'A collaborator has been deleted.')
+        this.newEtag()
+      } else {
+        this.toast('Error', 'Can not delete collaborator. Please try again.')
       }
     }
   },
@@ -318,7 +375,8 @@ export default {
     TaskFormModal,
     MessagesModal,
     TaskTableExtended,
-    CommonContractAlerts
+    CommonContractAlerts,
+    CommonDeleteModal
   }
 }
 </script>

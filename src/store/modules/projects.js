@@ -5,7 +5,9 @@ const mapAuthProviders = {
     getProjects: jwt.getProjects,
     createProject: jwt.createProject,
     deleteDocument: jwt.deleteDocument,
-    deletePostProject: jwt.deletePostProject
+    deletePostProject: jwt.deletePostProject,
+    addCollaborator: jwt.addCollaborator,
+    removeCollaborator: jwt.removeCollaborator
   },
 }
 
@@ -159,6 +161,14 @@ export default {
     },
     denyContract({commit}, payload) {
       return denyEndContract(payload)
+    },
+    addLocalProjectCollaborator({commit, rootState}, payload) {
+      const addCollaborator = mapAuthProviders[rootState.shared.settings.authProvider].addCollaborator
+      return addCollaborator(payload)
+    },
+    removeLocalProjectCollaborator({commit, rootState}, payload) {
+      const removeCollaborator = mapAuthProviders[rootState.shared.settings.authProvider].removeCollaborator
+      return removeCollaborator(payload)
     }
   },
   getters: {

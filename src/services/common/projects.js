@@ -46,3 +46,27 @@ export async function deleteDocument(payload) {
     })
     .catch(err => err)
 }
+
+export async function addCollaborator(payload) {
+  const endpointUrl = '/local_projects/' + payload.localProjectId + '/specialists'
+  return await axios.post(endpointUrl, { id: payload.id })
+    .then(response => {
+      if (response) {
+        return response.data
+      }
+      return false
+    })
+    .catch(err => err)
+}
+
+export async function removeCollaborator(payload) {
+  const endpointUrl = '/local_projects/' + payload.localProjectId + '/specialists/' + payload.specialistId
+  return await axios.delete(endpointUrl, { id: payload.id })
+    .then(response => {
+      if (response) {
+        return response.data
+      }
+      return false
+    })
+    .catch(err => err)
+}
