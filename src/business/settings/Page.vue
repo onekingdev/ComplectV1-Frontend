@@ -26,9 +26,6 @@
   import SelectPlan from './components/subscriptions/components/SelectPlan'
   import SelectBilling from './components/billings/components/SelectBilling'
 
-  //import AccessDenied from "@/common/AccessDenied";
-  //import PaymentRequired from "@/common/PaymentRequired";
-
   export default {
     props: ['states', 'timezones', 'contries', 'userId'],
     components: {
@@ -42,19 +39,10 @@
       Notifications,
       SelectPlan,
       SelectBilling,
-      //AccessDenied,
-      //PaymentRequired,
     },
     created() {
       // FOR Hiding Sidebar
       this.$store.commit('changeSidebar', 'settings')
-      // this.component = General;
-      // this.component = Users;
-      // this.component = Security;
-      // this.component = Subscriptions;
-      // this.component = Roles;
-      // this.component = Billings;
-      // this.component = Notifications;
 
       const pathName = window.location.pathname.split('settings/')[1]
       if(pathName) {
@@ -82,12 +70,12 @@
       },
       menuSections() {
         return [
-          { name: 'General', link: 'General', access: ['basic', 'trusted', 'admin'], plan: ['free', 'team', 'business']},
-          { name: 'Users', link: 'Users', access: ['trusted', 'admin'], plan: ['team', 'business']},
-          { name: 'Roles and Permissions', link: 'Roles', access: ['trusted', 'admin'], plan: ['free', 'team', 'business']},
-          { name: 'Security', link: 'Security', access: ['basic', 'trusted', 'admin'], plan: ['free', 'team', 'business']},
-          { name: 'Subscriptions', link: 'Subscriptions', access: ['trusted', 'admin'], plan: ['free', 'team', 'business']},
-          { name: 'Billing', link: 'Billings', access: ['admin'], plan: ['free', 'team', 'business']}
+          { name: 'General', link: 'General', access: ['basic', 'trusted', 'admin'], plan: ['free', 'team', 'business', 'specialist_pro']},
+          { name: 'Users', link: 'Users', access: ['trusted', 'admin'], plan: ['team', 'business', 'specialist_pro']},
+          { name: 'Roles and Permissions', link: 'Roles', access: ['trusted', 'admin'], plan: ['free', 'team', 'business', 'specialist_pro']},
+          { name: 'Security', link: 'Security', access: ['basic', 'trusted', 'admin'], plan: ['free', 'team', 'business', 'specialist_pro']},
+          { name: 'Subscriptions', link: 'Subscriptions', access: ['trusted', 'admin'], plan: ['free', 'team', 'business', 'specialist_pro']},
+          { name: 'Billing', link: 'Billings', access: ['admin'], plan: ['free', 'team', 'business', 'specialist_pro']},
         ]
       }
     },
