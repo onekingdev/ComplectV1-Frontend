@@ -275,6 +275,9 @@ export default {
     linkToOptions(projects, reviews, policies, exams) {
       const mapLinkProperty = (property, type) => ({ [property]: label, id }) => ({ id: `${type}|${id}`, label }),
         optionsBranch = (label, items, type, property) => ({ ...toOption(label), children: items.map(mapLinkProperty(property, type)) })
+      if (this.isBasicRoleUser) return [
+        optionsBranch('Projects', projects || [], 'LocalProject', 'title'),
+      ]
 
       return [
         optionsBranch('Projects', projects || [], 'LocalProject', 'title'),
@@ -431,6 +434,10 @@ export default {
       employees: 'settings/employees',
       employeesSpecialists: 'settings/employeesSpecialists'
     }),
+    isBasicRoleUser() {
+      const seatRole = this.$store.getters['roles/seatRole']
+      return seatRole && seatRole === 'basic'
+    },
     sendMessageUrl() {
       const isTeamMember = localStorage.getItem('app.currentUser.seatRole')
       if (isTeamMember) return `/api/reminders/${this.taskId}/messages?team_member=true`
@@ -449,6 +456,11 @@ export default {
       return `/api/reminders/${this.taskId || ''}/messages`
     },
     optionsToFetch() {
+      if (this.isBasicRoleUser) return { 
+        projects: '/api/linkto_resources?type=local_projects',
+        specialists: '/api/assignee_specialist',
+        team_members: '/api/assignee_team_member'
+      }
       const businessId = this.businessId || localStorage.getItem('app.business_id') || 0
       const forBusiness = {
         projects: '/api/linkto_resources?type=local_projects',

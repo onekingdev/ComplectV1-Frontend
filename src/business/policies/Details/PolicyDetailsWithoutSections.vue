@@ -357,7 +357,7 @@ import Tiptap from '@/common/Tiptap'
       },
       policiesListNested () {
         const policies = this.$store.getters.policiesListNested.filter(item => item.status !== 'archived')
-        if (this.currentUserAdmin || this.currentUserTrusted) return policies.filter(item => item.status === 'published')
+        if (this.currentUserBasic) return policies.filter(item => item.status === 'published')
 
         return policies
       },
