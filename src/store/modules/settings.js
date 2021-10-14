@@ -957,6 +957,16 @@ export default {
     getSubscriptionInfor({state, rootState}) {
       const getSubscription = mapAuthProviders[rootState.shared.settings.authProvider].getSubscriptionInfor
       return getSubscription()
+    },
+    async getSpecialistClient({state}) {
+      return await axios.get('/business/team_members/businesses')
+                        .then(response => {
+                          if (response) {
+                            return response.data
+                          }
+                          return false
+                        })
+                        .catch(err => err)
     }
   },
   getters: {

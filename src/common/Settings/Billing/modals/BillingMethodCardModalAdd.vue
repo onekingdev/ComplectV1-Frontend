@@ -33,6 +33,10 @@
       billingMethod: {
         type: String,
         default: ''
+      },
+      userType: {
+        type: String,
+        default: ''
       }
     },
     components: {
@@ -41,7 +45,6 @@
     },
     data() {
       return {
-        userType: 'business',
         modalId: `modal_${rnd()}`,
         cardDetail: {
           nameOnCard: '',
