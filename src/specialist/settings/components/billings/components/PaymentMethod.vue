@@ -27,32 +27,7 @@
     components: {},
     data() {
       return {
-        userType: 'business',
-        // paymentMethods: [
-          // {
-          //   id: 1,
-          //   name: 'Credit Card(primary)',
-          //   users: '10',
-          //   billinPeriod: 'monthly',
-          //   monthCoast: '100$/month',
-          //   paymentCardType: 'Visa',
-          //   paymentCard: '**** **** **** 4242',
-          //   nextPaymentDate: 'October 25, 2021',
-          //   primary: true
-          // },
-          // {
-          //   id: 2,
-          //   name: 'Paypal',
-          //   email: 'email: some_email@example.com',
-          //   users: '10',
-          //   billinPeriod: 'monthly',
-          //   monthCoast: '100$/month',
-          //   // paymentCardType: 'Paypal',
-          //   // paymentCard: '**** **** **** 4242',
-          //   nextPaymentDate: 'October 25, 2021',
-          //   primary: false
-          // }
-        // ]
+        userType: 'specialist',
       }
     },
     methods: {

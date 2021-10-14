@@ -15,7 +15,7 @@
                     a.btn.btn-default.d-none(ref="bank" @click="props.onClick") Add Bank Account
                 BillingMethodModalAdd(@selected="addMethod")
                   b-button.btn.mr-2.font-weight-bold(type='button' variant='dark') New Method
-                BillingMethodCardModalAdd(:billingMethod="billingMethod" @complitedPaymentMethod="addPaymentMethod")
+                BillingMethodCardModalAdd(:billingMethod="billingMethod" :userType="userType" @complitedPaymentMethod="addPaymentMethod")
                   b-button.d-none(ref="special") Card add
             .row
               .col
@@ -37,10 +37,10 @@
 <script>
   import { mapGetters, mapActions } from "vuex"
   import Loading from '@/common/Loading/Loading'
-  import InvoicesTable from "./components/InvoicesTable";
+  import InvoicesTable from "@/common/Settings/Billing/InvoicesTable";
   import PaymentMethod from "./components/PaymentMethod";
-  import BillingMethodModalAdd from "./modals/BillingMethodModalAdd";
-  import BillingMethodCardModalAdd from "./modals/BillingMethodCardModalAdd";
+  import BillingMethodModalAdd from "@/common/Settings/Billing/modals/BillingMethodModalAdd";
+  import BillingMethodCardModalAdd from "@/common/Settings/Billing/modals/BillingMethodCardModalAdd";
   import PlaidLink from "vue-plaid-link";
   import Download from '@/common/Dashboard/components/Download'
 
