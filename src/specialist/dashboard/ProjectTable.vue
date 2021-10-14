@@ -5,7 +5,7 @@
         th Name
         th.text-right Due date
     tbody
-      tr(v-for="(project, i) in projectList" :key="i")
+      tr(v-for="(project, i) in projectList" :key="i" v-if="project.status !== 'Complete'")
         td
           router-link.link(:to='project.href') {{project.title}}
         td.text-right(class="due-date" :class="{ overdue: isOverdue(project) }")
