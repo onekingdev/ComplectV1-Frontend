@@ -12,9 +12,10 @@
             .col-sm-12
               ChangeContractAlerts(:project="project" @saved="newEtag" for="Specialist")
               CommonContractAlerts(:project="project" for="Specialist")
+              EndContractNotice(:project="project" from="Business" @saved="newEtag" @deny="denyContract")
           .row
             .col-md-8.col-sm-12.m-b-2
-              PropertiesTable(title="Project Details" :properties="acceptedOverviewProps(localProject)")
+              PropertiesTable(title="Project Details" :properties="acceptedOverviewProps(project)")
             .col-md-4.col-sm-12.m-b-2
               .card
                 .card-header.d-flex.justify-content-between
@@ -36,9 +37,6 @@
                               UserAvatar.userpic_small(:user="ownerObject(localProject.owner)")
                             div.d-flex.flex-column.fs-14
                               b {{ ownerName(localProject.owner) }}
-                        td
-                          b-dropdown.float-right(text="..." variant="default" right)
-                            b-dropdown-item(@click="viewContract(contract)") View Contract
                       tr(v-for="contract in getContractsByLocalProject(localProject)" :key="contract._key")
                         td
                           .d-flex.align-items-center.mb-3
@@ -56,7 +54,7 @@
               DiscussionCard(:project-id="project.local_project_id" :token="accessToken" :disabled="project.status == 'Complete'")
       b-tab(title="Tasks")
         .card-body.card-body_full-height.h-100: .card
-          TaskTableExtended(:tasks="localProject.reminders" :task-defaults="taskDefaults(localProject)" :businessId="localProject.business_id" @saved="newEtag")
+          TaskTableExtended(:tasks="localProject.reminders" :task-defaults="taskDefaults(localProject)" :businessId="localProject.business_id" :createButton="!isContractComplete(project)" @saved="newEtag")
       b-tab(title="Documents")
         .card-body.card-body_full-height.h-100: .card
           DocumentList(:project="localProject" :disabled="project.status == 'Complete'")
@@ -115,6 +113,7 @@
 import { readablePaymentSchedule, fields } from '@/common/ProposalFields'
 import ChangeContractAlerts from '@/common/projects/ChangeContractAlerts'
 import CommonContractAlerts from '@/common/projects/CommonContractAlerts'
+import EndContractNotice from '@/business/projects/alerts/EndContractNotice.vue'
 import DiscussionCard from '@/common/projects/DiscussionCard'
 import EditContractModal from '@/common/projects/EditContractModal'
 import EndContractModal from '@/business/projects/EndContractModal'
@@ -152,7 +151,7 @@ const acceptedOverviewProps = project => [
   { name: 'Role Details', value: project.role_details },
 ]
 
-const isContractComplete = contract => contract.status === 'complete'
+const isContractComplete = contract => contract.status === 'Complete'
 const TOKEN = localStorage.getItem('app.currentUser.token') ? JSON.parse(localStorage.getItem('app.currentUser.token')) : ''
 export default {
   mixins: [EtaggerMixin()],
@@ -169,6 +168,12 @@ export default {
     }
   },
   methods: {
+    contractEnded() {
+      this.newEtag()
+    },
+    denyContract() {
+      this.newEtag()
+    },
     ownerName(owner) {
       if (owner.contact_first_name) return `${owner.contact_first_name} ${owner.contact_last_name}`
       if (owner.first_name) return `${owner.first_name} ${owner.last_name}`
@@ -238,7 +243,7 @@ export default {
       return this.$store.getters.url('URL_PROJECT_TIMESHEET', this.id)
     },
     showTimesheetBtn() {
-      return project => 'hourly' === project.pricing_type && this.isApproved(project)
+      return project => 'hourly' === project.pricing_type && this.isApproved(project) && !this.isContractComplete(project)
     },
     proposalPropsData() {
       if (!this.application) return []
@@ -274,6 +279,7 @@ export default {
   components: {
     ChangeContractAlerts,
     CommonContractAlerts,
+    EndContractNotice,
     DiscussionCard,
     DocumentList,
     EditContractModal,
