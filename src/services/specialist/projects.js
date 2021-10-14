@@ -75,12 +75,10 @@ export async function deleteTimeSheet(payload) {
     .catch(err => err)
 }
 
-export async function denyEndContract(payload) {
+export async function updateEndContract(payload) {
   const projectId = payload.projectId
-  const data = {
-    deny: true
-  }
-  return await axios.patch(`/projects/${projectId}/end/${payload.endRequestId}`, data)
+  const params = payload.params
+  return await axios.patch(`/projects/${projectId}/end/${payload.endRequestId}`, params)
     .then(response => {
       if (response) {
         return response.data

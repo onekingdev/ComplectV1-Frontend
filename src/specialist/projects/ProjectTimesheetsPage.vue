@@ -8,7 +8,7 @@
       .card
         .card-header
           h1.project-title My Timesheet
-          button.btn.btn-dark.float-right(@click="openModal") Log Time
+          button.btn.btn-dark.float-right(v-if="project.status !== 'Complete'" @click="openModal") Log Time
         .card-body
           table.table.table-responsive-sm
             thead

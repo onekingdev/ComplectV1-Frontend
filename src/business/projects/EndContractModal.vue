@@ -17,7 +17,7 @@
             p.mb-0 {{ project.specialist.location }}
           .d-block.ml-auto.text-right
             span Outstanding Due
-            h4 {{ 500 | usdWhole }}
+            h4 {{ totalFee | usdWhole }}
         .card-body
           dl.row.mb-0
             dt.col-sm-3.label Job Name
@@ -32,10 +32,10 @@
           p.text-right.text-muted.mb-0 *This total does not reflect processing fees.
       template(#modal-footer="{ hide }")
         button.btn.btn-link(@click="hide") Cancel
-        Post(:action="completeUrl" :model="{}" @saved="contractEnded" @errors="$emit('errors', $event)")
+        Post(:action="confirmUrl" :model="params" :method="confirmMethod" @saved="contractEnded" @errors="$emit('errors', $event)")
           button.btn.btn-dark Confirm
     b-modal(:id="modalId + '_review'" title="Write a Review")
-      p Please rate your experience and review your experience with the specialist.
+      p Please rate your experience and review your experience with the {{ targetUser }}.
       InputRating(v-model="review.value" :errors="errors.value") Rating
       InputTextarea(v-model="review.review" :errors="errors.review" placeholder="Describe your overall experience and any notes regarding the engagement")
       template(#modal-footer="{ hide }")
@@ -53,6 +53,10 @@ export default {
     project: {
       type: Object,
       required: true
+    },
+    endRequest: {
+      type: Object,
+      required: false
     },
     right: {
       type: Boolean,
@@ -80,21 +84,54 @@ export default {
       this.$bvModal.show(this.modalId + '_review')
     },
     ratingSaved() {
-      this.$emit('saved')
       this.$bvModal.hide(this.modalId + '_review')
+      this.toast('Success', 'Thank you for your rating.')
+      this.$emit('rating')
     }
   },
   computed: {
+    targetUser() {
+      const userType = this.$store.getters.userType
+      if (userType === 'specialists') return 'business'
+      return 'specialist'
+    },
     submitDisabled() {
       const threeOrLessStars = this.review.value && this.review.value <= 3,
         emptyReview = this.review.review === null || this.review.review === ''
       return this.review.value === null || (threeOrLessStars && emptyReview)
+    },
+    confirmMethod() {
+      if (this.endRequest) return 'PATCH'
+      return 'POST'
+    },
+    params() {
+      if (this.endRequest) return { confirm: true }
+      return {}
+    },
+    confirmUrl() {
+      if (this.endRequest) return `/api/projects/${this.project.id}/end/${this.endRequest.id}`
+      return this.completeUrl
     },
     completeUrl() {
       return '/api/projects/' + this.project.id + '/end'
     },
     ratingUrl() {
       return '/api/projects/' + this.project.id + '/rating'
+    },
+    timeSheetHours() {
+      if (this.project.timesheets.length < 1) return 0
+      const approvedTimesheet = this.project.timesheets.filter(item => item.status === 'approved')
+      let totalHours = 0
+      for(let i = 0; i < approvedTimesheet.length; i++) {
+        approvedTimesheet[i].time_logs.forEach(item => totalHours += parseFloat(item.hours))
+      }
+
+      return totalHours
+    },
+    totalFee() {
+      if (this.project.pricing_type === 'fixed') return parseInt(this.project.fixed_budget)
+      if (this.project.pricing_type === 'hourly') return (this.timeSheetHours * parseFloat(this.project.hourly_rate)).toFixed(2)
+      return 0
     }
   }
 }

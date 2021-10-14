@@ -29,7 +29,7 @@
                 ApplicationsNotice(:project="project.visible_project" v-if="project.visible_project")
                 Get(v-for="marketProject in project.projects" :etag="etag" :marketProject="`/api/business/projects/${marketProject.id}`" :key="marketProject.id"): template(v-slot="{marketProject}")
                   TimesheetsNotice(:project="marketProject")
-                  EndContractNotice(:project="marketProject" @saved="contractEnded" @deny="denyContract")
+                  EndContractNotice(:project="marketProject" from="Specialist" @saved="newEtag" @deny="denyContract")
                   ChangeContractAlerts(:project="marketProject" @saved="newEtag" for="Business")
                   CommonContractAlerts(:project="marketProject" for="Business")
             .row
@@ -193,7 +193,7 @@ import FreeBusinessMixin from '@/mixins/FreeBusinessMixin'
 import CommonDeleteModal from '@/common/Modals/CommonDeleteModal'
 
 const TOKEN = localStorage.getItem('app.currentUser.token') ? JSON.parse(localStorage.getItem('app.currentUser.token')) : ''
-const isContractComplete = contract => contract.status === 'complete'
+const isContractComplete = contract => contract.status === 'Complete'
 
 export default {
   mixins: [EtaggerMixin(), FreeBusinessMixin],
@@ -254,7 +254,6 @@ export default {
     },
     denyContract() {
       this.newEtag()
-      this.toast('Success', 'Contract early termination request has been denied.')
     },
     taskSaved() {
       this.toast('Success', 'Task has been updated.')
