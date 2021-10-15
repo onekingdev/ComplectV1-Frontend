@@ -8,7 +8,13 @@
         .policy-history__version-info {{ `Version ${policy.versions.length-i}` }}
         .policy-history__author Published by {{ data.published_by }}
         .policy-history__date Last updated {{ dateToHuman(data.updated_at) }}
-        b-button.btn.policy-history__btn-download(@click="download(policy.id)") Download
+        span.dowloading.list-page.mr-3.mt-2(v-if="policyQueueIds.includes(policy.versions.length-i)")
+          .lds-ring.lds-ring-small
+            div
+            div
+            div
+            div
+        b-button.btn.policy-history__btn-download(v-else @click="download(policy.id, policy.versions.length-i)") Download
       .policy-details__body(v-if="policy.versions && policy.versions.length === 0")
         EmptyState
 </template>
@@ -19,7 +25,7 @@
     props: ['policy'],
     data() {
       return {
-
+        policyQueueIds: []
       }
     },
     computed: {
@@ -46,7 +52,8 @@
           return value
         }
       },
-      download (policyId) {
+      download (policyId, version) {
+        this.policyQueueIds.push(version)
         this.$store
           .dispatch("downloadPolicy", { policyId })
           .then((myBlob) => {
@@ -59,3 +66,10 @@
     }
   };
 </script>
+<style scoped>
+.dowloading {
+  position: absolute;
+  top: 2rem;
+  right: 2rem;
+}
+</style>
