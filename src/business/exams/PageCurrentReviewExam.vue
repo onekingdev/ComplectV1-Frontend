@@ -44,6 +44,7 @@
                         b-button(type='button' :variant="filterOption === 'all' ? 'dark' : 'outline-dark'" @click="filterRequest('all')") All
                         b-button(type='button' :variant="filterOption === 'shared' ? 'dark' : 'outline-dark'" @click="filterRequest('shared')") Shared
 
+                    input.input-file(type="file" id="files" ref="files" hidden multiple @change="selectFile")
                     template(v-if="currentExam.exam_requests" v-for="(currentRequst, i) in currentExamRequestsFiltered")
                       .reviews__card--internal.exams__card--internal(:key="`${currentExam.name}-${i}`" :class="{ 'completed': currentRequst.complete }")
                         .row.m-b-1.align-items-center
@@ -62,8 +63,7 @@
                                     | Add Item
                                     b-icon.ml-2(icon="chevron-down")
                                   b-dropdown-item(@click="addTextEntry(i)") Text Entry
-                                  ExamModalUpload(:currentExamId="currentExam.id"  :request="currentRequst" :inline="false")
-                                    b-dropdown-item Upload Files
+                                  b-dropdown-item(@click="uploadFile(currentRequst)") Upload Files
                                   ExamModalSelectFiles(:currentExamId="currentExam.id"  :request="currentRequst" :inline="false")
                                     b-dropdown-item Select Existing
                                 TaskFormModal(:defaults="taskDefaults" @saved="refetchExam" :inline="false")
@@ -144,7 +144,6 @@
   import TaskFormModal from "@/common/TaskFormModal";
   import ExamModalComplite from "./modals/ExamModalComplite";
   import ExamModalShare from "./modals/ExamModalShare";
-  import ExamModalUpload from "./modals/ExamModalUpload";
   import ExamModalSelectFiles from "./modals/ExamModalSelectFiles";
   import TaskTableExtended from "@/common/TaskTableExtended";
   import PageAttachments from "./PageAttachments";
@@ -158,7 +157,6 @@
       PageAttachments,
       TaskTableExtended,
       ExamModalSelectFiles,
-      ExamModalUpload,
       ExamModalShare,
       ExamModalComplite,
       TaskFormModal,
@@ -172,6 +170,8 @@
       return {
         filterOption: 'all',
         shareRequestData: null,
+        currentRequestUpload: null,
+        files: []
       }
     },
     computed: {
@@ -226,6 +226,49 @@
         updateCurrentExamRequest: 'exams/updateExamRequest',
         deleteCurrentExamRequest: 'exams/deleteExamRequest'
       }),
+      async uploadFileForRequest() {
+        try {
+          // FOR MULTIPLE LOADING FILES
+          let formData = new FormData()
+          for( var i = 0; i < this.files.length; i++ ) {
+
+          let file = this.files[i];
+          formData.append('file', file);
+
+          const data = {
+            id: this.currentExam.id,
+            request: { id: this.currentRequestUpload.id },
+            formData
+          }
+
+          const sendFIle = new Promise((resolve, reject) => {
+            this.$store.dispatch('exams/uploadExamRequestFile', data)
+              .then(response => resolve(response))
+              .catch(error => reject(error))
+          });
+
+          await sendFIle
+            .then(response => this.toast('Success', `${response.name} successful uploaded!`))
+            .catch(error => this.toast('Error', error.message, true))
+          }
+        } catch (error) {
+          this.toast('Error', error.message, true)
+        } finally {
+          this.files = []
+          this.currentRequestUpload = null
+        }
+      },
+      uploadFile(currentRequst) {
+        this.currentRequestUpload = currentRequst
+        this.$refs.files.click()
+      },
+      selectFile(event){
+        let uploadedFiles = this.$refs.files.files;
+        for( var i = 0; i < uploadedFiles.length; i++ ){
+          this.files.push( uploadedFiles[i] );
+        }
+        this.uploadFileForRequest()
+      },
       filterRequest(field) {
         this.filterOption = field
       },
