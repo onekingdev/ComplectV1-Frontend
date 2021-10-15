@@ -305,8 +305,9 @@ export default {
       })
 
       const teamMemberOptions = team_members.map((item) => {
+        const type = item.type || 'Specialist'
         return {
-          id: `Specialist|${item.id}`,
+          id: `${type}|${item.id}`,
           label: `${item.first_name} ${item.last_name}`
         }
       })
