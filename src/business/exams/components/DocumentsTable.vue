@@ -13,7 +13,7 @@
               b-dropdown(size="sm" variant="none" class="m-0 p-0" right)
                 template(#button-content)
                   b-icon(icon="three-dots")
-                b-dropdown-item.delete Delete file
+                b-dropdown-item.delete(@click="removeFile(currentRequest.id, file.id)") Delete file
     .row(v-if="!countDocuments")
       .col
         EmptyState
@@ -31,6 +31,27 @@
         })
         return count
       }
+    },
+    methods: {
+      async removeFile(requestId, fileID) {
+        const data = {
+          id: this.currentExam.id,
+          request: {id: requestId},
+          file: {id: fileID},
+        }
+
+        try {
+          await this.$store.dispatch('exams/deleteExamRequestFile', data)
+            .then(response => {
+              this.toast('Success', `File has been deleted.`)
+              this.$emit('saved')
+              this.$bvModal.hide(this.modalId)
+            })
+            .catch(error => this.toast('Error', error.message, true))
+        } catch (error) {
+          this.toast('Error', error.message, true)
+        }
+      },
     }
   }
 </script>
