@@ -308,11 +308,13 @@
             shared: this.shareRequestData.status,
           }
         }
+
         try {
           await this.updateCurrentExamRequest(data)
             .then(response => {
+              const text = this.shareRequestData.status ? 'Request has been shared.' : 'Request has been unshared.'
+              this.toast('Success', text)
               this.shareRequestData = null
-              this.toast('Success', "Request has been shared.")
             })
             .catch(error => this.toast('Error', error.message, true))
         } catch (error) {

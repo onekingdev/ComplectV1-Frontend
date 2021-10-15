@@ -4,18 +4,12 @@
       slot
 
     b-modal.fade(:id="modalId" title="Share Exam" hide-footer)
-      .row(v-if="!show")
-        .col.text-center
-          p Exam is not completed yet. Are you sure want to share link?
-          .d-flex.justify-content-center
-            button.btn.mr-2(@click="$bvModal.hide(modalId)") No
-            button.btn.btn-dark(@click="approveHandle") Yes
-      .row(v-if="show")
+      .row
         .col-12.m-b-1
           label.form-label Email
-          .input-group
-            input.form-control(v-model="exam.email" type="email" ref="input" @keyup="onChange")
-            .input-group-append
+          div
+            input.form-control.email(v-model="exam.email" type="email" ref="input" @keyup="onChange")
+            .input-group-append.btn-send
               button.btn.btn-dark(@click="invite") Send
           Errors(:errors="errors.email")
       .row
@@ -29,7 +23,7 @@
             tbody
               tr(v-for="auditor in examAuditors" :key="auditor.id")
                 td.auditor-email {{ auditor.email }}
-                td.text-right
+                td.text-right.pr-0
                   b-icon.remove-btn(icon="x" @click="unIinvite(auditor.id, auditor.email)")
 
       template(slot="modal-footer" footer-class="d-none")
@@ -192,6 +186,15 @@
 </script>
 
 <style scoped>
+  .email {
+    float: left;
+    width: 80%;
+  }
+
+  .btn-send {
+    float: right;
+  }
+
   .remove-btn {
     font-size: 20px;
     cursor: pointer;
@@ -215,10 +218,6 @@
     display: table;
     width: 100%;
     table-layout: fixed;/* even columns width , fix width of table too*/
-  }
-  
-  thead {
-    width: calc( 100% - 1em )/* scrollbar is average 1em/16px width, remove it from thead width */
   }
 
   tbody::-webkit-scrollbar {
