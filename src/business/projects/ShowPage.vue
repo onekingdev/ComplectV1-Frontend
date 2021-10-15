@@ -274,7 +274,7 @@ export default {
     readablePaymentSchedule,
     isContractComplete,
     getActiveCollaboratorOptions(collaborators) {
-      return collaborators.map(({ id, first_name, last_name }) => ({ id: id, label: `${first_name} ${last_name}`}))
+      return collaborators.filter(item => !item.type).map(({ id, first_name, last_name }) => ({ id: id, label: `${first_name} ${last_name}`}))
     },
     accepted(id, role) {
       fetch(`${this.$store.getters.backendUrl}/api/business/specialist_roles/${id}`, {
