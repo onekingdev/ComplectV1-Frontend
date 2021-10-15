@@ -27,7 +27,7 @@
             .row
               .col-sm-12
                 ApplicationsNotice(:project="project.visible_project" v-if="project.visible_project")
-                Get(v-for="marketProject in project.projects" :etag="etag" :marketProject="`/api/business/projects/${marketProject.id}`" :key="marketProject.id"): template(v-slot="{marketProject}")
+                Get(v-if="canShowNotice(project)" v-for="marketProject in project.projects" :etag="etag" :marketProject="`/api/business/projects/${marketProject.id}`" :key="marketProject.id"): template(v-slot="{marketProject}")
                   TimesheetsNotice(:project="marketProject")
                   EndContractNotice(:project="marketProject" from="Specialist" @saved="newEtag" @deny="denyContract")
                   ChangeContractAlerts(:project="marketProject" @saved="newEtag" for="Business")
@@ -219,6 +219,11 @@ export default {
     this.modalId = 'modal_' + Math.random().toFixed(9) + Math.random().toFixed(7)
   },
   methods: {
+    canShowNotice(localProject) {
+      const user = this.$store.getters.getUser
+      if (user.business_name) return true
+      return user.seat_role && user.id === localProject.owner.id
+    },
     filterCollaborators(project) {
       const collaborators = project.collaborators
       const contracts = this.getContracts(project.projects)
