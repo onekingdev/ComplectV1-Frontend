@@ -6,7 +6,7 @@
     b-modal.fade(:id="modalId" title="Edit Reason" @shown="getData")
       .row
         .col-12
-          label.form-label Reason
+          label.form-label.required Reason
           ComboBox(v-model="form.reason" :options="reasonOptions" placeholder="Select a reason")
           .invalid-feedback.d-block(v-if="errors.reason") {{ errors.reason }}
           Errors(:errors="errors.reason")
@@ -57,6 +57,11 @@
       submit(e) {
         e.preventDefault();
         this.errors = [];
+
+        if (!this.form.reason) {
+          this.$set(this.errors, 'reason', ['Required field'])
+          return
+        }
 
         const data = {
           id: this.user.id,

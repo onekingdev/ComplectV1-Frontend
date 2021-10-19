@@ -24,7 +24,7 @@
           Errors(:errors="errors.email")
       .row
         .col-12.m-b-1
-          label.form-label Role
+          label.form-label.required Role
             RoleTypesModalInfo
               b-icon.tooltip__icon(icon="info-circle-fill" v-b-tooltip.hover title="Role Information")
           ComboBox(v-model="form.role" :options="roleOptions" placeholder="Select a role")
@@ -66,6 +66,11 @@
     access_person: ''
   })
 
+  const EMAIL_FORMAT = new RegExp (['^(([^<>()[\\]\\\.,;:\\s@\"]+(\\.[^<>()\\[\\]\\\.,;:\\s@\"]+)*)',
+                    '|(".+"))@((\\[[0-9]{1,3}\\.[0-9]{1,3}\\.[0-9]{1,3}\\.',
+                    '[0-9]{1,3}\])|(([a-zA-Z\\-0-9]+\\.)+',
+                    '[a-zA-Z]{2,}))$'].join(''))
+
   export default {
     components: {Notifications, RoleTypesModalInfo},
     props: {
@@ -104,10 +109,20 @@
       getData() {
         if (this.user) this.form = this.user
       },
+      validate() {
+        this.errors = {}
+        const requiredFields = ['first_name', 'last_name', 'email', 'role']
+        requiredFields.forEach(item => {
+          if (!this.form[item].trim()) this.$set(this.errors, item, ['Required field'])
+        })
+
+        if (!EMAIL_FORMAT.test(this.form.email)) this.$set(this.errors, 'email', ['Invalid email address'])
+      },
       submit(e) {
         e.preventDefault();
-        for (let value in this.errors) delete this.errors[value];
-
+        this.validate()
+        // for (let value in this.errors) delete this.errors[value];
+        if (Object.keys(this.errors).length > 0) return
         try {
 
           const data = {
@@ -126,7 +141,10 @@
             .then(response => {
               if (response.errors) {
                 for (const [key, value] of Object.entries(response.errors)) {
-                  this.errors = Object.assign({}, this.errors, { [key]: value })
+                  let message = value
+                  console.log(key === 'email' && value === 'Has already been taken')
+                  if (key === 'email') message = ['Email already exists']
+                  this.errors = Object.assign({}, this.errors, { [key]: message })
                   if (response.errors.seat) this.toast('Error', 'User has not been created. Please purchase additional seats.', true)
                 }
               }

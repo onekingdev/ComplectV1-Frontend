@@ -86,16 +86,13 @@
           status: !value.status,
         }
         if (value.description) dataToSend.description = value.description
-
         this.$store.dispatch('settings/disableEmployee', dataToSend)
           .then(response => {
-            if (response.errors) {
-              for (const [key, value] of Object.entries(response.errors)) {
-                this.toast('Error', `User has not been disabled. Please try again.`, true)
-              }
-            }
-            if (!response.errors) {
-              this.toast('Success', `User has been disabled.`)
+            if (response.error) {
+              this.toast('Error', `User has not been enabled. Please purchase an additional seat.`, true)
+            } else {
+              const text = value.status ? 'User has been disabled.' : 'User has been enabled.'
+              this.toast('Success', text)
               this.$store.dispatch('settings/getAvailableSeatsCount')
             }
           })

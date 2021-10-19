@@ -39,9 +39,9 @@ export async function updateEmployee(payload) {
 }
 
 export async function disableEmployee(payload) {
-  const endpoint = !payload.status ? `archive/?reason=${payload.reason}` : `unarchive`
-  // const endpointWithDescr = payload.description ? `archive/?reason=${payload.reason}?description=${payload.description}` : endpoint
-  return await axios.patch(`${END_POINT}/${payload.id}/${endpoint}`)
+  const endpoint = !payload.status ? `archive` : `unarchive`
+  const data = payload.reason ? { reason: payload.reason, description: payload.description } : {}
+  return await axios.patch(`${END_POINT}/${payload.id}/${endpoint}`, data)
     .then(response => {
       // if (response.status !== 200 || response.status !== 201) throw new Error(`${response.status} ${response.statusText}`)
       if (response) {

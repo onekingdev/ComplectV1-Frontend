@@ -9,7 +9,7 @@
           div
             template(v-if="currentRole !== 'basic'")
               router-link.m-r-1.btn.btn-default(v-if="project.visible_project" :to='viewHref(project.visible_project)' target="_blank") View Post
-              button.m-r-1.btn.btn-default(v-else @click="postProject(project)") Post Project
+              button.m-r-1.btn.btn-default(v-else-if="canShowPostProject(project)" @click="postProject(project)") Post Project
             CompleteLocalProjectModal.m-r-1(:project="project" @saved="newEtag")
             button.btn.btn__close(@click="backToList")
               b-icon(icon="x")
@@ -219,6 +219,11 @@ export default {
     this.modalId = 'modal_' + Math.random().toFixed(9) + Math.random().toFixed(7)
   },
   methods: {
+    canShowPostProject(localProject) {
+      const item = localProject.projects.find(project => project.specialist && (project.status === 'Not Started' || project.status === 'In Progress'))
+      if (item) return false
+      return true
+    },
     canShowNotice(localProject) {
       const user = this.$store.getters.getUser
       if (user.business_name) return true

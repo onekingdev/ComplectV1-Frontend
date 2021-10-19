@@ -142,7 +142,10 @@
                   @tag="addSkillsTag"
                   required)
                   .invalid-feedback.d-block(v-if="errors.skill_names") {{ errors.skill_names }}
-              h3.onboarding__title What's your experience?
+              h3.onboarding__title My Rate
+              label.onboarding__sub-title(class='label') Enter your hourly rate.
+              b-form-input#inputS-1(v-model='form.specialist.hourly_rate' type='number' placeholder='Hourly Rate' required :class="{'is-invalid': errors.business_name }")
+              h3.onboarding__title.mt-4.pt-2 What's your experience?
               .invalid-feedback.d-block(v-if="errors.experience") {{ errors.experience[0] }}
               label.onboarding__sub-title(class='label required') Select one that best matches your level of your expertise.
               b-form-group(class="onboarding-group m-b-30")
@@ -214,6 +217,7 @@
       skill_names: [], // "#finra", "#cfdc"
       experience: null, // integer 0 1 2//
       resume:  null,
+      hourly_rate: ''
     },
   })
 
@@ -393,6 +397,7 @@
               skill_names: this.form.specialist.skill_names ? this.form.specialist.skill_names.map(skill => skill.name) : [],
               experience: this.form.specialist.experience || '',
               resume: this.file ? this.file : '',
+              min_hourly_rate: this.form.specialist.hourly_rate
             },
           }
 
@@ -406,6 +411,7 @@
           formData.append('specialist[former_regulator]', specialist.former_regulator);
           this.applyData(formData, 'specialist[skill_names][]', specialist.skill_names)
           formData.append('specialist[experience]', specialist.experience);
+          formData.append('specialist[min_hourly_rate]', specialist.min_hourly_rate)
           if (specialist.resume.lastModifiedDate) formData.append('specialist[resume]', specialist.resume);
           if (this.form.specialist.former_regulator) {
             formData.append('specialist[specialist_other]', this.specialist_other ? this.specialist_other.map(record => record.name).join(', ') : [])
