@@ -35,6 +35,7 @@
                 :annual-id="annualId"
                 :current-id="revcatId"
                 :reviews-categories="review.review_categories"
+                :generalComplete="review.complete"
               )
             .col-md-9.m-b-40
               .card-body.white-card-body.reviews__card
