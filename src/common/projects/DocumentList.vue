@@ -36,10 +36,12 @@ import { DateTime } from 'luxon'
 const uploadFile = async function(store, url, file) {
   const formData  = new FormData()
   formData.append('file', file)
+  const headers = store.getters.authHeaders.headers
+  if (window.localStorage["app.business_id"]) headers['business_id'] = window.localStorage["app.business_id"]
   return await fetch(store.getters.backendUrl + url, {
     method: 'POST',
     body: formData,
-    ...store.getters.authHeaders
+    headers: headers
   })
 }
 
