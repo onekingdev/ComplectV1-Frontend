@@ -14,10 +14,9 @@
 
       .row.m-t-1
         .col-12
-          label.form-label Reason
-          ComboBox(v-model="form.reason" :options="reasonOptions" placeholder="Select a reason" @input="reasonChange")
+          label.form-label.required Reason
+          ComboBox(v-model="form.reason" :options="reasonOptions" placeholder="Select a reason")
           .invalid-feedback.d-block(v-if="errors.reason") {{ errors.reason }}
-          Errors(:errors="errors.reason")
       .row.m-t-1(v-if="showTextArea")
         .col-12
           label.form-label Additional Information
@@ -63,13 +62,17 @@
           description: '',
         },
         errors: {},
-        showTextArea: false
+        showTextArea: true
       }
     },
     methods: {
       submit(e) {
         e.preventDefault();
         this.errors = [];
+        if (!this.form.reason) {
+          this.$set(this.errors, 'reason', 'Required field')
+          return
+        }
 
         const data = {
           id: this.user.id,
@@ -80,10 +83,6 @@
 
         this.$emit('archiveConfirmed', data)
         this.$bvModal.hide(this.modalId)
-      },
-      reasonChange (value) {
-        if (value === 'Others') this.showTextArea = true
-        if (value !== 'Others') this.showTextArea = false
       }
     },
     computed: {
