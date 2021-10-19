@@ -50,8 +50,9 @@ export default {
     refetch() {
       //const business_id = window.localStorage["app.business_id"]
       //if(business_id) headers.business_id = JSON.parse(business_id)
-
-      const fromTo = DateTime.local().toSQLDate() + '/' + DateTime.local().plus({days: 7}).toSQLDate()
+      // console.log(DateTime.local().startOf('week').toSQLDate())
+      // console.log(DateTime.local().endOf('week').toSQLDate())
+      const fromTo = DateTime.local().startOf('week').toSQLDate() + '/' + DateTime.local().endOf('week').toSQLDate()
 
       let tasks = []
       let projects = []
