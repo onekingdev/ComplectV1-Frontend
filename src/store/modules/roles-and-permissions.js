@@ -107,7 +107,7 @@ export default {
             if (success) {
               const data = success.data
               commit('SET_CURRENT_ACCOUNT', data)
-              if (data.plan && !state.currentPlan) {
+              if (data.plan !== state.currentPlan) {
                 commit('SET_CURRENT_PLAN', data.plan)
                 localStorage.setItem('app.currentUser.plan', data.plan)
               }

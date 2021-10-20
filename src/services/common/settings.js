@@ -107,7 +107,7 @@ export async function updateSubscribe(payload) {
   axios.defaults.timeout = 10000;
   const { userType, paymentSourceId, planName } = { ...payload }
   const endPoint = userType === 'business' ? 'business' : 'specialist'
-  return await axios.post(`/${endPoint}/upgrade/subscribe`, { plan: planName }, { params: {
+  return await axios.post(`/${endPoint}/upgrades`, { plan: planName }, { params: {
       payment_source_id: paymentSourceId
     }})
     .then(response => {
