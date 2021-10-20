@@ -11,15 +11,14 @@
       b-collapse#upcoming_tasks_collapse(:visible="true")
         TaskTable.upcoming__table(:tasks="tasks" :shortTable="true" @saved="$emit('saved')")
         .d-flex.justify-content-end.mb-2(v-if="tasks.length")
-          router-link.link.upcoming__more(:to='`/specialist/reminders`') More
+          router-link.link.upcoming__more(:to='moreTaskUrl') More
       b.upcoming__title.d-flex.justify-content-between.m-b-10(role="button" v-b-toggle.upcoming_projects_collapse="")
         | Projects
         ion-icon(name="chevron-down-outline")
       b-collapse#upcoming_projects_collapse(:visible="true")
-        Get(:projects="apiProjectsUrl"): template(v-slot="{projects}")
-          ProjectTable(:projects="projects")
+        ProjectTable(:projects="projects")
         .d-flex.justify-content-end(v-if="projects.length")
-          router-link.link.upcoming__more(:to='`/specialist/projects`') More
+          router-link.link.upcoming__more(:to='moreProjectUrl') More
 </template>
 
 <script>
@@ -48,31 +47,40 @@ export default {
     this.refetch()
   },
   computed: {
-    apiProjectsUrl() {
-      return '/api/specialist/projects/my'
+    userType() {
+      return localStorage.getItem('app.currentUser.seatRole')
     },
+    moreTaskUrl() {
+      return this.userType ? '/business/reminders' : '/specialist/reminders'
+    },
+    moreProjectUrl() {
+      return this.userType ? '/business/projects' : '/specialist/my-projects'
+    }
   },
   methods: {
     refetch() {
-      const fromTo = DateTime.local().toSQLDate() + '/' + DateTime.local().plus({days: 7}).toSQLDate()
+      const fromTo = DateTime.local().startOf('week').toSQLDate() + '/' + DateTime.local().endOf('week').toSQLDate()
 
       let tasks = []
       let projects = []
 
-      fetch(this.$store.getters.backendUrl + overdueEndpointUrl, this.$store.getters.authHeaders)
+      const headers = this.$store.getters.authHeaders.headers
+      const business_id = window.localStorage["app.business_id"]
+      if (business_id) headers.business_id = JSON.parse(business_id)
+
+      fetch(this.$store.getters.backendUrl + overdueEndpointUrl, {headers: headers})
         .then(response => response.json())
         .then(result => {
           tasks = result.tasks
-        }).then(fetch(`${this.$store.getters.backendUrl}${endpointUrl}${fromTo}`, this.$store.getters.authHeaders)
+        }).then(fetch(`${this.$store.getters.backendUrl}${endpointUrl}${fromTo}?upcoming_tab=true`, this.$store.getters.authHeaders)
         .then(response => response.json())
         .then(result => {
           tasks = tasks.concat(result.tasks)
-          // projects = result.projects
+          projects = result.projects
           this.tasks = tasks.filter(task => !task.done_at)
-          // this.projects = projects.slice(0, LIMIT_OF_ARRAY_PROJECTS)
+          this.projects = projects.slice(0, LIMIT_OF_ARRAY_PROJECTS)
         })
       )
-      // .catch(errorCallback)
     },
   },
   components: {
