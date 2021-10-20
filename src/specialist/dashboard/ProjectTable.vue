@@ -28,9 +28,11 @@ export default {
   },
   computed: {
     projectList() {
+      const userType = localStorage.getItem('app.currentUser.seatRole')
+      const baseUrl = userType ? '/business/projects' : '/specialist/my-projects'
       return this.projects.map(project => ({
         ...toEvent(project),
-        href: `/specialist/my-projects/${project.id}`
+        href: `${baseUrl}/${project.id}`
       }))
     }
   }

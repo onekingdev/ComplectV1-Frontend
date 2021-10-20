@@ -48,19 +48,20 @@ export default {
   },
   methods: {
     refetch() {
-      //const business_id = window.localStorage["app.business_id"]
-      //if(business_id) headers.business_id = JSON.parse(business_id)
-
-      const fromTo = DateTime.local().toSQLDate() + '/' + DateTime.local().plus({days: 7}).toSQLDate()
-
+      const fromTo = DateTime.local().startOf('week').toSQLDate() + '/' + DateTime.local().endOf('week').toSQLDate()
       let tasks = []
       let projects = []
 
-      fetch(this.$store.getters.backendUrl+overdueEndpointUrl, this.$store.getters.authHeaders)
+      const headers = this.$store.getters.authHeaders.headers
+      const business_id = window.localStorage["app.business_id"]
+      console.log(business_id)
+      if (business_id) headers.business_id = JSON.parse(business_id)
+
+      fetch(this.$store.getters.backendUrl+overdueEndpointUrl, { headers: headers })
         .then(response => response.json())
         .then(result => {
           tasks = result.tasks
-        }).then(fetch(`${this.$store.getters.backendUrl}${endpointUrl}${fromTo}`, this.$store.getters.authHeaders)
+        }).then(fetch(`${this.$store.getters.backendUrl}${endpointUrl}${fromTo}?upcoming_tab=true`, this.$store.getters.authHeaders)
           .then(response => response.json())
           .then(result => {
             tasks = tasks.concat(result.tasks)
