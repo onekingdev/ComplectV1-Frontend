@@ -44,7 +44,7 @@
           coupon: this.coupon
         }
 
-        this.$store.dispatch('settings/applyCoupon', data)
+        this.$store.dispatch('applyCoupon', data)
           .then(response => {
             if(!response.errors) {
               // this.toast('Success', `${response.message}`)

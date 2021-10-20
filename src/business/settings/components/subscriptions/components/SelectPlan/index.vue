@@ -145,16 +145,18 @@
             paymentSourceId : null,
           }
 
-          this.$store.dispatch('settings/updateSubscribe', dataToSend)
+          this.$store.dispatch('updateSubscribe', dataToSend)
             .then(response => {
               this.currentPlan = { id: 1, status: true }
-
+              this.toast('Success', `Update subscribe successfully finished!`)
               // OVERLAY
               this.$store.dispatch('setOverlay', {
                 active: true,
                 message: 'Setting up account...',
                 status: 'success'
               })
+
+              location.reload()
 
               setTimeout(() => this.$store.dispatch('setOverlay', {
                 active: false,
@@ -164,13 +166,14 @@
             })
             .catch(error => {
               console.error(error)
+              this.toast('Error', error.data.error, true)
 
               // OVERLAY
-              this.$store.dispatch('setOverlay', {
-                active: true,
-                message: `Something wrong! ${error}`,
-                status: 'error'
-              })
+              // this.$store.dispatch('setOverlay', {
+              //   active: true,
+              //   message: `Something wrong! ${error}`,
+              //   status: 'error'
+              // })
               setTimeout(() => {
                 this.$store.dispatch('setOverlay', {
                   active: false,
@@ -230,11 +233,11 @@
         if (+this.additionalUsers) data.additionalUsers = +this.additionalUsers
         if (selectedPlan.coupon_id) data.coupon_id = selectedPlan.coupon_id
 
-        this.$store.dispatch('settings/updateSubscribe', data)
+        this.$store.dispatch('updateSubscribe', data)
           .then(response => {
             if(response.errors) throw new Error(`Response error!`)
             if(!response.errors) {
-              // this.toast('Success', `Update subscribe successfully finished!`)
+              this.toast('Success', `Update subscribe successfully finished!`)
 
               // OVERLAY
               // this.$store.dispatch('setOverlay', {
@@ -249,6 +252,8 @@
                 status: 'success'
               })
 
+              this.$store.dispatch("roles/getCurrentAccount", { userType: 'businesses' })
+
               setTimeout(() => {
                 this.$store.dispatch('setOverlay', {
                   active: false,
@@ -256,6 +261,7 @@
                   status: ''
                 })
                 this.closeSidebar()
+                location.reload()
               }, 1000)
 
 

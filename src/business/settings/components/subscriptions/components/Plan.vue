@@ -71,7 +71,6 @@
           const res = await this.getSubscriptionInfor()
           if (res && res.data) {
             const length = res.data.length
-            console.log(res.data)
             this.subscription = res.data[length - 1]
           }
         }
