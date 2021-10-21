@@ -9,6 +9,8 @@
             .row.m-b-20
               .col
                 h4.mb-0 Client Billing
+              .col.text-right
+                b-button(type='button' variant='dark' @click="openComponent('SelectBilling')") Add Methhod
             .row
               .col
                 ClientBilling(@openComponent="openComponent" :stripeAccount="stripeAccount")

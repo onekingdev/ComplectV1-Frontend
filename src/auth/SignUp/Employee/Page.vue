@@ -12,17 +12,17 @@
               .col-md-6.pr-md-2
                 b-form-group#input-group-1.m-b-20(label='First Name:' label-for='input-1')
                   b-form-input#input-1(v-model='form.firstName' type='text' placeholder='First Name' :class="{'is-invalid': errors.contact_first_name }")
-                  Errors(:errors="errors.contact_first_name")
+                  Errors(:errors="errors.firstName")
               .col-md-6.pl-md-2
                 b-form-group#input-group-2.m-b-20(label='Last Name:' label-for='input-2')
                   b-form-input#input-2(v-model='form.lastName' type='text' placeholder='Last Name' :class="{'is-invalid': errors.contact_last_name }")
-                  Errors(:errors="errors.contact_last_name")
+                  Errors(:errors="errors.lastName")
             b-form-group#input-group-3.m-b-20(label='Email:' label-for='input-3')
-              b-form-input#input-3(v-model='form.email' type='text' placeholder='Email' :class="{'is-invalid': errors['user.email'] }")
-              Errors(:errors="errors['user.email']")
+              b-form-input#input-3(v-model='form.email' type='text' placeholder='Email' :class="{'is-invalid': errors.email }")
+              Errors(:errors="errors.email")
             b-form-group#input-group-4.m-b-20(label='Password:' label-for='input-4')
-              b-form-input#input-4(v-model='form.password' type='password' placeholder='Password' :class="{'is-invalid': errors['user.password'] }")
-              Errors(:errors="errors['user.password']")
+              b-form-input#input-4(v-model='form.password' type='password' placeholder='Password' :class="{'is-invalid': errors['password'] }")
+              Errors(:errors="errors['password']")
             b-form-group#input-group-5.m-b-20(label='Repeat Password:' label-for='input-5')
               b-form-input#input-5(v-model='form.passwordConfirm' type='password' placeholder='Repeat Password' :class="{'is-invalid': errors.passwordConfirm }")
               Errors(:errors="errors.passwordConfirm")
@@ -96,26 +96,22 @@
         this.step0 = false
         this.step1 = true
       },
+      validate() {
+        this.errors = {}
+        const requiredFields = ['firstName', 'lastName', 'email', 'password', 'passwordConfirm']
+        requiredFields.forEach(item => {
+          if (!this.form[item].trim()) this.$set(this.errors, item, ['Required field'])
+        })
+
+        if (this.form.email && !validateEmail(this.form.email)) this.$set(this.errors, 'email', ['Invalid email address'])
+        if (this.form.password !== this.form.passwordConfirm) this.$set(this.errors, 'passwordConfirm', ['Password does not match'])
+      },
       onSubmit(event) {
         event.preventDefault()
         // CLEAR ERRORS
         this.error = ''
-        for (let value in this.errors) delete this.errors[value];
-
-        // if (!this.form.firstName) Object.assign(this.errors, { firstName: 'Field empty' })
-        // if (!this.form.lastName) Object.assign(this.errors, { lastName: 'Field empty' })
-        // if (!this.form.email) Object.assign(this.errors, { email: 'Field empty' })
-        // if (!this.form.password) Object.assign(this.errors, { password: 'Field empty' })
-        // if (!this.form.passwordConfirm) Object.assign(this.errors, { passwordConfirm: 'Field empty' })
-        if (this.form.email && !validateEmail(this.form.email)) {
-          Object.assign({}, this.errors, { email: 'Email not valid' })
-          // return
-        }
-        if (this.form.password !== this.form.passwordConfirm) {
-          this.errors = { passwordConfirm : ['Password does not match'] }
-          return
-        }
-
+        this.validate()
+        if (Object.keys(this.errors).length > 0) return
         this.form.email = this.form.email.toLowerCase()
 
         let dataToSend;

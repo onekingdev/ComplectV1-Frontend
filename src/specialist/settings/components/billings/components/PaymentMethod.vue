@@ -48,6 +48,10 @@
         }
       },
       async deletePaymentMethod(cardId) {
+        if (this.paymentMethods.length === 1) {
+          this.toast('Error', 'You cannot delete a primary payment method without adding an alternative payment method first.', true)
+          return
+        }
         try {
           const dataToSend = {
             userType: this.userType,
