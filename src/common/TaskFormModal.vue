@@ -100,10 +100,11 @@
                   .col
                     .card-body.p-0
                       b-form-group
-                        label
-                          a.btn.btn-default Upload
+                        label(:class="{ 'text-center': loading, 'd-block': loading }")
+                          a.btn.btn-default.text-left(v-if="!loading") Upload
                           input(type="file" name="file" @change="onFileChanged" style="display: none")
-                          .row(v-for="document in filterMessagesWithUploads(messages)" :key="document.id"): .col-md-12.m-b-1
+                          Loading
+                          .row(v-if="!loading" v-for="document in filterMessagesWithUploads(messages)" :key="document.id"): .col-md-12.m-b-1
                             .file-card
                               div
                                 b-icon.file-card__icon(icon="file-earmark-text-fill")
@@ -239,10 +240,11 @@ export default {
     async onFileChanged(event) {
       const file = event.target.files && event.target.files[0],
         store = this.$store
-      const uploadFile = async function(url, file) {
+      const uploadFile = async function(store, url, file) {
         const formData  = new FormData()
         formData.append('message[file]', file)
         formData.append('message[message]', '')
+        store.commit("setLoading", true)
         return await fetch(store.getters.backendUrl+url, {
           method: 'POST',
           body: formData,
@@ -250,9 +252,10 @@ export default {
         })
       }
       if (file) {
-        const success = (await uploadFile(this.messagesUrl, file)).ok
+        const success = (await uploadFile(this.$store, this.messagesUrl, file)).ok
         if(success) this.toast('Success', 'Document has been uploaded.')
         else this.toast('Error', 'Document has not been uploaded.', true)
+        this.$store.commit("setLoading", false)
         this.newEtagMessages()
       }
     },
@@ -425,6 +428,7 @@ export default {
         await this.$store.dispatch('reminders/deleteTaskMessageById', id)
         this.toast('Success', `File deleted`)
         this.newEtagMessages()
+        this.$store.commit("setLoading", false)
       } catch (error) {
         this.toast('Error', error.message, true)
       }
@@ -435,6 +439,9 @@ export default {
       employees: 'settings/employees',
       employeesSpecialists: 'settings/employeesSpecialists'
     }),
+    loading() {
+      return this.$store.getters.loading
+    },
     isBasicRoleUser() {
       const seatRole = this.$store.getters['roles/seatRole']
       return seatRole && seatRole === 'basic'

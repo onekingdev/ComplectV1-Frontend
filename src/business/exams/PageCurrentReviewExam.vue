@@ -30,8 +30,7 @@
         .container-fluid
           .row
             .col-md-9.mx-auto.position-relative
-              .card-body.white-card-body.reviews__card(v-if="loading && !currentExam")
-                Loading
+              Loading
               .card(v-if="currentExam")
                 .white-card-header
                   .reviews__card--internal.d-flex.justify-content-between.align-items-center.pt-0.m-b-20.p-4
@@ -240,7 +239,6 @@
             request: { id: this.currentRequestUpload.id },
             formData
           }
-
           const sendFIle = new Promise((resolve, reject) => {
             this.$store.dispatch('exams/uploadExamRequestFile', data)
               .then(response => resolve(response))
@@ -256,6 +254,7 @@
         } finally {
           this.files = []
           this.currentRequestUpload = null
+          this.$store.commit("setLoading", false, { root: true })
         }
       },
       uploadFile(currentRequst) {

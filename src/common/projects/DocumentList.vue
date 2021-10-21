@@ -5,7 +5,8 @@
       input.input-file(type="file" id="files" ref="inputFile" hidden multiple @change="selectFile")
       a.btn.btn-dark(@click="uploadFile") Upload
     Get(:documents="url" :etag="etag"): template(v-slot="{documents}"): .document-body
-      table.table
+      Loading
+      table.table(v-if="!loading")
         thead
           tr
             th(width="45%") Name
@@ -37,6 +38,7 @@ const uploadFile = async function(store, url, file) {
   const formData  = new FormData()
   formData.append('file', file)
   const headers = store.getters.authHeaders.headers
+  store.commit("setLoading", true)
   if (window.localStorage["app.business_id"]) headers['business_id'] = window.localStorage["app.business_id"]
   return await fetch(store.getters.backendUrl + url, {
     method: 'POST',
@@ -90,6 +92,8 @@ export default {
           this.files = []
         }
         this.newEtag()
+
+        if (i === files.length - 1) this.$store.commit("setLoading", false)
       }
     },
     selectFile(event) {

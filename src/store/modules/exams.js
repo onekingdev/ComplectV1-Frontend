@@ -473,19 +473,12 @@ export default {
             commit("clearError", null, {
               root: true
             });
-            commit("setLoading", false, {
-              root: true
-            });
           })
           .catch(error => error)
         return data
-        return data
       } catch (error) {
         commit("setError", error.message, { root: true });
-        commit("setLoading", false, { root: true });
         throw error;
-      } finally {
-        commit("setLoading", false, { root: true })
       }
     },
     async deleteExamRequestFile({state, commit, rootState}, payload) {
