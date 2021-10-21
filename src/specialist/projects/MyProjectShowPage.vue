@@ -37,6 +37,13 @@
                               UserAvatar.userpic_small(:user="ownerObject(localProject.owner)")
                             div.d-flex.flex-column.fs-14
                               b {{ ownerName(localProject.owner) }}
+                      tr(v-for="specialist in filterCollaborators(localProject)" :key="specialist.id")
+                        td
+                          .d-flex.align-items-center.mb-3
+                            div.mr-2
+                              UserAvatar.userpic_small(:user="specialist")
+                            div.d-flex.flex-column.fs-14
+                              b {{ specialist.first_name }} {{ specialist.last_name }}
                       tr(v-for="contract in getContractsByLocalProject(localProject)" :key="contract._key")
                         td
                           .d-flex.align-items-center.mb-3
@@ -72,6 +79,11 @@
                         td.pb-3
                           UserAvatar.userpic_small.mr-2(:user="ownerObject(localProject.owner)")
                           b {{ ownerName(localProject.owner) }}
+                        td
+                      tr(v-for="specialist in filterCollaborators(localProject)" :key="specialist.id")
+                        td.pb-3
+                          UserAvatar.userpic_small.mr-2(:user="specialist")
+                          b {{ specialist.first_name }} {{ specialist.last_name }}
                         td
                       tr(v-for="contract in getContractsByLocalProject(localProject)" :key="contract._key")
                         td.pb-3
@@ -185,6 +197,15 @@ export default {
         first_name: owner.contact_first_name ? owner.contact_first_name : owner.first_name,
         last_name: owner.contact_last_name ? owner.contact_last_name : owner.last_name,
       }
+    },
+    filterCollaborators(project) {
+      const collaborators = project.collaborators
+      const contracts = this.getContractsByLocalProject(project)
+      const specialistIds = contracts.map(item => {
+        if (item.specialist) return item.specialist.id
+      })
+
+      return collaborators.filter(item => !specialistIds.includes(item.id))
     },
     isApproved(project) {
       return this.getUser.id === project.specialist_id
