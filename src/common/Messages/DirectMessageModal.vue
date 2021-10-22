@@ -104,8 +104,6 @@ export default {
 
 <style lang="scss" scoped>
 .messages-modal {
-  display: flex;
-  flex-wrap: wrap;
   gap: 1rem;
   .messages-box {
     flex: 3 0 auto;
