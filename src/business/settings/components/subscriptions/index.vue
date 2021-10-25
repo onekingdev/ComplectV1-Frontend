@@ -2,9 +2,6 @@
   div
     .row
       .col
-        Loading
-    .row
-      .col
         .card.settings__card
           .card-title.px-3.px-xl-5.mb-0
             h3.mb-0.semibold-text Subscriptions
