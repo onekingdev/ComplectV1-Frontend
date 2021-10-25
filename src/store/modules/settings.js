@@ -967,6 +967,16 @@ export default {
                           return false
                         })
                         .catch(err => err)
+    },
+    async createNewSeatSubscription({state}, payload) {
+      return await axios.post('/business/new_seats', payload)
+                        .then(response => {
+                          if (response) {
+                            return response.data
+                          }
+                          return false
+                        })
+                        .catch(err => err)
     }
   },
   getters: {

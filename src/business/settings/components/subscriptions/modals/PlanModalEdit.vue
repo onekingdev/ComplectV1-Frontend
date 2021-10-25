@@ -4,7 +4,8 @@
       slot
 
     b-modal.fade(:id="modalId" title="Edit Plan" size="lg" @shown="getData")
-      b-row.m-b-2
+      Loading
+      b-row.m-b-2(v-if="!loading")
         b-col(cols="8").pr-0
           b-row
             b-col
@@ -30,12 +31,12 @@
                 b ${{ summary.total }}
                 | /{{ summary.type }}
               p.text-success.mb-0(v-if="showDiscount") You saved ${{ summary.discount }}
-      b-row
+      b-row(v-if="!loading")
         b-col
           h5.mb-3 Payment method
           b-form-group.px-2(v-slot='{ ariaDescribedby }')
-            b-form-radio(v-for="(paymentMethod, i) in paymentMethods" :key="i" v-model='selected' :aria-describedby='ariaDescribedby' name='radiosPaymentMethods' :value='paymentMethod.id') **** **** **** {{ paymentMethod.last4 }} {{ paymentMethod.brand }}
-
+            b-form-radio(v-for="(paymentMethod, i) in paymentMethods" :key="i" v-model='selectedPaymentSourceId' :aria-describedby='ariaDescribedby' name='radiosPaymentMethods' :value='paymentMethod.id') **** **** **** {{ paymentMethod.last4 }} {{ paymentMethod.brand }}
+          Errors(:errors="errors.selectedPaymentSourceId")
       template(slot="modal-footer")
         button.btn.btn-link(@click="$bvModal.hide(modalId)") Cancel
         button.btn.btn-dark(@click="submit") Save
@@ -61,7 +62,7 @@ export default {
     return {
       modalId: `modal_${rnd()}`,
       errors: [],
-      selected: '',
+      selectedPaymentSourceId: '',
       showDiscount: false,
       selectedPlan: '',
       additionalUsers: 0,
@@ -69,29 +70,47 @@ export default {
   },
   methods: {
     ...mapActions({
-      getPaymentMethod: 'settings/getPaymentMethod'
+      getPaymentMethod: 'settings/getPaymentMethod',
+      createNewSeatSubscription: 'settings/createNewSeatSubscription'
     }),
     focusInput() {
       this.$refs.input.focus();
     },
+    validate() {
+      this.errors = {}
+      if (!this.selectedPlan) this.$set(this.errors, 'billingPlan', ['Required field'])
+      if (!this.selectedPaymentSourceId) this.$set(this.errors, 'selectedPaymentSourceId', ['Required field'])
+      if (this.additionalUsers < 1) this.$set(this.errors, 'count', ['Please enter the minimum number of 1'])
+    },
     async submit (e) {
       e.preventDefault();
-      this.errors = [];
+      this.validate()
+      if (Object.keys(this.errors).length > 0) return
 
-      try {
-        console.log(this.plan, this.selected, this.additionalUsers)
-      } catch (error) {
-        console.error(error)
+      const payload = {
+        plan: this.selectedPlan,
+        quantity: this.additionalUsers,
+        payment_source_id: this.selectedPaymentSourceId
+      }
+      this.$store.commit("setLoading", true);
+      const result = await this.createNewSeatSubscription(payload)
+      if (result.success) {
+        this.toast('Success', 'You have add more users successfully.')
+        this.$bvModal.hide(this.modalId)
+        this.$store.commit("setLoading", false);
+      } else {
+        this.$store.commit("setLoading", false);
+        this.toast('Error', 'You can not add more users. Please try again.')
       }
     },
     selectPlan(value) {
       if (value==='anually') {
         this.showDiscount = true
-        this.selectedPlan = 'anually'
+        this.selectedPlan = 'seats_annual'
       }
       if (value==='monthly' || value === '') {
         this.showDiscount = false
-        this.selectedPlan = 'monthly'
+        this.selectedPlan = 'seats_monthly'
       }
     },
     async getData () {
@@ -112,6 +131,9 @@ export default {
     ...mapGetters({
       paymentMethods: 'settings/paymentMethods'
     }),
+    loading() {
+      return this.$store.getters.loading;
+    },
     linkToOptions() {
       return [
         {
@@ -132,8 +154,8 @@ export default {
     },
     cost() {
       const billingType = this.selectedPlan
-      if (billingType === 'anually') return this.coastAnnually
-      if (billingType === 'monthly') return this.coastMonthly
+      if (billingType === 'seats_annual') return this.coastAnnually
+      if (billingType === 'seats_monthly') return this.coastMonthly
 
       return 0
     },
@@ -146,7 +168,7 @@ export default {
         type: 'month'
       }
 
-      if (billingType === 'anually') {
+      if (billingType === 'seats_annual') {
         summary.total = usersCoast * 12
         summary.discount = Math.abs((this.coastAnnually - this.coastMonthly) * 12) * this.additionalUsers
         summary.type = 'year'
