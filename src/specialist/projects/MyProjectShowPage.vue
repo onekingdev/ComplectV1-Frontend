@@ -277,7 +277,7 @@ export default {
           newProps.push(item)
         } else {
           const isDevEnv = this.$store.getters.isDevEnv
-          const url = application.attachment ? (isDevEnv ? `${this.$store.getters.backendUrl}/${application.attachment.url}` : application.attachment.url) : ''
+          const url = application.attachment ? (isDevEnv ? `${this.$store.getters.backendUrl}/${application.attachment.url}` : application.attachment.url.split('?')[0]) : ''
           const value = application.attachment && application.attachment.name ? application.attachment.name : ''
           const prop = {
             name: 'Attachments',

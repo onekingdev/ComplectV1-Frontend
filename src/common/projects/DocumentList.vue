@@ -112,7 +112,7 @@ export default {
       return this.currentUser.id === document.owner_id
     },
     documentUrl(document) {
-      if (document.url.includes('https://')) return document.url
+      if (document.url.includes('https://')) return document.url.split('?')[0]
       return `${this.$store.getters.backendUrl}/${document.url}`
     },
     downloadDocument(document) {
