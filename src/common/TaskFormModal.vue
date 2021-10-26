@@ -110,7 +110,7 @@
                                 b-icon.file-card__icon(icon="file-earmark-text-fill")
                               .ml-0.mr-auto
                                 p.file-card__name {{ document.file_name }}
-                                a.file-card__link.link(v-download="{ [document.file_url]: document.file_name }") Download
+                                a.file-card__link.link(v-download="{ [document.file_url.split('?')[0]]: document.file_name }") Download
                               .ml-auto.my-auto.align-self-start.actions
                                 b-dropdown(size="sm" class="m-0 p-0" right)
                                   template(#button-content)
