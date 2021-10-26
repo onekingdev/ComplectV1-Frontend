@@ -4,7 +4,7 @@
     div(v-if='!loading && show')
       .row
         .col
-          h3.mb-3.semibold-text My Rate
+          h3.mb-3.semibold-text Your Hourly Rate
           b-form-group#inputS-group-1.m-b-20(label='Hourly Rate' label-for='inputS-1' label-class="label required" description="Per hour")
             b-form-input#inputS-1(v-model='form.hourly_rate' type='number' placeholder='Hourly Rate' required :class="{'is-invalid': errors.business_name }")
             .invalid-feedback.d-block(v-if="errors.hourly_rate") {{ errors.hourly_rate[0] }}
