@@ -64,6 +64,7 @@ export default {
       let tasks = []
       let projects = []
 
+      
       const headers = this.$store.getters.authHeaders.headers
       const business_id = window.localStorage["app.business_id"]
       if (business_id) headers.business_id = JSON.parse(business_id)
@@ -77,6 +78,7 @@ export default {
         .then(result => {
           tasks = tasks.concat(result.tasks)
           projects = result.projects
+          projects = projects.filter(project => project.status !== 'complete')
           this.tasks = tasks.filter(task => !task.done_at)
           this.projects = projects.slice(0, LIMIT_OF_ARRAY_PROJECTS)
         })
