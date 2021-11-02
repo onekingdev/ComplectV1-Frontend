@@ -3,7 +3,7 @@
     td.text-right {{ item.date }}
     td: span.link {{ item.name }}
     td {{ planName }}
-    td.text-right {{ item.price }}
+    td.text-right {{ isNegative ? '-' : '' }}{{ item.price }}
     td.text-right
       b-dropdown.actions(size="sm" variant="none" class="m-0 p-0" right)
         template(#button-content)
@@ -24,6 +24,11 @@
       planName() {
         if (this.item.invoice_type === 'plan') return 'Plan'
         return 'Project'
+      },
+      isNegative() {
+        const stripeEventType = this.item.stripe_event_type
+        if (stripeEventType === 'charge' || stripeEventType === 'refund_reversed') return true
+        return false
       }
     },
     methods: {
