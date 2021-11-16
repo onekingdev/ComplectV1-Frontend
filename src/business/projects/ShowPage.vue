@@ -27,11 +27,11 @@
             .row
               .col-sm-12
                 ApplicationsNotice(:project="project.visible_project" v-if="project.visible_project")
-                Get(v-if="canShowNotice(project)" v-for="marketProject in project.projects" :etag="etag" :marketProject="`/api/business/projects/${marketProject.id}`" :key="marketProject.id"): template(v-slot="{marketProject}")
-                  TimesheetsNotice(:project="marketProject")
-                  EndContractNotice(:project="marketProject" from="Specialist" @saved="newEtag" @deny="denyContract")
-                  ChangeContractAlerts(:project="marketProject" @saved="newEtag" for="Business")
-                  CommonContractAlerts(:project="marketProject" for="Business")
+                Get(v-for="marketProject in project.projects" :etag="etag" :marketProject="`/api/business/projects/${marketProject.id}`" :key="marketProject.id"): template(v-slot="{marketProject}")
+                  TimesheetsNotice(v-if="canShowTimeSheet(project)" :project="marketProject")
+                  EndContractNotice(v-if="canShowNotice(project)" :project="marketProject" from="Specialist" @saved="newEtag" @deny="denyContract")
+                  ChangeContractAlerts(v-if="canShowNotice(project)" :project="marketProject" @saved="newEtag" for="Business")
+                  CommonContractAlerts(v-if="canShowNotice(project)" :project="marketProject" for="Business")
             .row
               .col-md-8.col-sm-12.m-b-2
                 .card
@@ -228,6 +228,11 @@ export default {
       const user = this.$store.getters.getUser
       if (user.business_name) return true
       return user.seat_role && user.id === localProject.owner.id
+    },
+    canShowTimeSheet() {
+      const user = this.$store.getters.getUser
+      if (user.business_name) return true
+      return user.seat_role === 'admin'
     },
     filterCollaborators(project) {
       const collaborators = project.collaborators
