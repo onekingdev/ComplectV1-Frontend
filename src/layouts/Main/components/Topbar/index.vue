@@ -23,7 +23,7 @@ div
           li.nav-item.topbar-menu__item.d-sm-none(v-if="domain !== 'specialist' && role !=='basic'" @click="openLink('default')")
             router-link.topbar-menu__link(:to='`/specialistmarketplace`' active-class="active") Find an Expert
           li.nav-item.topbar-menu__item.d-sm-none(v-if="domain === 'specialist'" @click="openLink('default')")
-            router-link.topbar-menu__link(to='/job_board' active-class="active") Browse Projects
+            router-link.topbar-menu__link(to='/specialist/job_board' active-class="active") Browse Jobs
     // Right aligned nav items
     b-navbar-nav.flex-row.align-items-center.ml-auto
       router-link.btn.btn-warning.btn-topbar.btn-topbar_find(v-if="domain !== 'specialist' && role !=='basic'" :to='`/specialistmarketplace`' target="_blank") Find an Expert
