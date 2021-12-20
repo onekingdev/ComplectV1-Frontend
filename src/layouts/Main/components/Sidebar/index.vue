@@ -14,7 +14,7 @@
           li.nav-item.sidebar-menu__item(v-for="(link, i) in menuLinksOverview" @click.stop="openLink('default')" :key="i")
             router-link.sidebar-menu__link(:to='link.to' active-class="active" :exact="link.exact || false")
               | {{ link.label }}
-      div(v-if="domain !== 'specialist' && !this.isBussinessFreePlan")
+      div(v-if="seatRole || (domain !== 'specialist' && !this.isBussinessFreePlan)")
         h3.sidebar-menu__title(
         :class="program_management_collapse ? null : 'collapsed'"
         :aria-expanded="program_management_collapse ? 'true' : 'false'"
@@ -205,6 +205,7 @@
         role: 'roles/currentRole',
         plan: 'roles/currentPlan',
         domain: 'roles/domain',
+        seatRole: 'roles/seatRole'
       }),
       isBussinessFreePlan() {
         return this.plan === 'free' && this.domain === 'business'
