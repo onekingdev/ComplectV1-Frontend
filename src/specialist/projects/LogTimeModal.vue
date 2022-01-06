@@ -120,7 +120,7 @@ export default {
       if (value) {
         Object.assign(this.entry, value)
         this.entry.time_logs_attributes = value.time_logs.map(item => {
-          return {...item, hours: parseInt(item.hours)}
+          return {...item, hours: parseFloat(item.hours)}
         })
         this.today = DateTime.fromISO(this.entry.created_at).toFormat('MM/dd/yyyy')
       } else {

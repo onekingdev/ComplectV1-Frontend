@@ -17,16 +17,31 @@
                 th Status
                 th Total Time
                 th.text-right Total Due
-                th.text-right Payment to Date
                 th
             tbody
               tr(v-for="row in timesheets" :key="row.id")
-                td.text-blue.long-column {{ row.created_at | asDate }}
+                td.text-blue.long-column
+                  a(v-b-modal="`TimesheetModal${row.id}`" href="#") {{ row.created_at | asDate }}
+                  b-modal(:id="`TimesheetModal${row.id}`" title="Entry Details")
+                    label.form-label Date of Entry
+                    p {{ row.created_at | asDate }}
+                    .row(v-for="(timelog, i) in row.time_logs" :key="i")
+                      .col-sm-12
+                        hr
+                        label.form-label Description
+                        p {{ timelog.description }}
+                      .col-md-4
+                        label.form-label Date
+                        p {{ timelog.date | asDate }}
+                      .col-md-4
+                        label.form-label Hours
+                        p {{ timelog.hours }}
+                    hr
+                    p.text-right Total Due: {{ totalDue(row.time_logs) | usdWhole }}
                 td
                   span.badge(:class="statusClasses(row.status)") {{ row.status }}
                 td {{ row.total_duration | minToHour }}
                 td.text-right {{ row.total_due | usdWhole }}
-                td.text-right {{ row.payment_to_date | usdWhole }}
                 td.text-right
                   .actions
                     b-dropdown.option-btn(size="sm" variant="none" class="m-0 p-0" right :disabled="!canDelete(row) && !canEdit(row)")
@@ -66,6 +81,10 @@ export default {
   methods: {
     setProject(project) {
       this.project = project
+    },
+    totalDue(timeLogs) {
+      const ammounts = timeLogs.map(item => parseInt(item.total_amount))
+      return ammounts.reduce((a, b) => a + b, 0)
     },
     openModal() {
       this.editEntry = null
