@@ -102,12 +102,14 @@
       },
       filteredUnArchivedList () {
         return this.unArchivedList.filter(policy => {
-            return policy.name?.toLowerCase().includes(this.searchInput.toLowerCase())
+          const keyword = this.searchInput.toLowerCase()
+          return policy.name?.toLowerCase().includes(keyword) || policy.description?.toLowerCase().includes(keyword)
         })
       },
       filteredArchivedList () {
         return this.archivedList.filter(policy => {
-          return policy.name?.toLowerCase().includes(this.searchInputArchived.toLowerCase())
+          const keyword = this.searchInputArchived.toLowerCase()
+          return policy.name?.toLowerCase().includes(keyword) || policy.description?.toLowerCase().includes(keyword)
         })
       },
       archivedList () {
