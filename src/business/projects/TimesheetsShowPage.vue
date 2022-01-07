@@ -14,7 +14,6 @@
                   th Status
                   th Total Time
                   th Total Due
-                  th Payment to Date
                   th
               tbody
                 tr(v-for="timesheet in timesheets" :key="timesheet.id")
@@ -46,7 +45,6 @@
                     span.badge(:class="statusClasses(timesheet.status)") {{ timesheet.status }}
                   td {{ totalTime(timesheet.time_logs) | minToHour }}
                   td {{ totalDue(timesheet.time_logs) | usdWhole }}
-                  td {{ timesheet.payment_to_date | usdWhole }}
                   td &hellip;
             EmptyState.text-center(v-if="timesheets.length < 1")
             
