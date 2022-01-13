@@ -9,7 +9,7 @@
           div
             template(v-if="currentRole !== 'basic'")
               router-link.m-r-1.btn.btn-default(v-if="project.visible_project" :to='viewHref(project.visible_project)' target="_blank") View Post
-              button.m-r-1.btn.btn-default(v-else-if="canShowPostProject(project)" @click="postProject(project)") Post Project
+              button.m-r-1.btn.btn-default(v-else-if="canShowPostProject(project)" @click="postProject(project)") Post Job
             CompleteLocalProjectModal.m-r-1(:project="project" @saved="newEtag")
             button.btn.btn__close(@click="backToList")
               b-icon(icon="x")
