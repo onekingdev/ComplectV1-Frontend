@@ -3,7 +3,7 @@
     div(v-b-modal="modalId" :class="{'d-inline-block':inline}")
       slot
 
-    b-modal.fade(:id="modalId" title="New policy")
+    b-modal.fade(:id="modalId" title="New Policy")
 
       label.form-label Policy Name
       input.form-control(v-model="policy.name" ref="input" type="text" @keyup.enter="submit" @input="clearErrors" placeholder="Name")
