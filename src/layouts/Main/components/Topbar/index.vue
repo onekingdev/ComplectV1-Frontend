@@ -94,6 +94,7 @@ div
       },
       displayByPlan() {
         const plan = this.currentPlan
+        if (this.seatRole && this.seatRole === "admin") return true
         if (this.domain === 'business') {
           if (plan === 'free') return false
         }
